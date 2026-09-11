@@ -59,6 +59,7 @@ export const ui: Content['ui'] = {
     'On claude.ai: Settings → Connectors → Add custom connector. There is no key to paste — it signs in as you and can be disconnected here.',
   'dialog.mcp.command': 'From a terminal',
   'header.connector': 'MCP connector',
+  'header.webhooks': 'Webhooks',
 
   /* The sign-in dialog: three views — in, up, and asking for a reset link. */
   'auth.dialog.signin.title': 'Sign in',
@@ -168,9 +169,15 @@ export const ui: Content['ui'] = {
   'converter.tab.preview': 'Preview',
   'converter.tab.html': 'HTML source',
   'converter.tab.markdown': 'Markdown',
+  'converter.tab.summary': 'Summary',
   'converter.fullscreen.enter': 'Read fullscreen',
   'converter.fullscreen.exit': 'Exit fullscreen',
   'converter.fullscreen.error': 'Fullscreen is not available here',
+  'converter.summary.needsSave': 'Save this document to your account to summarise it.',
+  'converter.summary.loading': 'Reading the document…',
+  'converter.summary.error': 'Could not summarise this document.',
+  'converter.summary.retry': 'Try again',
+  'converter.summary.regenerate': 'Regenerate',
 
   /*
    * When a file does not come through: what was dropped, what was too big, what the conversion
@@ -283,6 +290,8 @@ export const ui: Content['ui'] = {
   'history.row.unavailable': 'Source was too large to keep locally',
   'history.row.share': 'Share',
   'history.row.share.label': 'Share {name}',
+  'history.row.versions': 'Versions',
+  'history.row.versions.label': 'See versions of {name}',
   'history.row.download.label': 'Download {name}',
   'history.row.remove': 'Remove from history',
   'history.row.stats.one': '{words} words · {headings} heading',
@@ -414,6 +423,35 @@ export const ui: Content['ui'] = {
   'dialog.keys.grant.meta': 'connected {since} · {used}',
   'dialog.keys.disconnect': 'Disconnect — it stops acting as you immediately',
   'dialog.keys.disconnect.label': 'Disconnect {name}',
+
+  /* The version chain of a document, and the diff between two of its versions. */
+  'dialog.versions.title': 'Versions',
+  'dialog.versions.blurb': 'Documents linked together as versions of the same thing.',
+  'dialog.versions.back': 'Back to the list',
+  'dialog.versions.compare': 'Compare with previous',
+  'dialog.versions.error': 'Could not load that comparison',
+
+  /* Outbound webhooks: a document was created, or shared. */
+  'dialog.webhooks.title': 'Webhooks',
+  'dialog.webhooks.blurb':
+    'A signed POST to a URL of yours when a document is created or shared.',
+  'dialog.webhooks.url.placeholder': 'https://your-server.example/webhook',
+  'dialog.webhooks.url.label': 'Webhook URL',
+  'dialog.webhooks.url.error': 'url must be an https:// address',
+  'dialog.webhooks.create': 'Add',
+  'dialog.webhooks.create.error': 'Could not create the webhook',
+  'dialog.webhooks.fresh':
+    'The signing secret — verify deliveries with it. You can see it again with the eye icon below.',
+  'dialog.webhooks.empty':
+    'No webhooks yet. Add one to be notified when a document is created or shared.',
+  'dialog.webhooks.status.never': 'No deliveries yet',
+  'dialog.webhooks.status.ok': 'Delivered {when}',
+  'dialog.webhooks.status.failed': 'Last delivery failed, {when}',
+  'dialog.webhooks.reveal': 'Show the signing secret',
+  'dialog.webhooks.reveal.label': 'Show the signing secret for {url}',
+  'dialog.webhooks.reveal.error': 'Could not read the secret',
+  'dialog.webhooks.revoke': 'Remove this webhook',
+  'dialog.webhooks.revoke.label': 'Remove the webhook for {url}',
 
   /* The foot of the site. The column of conversions and the legal links get their words elsewhere. */
   'footer.tagline':

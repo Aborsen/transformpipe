@@ -26,4 +26,7 @@ export interface DocumentRow {
   stats: Record<string, number>;
   created_at: string;
   markdown?: string;
+  summary?: string | null;
+  summary_created_at?: string | null;
+  replaces?: string | null;
 }

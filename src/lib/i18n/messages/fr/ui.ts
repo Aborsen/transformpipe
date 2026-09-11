@@ -48,6 +48,7 @@ export const ui: Content['ui'] = {
     'Sur claude.ai : Paramètres → Connecteurs → Ajouter un connecteur personnalisé. Aucune clé à coller : la connexion se fait sous votre compte et peut être coupée ici.',
   'dialog.mcp.command': 'Depuis un terminal',
   'header.connector': 'Connecteur MCP',
+  'header.webhooks': 'Webhooks',
 
   /* The sign-in dialog: three views — in, up, and asking for a reset link. */
   'auth.dialog.signin.title': 'Connexion',
@@ -159,9 +160,16 @@ export const ui: Content['ui'] = {
   'converter.tab.preview': 'Aperçu',
   'converter.tab.html': 'Source HTML',
   'converter.tab.markdown': 'Markdown',
+  'converter.tab.summary': 'Résumé',
   'converter.fullscreen.enter': 'Lire en plein écran',
   'converter.fullscreen.exit': 'Quitter le plein écran',
   'converter.fullscreen.error': 'Le plein écran n’est pas disponible ici',
+  'converter.summary.needsSave':
+    'Enregistrez ce document dans votre compte pour le résumer.',
+  'converter.summary.loading': 'Lecture du document…',
+  'converter.summary.error': 'Impossible de résumer ce document.',
+  'converter.summary.retry': 'Réessayer',
+  'converter.summary.regenerate': 'Régénérer',
 
   /*
    * Quand un fichier ne passe pas : ce qui a été déposé, ce qui était trop volumineux, ce que la
@@ -278,6 +286,8 @@ export const ui: Content['ui'] = {
     'Source trop volumineuse pour être conservée localement',
   'history.row.share': 'Partager',
   'history.row.share.label': 'Partager {name}',
+  'history.row.versions': 'Versions',
+  'history.row.versions.label': 'Voir les versions de {name}',
   'history.row.download.label': 'Télécharger {name}',
   'history.row.remove': 'Retirer de l’historique',
   'history.row.stats.one': '{words} mots · {headings} titre',
@@ -414,6 +424,35 @@ export const ui: Content['ui'] = {
   'dialog.keys.grant.meta': 'connecté {since} · {used}',
   'dialog.keys.disconnect': 'Déconnecter — cesse aussitôt d’agir en votre nom',
   'dialog.keys.disconnect.label': 'Déconnecter {name}',
+
+  /* La chaîne de versions d’un document, et la différence entre deux de ses versions. */
+  'dialog.versions.title': 'Versions',
+  'dialog.versions.blurb': 'Des documents liés entre eux comme versions d’une même chose.',
+  'dialog.versions.back': 'Retour à la liste',
+  'dialog.versions.compare': 'Comparer avec la précédente',
+  'dialog.versions.error': 'Impossible de charger cette comparaison',
+
+  /* Webhooks sortants : un document a été créé, ou partagé. */
+  'dialog.webhooks.title': 'Webhooks',
+  'dialog.webhooks.blurb':
+    'Un POST signé vers une URL à vous lorsqu’un document est créé ou partagé.',
+  'dialog.webhooks.url.placeholder': 'https://votre-serveur.example/webhook',
+  'dialog.webhooks.url.label': 'URL du webhook',
+  'dialog.webhooks.url.error': 'l’url doit être une adresse https://',
+  'dialog.webhooks.create': 'Ajouter',
+  'dialog.webhooks.create.error': 'Impossible de créer le webhook',
+  'dialog.webhooks.fresh':
+    'Le secret de signature — vérifiez les livraisons avec lui. Vous pouvez le revoir avec l’icône œil ci-dessous.',
+  'dialog.webhooks.empty':
+    'Pas encore de webhook. Ajoutez-en un pour être averti à la création ou au partage d’un document.',
+  'dialog.webhooks.status.never': 'Aucune livraison pour l’instant',
+  'dialog.webhooks.status.ok': 'Livré {when}',
+  'dialog.webhooks.status.failed': 'Dernière livraison échouée, {when}',
+  'dialog.webhooks.reveal': 'Afficher le secret de signature',
+  'dialog.webhooks.reveal.label': 'Afficher le secret de signature de {url}',
+  'dialog.webhooks.reveal.error': 'Impossible de lire le secret',
+  'dialog.webhooks.revoke': 'Supprimer ce webhook',
+  'dialog.webhooks.revoke.label': 'Supprimer le webhook de {url}',
 
   /* Le pied du site. La colonne des conversions et les liens légaux tirent leurs mots d’ailleurs. */
   'footer.tagline':

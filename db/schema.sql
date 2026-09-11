@@ -257,3 +257,75 @@ alter table m2h_user
 update m2h_user
   set welcomed_at = null
   where welcomed_at < timestamptz '2026-09-09 16:11:00+00';
+
+-- AI summaries.
+--
+-- Generated through the AI Gateway, on request, and cached here: a summary costs real money per
+-- call, and opening a document a dozen times should not call the model a dozen times.
+
+alter table m2h_document
+  add column if not exists summary text;
+
+alter table m2h_document
+  add column if not exists summary_created_at timestamptz;
+
+-- One row per caller per day, mirroring m2h_call's shape but daily rather than per-minute: an AI
+-- call costs money in a way an ordinary API call does not, so it gets its own, tighter budget.
+create table if not exists m2h_ai_summary_call (
+  caller text not null,
+  day    date not null,
+  calls  integer not null default 0,
+  primary key (caller, day)
+);
+
+-- Full-text search over a document's content.
+--
+-- Not a generated column: the source is not always in the row by the time this is read back — it
+-- may already be in Blob (see server/source.ts) — so this is filled in by the application, from
+-- the text it already has in hand at the moment a document is written, regardless of where that
+-- text ends up living.
+alter table m2h_document
+  add column if not exists search tsvector;
+
+create index if not exists m2h_document_search on m2h_document using gin (search);
+
+-- Version chains.
+--
+-- Every conversion still makes a brand-new, unrelated row by default — a link already sent has to
+-- keep showing what it showed (see the GitHub Action docs). `replaces` is how somebody says two
+-- documents are versions of the same thing, on purpose, one document at a time; nothing infers it.
+-- A safe self-referencing key, unlike the neon_auth."user" case above: this is the app's own table.
+alter table m2h_document
+  add column if not exists replaces uuid references m2h_document (id) on delete set null;
+
+create index if not exists m2h_document_replaces on m2h_document (replaces);
+
+-- Webhooks.
+--
+-- The secret here is stored plainly, not hashed like an API key — and that is the right shape for
+-- it, not an oversight. An API key is a credential presented *to* this app; a webhook secret is
+-- presented *by* it, to prove a delivery came from here, and the receiving server needs the same
+-- value indefinitely to check that signature. Document content — no less sensitive — already sits
+-- unencrypted in this same database, so this introduces no new exposure the schema does not
+-- already have.
+--
+-- Deliberately session-only (see server/app.ts): an API key that could also register a webhook
+-- would turn a point-in-time leak into a standing feed of every future document.
+
+create table if not exists m2h_webhook (
+  id                uuid primary key default gen_random_uuid(),
+  user_id           uuid not null,
+  url               text not null,
+  secret            text not null,
+  events            jsonb not null default '["document.created", "document.shared"]'::jsonb,
+  created_at        timestamptz not null default now(),
+  -- The time of the last attempt, successful or not — never stamped before the attempt happens,
+  -- for the same reason m2h_user.welcomed_at was fixed above: a time that means "we tried" and
+  -- says "it worked" is worse than no time at all.
+  last_attempted_at timestamptz,
+  last_status       integer,
+  last_error        text,
+  revoked_at        timestamptz
+);
+
+create index if not exists m2h_webhook_owner on m2h_webhook (user_id, created_at desc);

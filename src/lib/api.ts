@@ -25,6 +25,7 @@ interface ServerDocument {
   stats: HistoryEntry['stats'];
   created_at: string;
   markdown?: string;
+  replaces?: string | null;
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -59,6 +60,7 @@ function toEntry(doc: ServerDocument): HistoryEntry {
     stats: doc.stats,
     /** Server-backed rows can always be fetched in full on demand. */
     remote: true,
+    replaces: doc.replaces ?? null,
   };
 }
 
@@ -84,6 +86,16 @@ export interface ApiKey {
   created_at: string;
   last_used_at: string | null;
   revoked_at: string | null;
+}
+
+export interface WebhookRow {
+  id: string;
+  url: string;
+  events: string[];
+  created_at: string;
+  last_attempted_at: string | null;
+  last_status: number | null;
+  last_error: string | null;
 }
 
 export type ShareMode = 'private' | 'link' | 'people';
@@ -230,9 +242,11 @@ export const api = {
       body: '{}',
     }),
 
-  listDocuments: async () => {
+  /** `q` searches document content, not just the name the caller already has locally. */
+  listDocuments: async (options: { q?: string } = {}) => {
+    const query = options.q ? `?q=${encodeURIComponent(options.q)}` : '';
     const { documents } = await request<{ documents: ServerDocument[] }>(
-      '/api/documents'
+      `/api/documents${query}`
     );
 
     return documents.map(toEntry);
@@ -252,6 +266,8 @@ export const api = {
     size: number;
     markdown: string;
     stats: HistoryEntry['stats'];
+    /** Links this save to an earlier document as a newer version of it. Opt-in; see the server. */
+    replaces?: string;
   }) => {
     const { document } = await request<{ document: ServerDocument }>(
       '/api/documents',
@@ -260,6 +276,12 @@ export const api = {
 
     return toEntry(document);
   },
+
+  /** Every document in the same version chain as `id`, oldest first. */
+  documentVersions: (id: string) =>
+    request<{ versions: Array<{ id: string; name: string; created_at: string }> }>(
+      `/api/documents/${id}/versions`
+    ),
 
   deleteDocument: (id: string) =>
     request<{ ok: true }>(`/api/documents/${id}`, { method: 'DELETE' }),
@@ -333,6 +355,31 @@ export const api = {
       `/api/documents/${id}/share/people?email=${encodeURIComponent(email)}`,
       { method: 'DELETE' }
     ),
+
+  /**
+   * A short summary of a document, generated once and cached on the row — a second call for the
+   * same document is free unless `force` is passed, which asks for a fresh one.
+   */
+  summarizeDocument: (id: string, options: { force?: boolean } = {}) =>
+    request<{ summary: string; summarized_at: string }>(
+      `/api/documents/${id}/summary${options.force ? '?force=1' : ''}`,
+      { method: 'POST' }
+    ),
+
+  listWebhooks: async () =>
+    (await request<{ webhooks: WebhookRow[] }>('/api/webhooks')).webhooks,
+
+  createWebhook: (url: string) =>
+    request<{ secret: string; webhook: WebhookRow }>('/api/webhooks', {
+      method: 'POST',
+      body: JSON.stringify({ url }),
+    }),
+
+  revealWebhookSecret: (id: string) =>
+    request<{ secret: string }>(`/api/webhooks/${id}/reveal`, { method: 'POST' }),
+
+  revokeWebhook: (id: string) =>
+    request<{ ok: true }>(`/api/webhooks/${id}`, { method: 'DELETE' }),
 
   /** The public read: 404 when it was never shared, 401/403 when it was not shared with you. */
   getShared: async (token: string): Promise<SharedDocument> => {

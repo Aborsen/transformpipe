@@ -26,6 +26,13 @@ inputs:
     description: Name for the document. Only meaningful with merge.
     required: false
     default: ''
+  replaces:
+    description: >-
+      Id of an earlier document this push is a new version of. Links the two so they show up
+      together as a chain, with a diff between them — an explicit choice, never inferred, so a
+      link already shared keeps showing what it showed. Only meaningful for a single document.
+    required: false
+    default: ''
   comment:
     description: Comment the links on the pull request. Needs `permissions: pull-requests: write`.
     required: false
@@ -72,6 +79,7 @@ runs:
         SHARE: ${{ inputs.share }}
         MERGE: ${{ inputs.merge }}
         NAME: ${{ inputs.name }}
+        REPLACES: ${{ inputs.replaces }}
       run: |
         set -euo pipefail
 
@@ -88,6 +96,7 @@ runs:
         if [ "$SHARE" != "none" ]; then args+=(--share "$SHARE"); fi
         if [ "$MERGE" = "true" ]; then args+=(--merge); fi
         if [ -n "$NAME" ]; then args+=(--name "$NAME"); fi
+        if [ -n "$REPLACES" ]; then args+=(--replaces "$REPLACES"); fi
 
         read -r -a files <<< "$FILES"
 

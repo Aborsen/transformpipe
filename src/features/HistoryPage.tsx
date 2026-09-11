@@ -3,6 +3,7 @@ import {
   Combine,
   Download,
   FileText,
+  GitCompare,
   MonitorSmartphone,
   Search,
   Share2,
@@ -16,6 +17,7 @@ import { Hint } from '@/components/Hint';
 import { FilterChips } from '@/components/FilterChips';
 import { ListSelectionBar } from '@/components/ListSelectionBar';
 import { ShareDialog } from '@/components/ShareDialog';
+import { VersionsDialog } from '@/components/VersionsDialog';
 import {
   ALL_EXTENSIONS,
   CONVERSIONS,
@@ -127,12 +129,16 @@ function RowActions({
   entry,
   isShared,
   isReopenable,
+  hasVersions,
   onShare,
+  onVersions,
   onDownload,
   onRemove,
 }: RowPartProps & {
   isReopenable: boolean;
+  hasVersions: boolean;
   onShare: (entry: HistoryEntry) => void;
+  onVersions: (entry: HistoryEntry) => void;
   onDownload: (entry: HistoryEntry, format: DocFormat) => void;
   onRemove: (id: string) => void;
 }) {
@@ -140,6 +146,19 @@ function RowActions({
 
   return (
     <span className="flex items-center justify-end gap-1">
+      {entry.remote && hasVersions && (
+        <Hint content={t('history.row.versions')}>
+          <IconButton
+            variant="tertiary"
+            size="sm"
+            aria-label={t('history.row.versions.label', { name: entry.name })}
+            onClick={() => onVersions(entry)}
+          >
+            <GitCompare />
+          </IconButton>
+        </Hint>
+      )}
+
       {entry.remote && !isShared && (
         <Hint content={t('history.row.share')}>
           <IconButton
@@ -233,6 +252,14 @@ export function HistoryPage({
   const [selected, setSelected] = useState<string[]>([]);
   const [query, setQuery] = useState('');
   /**
+   * Ids the server found by content rather than by name — null means "no search in flight",
+   * distinct from an empty set, which means "searched, nothing matched by content".
+   *
+   * Only the account's own documents are covered: content search is a database query, so a
+   * conversion that has not been saved yet is invisible to it and still only matches by name.
+   */
+  const [contentMatches, setContentMatches] = useState<Set<string> | null>(null);
+  /**
    * One row of chips: everything, one conversion, or somebody else's files.
    *
    * Everything is the default, because a list that opens filtered is a list somebody has to notice
@@ -258,6 +285,27 @@ export function HistoryPage({
   const filePicker = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [sharing, setSharing] = useState<HistoryEntry | null>(null);
+  const [viewingVersionsOf, setViewingVersionsOf] = useState<HistoryEntry | null>(
+    null
+  );
+
+  /**
+   * Every id worth showing the versions button on: it `replaces` something, or something in this
+   * same list `replaces` it. Computed from the list already in hand — no extra request to ask a
+   * question the list already answers.
+   */
+  const hasVersions = useMemo(() => {
+    const ids = new Set<string>();
+
+    for (const entry of entries) {
+      if (entry.replaces) {
+        ids.add(entry.replaces);
+        ids.add(entry.id);
+      }
+    }
+
+    return ids;
+  }, [entries]);
   const [sort, setSort] = useState<{ key: SortKey; direction: 'asc' | 'desc' }>({
     key: 'createdAt',
     direction: 'desc',
@@ -331,13 +379,45 @@ export function HistoryPage({
       ? entries
       : entries.filter((entry) => entry.kind === chip);
 
+  // Debounced: a keystroke should not be a request, and the one that lands is for whatever was
+  // last typed — an older, slower response arriving after a newer one is why this checks `query`
+  // against its own closure before applying what it found.
+  useEffect(() => {
+    const needle = query.trim();
+
+    if (!needle || !isSynced) {
+      setContentMatches(null);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      void api
+        .listDocuments({ q: needle })
+        .then((results) => {
+          if (query.trim() === needle) {
+            setContentMatches(new Set(results.map((entry) => entry.id)));
+          }
+        })
+        .catch(() => {
+          // A search that failed leaves the name-only filter in place rather than an error banner
+          // over a page that still mostly works.
+        });
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [query, isSynced]);
+
   const found = useMemo(() => {
     const needle = query.trim().toLowerCase();
 
     return needle
-      ? source.filter((entry) => entry.name.toLowerCase().includes(needle))
+      ? source.filter(
+          (entry) =>
+            entry.name.toLowerCase().includes(needle) ||
+            contentMatches?.has(entry.id)
+        )
       : source;
-  }, [source, query]);
+  }, [source, query, contentMatches]);
 
   /*
    * Only rows whose source is still available — and are on screen — can be picked. Somebody
@@ -758,7 +838,9 @@ export function HistoryPage({
                   entry={entry}
                   isShared={isShared}
                   isReopenable={isReopenable}
+                  hasVersions={hasVersions.has(entry.id)}
                   onShare={setSharing}
+                  onVersions={setViewingVersionsOf}
                   onDownload={onDownload}
                   onRemove={onRemove}
                 />
@@ -933,7 +1015,9 @@ export function HistoryPage({
                     entry={entry}
                     isShared={isShared}
                     isReopenable={isReopenable}
+                    hasVersions={hasVersions.has(entry.id)}
                     onShare={setSharing}
+                    onVersions={setViewingVersionsOf}
                     onDownload={onDownload}
                     onRemove={onRemove}
                   />
@@ -949,6 +1033,12 @@ export function HistoryPage({
         name={sharing?.name ?? ''}
         open={sharing !== null}
         onOpenChange={(open) => !open && setSharing(null)}
+      />
+
+      <VersionsDialog
+        documentId={viewingVersionsOf?.id ?? null}
+        open={viewingVersionsOf !== null}
+        onOpenChange={(open) => !open && setViewingVersionsOf(null)}
       />
     </div>
   );

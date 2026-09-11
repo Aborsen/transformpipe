@@ -16,12 +16,22 @@ import {
   DEFAULT_CONVERSION,
 } from '../shared/conversions.js';
 import {
+  AI_SUMMARY,
   checkQuota,
   claimWelcome,
+  countSummaryCall,
   QUOTA,
   releaseWelcome,
   usageOf,
 } from './limits.js';
+import { summarize, summaryEnabled } from './summarize.js';
+import {
+  createWebhook,
+  deliver,
+  listWebhooks,
+  revealWebhookSecret,
+  revokeWebhook,
+} from './webhooks.js';
 import mcp from './mcp.js';
 import oauth from './oauth.js';
 import { authorizationServer, protectedResource } from './wellknown.js';
@@ -169,6 +179,46 @@ api.delete('/keys/:id', async (c) => {
 });
 
 /*
+ * Webhooks, session-only for the same reason keys are: see the note on `m2h_webhook` in
+ * db/schema.sql on why this stays out of the scriptable public API.
+ */
+api.use('/webhooks', requireUser);
+api.use('/webhooks/*', requireUser);
+
+api.get('/webhooks', async (c) =>
+  c.json({ webhooks: await listWebhooks(c.get('user').id) })
+);
+
+api.post('/webhooks', async (c) => {
+  const body = await c.req
+    .json<{ url?: string }>()
+    .catch(() => ({}) as { url?: string });
+  const url = (body.url ?? '').trim();
+
+  if (!/^https:\/\//.test(url)) {
+    return c.json({ error: 'url must be an https:// address' }, 400);
+  }
+
+  const created = await createWebhook(c.get('user').id, url);
+
+  // The only time the secret is ever returned as a matter of course — see revealWebhookSecret
+  // for the deliberate exception, which needs an explicit ask rather than showing up in a list.
+  return c.json({ secret: created.secret, webhook: created.row }, 201);
+});
+
+api.post('/webhooks/:id/reveal', async (c) => {
+  const secret = await revealWebhookSecret(c.get('user').id, c.req.param('id'));
+
+  return secret ? c.json({ secret }) : c.json({ error: 'Not found' }, 404);
+});
+
+api.delete('/webhooks/:id', async (c) => {
+  const revoked = await revokeWebhook(c.get('user').id, c.req.param('id'));
+
+  return revoked ? c.json({ ok: true }) : c.json({ error: 'Not found' }, 404);
+});
+
+/*
  * What the account is using, for the line under the history. It lives here rather than being read
  * from /api/v1 so the app's own screens do not spend the public API's rate budget — the panel
  * re-asks whenever the list changes.
@@ -213,14 +263,29 @@ api.get('/shared-with-me', async (c) => {
   return c.json({ documents: rows });
 });
 
+/** `?q=` searches content, not just the name — see the note on the same parameter in v1.ts. */
 api.get('/documents', async (c) => {
-  const rows = (await sql()`
-    select id, name, kind, size, stats, created_at
-    from m2h_document
-    where user_id = ${c.get('user').id}
-    order by created_at desc
-    limit ${QUOTA.documents}
-  `) as DocumentRow[];
+  const q = c.req.query('q')?.trim();
+  const userId = c.get('user').id;
+
+  const rows = (
+    q
+      ? ((await sql()`
+          select id, name, kind, size, stats, created_at, summary_created_at, replaces
+          from m2h_document
+          where user_id = ${userId}
+            and search @@ websearch_to_tsquery('simple', ${q})
+          order by ts_rank(search, websearch_to_tsquery('simple', ${q})) desc, created_at desc
+          limit ${QUOTA.documents}
+        `) as DocumentRow[])
+      : ((await sql()`
+          select id, name, kind, size, stats, created_at, summary_created_at, replaces
+          from m2h_document
+          where user_id = ${userId}
+          order by created_at desc
+          limit ${QUOTA.documents}
+        `) as DocumentRow[])
+  );
 
   return c.json({ documents: rows });
 });
@@ -267,12 +332,24 @@ api.post('/documents', async (c) => {
     size?: number;
     markdown?: string;
     stats?: Record<string, number>;
+    /** Opt-in version linking — see the note on the same field in v1.ts. */
+    replaces?: string;
   };
 
   const body = await c.req.json<CreateBody>().catch(() => ({}) as CreateBody);
 
   if (!body.name || typeof body.markdown !== 'string') {
     return c.json({ error: 'name and markdown are required' }, 400);
+  }
+
+  if (body.replaces) {
+    const previous = (await sql()`
+      select id from m2h_document where id = ${body.replaces} and user_id = ${userId}
+    `) as Array<{ id: string }>;
+
+    if (previous.length === 0) {
+      return c.json({ error: 'The document named in `replaces` is not on this account' }, 404);
+    }
   }
 
   const size = new TextEncoder().encode(body.markdown).length;
@@ -288,14 +365,16 @@ api.post('/documents', async (c) => {
    * worse than no document at all.
    */
   const rows = (await sql()`
-    insert into m2h_document (user_id, name, kind, size, markdown, stats)
+    insert into m2h_document (user_id, name, kind, size, markdown, stats, search, replaces)
     values (
       ${userId},
       ${body.name},
       ${KINDS.has(body.kind ?? '') ? body.kind : DEFAULT_CONVERSION},
       ${body.size ?? body.markdown.length},
       null,
-      ${JSON.stringify(body.stats ?? {})}::jsonb
+      ${JSON.stringify(body.stats ?? {})}::jsonb,
+      to_tsvector('simple', ${body.markdown}),
+      ${body.replaces ?? null}
     )
     returning id, name, kind, size, stats, created_at
   `) as DocumentRow[];
@@ -316,12 +395,22 @@ api.post('/documents', async (c) => {
     return c.json({ error: `Could not store the document: ${why}` }, 502);
   }
 
+  // Awaited, like every other webhook delivery here: see the note at the top of webhooks.ts on
+  // why a send started after the response may never leave a serverless function.
+  await deliver(userId, 'document.created', {
+    id: rows[0].id,
+    name: rows[0].name,
+    kind: rows[0].kind,
+    size: rows[0].size,
+  });
+
   return c.json({ document: rows[0] }, 201);
 });
 
 api.get('/documents/:id', async (c) => {
   const rows = (await sql()`
-    select id, name, kind, size, stats, created_at, markdown, blob_path
+    select id, name, kind, size, stats, created_at, markdown, blob_path,
+           summary, summary_created_at
     from m2h_document
     where user_id = ${c.get('user').id} and id = ${c.req.param('id')}
   `) as Array<DocumentRow & { blob_path: string | null }>;
@@ -338,6 +427,156 @@ api.get('/documents/:id', async (c) => {
       markdown: await readSource({ ...rows[0], user_id: c.get('user').id }),
     },
   });
+});
+
+/**
+ * Summarises a document for the app's own Summary tab — same behaviour as the public
+ * `POST /api/v1/documents/:id/summary`, kept in step so a script and the app never disagree about
+ * what a document's summary is.
+ */
+api.post('/documents/:id/summary', async (c) => {
+  const userId = c.get('user').id;
+  const id = c.req.param('id');
+
+  const rows = (await sql()`
+    select id, name, summary, summary_created_at, markdown, blob_path
+    from m2h_document
+    where user_id = ${userId} and id = ${id}
+  `) as Array<{
+    id: string;
+    name: string;
+    summary: string | null;
+    summary_created_at: string | null;
+    markdown: string | null;
+    blob_path: string | null;
+  }>;
+
+  const row = rows[0];
+
+  if (!row) {
+    return c.json({ error: 'Not found' }, 404);
+  }
+
+  if (row.summary && c.req.query('force') === undefined) {
+    return c.json({ summary: row.summary, summarized_at: row.summary_created_at });
+  }
+
+  if (!summaryEnabled()) {
+    return c.json({ error: 'This deployment has no Google AI key configured.' }, 503);
+  }
+
+  const verdict = await countSummaryCall(`session:${userId}`);
+
+  if (!verdict.ok) {
+    return c.json(
+      {
+        error: `Summaries are limited to ${AI_SUMMARY.perDay} a day per account. Try again tomorrow.`,
+      },
+      429
+    );
+  }
+
+  let markdown: string | null;
+
+  try {
+    markdown = await readSource({ ...row, user_id: userId });
+  } catch (cause) {
+    const why = cause instanceof Error ? cause.message : 'unknown';
+
+    return c.json({ error: `Could not read the document's source: ${why}` }, 502);
+  }
+
+  if (markdown === null) {
+    return c.json({ error: 'The source of this document is missing' }, 410);
+  }
+
+  let summary: string;
+
+  try {
+    summary = await summarize(markdown);
+  } catch (cause) {
+    const why = cause instanceof Error ? cause.message : 'the model did not answer';
+
+    return c.json({ error: `Could not summarise this document: ${why}` }, 502);
+  }
+
+  const summarizedAt = new Date().toISOString();
+
+  await sql()`
+    update m2h_document
+    set summary = ${summary}, summary_created_at = ${summarizedAt}
+    where id = ${id}
+  `;
+
+  return c.json({ summary, summarized_at: summarizedAt });
+});
+
+interface VersionRow {
+  id: string;
+  name: string;
+  created_at: string;
+  replaces: string | null;
+}
+
+/**
+ * Every document in the same chain as `id` — see the identical helper in v1.ts, which this
+ * mirrors rather than imports: the two document endpoints are kept independent on purpose, and a
+ * chain is a handful of rows, not a query worth sharing across a module boundary for.
+ */
+async function versionChain(userId: string, id: string): Promise<VersionRow[]> {
+  const seen = new Set<string>();
+  const queue = [id];
+  const chain: VersionRow[] = [];
+
+  while (queue.length > 0) {
+    const current = queue.shift()!;
+
+    if (seen.has(current)) {
+      continue;
+    }
+
+    seen.add(current);
+
+    const found = (await sql()`
+      select id, name, created_at, replaces
+      from m2h_document
+      where user_id = ${userId} and id = ${current}
+    `) as VersionRow[];
+
+    if (found.length === 0) {
+      continue;
+    }
+
+    chain.push(found[0]);
+
+    if (found[0].replaces) {
+      queue.push(found[0].replaces);
+    }
+
+    const children = (await sql()`
+      select id, name, created_at, replaces
+      from m2h_document
+      where user_id = ${userId} and replaces = ${current}
+    `) as VersionRow[];
+
+    for (const child of children) {
+      queue.push(child.id);
+    }
+  }
+
+  return chain.sort(
+    (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+  );
+}
+
+api.get('/documents/:id/versions', async (c) => {
+  const chain = await versionChain(c.get('user').id, c.req.param('id'));
+
+  if (chain.length === 0) {
+    return c.json({ error: 'Not found' }, 404);
+  }
+
+  return c.json({ versions: chain });
 });
 
 /** The document's sharing state, as the dialog needs it. */
@@ -487,6 +726,14 @@ api.post('/documents/:id/share/people', async (c) => {
     if (!sent.ok) {
       console.error(`share notice to ${email} not sent: ${sent.reason}`);
     }
+
+    await deliver(userId, 'document.shared', {
+      id,
+      name: document[0]?.name ?? 'a document',
+      mode: state.mode,
+      url: `${selfOrigin(c)}/s/${state.token}`,
+      notified: notified ? [email] : [],
+    });
   }
 
   /*

@@ -165,6 +165,11 @@ async function push() {
     );
   }
 
+  // A version links one document to one earlier one — meaningless to spread across several pushes.
+  if (flags.replaces && (files.length > 1 && !flags.merge)) {
+    fail('--replaces takes one document. Push one file, or --merge several into one first.');
+  }
+
   // Several files become one document when asked; otherwise each stands on its own.
   const documents = flags.merge
     ? [
@@ -186,6 +191,10 @@ async function push() {
 
     if (share) {
       query.set('share', share);
+    }
+
+    if (flags.replaces) {
+      query.set('replaces', flags.replaces);
     }
 
     // The server converts it; what comes back is the Markdown, named after the file.
@@ -216,7 +225,8 @@ async function push() {
 }
 
 async function list() {
-  const { documents } = await call('/documents');
+  const query = flags.q ? `?q=${encodeURIComponent(flags.q)}` : '';
+  const { documents } = await call(`/documents${query}`);
 
   if (flags.json) {
     console.log(JSON.stringify(documents, null, 2));
@@ -248,6 +258,43 @@ async function remove() {
   }
 }
 
+async function versions() {
+  const id = rest[0];
+
+  if (!id) {
+    fail('Which one? `tp versions <id>` — `tp list` shows the ids.');
+  }
+
+  const { versions: chain } = await call(`/documents/${id}/versions`);
+
+  if (flags.json) {
+    console.log(JSON.stringify(chain, null, 2));
+    return;
+  }
+
+  for (const version of chain) {
+    console.log(`${version.id}  ${version.name.padEnd(32).slice(0, 32)}  ${version.created_at}`);
+  }
+}
+
+async function summary() {
+  const id = rest[0];
+
+  if (!id) {
+    fail('Which one? `tp summary <id>` — `tp list` shows the ids.');
+  }
+
+  const query = flags.force ? '?force=1' : '';
+  const result = await call(`/documents/${id}/summary${query}`, { method: 'POST' });
+
+  if (flags.json) {
+    console.log(JSON.stringify(result, null, 2));
+    return;
+  }
+
+  console.log(result.summary);
+}
+
 async function usage() {
   const used = await call('/usage');
 
@@ -273,7 +320,7 @@ function login() {
   console.log(`Saved to ${CONFIG}`);
 }
 
-const commands = { push, list, rm: remove, usage, login };
+const commands = { push, list, rm: remove, usage, login, summary, versions };
 
 if (!command || command === '--help' || command === '-h') {
   console.log(
@@ -283,11 +330,14 @@ if (!command || command === '--help' || command === '-h') {
       '  tp login tp_live_…               remember a key for this machine',
       '  tp push README.md --share         convert and publish; prints the link',
       '  tp push docs/*.md --merge --share chain several files into one document',
-      '  tp list                           what is in the account',
+      '  tp push v2.md --replaces <id>     link this push to an earlier document as a new version',
+      '  tp list --q invoice               what is in the account, matching name or content',
+      '  tp versions <id>                  every document in the same chain, oldest first',
       '  tp rm <id>                        delete one',
+      '  tp summary <id>                   a short summary, generated once and cached',
       '  tp usage                          how much room is left',
       '',
-      'Options: --key, --name, --share link|people, --merge, --json',
+      'Options: --key, --name, --share link|people, --merge, --replaces, --force, --json',
       `Host:    ${HOST}  (TP_HOST to point elsewhere)`,
     ].join('\n')
   );

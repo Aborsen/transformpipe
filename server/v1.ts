@@ -7,14 +7,18 @@ import { type Caller, mayWrite, resolveCaller } from './caller.js';
 import { sendShareNotice } from './mail.js';
 import { sql } from './db.js';
 import {
+  AI_SUMMARY,
   checkQuota,
   countCall,
+  countSummaryCall,
   isVerified,
   mb,
   QUOTA,
   RATE,
   usageOf,
 } from './limits.js';
+import { summarize, summaryEnabled } from './summarize.js';
+import { deliver } from './webhooks.js';
 import {
   CONVERSIONS,
   conversion,
@@ -134,6 +138,9 @@ interface DocumentRow {
   created_at: string;
   share_mode: 'private' | 'link' | 'people';
   share_token: string | null;
+  summary?: string | null;
+  summary_created_at?: string | null;
+  replaces?: string | null;
 }
 
 /*
@@ -160,17 +167,42 @@ const asDocument = (
     mode: row.share_mode,
     url: shareUrl(c, row.share_token),
   },
+  // The text itself is not carried on every row — see the dedicated summary endpoint — only
+  // whether one exists, which is enough for a list to show an indicator.
+  summarized_at: row.summary_created_at ?? null,
+  // Which document this one supersedes, if it was created that way. Enough for a list already in
+  // hand to work out whole chains without a request per row — see GET /documents/:id/versions.
+  replaces: row.replaces ?? null,
   ...extra,
 });
 
+/*
+ * `?q=` searches content, not just the name — see the `search` column on `m2h_document`. Two
+ * queries rather than one composed conditionally: this driver's tagged template does not compose,
+ * and a search that also ranks by relevance is a different query, not the same one with an extra
+ * clause spliced in.
+ */
 v1.get('/documents', async (c) => {
-  const rows = (await sql()`
-    select id, name, kind, size, stats, created_at, share_mode, share_token
-    from m2h_document
-    where user_id = ${c.get('caller').id}
-    order by created_at desc
-    limit ${QUOTA.documents}
-  `) as DocumentRow[];
+  const q = c.req.query('q')?.trim();
+
+  const rows = (
+    q
+      ? ((await sql()`
+          select id, name, kind, size, stats, created_at, share_mode, share_token, summary_created_at, replaces
+          from m2h_document
+          where user_id = ${c.get('caller').id}
+            and search @@ websearch_to_tsquery('simple', ${q})
+          order by ts_rank(search, websearch_to_tsquery('simple', ${q})) desc, created_at desc
+          limit ${QUOTA.documents}
+        `) as DocumentRow[])
+      : ((await sql()`
+          select id, name, kind, size, stats, created_at, share_mode, share_token, summary_created_at, replaces
+          from m2h_document
+          where user_id = ${c.get('caller').id}
+          order by created_at desc
+          limit ${QUOTA.documents}
+        `) as DocumentRow[])
+  );
 
   return c.json({ documents: rows.map((row) => asDocument(c, row)) });
 });
@@ -362,6 +394,27 @@ v1.post('/documents', async (c) => {
     return c.json({ error: 'share must be `link` or `people`' }, 400);
   }
 
+  /*
+   * Chaining is opt-in and explicit, one document at a time — never inferred from the name or the
+   * conversion, so a new push stays what it has always been: a new, unrelated document, unless the
+   * caller says otherwise.
+   */
+  const replaces = c.req.query('replaces');
+
+  if (replaces !== undefined) {
+    if (!looksLikeId(replaces)) {
+      return c.json({ error: 'replaces must be a document id' }, 400);
+    }
+
+    const previous = (await sql()`
+      select id from m2h_document where id = ${replaces} and user_id = ${userId}
+    `) as Array<{ id: string }>;
+
+    if (previous.length === 0) {
+      return c.json({ error: 'The document named in `replaces` is not on this account' }, 404);
+    }
+  }
+
   const size = new TextEncoder().encode(markdown).length;
   const room = await checkQuota(userId, size);
 
@@ -379,7 +432,7 @@ v1.post('/documents', async (c) => {
   const stats = getDocStats(markdown, html);
 
   const created = (await sql()`
-    insert into m2h_document (user_id, name, kind, size, markdown, stats, share_mode, share_token)
+    insert into m2h_document (user_id, name, kind, size, markdown, stats, share_mode, share_token, search, replaces)
     values (
       ${userId},
       ${documentName},
@@ -388,9 +441,11 @@ v1.post('/documents', async (c) => {
       null,
       ${JSON.stringify(stats)}::jsonb,
       ${share ?? 'private'},
-      ${share ? randomBytes(16).toString('base64url') : null}
+      ${share ? randomBytes(16).toString('base64url') : null},
+      to_tsvector('simple', ${markdown}),
+      ${replaces ?? null}
     )
-    returning id, name, kind, size, stats, created_at, share_mode, share_token
+    returning id, name, kind, size, stats, created_at, share_mode, share_token, replaces
   `) as DocumentRow[];
 
   try {
@@ -409,6 +464,13 @@ v1.post('/documents', async (c) => {
     return c.json({ error: `Could not store the document: ${why}` }, 502);
   }
 
+  await deliver(userId, 'document.created', {
+    id: created[0].id,
+    name: created[0].name,
+    kind: created[0].kind,
+    size: created[0].size,
+  });
+
   return c.json({ document: asDocument(c, created[0], { words: stats.words }) }, 201);
 });
 
@@ -423,7 +485,7 @@ async function findDocument(userId: string, id: string) {
 
   const rows = (await sql()`
     select id, user_id, name, kind, size, stats, created_at, share_mode, share_token,
-           markdown, blob_path
+           markdown, blob_path, summary, summary_created_at, replaces
     from m2h_document
     where user_id = ${userId} and id = ${id}
   `) as Array<
@@ -480,7 +542,158 @@ v1.get('/documents/:id', async (c) => {
     );
   }
 
-  return c.json({ document: asDocument(c, row, { markdown }) });
+  return c.json({ document: asDocument(c, row, { markdown, summary: row.summary ?? null }) });
+});
+
+/**
+ * Summarises a document, once, and keeps the result.
+ *
+ * A read of the cached summary would be a GET; this is a POST because the first call for any
+ * document does real work and spends a slice of the account's daily budget — the method says so.
+ * `?force=1` skips the cache, for a document whose content just changed underneath a stale
+ * summary (nothing in this app updates a document in place today, so that is a future-proofing
+ * cheap enough not to leave out).
+ */
+v1.post('/documents/:id/summary', async (c) => {
+  const caller = c.get('caller');
+  const row = await findDocument(caller.id, c.req.param('id'));
+
+  if (!row) {
+    return c.json({ error: 'Not found' }, 404);
+  }
+
+  if (row.summary && c.req.query('force') === undefined) {
+    return c.json({ summary: row.summary, summarized_at: row.summary_created_at });
+  }
+
+  if (!summaryEnabled()) {
+    return c.json(
+      { error: 'This deployment has no Google AI key configured.' },
+      503
+    );
+  }
+
+  const verdict = await countSummaryCall(`${caller.via}:${caller.id}`);
+
+  if (!verdict.ok) {
+    return c.json(
+      {
+        error: `Summaries are limited to ${AI_SUMMARY.perDay} a day per account. Try again tomorrow.`,
+      },
+      429
+    );
+  }
+
+  let markdown: string | null;
+
+  try {
+    markdown = await readSource(row);
+  } catch (cause) {
+    const why = cause instanceof Error ? cause.message : 'unknown';
+
+    return c.json({ error: `Could not read the document's source: ${why}` }, 502);
+  }
+
+  if (markdown === null) {
+    return c.json({ error: 'The source of this document is missing' }, 410);
+  }
+
+  let summary: string;
+
+  try {
+    summary = await summarize(markdown);
+  } catch (cause) {
+    const why = cause instanceof Error ? cause.message : 'the model did not answer';
+
+    return c.json({ error: `Could not summarise this document: ${why}` }, 502);
+  }
+
+  const summarizedAt = new Date().toISOString();
+
+  await sql()`
+    update m2h_document
+    set summary = ${summary}, summary_created_at = ${summarizedAt}
+    where id = ${row.id}
+  `;
+
+  return c.json({ summary, summarized_at: summarizedAt });
+});
+
+interface VersionRow {
+  id: string;
+  name: string;
+  created_at: string;
+  replaces: string | null;
+}
+
+/**
+ * Every document in the same chain as `id`: its ancestors through `replaces`, and every document
+ * that in turn replaced one of those.
+ *
+ * A loop over small queries rather than a recursive CTE: a chain is a handful of pushes, not a
+ * table's worth of rows, and this reads the same as the rest of this file rather than introducing
+ * the one recursive query in it.
+ */
+async function versionChain(userId: string, id: string): Promise<VersionRow[]> {
+  const seen = new Set<string>();
+  const queue = [id];
+  const chain: VersionRow[] = [];
+
+  while (queue.length > 0) {
+    const current = queue.shift()!;
+
+    if (seen.has(current)) {
+      continue;
+    }
+
+    seen.add(current);
+
+    const found = (await sql()`
+      select id, name, created_at, replaces
+      from m2h_document
+      where user_id = ${userId} and id = ${current}
+    `) as VersionRow[];
+
+    if (found.length === 0) {
+      continue;
+    }
+
+    chain.push(found[0]);
+
+    if (found[0].replaces) {
+      queue.push(found[0].replaces);
+    }
+
+    const children = (await sql()`
+      select id, name, created_at, replaces
+      from m2h_document
+      where user_id = ${userId} and replaces = ${current}
+    `) as VersionRow[];
+
+    for (const child of children) {
+      queue.push(child.id);
+    }
+  }
+
+  return chain.sort(
+    (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+  );
+}
+
+v1.get('/documents/:id/versions', async (c) => {
+  const id = c.req.param('id');
+
+  if (!looksLikeId(id)) {
+    return c.json({ error: 'Not found' }, 404);
+  }
+
+  const chain = await versionChain(c.get('caller').id, id);
+
+  if (chain.length === 0) {
+    return c.json({ error: 'Not found' }, 404);
+  }
+
+  return c.json({ versions: chain });
 });
 
 v1.delete('/documents/:id', async (c) => {
@@ -661,6 +874,14 @@ v1.put('/documents/:id/share', async (c) => {
         }
       })
     );
+
+    await deliver(userId, 'document.shared', {
+      id,
+      name: after.name,
+      mode: after.share_mode,
+      url,
+      notified,
+    });
   }
 
   return c.json({

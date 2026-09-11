@@ -8,6 +8,8 @@ const SERVER_ENV_KEYS = [
   'BLOB_READ_WRITE_TOKEN',
   'BLOB_STORE_ID',
   'VERCEL_OIDC_TOKEN',
+  // The Summary tab — see server/summarize.ts.
+  'GOOGLE_GENERATIVE_AI_API_KEY',
 ];
 
 /**

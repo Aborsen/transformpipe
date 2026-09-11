@@ -446,7 +446,7 @@ const TOOLS: Record<McpToolName, Tool> = {
 
   tp_save_document: {
     description:
-      'Save a document to this TransformPipe account, and optionally publish it in the same call. Markdown by default; pass `from` to send HTML, CSV, TSV or JSON instead, which is converted on the way in and recorded as what it was made from. Returns the id, the size and — when shared — the URL. `share: "link"` is anyone holding the URL, `"people"` narrows it to the addresses in `emails`, `"private"` is nobody but the owner. Publishing makes a page on the public web: share a document the person actually asked to share.',
+      'Save a document to this TransformPipe account, and optionally publish it in the same call. Markdown by default; pass `from` to send HTML, CSV, TSV or JSON instead, which is converted on the way in and recorded as what it was made from. Returns the id, the size and — when shared — the URL. `share: "link"` is anyone holding the URL, `"people"` narrows it to the addresses in `emails`, `"private"` is nobody but the owner. Publishing makes a page on the public web: share a document the person actually asked to share. `replaces` links this save to an earlier document as a new version of it — only when asked for; a save with nothing said about it is always a new, unrelated document.',
     writes: true,
     inputSchema: {
       type: 'object',
@@ -476,6 +476,11 @@ const TOOLS: Record<McpToolName, Tool> = {
           type: 'array',
           items: { type: 'string' },
           description: 'Addresses for share: "people". Replaces any existing list.',
+        },
+        replaces: {
+          type: 'string',
+          description:
+            'Id of an earlier document this is a new version of. tp_list_documents prints ids.',
         },
       },
     },
@@ -519,6 +524,10 @@ const TOOLS: Record<McpToolName, Tool> = {
 
       if (share) {
         query.set('share', share);
+      }
+
+      if (typeof args.replaces === 'string' && args.replaces) {
+        query.set('replaces', args.replaces);
       }
 
       const created = await callApi(c, `/api/v1/documents?${query}`, {
@@ -582,7 +591,7 @@ const TOOLS: Record<McpToolName, Tool> = {
 
   tp_list_documents: {
     description:
-      'What is on this TransformPipe account: documents with their names, sizes, dates and whether each is shared. Start here when the question is "what have I got". Prints the id of each, which is what the other tools take.',
+      'What is on this TransformPipe account: documents with their names, sizes, dates and whether each is shared. Start here when the question is "what have I got". `query` matches a document by its name or by what is written inside it. Prints the id of each, which is what the other tools take.',
     inputSchema: {
       type: 'object',
       additionalProperties: false,
@@ -595,7 +604,7 @@ const TOOLS: Record<McpToolName, Tool> = {
         },
         query: {
           type: 'string',
-          description: 'Only documents whose name contains this.',
+          description: 'Matches a document by name or by its content.',
         },
       },
     },
@@ -608,14 +617,40 @@ const TOOLS: Record<McpToolName, Tool> = {
 
       const needle = String(args.query ?? '').toLowerCase();
       const all = (listed.body.documents ?? []) as Array<Parameters<typeof describe>[0]>;
-      const matching = needle
+      let matching = needle
         ? all.filter((document) => document.name.toLowerCase().includes(needle))
         : all;
+
+      /*
+       * A second call, only when there is something to search for: `?q=` ranks by content, which
+       * `all` already fetched does not carry, and a name match already covers the common case for
+       * free.
+       */
+      if (needle) {
+        const byContent = await callApi(
+          c,
+          `/api/v1/documents?q=${encodeURIComponent(needle)}`
+        );
+
+        if (byContent.status === 200) {
+          const already = new Set(matching.map((document) => document.id));
+          const contentIds = new Set(
+            (byContent.body.documents ?? []).map((document: { id: string }) => document.id)
+          );
+
+          matching = [
+            ...matching,
+            ...all.filter(
+              (document) => contentIds.has(document.id) && !already.has(document.id)
+            ),
+          ];
+        }
+      }
 
       if (matching.length === 0) {
         return say(
           needle
-            ? `Nothing on this account has "${needle}" in its name.`
+            ? `Nothing on this account has "${needle}" in its name or content.`
             : 'This account has no documents yet.'
         );
       }
@@ -689,6 +724,97 @@ const TOOLS: Record<McpToolName, Tool> = {
       return say(
         clip(
           `${document.name} — ${bytes(document.size)}\n\n${document.markdown ?? ''}`
+        )
+      );
+    },
+  },
+
+  tp_summarize_document: {
+    description:
+      'A three-to-five sentence summary of one document, generated by a model and cached on the account so asking again is free. Pass `force: true` to regenerate. Summaries are metered separately from ordinary calls, at a per-day limit per account.',
+    writes: true,
+    inputSchema: {
+      type: 'object',
+      additionalProperties: false,
+      required: ['id'],
+      properties: {
+        id: { type: 'string', description: 'The document id.' },
+        force: {
+          type: 'boolean',
+          description: 'Regenerate even if a summary is already cached. Default false.',
+        },
+      },
+    },
+    run: async (c, args) => {
+      const id = String(args.id ?? '');
+
+      if (!id) {
+        return say('Which document? tp_list_documents prints the ids.', true);
+      }
+
+      const query = args.force ? '?force=1' : '';
+      const summarized = await callApi(
+        c,
+        `/api/v1/documents/${segment(id)}/summary${query}`,
+        { method: 'POST' }
+      );
+
+      if (summarized.status !== 200) {
+        return say(
+          summarized.body?.error ?? `Could not summarise that document (${summarized.status}).`,
+          true
+        );
+      }
+
+      return say(summarized.body.summary);
+    },
+  },
+
+  tp_document_versions: {
+    description:
+      'Every document linked to this one as a version of the same thing, oldest first — the chain built by tp_save_document\'s `replaces`. Empty unless somebody deliberately linked documents together; nothing links them on its own.',
+    inputSchema: {
+      type: 'object',
+      additionalProperties: false,
+      required: ['id'],
+      properties: {
+        id: { type: 'string', description: 'Any document id in the chain.' },
+      },
+    },
+    run: async (c, args) => {
+      const id = String(args.id ?? '');
+
+      if (!id) {
+        return say('Which document? tp_list_documents prints the ids.', true);
+      }
+
+      const found = await callApi(c, `/api/v1/documents/${segment(id)}/versions`);
+
+      if (found.status !== 200) {
+        return say(
+          found.body?.error ?? `That document is not on this account (${found.status}).`,
+          true
+        );
+      }
+
+      const chain = found.body.versions as Array<{
+        id: string;
+        name: string;
+        created_at: string;
+      }>;
+
+      if (chain.length <= 1) {
+        return say('This document has no other versions linked to it.');
+      }
+
+      return say(
+        clip(
+          chain
+            .map(
+              (version) =>
+                `${version.name}\n  id: ${version.id}\n  ${new Date(version.created_at).toISOString().slice(0, 10)}`
+            )
+            .join('\n')
         )
       );
     },

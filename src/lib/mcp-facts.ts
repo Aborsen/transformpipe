@@ -16,6 +16,8 @@ export const MCP_TOOL_NAMES = [
   'tp_save_document',
   'tp_list_documents',
   'tp_get_document',
+  'tp_summarize_document',
+  'tp_document_versions',
   'tp_share_document',
   'tp_usage',
   'tp_delete_document',
@@ -34,6 +36,10 @@ export const MCP_TOOLS: Record<McpToolName, string> = {
     'Saves Markdown to the account — or HTML, CSV, TSV or JSON, converted on the way in.',
   tp_list_documents: 'What is on the account, with the id each other tool takes.',
   tp_get_document: 'One document, as its Markdown source or as rendered HTML.',
+  tp_summarize_document:
+    'A short summary of a document, cached on the account so asking again is free.',
+  tp_document_versions:
+    'Every document linked to this one as a version of the same thing, oldest first.',
   tp_share_document:
     'Changes who may open a document: a link, named addresses, or nobody.',
   tp_usage: 'What the account is using against its limits.',

@@ -9,11 +9,14 @@ import {
   Maximize2,
   Minimize2,
   Printer,
+  RefreshCw,
   RotateCcw,
   Save,
   Share2,
+  Sparkles,
 } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { api } from '@/lib/api';
 import { DocStats } from '@/components/DocStats';
 import { DocumentPreview } from '@/components/DocumentPreview';
 import { Hint } from '@/components/Hint';
@@ -103,10 +106,51 @@ export function ConverterPage({
   /** What this conversion is called and says, in the reader's language. */
   const words = content.conversions[conversion.id];
   const [isCopied, setIsCopied] = useState(false);
-  const [tab, setTab] = useState<'preview' | 'source'>('preview');
+  const [tab, setTab] = useState<'preview' | 'source' | 'summary'>('preview');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const previewFrame = useRef<HTMLDivElement>(null);
+
+  const [summary, setSummary] = useState<string | null>(null);
+  const [summaryLoading, setSummaryLoading] = useState(false);
+  const [summaryError, setSummaryError] = useState<string | null>(null);
+
+  // A different document — reset to a clean slate rather than showing a stale summary.
+  useEffect(() => {
+    setSummary(null);
+    setSummaryError(null);
+    setSummaryLoading(false);
+  }, [doc?.remoteId]);
+
+  const loadSummary = async (force = false) => {
+    if (!doc?.remoteId) {
+      return;
+    }
+
+    setSummaryLoading(true);
+    setSummaryError(null);
+
+    try {
+      const result = await api.summarizeDocument(doc.remoteId, { force });
+      setSummary(result.summary);
+    } catch (cause) {
+      setSummaryError(
+        cause instanceof Error ? cause.message : t('converter.summary.error')
+      );
+    } finally {
+      setSummaryLoading(false);
+    }
+  };
+
+  // The first time somebody opens the tab for this document, ask for it — a cache hit costs
+  // nothing on the server, and asking again on every render would. Deliberately keyed only on
+  // `tab` and the document's id: `summary`/`summaryLoading`/`summaryError` are this effect's own
+  // output, and including them would make it re-run the moment it sets them.
+  useEffect(() => {
+    if (tab === 'summary' && doc?.remoteId && !summary && !summaryLoading && !summaryError) {
+      void loadSummary();
+    }
+  }, [tab, doc?.remoteId]);
 
   // Escape and the browser's own chrome can leave fullscreen without us, so follow the event.
   useEffect(() => {
@@ -477,7 +521,7 @@ export function ConverterPage({
 
       <Tabs
         value={tab}
-        onValueChange={(value) => setTab(value as 'preview' | 'source')}
+        onValueChange={(value) => setTab(value as 'preview' | 'source' | 'summary')}
         className="flex flex-col gap-4"
       >
         <div className="flex flex-wrap items-end justify-between gap-3">
@@ -491,6 +535,10 @@ export function ConverterPage({
               {primary === 'html'
                 ? t('converter.tab.html')
                 : t('converter.tab.markdown')}
+            </TabsTrigger>
+            <TabsTrigger value="summary">
+              <Sparkles className="size-4" />
+              {t('converter.tab.summary')}
             </TabsTrigger>
           </TabsList>
 
@@ -539,6 +587,48 @@ export function ConverterPage({
           >
             {source}
           </CodeBlock>
+        </TabsContent>
+
+        <TabsContent value="summary" className="outline-none">
+          <div className="flex flex-col items-start gap-4 rounded-xl border border-stroke bg-surface-page p-6">
+            {!doc.remoteId ? (
+              <Typography variant="p" textColor="secondary">
+                {t('converter.summary.needsSave')}
+              </Typography>
+            ) : summaryLoading ? (
+              <Typography variant="p" textColor="secondary">
+                {t('converter.summary.loading')}
+              </Typography>
+            ) : summaryError ? (
+              <>
+                <Typography variant="p" textColor="secondary">
+                  {summaryError}
+                </Typography>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  leftSlot={<RefreshCw />}
+                  onClick={() => void loadSummary()}
+                >
+                  {t('converter.summary.retry')}
+                </Button>
+              </>
+            ) : summary ? (
+              <>
+                <Typography variant="p" textColor="primary">
+                  {summary}
+                </Typography>
+                <Button
+                  variant="tertiary"
+                  size="sm"
+                  leftSlot={<RefreshCw />}
+                  onClick={() => void loadSummary(true)}
+                >
+                  {t('converter.summary.regenerate')}
+                </Button>
+              </>
+            ) : null}
+          </div>
         </TabsContent>
       </Tabs>
 

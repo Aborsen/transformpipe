@@ -23,6 +23,8 @@ export interface HistoryEntry {
   sharedBy?: string;
   /** The share token such a document is read through. */
   shareToken?: string;
+  /** The id of the document this one is a version of, when it was created that way. */
+  replaces?: string | null;
   stats: {
     words: number;
     headings: number;

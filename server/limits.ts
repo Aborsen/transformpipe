@@ -189,6 +189,43 @@ export async function checkQuota(
   return { ok: true, usage };
 }
 
+/** Per caller per day. An AI call costs money in a way an ordinary API call does not. */
+export const AI_SUMMARY = {
+  perDay: 20,
+};
+
+export interface SummaryQuotaVerdict {
+  ok: boolean;
+  calls: number;
+}
+
+/**
+ * Counts one summary request against today's budget and says whether it fit.
+ *
+ * Daily rather than per-minute, and its own table rather than `m2h_call`: the two count different
+ * things at different rates, and mixing them would mean a burst of ordinary requests eating into
+ * an unrelated budget.
+ */
+export async function countSummaryCall(caller: string): Promise<SummaryQuotaVerdict> {
+  const rows = (await sql()`
+    insert into m2h_ai_summary_call (caller, day, calls)
+    values (${caller}, current_date, 1)
+    on conflict (caller, day) do update set calls = m2h_ai_summary_call.calls + 1
+    returning calls
+  `) as Array<{ calls: number }>;
+
+  const calls = rows[0]?.calls ?? 1;
+
+  // Sweep occasionally rather than on a schedule: the table only holds recent days anyway.
+  if (calls === 1 && Math.random() < 0.02) {
+    await sql()`
+      delete from m2h_ai_summary_call where day < current_date - interval '7 days'
+    `.catch(() => undefined);
+  }
+
+  return { ok: calls <= AI_SUMMARY.perDay, calls };
+}
+
 export interface RateVerdict {
   ok: boolean;
   calls: number;

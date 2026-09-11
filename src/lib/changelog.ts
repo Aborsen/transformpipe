@@ -32,6 +32,42 @@ export interface ChangelogEntry {
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-11',
+    title: 'Webhooks: a signed notice when a document is created or shared',
+    body:
+      'Account menu → Webhooks registers a URL that gets a signed POST for two events, '
+      + '`document.created` and `document.shared`. Session-only to manage, on purpose — it stays '
+      + 'off the scriptable API, so a leaked API key cannot turn into a standing feed of every '
+      + 'document that comes after it.',
+  },
+  {
+    date: '2026-09-11',
+    title: 'Link a document to an earlier one, and see what changed',
+    body:
+      'A push can now say it is a new version of an earlier document — `?replaces=` in the API, '
+      + '`--replaces` from the CLI, a `replaces` input in the Action. It is opt-in: nothing links '
+      + 'documents on its own, and a plain push stays the unrelated document it has always been. '
+      + 'Linked documents get a chain icon in the history and a line-by-line diff against the '
+      + 'version before them.',
+  },
+  {
+    date: '2026-09-11',
+    title: 'History search now looks inside your documents',
+    body:
+      'Searching your history used to match file names only. Signed in, it now also finds a '
+      + 'document by what is written inside it — the name box still works exactly as before, it '
+      + 'just stops being the only way in.',
+  },
+  {
+    date: '2026-09-11',
+    title: 'A Summary tab, generated once and kept',
+    body:
+      'A saved document now has a third tab beside Preview and Markdown: three to five sentences '
+      + 'that say what it says, so you can tell what something is without opening it. The first '
+      + 'open generates it; after that, reading it again is free. Regenerate is one click, for a '
+      + 'document that has moved on since.',
+  },
+  {
+    date: '2026-09-11',
     title: 'Nothing reaches your account until you save it',
     body:
       'Converting a file used to put it in your account. Drop, look, close the tab — and it was '

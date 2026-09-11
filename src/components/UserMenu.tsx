@@ -7,6 +7,7 @@ import {
   ShieldAlert,
   Sun,
   User,
+  Webhook,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '@/lib/auth';
@@ -15,6 +16,7 @@ import { useTheme } from '@/lib/theme';
 import { ApiKeysDialog } from './ApiKeysDialog';
 import { AuthDialog } from './AuthDialog';
 import { McpDialog } from './McpDialog';
+import { WebhooksDialog } from './WebhooksDialog';
 import { GoogleGlyph } from './GoogleGlyph';
 import { Hint } from './Hint';
 import { Button } from '@/ui/components/Button';
@@ -68,6 +70,7 @@ export function UserMenu() {
   const [isKeysOpen, setIsKeysOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isMcpOpen, setIsMcpOpen] = useState(false);
+  const [isWebhooksOpen, setIsWebhooksOpen] = useState(false);
   const [isVerifyOpen, setIsVerifyOpen] = useState(false);
 
   if (isLoading) {
@@ -219,6 +222,11 @@ export function UserMenu() {
           {t('header.connector')}
         </DropdownMenuItem>
 
+        <DropdownMenuItem onSelect={() => setIsWebhooksOpen(true)}>
+          <Webhook />
+          {t('header.webhooks')}
+        </DropdownMenuItem>
+
         <DropdownMenuItem variant="danger" onSelect={() => void signOut()}>
           <LogOut />
           {t('header.logout')}
@@ -228,6 +236,7 @@ export function UserMenu() {
 
     <ApiKeysDialog open={isKeysOpen} onOpenChange={setIsKeysOpen} />
     <McpDialog open={isMcpOpen} onOpenChange={setIsMcpOpen} />
+    <WebhooksDialog open={isWebhooksOpen} onOpenChange={setIsWebhooksOpen} />
 
     {/*
       * The same dialog the header opens for signing in, on its confirmation view.

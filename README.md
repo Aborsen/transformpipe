@@ -118,7 +118,17 @@ step; a deployment made before them needs a redeploy to see them. The build is a
   was made from, or the HTML it converts to — the row's name, its type badge and
   what a download hands over all follow. Only the source is stored; the HTML is
   built on the spot, which is why the size column names what it measures.
+- **Versions** — pushing with `?replaces=<id>` (API), `--replaces` (CLI) or `replaces` (Action)
+  links a document to an earlier one as a new version of it — opt-in and explicit, never inferred,
+  so a new push stays the unrelated document it has always been unless told otherwise. Linked
+  documents get a chain icon in the history and a line-level diff against the version before them.
 - **Sign-in** — Google, through Neon Auth.
+- **Summary** — a saved document gets a third tab: three to five sentences from Gemini, called
+  directly with a Google AI Studio key (`GOOGLE_GENERATIVE_AI_API_KEY` — free tier, no card
+  needed). Generated once and cached on the row, so opening the tab again is free; "Regenerate"
+  asks again. Metered separately from the ordinary API limits — 20 a day per account — because
+  unlike the rest of this app, it costs money per call. Without a key the tab says so rather than
+  failing the save.
 
 ## UI
 
@@ -151,17 +161,51 @@ curl -H "Authorization: Bearer tp_live_…"      --data-binary @README.md      "
 
 | | |
 | --- | --- |
-| `POST /api/v1/documents` | Markdown as the body (`?name=`) or JSON `{name, markdown}`; `?share=link\|people` publishes it in the same call; `?kind=html-to-markdown\|csv-to-markdown\|json-to-markdown\|word-to-markdown` converts the body first — for Word, post the `.docx` itself as the body |
-| `GET /api/v1/documents` | the newest 500 |
+| `POST /api/v1/documents` | Markdown as the body (`?name=`) or JSON `{name, markdown}`; `?share=link\|people` publishes it in the same call; `?kind=html-to-markdown\|csv-to-markdown\|json-to-markdown\|word-to-markdown` converts the body first — for Word, post the `.docx` itself as the body; `?replaces=<id>` links it to an earlier document as a new version, opt-in |
+| `GET /api/v1/documents` | the newest 500; `?q=` searches content as well as name, ranked by relevance |
 | `GET /api/v1/documents/:id` | metadata and the source |
 | `GET /api/v1/documents/:id.html` | the standalone document, `?theme=dark` optional |
+| `GET /api/v1/documents/:id/versions` | every document in the same version chain, oldest first |
 | `DELETE /api/v1/documents/:id` | removes the row and its source |
 | `GET \| PUT /api/v1/documents/:id/share` | `{mode, emails[]}`; `private` drops the token, so a link already sent stops working |
+| `POST /api/v1/documents/:id/summary` | a cached summary, generating it first if there is none; `?force=1` regenerates. Limited to 20 a day per account |
 
 A cookie works too, so the same endpoints can be tried from a signed-in browser. `GET
 /api/v1/usage` says what an account is using. Errors are `{ "error": "…" }` with a status that means
 what it says: 401 unknown key, 404 not yours, 413 the document is over 4 MB, 403 the account is out
 of room, 429 too fast, 410 the source is gone.
+
+## Webhooks
+
+**account menu → Webhooks** registers a URL that gets a signed `POST` when a document is created
+or shared with named people. Session-only, deliberately — unlike API keys, a webhook is not
+exposed under `/api/v1`: an API key that could also register one would turn a leaked key into a
+standing feed of every future document, rather than the point-in-time access it is today.
+
+```json
+{
+  "event": "document.created",
+  "created_at": "2026-09-11T12:00:00.000Z",
+  "data": { "id": "…", "name": "notes.md", "kind": "markdown-to-html", "size": 512 }
+}
+```
+
+The body is signed with HMAC-SHA256 over `{timestamp}.{body}`, in the
+`x-transformpipe-signature: t=<unix-seconds>,v1=<hex>` header — the same shape Stripe and GitHub
+use, so existing verification code usually needs only the secret changed:
+
+```js
+const expected = crypto
+  .createHmac('sha256', secret)
+  .update(`${timestamp}.${rawBody}`)
+  .digest('hex');
+```
+
+The secret is shown when the webhook is created and can be shown again from the dialog — unlike an
+API key, a webhook secret is presented *by* this app rather than *to* it, so the account owner may
+legitimately need it again to configure or debug a receiver. Delivery is best effort: one request,
+a five-second timeout, no retry and no queue — a receiver that is down misses that delivery, and
+the dialog shows when the last one failed.
 
 ## From a terminal
 
@@ -174,6 +218,9 @@ node cli/tp.mjs push README.md --share        # prints the link
 node cli/tp.mjs push docs/*.md --merge --share --name handbook.md
 node cli/tp.mjs list
 node cli/tp.mjs rm <id>
+node cli/tp.mjs summary <id>                  # generated once, cached; --force to regenerate
+node cli/tp.mjs push v2.md --replaces <id>    # links it to an earlier document as a new version
+node cli/tp.mjs versions <id>                 # every document in the chain, oldest first
 node cli/tp.mjs usage                         # 65.8 kB of 100.0 MB · 3 of 500 documents
 ```
 
@@ -193,16 +240,19 @@ reviewer opens the rendered document instead of reading a diff of asterisks.
 ```
 
 `examples/publish-markdown.yml` is a complete workflow to copy. Inputs: `api-key`, `files`,
-`share` (`link` / `people` / `none`), `merge`, `name`, `comment`, `host`; outputs: `urls` and
-`documents`. Checkout needs `fetch-depth: 0` for the base commit the file list is computed against.
+`share` (`link` / `people` / `none`), `merge`, `name`, `replaces`, `comment`, `host`; outputs:
+`urls` and `documents`. Checkout needs `fetch-depth: 0` for the base commit the file list is
+computed against.
 
 A new document per push is deliberate — a link in an old comment keeps showing what that commit
-said. `share: none` publishes privately if the links should not be public.
+said. `share: none` publishes privately if the links should not be public. `replaces` is the one
+way to say two pushes are versions of the same thing rather than unrelated documents — pass the
+previous push's id and the two show up linked, with a diff, in the account's history.
 
 ## In an assistant
 
 TransformPipe is an MCP server at `/api/mcp`, so it can be added to Claude as a connector and convert, save,
-share and delete documents in one account. There is no key to paste:
+share, summarise, version and delete documents in one account. There is no key to paste:
 
 ```bash
 claude mcp add --transport http transformpipe https://transformpipe.com/api/mcp
