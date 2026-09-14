@@ -1,6 +1,7 @@
 ---
 title: "Excel to Markdown Table: Every Route, and What Each One Loses"
 description: How to turn an Excel range into a Markdown table, and what happens to dates, leading zeros, merged cells and the file's encoding on the way across
+updated: 2026-09-14
 date: 2026-09-03
 tag: Converting
 keywords: excel to markdown table, convert excel to markdown, xlsx to markdown table, excel csv to markdown, paste excel into markdown, spreadsheet to markdown table, excel markdown table generator, excel csv encoding utf-8
@@ -10,7 +11,7 @@ A spreadsheet and a Markdown table look like the same thing drawn twice. They ar
 
 ### TL;DR
 
-Save the sheet as **CSV UTF-8** and convert the CSV — that is the route that works every time, and it costs you formulas, formatting and every sheet except the active one. For a selected range, **copy and paste** is faster: Excel's clipboard carries a tab-separated version of the cells, which is easier to split than CSV because tabs almost never appear inside a value. Expect trouble in three specific places: **leading zeros and 16-digit numbers**, which Excel already destroyed when the value was typed; **merged cells**, which have no Markdown equivalent at all; and **encoding**, because plain `CSV (Comma delimited)` writes your system's ANSI codepage rather than UTF-8. Check one row with an accented character, one with a long number and one with a comma in it before you trust the other nine hundred.
+The route that needs nothing from Excel at all is **uploading the `.xlsx` file directly** to a converter that reads the workbook's own zip of XML — every sheet becomes its own table, with a table of contents once there is more than one. Where that is not an option, save the sheet as **CSV UTF-8** and convert the CSV instead — the route that works everywhere, and it costs you formulas, formatting and every sheet except the active one. For a selected range, **copy and paste** is faster: Excel's clipboard carries a tab-separated version of the cells, which is easier to split than CSV because tabs almost never appear inside a value. Expect trouble in three specific places: **leading zeros and 16-digit numbers**, which Excel already destroyed when the value was typed; **merged cells**, which have no Markdown equivalent at all; and **encoding**, because plain `CSV (Comma delimited)` writes your system's ANSI codepage rather than UTF-8. Check one row with an accented character, one with a long number and one with a comma in it before you trust the other nine hundred.
 
 The friction is rarely the conversion. It is that the table you get back is subtly wrong in a way nobody notices until it is published. A part number that read `00417` in the sheet reads `417` on the page. A date that read `03/09/2026` in London reads as the third of September to half your readers and the ninth of March to the other half. A header that spanned three columns has collapsed into one cell and two blanks, so the columns underneath it are now labelled with nothing.
 
@@ -45,6 +46,7 @@ The rectangular rule is the other thing to know. GitHub's specification says the
 
 | Route | Best for | Keeps | Loses | Install |
 | --- | --- | --- | --- | --- |
+| Upload the `.xlsx` directly | A whole workbook, no export step | Every sheet, each as its own table | Formulas, formats — same as any route | None |
 | Save as CSV UTF-8, then convert | A whole sheet, reliably | Values, accented characters | Formulas, formats, other sheets | None |
 | Copy the range, paste into a converter | A selection you can see | Values, in tab-separated form | Formatting, hyperlinks | None |
 | Copy the range, paste as HTML | Bold, links, merged structure | Emphasis, `<a href>`, colspan | Depends on the HTML converter | None |
@@ -58,7 +60,22 @@ The rectangular rule is the other thing to know. GitHub's specification says the
 
 ## The routes, one at a time
 
-### Save as CSV, then convert — the route that works
+### Upload the `.xlsx` directly — skipping the export entirely
+
+The workbook is already a zip of XML — that is what `.xlsx` means — so a converter can read it the same way it reads a `.docx`, without a save-as step in between. [TransformPipe's Excel → Markdown table conversion](/excel-to-markdown) does exactly that: drop the workbook in, and every sheet with rows in it becomes its own table, with a table of contents once there is more than one sheet. Nobody opens Excel, nobody picks an encoding, and there is no intermediate CSV to lose or misname.
+
+| Pros | Cons |
+| --- | --- |
+| No save-as dialogue, no encoding choice to get wrong | Still a browser converter's read of the file — check the cheat sheet's losses above |
+| Every sheet in the workbook, not only the active one | Formulas, formats and merged cells are dropped, same as any other route |
+| Dates come out as plain ISO dates rather than serial numbers | Nothing rescues a value Excel already mangled at entry |
+| Runs in the browser: the workbook is never uploaded | A macro-enabled `.xlsm` or a password-protected file needs a different route |
+
+**Price:** free, and the file stays local — worth confirming for a spreadsheet, since spreadsheets tend to be the most sensitive documents anybody converts.
+
+**Who is this for?** Anybody who wants the table without an export step at all, especially a workbook with several sheets: one upload produces one document with a table of contents, rather than one CSV export per sheet.
+
+### Save as CSV, then convert — the route that works everywhere else
 
 Use `File > Save As`, pick `CSV UTF-8 (Comma delimited) (*.csv)`, accept the two warnings Excel shows, then convert the resulting text file. It is the dullest option and the only one that behaves identically on every machine, every locale and every file size.
 
@@ -299,3 +316,7 @@ Only if the tool works that way, and many do. A converter that runs in the brows
 ### Can I keep bold text and hyperlinks from the sheet?
 
 Only via the clipboard's HTML flavour, which carries `<a href>` links and inline styles, and then only if you convert that HTML to Markdown rather than pasting as plain text. The plain text flavour has values and nothing else, and a CSV export has no formatting at all.
+
+### Do I have to export to CSV first?
+
+No, if the converter reads `.xlsx` directly — the format is a zip of XML, the same shape as a `.docx`, so a converter that opens zips can read a workbook's sheets without an intermediate text file at all. The CSV route stays worth knowing for tools that only accept plain text, or for the moment you want to inspect the values in an editor before they become a table.

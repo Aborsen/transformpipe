@@ -1,7 +1,7 @@
 ---
 title: Getting Markdown out of Notion, Obsidian, Confluence and the rest
 description: Every export path out of Notion, Obsidian, Confluence, Google Docs and Word — what each one produces, what it quietly mangles, and how to repair it
-updated: 2026-09-09
+updated: 2026-09-14
 date: 2026-07-02
 tag: Workflow
 keywords: notion export markdown, obsidian export html, confluence markdown, confluence to markdown, google docs to markdown, word to markdown, html to markdown, notion to markdown, export confluence page to markdown, evernote export markdown, apple notes export markdown, migrate wiki to markdown
@@ -72,6 +72,8 @@ meeting-notes.md    what you want
 
 Rename the files without rewriting the links and you have a folder of documents that all point at each other and none of which resolve. That is the whole migration problem in miniature, and it is why the rename and the link rewrite have to be one operation over one map, not two passes done on different afternoons.
 
+If the destination is one Markdown document rather than a folder of separate files with a working link map, the id problem disappears a different way: [a Notion → Markdown conversion built for exactly this](/notion-to-markdown) takes the export `.zip` unmodified, merges every page into a single document in its original order with a table of contents, and turns a cross-page link into the words it displayed rather than a filename that would not resolve outside its original folder anyway. It does not rebuild the per-file link map above — nothing does that automatically, because it requires deciding where each page will live — but where the goal was always one page to read or share, the id suffix stops being a problem worth solving.
+
 ## Obsidian: Markdown already, but not the standard dialect
 
 An Obsidian vault is a folder of `.md` files, so there is nothing to extract: getting one to HTML is a conversion job, not an export. The catch is that several things Obsidian understands are its own.
@@ -109,7 +111,7 @@ The Dataview row is the one people misread. A Dataview query is a fenced code bl
 
 The properties block at the top is YAML frontmatter: a converter that does not recognise it renders the opening `---` as a horizontal rule and turns the closing one into a heading made from your last metadata line.
 
-Once a note is ordinary Markdown the conversion is dull work: drop it on [TransformPipe](https://transformpipe.com) for a preview, an HTML source tab and one self-contained `.html` with inline styles. Several dropped together chain into one document.
+Once a note is ordinary Markdown the conversion is dull work: drop it on [TransformPipe](https://transformpipe.com) for a preview, an HTML source tab and one self-contained `.html` with inline styles. Several dropped together chain into one document — or skip the by-hand cleanup above and drop the vault folder itself, zipped: [its Obsidian → Markdown conversion](/obsidian-to-markdown) reads the `.md` files inside directly, resolves `[[wikilinks]]`, aliases and heading anchors to the words they displayed, and merges every note into one document with a table of contents, in the same pass.
 
 ### Making a vault portable before you need it to be
 
@@ -155,6 +157,8 @@ The rule is simple once you see it. A macro that rendered to static HTML survive
 Attachments are the recurring trap: they sit behind `/download/attachments/` URLs that expect a session. A space export packs them into the zip, a copied page does not, so an image that looks right while you are signed in is a broken box to everyone else.
 
 Two more things the HTML export does not preserve in a form you can use. The page tree is expressed in an index file rather than in the directory layout — the exported filenames are flat and machine-generated, so the hierarchy has to be reconstructed from the index if you want folders. And heading anchors change: Confluence generates ids that include the page title, so every in-page link written against `#PageTitle-Heading` stops resolving the moment your new renderer generates `#heading` instead. Labels are metadata with no Markdown equivalent, and are worth writing into frontmatter during the conversion, because nothing else will carry them.
+
+For the common case — a space export you want as one readable document rather than a directory tree with a working page-tree structure — [a Confluence → Markdown conversion](/confluence-to-markdown) takes the space's HTML export `.zip` as it comes out of Confluence, converts each page's HTML with the same converter behind [the HTML to Markdown conversion](/html-to-markdown) above, and merges the pages in order into one document with a table of contents. It does not reconstruct the page tree or rewrite `/download/attachments/` links — nothing does that without deciding where the pages and their attachments will live — but it removes the directory walk and the per-file conversion step for anyone whose destination was one document to read or share in the first place.
 
 ## Google Docs: two routes out, neither carrying the conversation
 

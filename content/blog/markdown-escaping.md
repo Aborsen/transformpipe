@@ -1,6 +1,7 @@
 ---
 title: "Markdown escape characters: the full reference"
 description: Which characters a backslash escapes, where escaping does nothing, when a character reference is the better answer, and the cases that quietly rewrite your text
+updated: 2026-09-14
 date: 2026-09-06
 tag: Syntax
 keywords: markdown escape characters, markdown backslash, escape asterisk in markdown, markdown underscore emphasis, escape pipe in markdown table, markdown character references, markdown special characters, markdown escape underscore, snake_case markdown, markdown escape backtick
@@ -154,6 +155,8 @@ Escaping is not only something you do to a source file. Every conversion in eith
 This is why a literal `<div>` typed into a sentence shows up as text on the page instead of disappearing into the markup, and it is old behaviour rather than a modern nicety: the original Markdown syntax document notes that inside code spans and blocks, angle brackets and ampersands are always encoded automatically (checked on daringfireball.net, 9 September 2026). A character reference you wrote yourself is left alone — a converter that re-escaped `&amp;` into `&amp;amp;` would break every document containing one.
 
 **HTML, Word, CSV or JSON to Markdown.** Here the converter has to insert backslashes, and this is a reasonable way to judge one. A paragraph that begins "1986. The year" must arrive as `1986\. The year` or the document gains a list nobody wrote. A sentence containing an asterisk, a table cell containing a pipe, a heading whose text contains a hash, a product name containing an underscore at a word boundary: each needs a backslash inserted mid-conversion, and a converter that skips the step hands back a file that renders as a different document from the one it was given. [Testing a conversion with one deliberately awkward paragraph](/blog/convert-html-to-markdown) before trusting it with a hundred pages costs a minute.
+
+**Plain text to Markdown.** The same problem shows up with nothing to convert at all: a `.txt` file was never Markdown, so any of the thirty-two characters above that happened to land in it — a bullet typed as a hyphen, a footnote marker written as an underscore, a year at the start of a line — reads as formatting the moment the file is treated as Markdown, even though nobody intended any. [TransformPipe's Raw text → Markdown conversion](/text-to-markdown) exists for exactly this case: it escapes Markdown's own characters in the source before anything renders it, so the file says on the page exactly what it said in the `.txt`, asterisks and all.
 
 **Why `&amp;lt;` appears on a page.** Because something was escaped twice. `<` became `&lt;`, and then a second pass treated that string as plain text and escaped its ampersand into `&amp;`, giving `&amp;lt;` — which the browser faithfully renders as the visible text `&lt;`. Three ampersands deep, `&amp;amp;lt;`, means three passes. The cause is almost always a pipeline where two stages both believe they are the one responsible for escaping: a converter that emits HTML, feeding a template engine that auto-escapes its inputs; or a sanitiser run after escaping rather than before. The diagnosis is arithmetic — count the layers of `amp;` and you know how many stages escaped it — and the fix is to remove an escaping step, never to add an unescaping one.
 
