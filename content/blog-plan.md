@@ -149,3 +149,25 @@ how-to links to its comparison, a comparison links to its how-tos, a syntax piec
 conversion that breaks on it. No article is an orphan, and none links to more than five, which is
 where a page starts reading as a link farm. A link to a slug that does not exist is a defect, not a
 placeholder.
+
+## Added after the plan closed (2026-09-14)
+
+The 56 above shipped as a closed set. Three more went in the same day the app gained the
+conversions they are about — `notion-to-markdown`, `confluence-to-markdown` and
+`obsidian-to-markdown` did not exist when `markdown-from-notion-obsidian-and-confluence` was
+written, so that comparison piece had nowhere to link a reader who wanted the full route
+comparison for just one of the three. These three are that: single-conversion, how-to-shaped, each
+linking back to the comparison piece and linked from it in both directions.
+
+| Slug | Primary keyword |
+| --- | --- |
+| convert-notion-export-to-markdown | notion export to markdown |
+| convert-confluence-page-to-markdown | confluence to markdown |
+| convert-obsidian-vault-to-markdown | obsidian to markdown |
+
+Shorter than the 4,000-word floor set above — each landed at 3,000 to 3,450 words. Real depth
+throughout (verified, dated facts: Notion's API rate limit, Confluence's space-admin export
+permissions, Obsidian's wikilink-resolution rules), not padding removed to hit a number; a false
+"minimum reached" is worse than an honest word count. Worth lengthening later if a specific gap in
+one of them turns up — a section that stops short of a natural follow-on question is a better sign
+to extend than the word count on its own.

@@ -26,7 +26,17 @@ import { dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import puppeteer from 'puppeteer-core';
 
-const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
+/*
+ * `puppeteer-core` carries no browser of its own, so it needs telling where Chrome lives — and
+ * where that is depends on the machine running this script, not on the project.
+ */
+const CHROME =
+  process.env.CHROME_PATH ??
+  {
+    darwin: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    win32: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
+  }[process.platform] ??
+  'google-chrome';
 const ROOT = resolve('.');
 const OUT = join(ROOT, 'public', 'og');
 const WIDTH = 1200;
@@ -397,6 +407,11 @@ const PAGES = [
   ['word-to-markdown', 'Word to Markdown', 'Convert', ACCENTS.Publishing],
   ['csv-to-markdown', 'CSV to a Markdown table', 'Convert', ACCENTS.Automation],
   ['json-to-markdown', 'JSON to Markdown', 'Convert', ACCENTS.Code],
+  ['notion-to-markdown', 'Notion to Markdown', 'Convert', ACCENTS.Workflow],
+  ['confluence-to-markdown', 'Confluence to Markdown', 'Convert', ACCENTS.Workflow],
+  ['obsidian-to-markdown', 'Obsidian to Markdown', 'Convert', ACCENTS.Workflow],
+  ['text-to-markdown', 'Raw text to Markdown', 'Convert', ACCENTS.Syntax],
+  ['excel-to-markdown', 'Excel to a Markdown table', 'Convert', ACCENTS.Automation],
   ['about', 'About TransformPipe', 'Company', ACCENTS.Workflow],
   ['contact', 'Contact us', 'Company', ACCENTS.Workflow],
   ['privacy', 'Privacy', 'Legal', ACCENTS.Safety],
