@@ -121,8 +121,9 @@ const KIND_BY_EXTENSION = {
   '.tsv': 'csv-to-markdown',
   '.json': 'json-to-markdown',
   '.docx': 'word-to-markdown',
-  // Notion and Confluence exports are both just a .zip — nothing in the name says which, and this
-  // client has no page to disambiguate by the way the app does. Refused below, the same as .docx.
+  // Notion, Confluence and Obsidian exports are all just a .zip — nothing in the name says which,
+  // and this client has no page to disambiguate by the way the app does. Refused below, the same
+  // as .docx.
   '.zip': 'zip-export',
   '.xlsx': 'excel-to-markdown',
 };
@@ -159,7 +160,7 @@ async function push() {
     }
 
     if (kind === 'zip-export') {
-      fail(`${name}: a Notion or Confluence export is read in the browser. Convert it at ${HOST}/notion-to-markdown or ${HOST}/confluence-to-markdown and push the Markdown.`);
+      fail(`${name}: a Notion, Confluence or Obsidian export is read in the browser. Convert it at ${HOST}/notion-to-markdown, ${HOST}/confluence-to-markdown or ${HOST}/obsidian-to-markdown and push the Markdown.`);
     }
 
     if (kind === 'excel-to-markdown') {

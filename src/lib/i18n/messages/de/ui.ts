@@ -481,6 +481,9 @@ export const ui: Content['ui'] = {
    * shows nothing of what the page does, to a reader or to a search result.
    */
   'converter.paste.open': 'Oder {extension}-Text einfügen',
+  'converter.paste.open.disabled': 'Text einfügen',
+  'converter.paste.unavailable':
+    'Für {extension} gibt es keinen Text zum Einfügen — die Datei selbst hochladen',
   'converter.paste.label': '{extension}-Text einfügen',
   'converter.paste.close': 'Schließen',
   'converter.paste.placeholder': 'Hier einfügen oder tippen, dann umwandeln.',

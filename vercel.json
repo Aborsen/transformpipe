@@ -90,6 +90,10 @@
       "destination": "/index.html"
     },
     {
+      "source": "/obsidian-to-markdown",
+      "destination": "/index.html"
+    },
+    {
       "source": "/text-to-markdown",
       "destination": "/index.html"
     },

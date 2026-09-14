@@ -32,6 +32,15 @@ export interface ChangelogEntry {
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-14',
+    title: 'An Obsidian vault, in one document',
+    body:
+      'A tenth conversion: drop a zipped Obsidian vault and get one Markdown document back — every '
+      + 'note in order, with a table of contents. `[[Wikilinks]]` keep their words; merged into one '
+      + 'document there is nowhere left for them to point, so the address does not carry over, the '
+      + 'same rule this app already applies to a Notion or Confluence export.',
+  },
+  {
+    date: '2026-09-14',
     title: 'Plain text and Excel, converted honestly',
     body:
       'Two more conversions. Raw text → Markdown escapes Markdown\'s own characters before '

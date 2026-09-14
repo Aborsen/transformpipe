@@ -467,6 +467,9 @@ export const ui: Content['ui'] = {
    * shows nothing of what the page does, to a reader or to a search result.
    */
   'converter.paste.open': 'Ou coller du texte {extension}',
+  'converter.paste.open.disabled': 'Coller du texte',
+  'converter.paste.unavailable':
+    'Il n’y a rien à coller pour {extension} — déposez le fichier lui-même',
   'converter.paste.label': 'Coller du texte {extension}',
   'converter.paste.close': 'Fermer',
   'converter.paste.placeholder': 'Collez ou tapez ici, puis convertissez.',

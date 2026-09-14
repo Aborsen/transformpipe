@@ -467,6 +467,8 @@ export const ui: Content['ui'] = {
    * shows nothing of what the page does, to a reader or to a search result.
    */
   'converter.paste.open': 'O pegar texto {extension}',
+  'converter.paste.open.disabled': 'Pegar texto',
+  'converter.paste.unavailable': 'No hay texto que pegar para {extension} — sube el archivo',
   'converter.paste.label': 'Pegar texto {extension}',
   'converter.paste.close': 'Cerrar',
   'converter.paste.placeholder': 'Pega o escribe aquí y convierte.',

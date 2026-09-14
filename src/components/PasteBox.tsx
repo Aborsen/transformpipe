@@ -1,6 +1,7 @@
 import { ClipboardPaste, X } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { useT } from '@/lib/i18n/context';
+import { Hint } from '@/components/Hint';
 import { Button } from '@/ui/components/Button';
 import { Typography } from '@/ui/components/Typography';
 
@@ -15,12 +16,18 @@ import { Typography } from '@/ui/components/Typography';
  *
  * Closed by default. An open textarea under the dropzone makes the front page read as two things
  * competing for the same job; the button says the other way exists and gets out of the way.
+ *
+ * A binary source (Word, Notion, Confluence, Obsidian, Excel) has no text to paste at all — but the
+ * screen still renders this component, disabled rather than left out, so the row this button sits
+ * on is the same height on every conversion's page. Leaving it out entirely used to mean the
+ * conversion picker jumped up to fill the gap every time somebody switched to one of these.
  */
 export function PasteBox({
   isBusy = false,
   extension,
   onText,
   onGoToLivePreview,
+  disabledReason,
 }: {
   isBusy?: boolean;
   /** This conversion's first extension, with the dot: what the pasted text is called. */
@@ -34,11 +41,32 @@ export function PasteBox({
    * work away and makes the button a trap.
    */
   onGoToLivePreview?: (markdown: string) => void;
+  /** Set when this conversion's source is binary: renders the closed button disabled, with why. */
+  disabledReason?: string;
 }) {
   const t = useT();
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState('');
   const field = useRef<HTMLTextAreaElement>(null);
+
+  if (disabledReason) {
+    return (
+      <div className="flex justify-center">
+        <Hint content={disabledReason}>
+          {/*
+           * Not `converter.paste.open` with this conversion's extension: "paste .zip text" reads
+           * as nonsense for a source that was never text to begin with. The generic label plus the
+           * hint explaining why is the honest version of the same row.
+           */}
+          <span>
+            <Button variant="tertiary" size="sm" leftSlot={<ClipboardPaste />} disabled>
+              {t('converter.paste.open.disabled')}
+            </Button>
+          </span>
+        </Hint>
+      </div>
+    );
+  }
 
   if (!isOpen) {
     return (

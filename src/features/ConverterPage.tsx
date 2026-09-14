@@ -77,6 +77,7 @@ const BINARY_CONVERSIONS = new Set<ConversionId>([
   'word-to-markdown',
   'notion-to-markdown',
   'confluence-to-markdown',
+  'obsidian-to-markdown',
   'excel-to-markdown',
 ]);
 
@@ -256,31 +257,36 @@ export function ConverterPage({
         />
 
         {/*
-         * Word, Notion and Confluence are the exceptions: each takes a binary or an archive, so
-         * there is nothing to paste. Every other conversion takes text, and the text becomes a
-         * file with this conversion's own extension so that `onFiles` does the converting, the
-         * size check and the rest exactly as it does for a dropped file.
+         * Word, Notion, Confluence, Obsidian and Excel are the exceptions: each takes a binary or
+         * an archive, so there is nothing to paste — `PasteBox` renders disabled for those rather
+         * than being left out, so this row is the same height on every conversion's page and the
+         * picker below it does not jump. Everywhere else the pasted text becomes a file with this
+         * conversion's own extension so that `onFiles` does the converting, the size check and the
+         * rest exactly as it does for a dropped file.
          */}
-        {!BINARY_CONVERSIONS.has(conversion.id) && (
-          <PasteBox
-            isBusy={isBusy}
-            extension={conversion.extensions[0]}
-            /*
-             * Only for Markdown: the live preview renders Markdown, so offering it beside a CSV
-             * would send somebody to a page that cannot do what they came for.
-             */
-            onGoToLivePreview={
-              conversion.id === DEFAULT_CONVERSION ? onGoToLivePreview : undefined
-            }
-            onText={(text) =>
-              onFiles([
-                new File([text], `pasted${conversion.extensions[0]}`, {
-                  type: 'text/plain',
-                }),
-              ])
-            }
-          />
-        )}
+        <PasteBox
+          isBusy={isBusy}
+          extension={conversion.extensions[0]}
+          disabledReason={
+            BINARY_CONVERSIONS.has(conversion.id)
+              ? t('converter.paste.unavailable', { extension: conversion.extensions[0] })
+              : undefined
+          }
+          /*
+           * Only for Markdown: the live preview renders Markdown, so offering it beside a CSV
+           * would send somebody to a page that cannot do what they came for.
+           */
+          onGoToLivePreview={
+            conversion.id === DEFAULT_CONVERSION ? onGoToLivePreview : undefined
+          }
+          onText={(text) =>
+            onFiles([
+              new File([text], `pasted${conversion.extensions[0]}`, {
+                type: 'text/plain',
+              }),
+            ])
+          }
+        />
 
         <ConversionPicker
           current={conversion.id}

@@ -87,7 +87,7 @@ export const conversions: Content['conversions'] = {
     title: 'Notion-Export in Markdown',
     blurb:
       'Die .zip aus Notions „Export as Markdown & CSV“ hochladen und ein Dokument erhalten: jede Seite der Reihe nach, mit Inhaltsverzeichnis, Datenbanken als Tabellen.',
-    hint: 'Die .zip aus Notion hochladen. Jede Seite wird ein Abschnitt mit eigener Überschrift, in der ursprünglichen Reihenfolge; eine Datenbank wird eine Tabelle. Links zwischen Seiten behalten ihren Text, nicht ihr Ziel — in einem Dokument zusammengeführt gibt es nichts mehr, worauf sie zeigen könnten.',
+    hint: 'Die .zip aus Notion hochladen. Jede Seite wird ein Abschnitt mit eigener Überschrift, in der ursprünglichen Reihenfolge; eine Datenbank wird eine Tabelle.',
     seo: {
       title: 'Notion-Export in Markdown umwandeln — TransformPipe',
       description:
@@ -100,11 +100,24 @@ export const conversions: Content['conversions'] = {
     title: 'Confluence-Export in Markdown',
     blurb:
       'Die .zip aus dem „Export → HTML“ eines Confluence-Space hochladen und ein Markdown-Dokument erhalten: jede Seite der Reihe nach, mit Inhaltsverzeichnis.',
-    hint: 'Die .zip eines Confluence-Space-Exports hochladen. Jede Seite wird ein Abschnitt mit eigener Überschrift, in der ursprünglichen Reihenfolge. Links zwischen Seiten behalten ihren Text, nicht ihr Ziel — in einem Dokument zusammengeführt gibt es nichts mehr, worauf sie zeigen könnten.',
+    hint: 'Die .zip eines Confluence-Space-Exports hochladen. Jede Seite wird ein Abschnitt mit eigener Überschrift, in der ursprünglichen Reihenfolge.',
     seo: {
       title: 'Confluence-Export in Markdown umwandeln — TransformPipe',
       description:
         'Eine .zip aus einem Confluence-HTML-Export in ein Markdown-Dokument umwandeln, Seiten der Reihe nach mit Inhaltsverzeichnis. Läuft im Browser; nichts wird hochgeladen.',
+    },
+  },
+  'obsidian-to-markdown': {
+    label: 'Obsidian → Markdown',
+    short: 'Obsidian → MD',
+    title: 'Obsidian-Vault in Markdown',
+    blurb:
+      'Einen gezippten Obsidian-Vault hochladen und ein Dokument erhalten: jede Notiz der Reihe nach, mit Inhaltsverzeichnis, Wikilinks als reiner Text erhalten.',
+    hint: 'Die .zip eines Obsidian-Vault-Ordners hochladen. Jede Notiz wird ein Abschnitt mit eigener Überschrift, in der ursprünglichen Reihenfolge.',
+    seo: {
+      title: 'Obsidian-Vault in Markdown umwandeln — TransformPipe',
+      description:
+        'Einen gezippten Obsidian-Vault in ein Markdown-Dokument umwandeln, Notizen der Reihe nach mit Inhaltsverzeichnis, Wikilinks als Text erhalten. Läuft im Browser; nichts wird hochgeladen.',
     },
   },
   'text-to-markdown': {

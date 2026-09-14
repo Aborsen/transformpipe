@@ -6,19 +6,20 @@ the CLI and the Action name the new domain. Nothing in `server/` carries a domai
 come from the request through `selfOrigin`, which is what made the move a matter of one trusted
 origin and a rebuild.
 
-Upload a file, see exactly what it became, and download it. Nine conversions, each with its own
+Upload a file, see exactly what it became, and download it. Ten conversions, each with its own
 page and address:
 
 | Conversion | Takes | Produces |
 | --- | --- | --- |
 | [Markdown → HTML](https://transformpipe.com/) | `.md` `.markdown` `.mdown` `.mkd` | a self-contained `.html` |
 | [HTML → Markdown](https://transformpipe.com/html-to-markdown) | `.html` `.htm` `.xhtml` | `.md` |
-| [Word → Markdown](https://transformpipe.com/word-to-markdown) | `.docx` | `.md` |
+| [Raw text → Markdown](https://transformpipe.com/text-to-markdown) | `.txt` | `.md` |
 | [CSV → Markdown table](https://transformpipe.com/csv-to-markdown) | `.csv` `.tsv` | `.md` |
 | [JSON → Markdown](https://transformpipe.com/json-to-markdown) | `.json` | `.md` |
 | [Notion export → Markdown](https://transformpipe.com/notion-to-markdown) | `.zip` (Export as Markdown & CSV) | `.md` |
 | [Confluence export → Markdown](https://transformpipe.com/confluence-to-markdown) | `.zip` (Export → HTML) | `.md` |
-| [Raw text → Markdown](https://transformpipe.com/text-to-markdown) | `.txt` | `.md` |
+| [Obsidian vault → Markdown](https://transformpipe.com/obsidian-to-markdown) | `.zip` (the vault folder, zipped) | `.md` |
+| [Word → Markdown](https://transformpipe.com/word-to-markdown) | `.docx` | `.md` |
 | [Excel → Markdown table](https://transformpipe.com/excel-to-markdown) | `.xlsx` | `.md` |
 
 They all normalise to Markdown, which is what a document is stored, previewed, shared and reached
@@ -32,13 +33,13 @@ own conversion now instead, because a plain-text file is not Markdown even when 
 an asterisk typed as a literal asterisk and one meant as emphasis are the same character, and only
 one of the two conversions is supposed to treat them alike.
 
-Notion and Confluence are the two that do not produce one document from one file: both exports are
-several pages in a `.zip`, and both come back as a single Markdown document — a table of contents,
-then every page in order, each a heading of its own (`shared/from-notion.ts`,
-`shared/from-confluence.ts`, sharing the zip-reading and merge convention in
-`shared/zip-import.ts`). A link from one page to another inside the export keeps its words and
-drops its address: once every page is a section of one document, there is nowhere left for it to
-point.
+Notion, Confluence and Obsidian are the three that do not produce one document from one file: each
+export is several pages (or notes) in a `.zip`, and each comes back as a single Markdown document —
+a table of contents, then every page in order, each a heading of its own (`shared/from-notion.ts`,
+`shared/from-confluence.ts`, `shared/from-obsidian.ts`, sharing the zip-reading and merge convention
+in `shared/zip-import.ts`). A link from one page to another inside the export keeps its words and
+drops its address — Obsidian's own `[[wikilinks]]` included: once every page is a section of one
+document, there is nowhere left for it to point.
 
 Conversion happens in the browser — the `.docx` reader and the HTML parser load only when their
 page is used, so the front page's bundle does not carry them. Sign in with Google to keep your
@@ -185,7 +186,7 @@ curl -H "Authorization: Bearer tp_live_…"      --data-binary @README.md      "
 
 | | |
 | --- | --- |
-| `POST /api/v1/documents` | Markdown as the body (`?name=`) or JSON `{name, markdown}`; `?share=link\|people` publishes it in the same call; `?kind=html-to-markdown\|csv-to-markdown\|json-to-markdown\|word-to-markdown\|notion-to-markdown\|confluence-to-markdown\|text-to-markdown\|excel-to-markdown` converts the body first — for Word, Notion, Confluence and Excel, post the file itself (`.docx`, `.zip` or `.xlsx`) as the body; `?replaces=<id>` links it to an earlier document as a new version, opt-in |
+| `POST /api/v1/documents` | Markdown as the body (`?name=`) or JSON `{name, markdown}`; `?share=link\|people` publishes it in the same call; `?kind=html-to-markdown\|csv-to-markdown\|json-to-markdown\|word-to-markdown\|notion-to-markdown\|confluence-to-markdown\|obsidian-to-markdown\|text-to-markdown\|excel-to-markdown` converts the body first — for Word, Notion, Confluence, Obsidian and Excel, post the file itself (`.docx`, `.zip` or `.xlsx`) as the body; `?replaces=<id>` links it to an earlier document as a new version, opt-in |
 | `GET /api/v1/documents` | the newest 500; `?q=` searches content as well as name, ranked by relevance |
 | `GET /api/v1/documents/:id` | metadata and the source |
 | `GET /api/v1/documents/:id.html` | the standalone document, `?theme=dark` optional |

@@ -133,6 +133,13 @@ export async function convertFile(
       return { markdown, name: renamed(file.name, '.md'), kind: id };
     }
 
+    case 'obsidian-to-markdown': {
+      const { obsidianZipToMarkdown } = await import('@shared/from-obsidian');
+      const markdown = await obsidianZipToMarkdown(new Uint8Array(await file.arrayBuffer()));
+
+      return { markdown, name: renamed(file.name, '.md'), kind: id };
+    }
+
     case 'word-to-markdown': {
       const [{ htmlToMarkdown }, mammoth] = await Promise.all([
         import('@shared/from-html'),

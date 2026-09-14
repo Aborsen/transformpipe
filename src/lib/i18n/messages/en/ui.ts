@@ -466,6 +466,9 @@ export const ui: Content['ui'] = {
    * shows nothing of what the page does, to a reader or to a search result.
    */
   'converter.paste.open': 'Or paste {extension} text',
+  /** For a binary source: `converter.paste.open`'s extension would read as "paste .zip text". */
+  'converter.paste.open.disabled': 'Paste text',
+  'converter.paste.unavailable': 'There is no text to paste for {extension} — upload the file itself',
   'converter.paste.label': 'Paste {extension} text',
   'converter.paste.close': 'Close',
   'converter.paste.placeholder': 'Paste or type here, then convert.',

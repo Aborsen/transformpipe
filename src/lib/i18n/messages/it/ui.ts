@@ -455,6 +455,8 @@ export const ui: Content['ui'] = {
    * shows nothing of what the page does, to a reader or to a search result.
    */
   'converter.paste.open': 'Oppure incolla testo {extension}',
+  'converter.paste.open.disabled': 'Incolla testo',
+  'converter.paste.unavailable': 'Non c’è testo da incollare per {extension} — carica il file',
   'converter.paste.label': 'Incolla testo {extension}',
   'converter.paste.close': 'Chiudi',
   'converter.paste.placeholder': 'Incolla o scrivi qui, poi converti.',

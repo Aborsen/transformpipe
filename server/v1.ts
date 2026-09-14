@@ -257,6 +257,7 @@ v1.post('/documents', async (c) => {
     'word-to-markdown',
     'notion-to-markdown',
     'confluence-to-markdown',
+    'obsidian-to-markdown',
     'excel-to-markdown',
   ]);
 
@@ -399,20 +400,31 @@ v1.post('/documents', async (c) => {
     }
   }
 
-  if (docx && (kind === 'notion-to-markdown' || kind === 'confluence-to-markdown')) {
+  if (
+    docx &&
+    (kind === 'notion-to-markdown' ||
+      kind === 'confluence-to-markdown' ||
+      kind === 'obsidian-to-markdown')
+  ) {
     /*
-     * `shared/from-notion.ts` and `shared/from-confluence.ts` are isomorphic — the same code the
-     * browser runs — so the only thing that changes here is where the bytes came from.
+     * `shared/from-notion.ts`, `shared/from-confluence.ts` and `shared/from-obsidian.ts` are
+     * isomorphic — the same code the browser runs — so the only thing that changes here is where
+     * the bytes came from.
      */
     try {
-      markdown =
-        kind === 'notion-to-markdown'
-          ? await (await import('../shared/from-notion.js')).notionZipToMarkdown(
-              new Uint8Array(docx)
-            )
-          : await (
-              await import('../shared/from-confluence.js')
-            ).confluenceZipToMarkdown(new Uint8Array(docx));
+      if (kind === 'notion-to-markdown') {
+        markdown = await (
+          await import('../shared/from-notion.js')
+        ).notionZipToMarkdown(new Uint8Array(docx));
+      } else if (kind === 'confluence-to-markdown') {
+        markdown = await (
+          await import('../shared/from-confluence.js')
+        ).confluenceZipToMarkdown(new Uint8Array(docx));
+      } else {
+        markdown = await (
+          await import('../shared/from-obsidian.js')
+        ).obsidianZipToMarkdown(new Uint8Array(docx));
+      }
     } catch (cause) {
       return c.json(
         { error: cause instanceof Error ? cause.message : 'That is not a readable .zip' },

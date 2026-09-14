@@ -28,6 +28,7 @@ export type ConversionId =
   | 'json-to-markdown'
   | 'notion-to-markdown'
   | 'confluence-to-markdown'
+  | 'obsidian-to-markdown'
   | 'text-to-markdown'
   | 'excel-to-markdown';
 
@@ -63,10 +64,10 @@ export const CONVERSIONS: Conversion[] = [
     extensions: ['.html', '.htm', '.xhtml'],
   },
   {
-    id: 'word-to-markdown',
+    id: 'text-to-markdown',
     to: 'markdown',
-    path: '/word-to-markdown',
-    extensions: ['.docx'],
+    path: '/text-to-markdown',
+    extensions: ['.txt'],
   },
   {
     id: 'csv-to-markdown',
@@ -93,10 +94,16 @@ export const CONVERSIONS: Conversion[] = [
     extensions: ['.zip'],
   },
   {
-    id: 'text-to-markdown',
+    id: 'obsidian-to-markdown',
     to: 'markdown',
-    path: '/text-to-markdown',
-    extensions: ['.txt'],
+    path: '/obsidian-to-markdown',
+    extensions: ['.zip'],
+  },
+  {
+    id: 'word-to-markdown',
+    to: 'markdown',
+    path: '/word-to-markdown',
+    extensions: ['.docx'],
   },
   {
     id: 'excel-to-markdown',
