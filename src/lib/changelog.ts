@@ -31,6 +31,32 @@ export interface ChangelogEntry {
 
 const ENTRIES: ChangelogEntry[] = [
   {
+    date: '2026-09-14',
+    title: 'Notion and Confluence exports, in one document',
+    body:
+      'Two new conversions: drop the .zip from Notion\'s "Export as Markdown & CSV" or a '
+      + 'Confluence space\'s "Export → HTML", and get one Markdown document back — every page in '
+      + 'order, with a table of contents, a Notion database included as a table. A link from one '
+      + 'page to another in the export keeps its words; merged into one document there is nowhere '
+      + 'left for it to point, so the address does not carry over.',
+  },
+  {
+    date: '2026-09-11',
+    title: 'A PDF from the API, without a browser',
+    body:
+      '`GET /api/v1/documents/:id.pdf` lays a document out as a PDF on the server, for a script '
+      + 'or a CI job that has no browser to print from. The app itself still uses "Print or save '
+      + 'as PDF" for that — it is the browser\'s own, exact rendering, and this does not replace it.',
+  },
+  {
+    date: '2026-09-11',
+    title: 'Download a saved document as Word',
+    body:
+      'The download menu on a saved document now offers a `.docx`, built on the spot from the '
+      + 'same HTML the preview already renders. No headless browser involved — it needs a save '
+      + 'first, since the conversion runs on the account\'s copy.',
+  },
+  {
     date: '2026-09-11',
     title: 'Webhooks: a signed notice when a document is created or shared',
     body:

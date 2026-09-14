@@ -81,4 +81,30 @@ export const conversions: Content['conversions'] = {
         'JSON in lesbares Markdown umwandeln: Arrays von Datensätzen werden Tabellen, Objekte werden Abschnitte. Läuft im Browser; nichts wird hochgeladen.',
     },
   },
+  'notion-to-markdown': {
+    label: 'Notion → Markdown',
+    short: 'Notion → MD',
+    title: 'Notion-Export in Markdown',
+    blurb:
+      'Die .zip aus Notions „Export as Markdown & CSV“ hochladen und ein Dokument erhalten: jede Seite der Reihe nach, mit Inhaltsverzeichnis, Datenbanken als Tabellen.',
+    hint: 'Die .zip aus Notion hochladen. Jede Seite wird ein Abschnitt mit eigener Überschrift, in der ursprünglichen Reihenfolge; eine Datenbank wird eine Tabelle. Links zwischen Seiten behalten ihren Text, nicht ihr Ziel — in einem Dokument zusammengeführt gibt es nichts mehr, worauf sie zeigen könnten.',
+    seo: {
+      title: 'Notion-Export in Markdown umwandeln — TransformPipe',
+      description:
+        'Eine .zip aus Notions „Export as Markdown & CSV“ in ein Markdown-Dokument umwandeln, Seiten der Reihe nach mit Inhaltsverzeichnis. Läuft im Browser; nichts wird hochgeladen.',
+    },
+  },
+  'confluence-to-markdown': {
+    label: 'Confluence → Markdown',
+    short: 'Confluence → MD',
+    title: 'Confluence-Export in Markdown',
+    blurb:
+      'Die .zip aus dem „Export → HTML“ eines Confluence-Space hochladen und ein Markdown-Dokument erhalten: jede Seite der Reihe nach, mit Inhaltsverzeichnis.',
+    hint: 'Die .zip eines Confluence-Space-Exports hochladen. Jede Seite wird ein Abschnitt mit eigener Überschrift, in der ursprünglichen Reihenfolge. Links zwischen Seiten behalten ihren Text, nicht ihr Ziel — in einem Dokument zusammengeführt gibt es nichts mehr, worauf sie zeigen könnten.',
+    seo: {
+      title: 'Confluence-Export in Markdown umwandeln — TransformPipe',
+      description:
+        'Eine .zip aus einem Confluence-HTML-Export in ein Markdown-Dokument umwandeln, Seiten der Reihe nach mit Inhaltsverzeichnis. Läuft im Browser; nichts wird hochgeladen.',
+    },
+  },
 };

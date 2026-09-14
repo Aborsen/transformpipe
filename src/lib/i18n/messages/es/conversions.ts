@@ -79,4 +79,30 @@ export const conversions: Content['conversions'] = {
         'Convierte un archivo JSON en Markdown legible: los arrays de registros se vuelven tablas y los objetos, secciones. Convierte en tu navegador; nada se sube.',
     },
   },
+  'notion-to-markdown': {
+    label: 'Notion → Markdown',
+    short: 'Notion → MD',
+    title: 'Exportación de Notion a Markdown',
+    blurb:
+      'Sube el .zip de "Export as Markdown & CSV" de Notion y obtén un documento: cada página en orden, con un índice, las bases de datos como tablas.',
+    hint: 'Sube el .zip que exporta Notion. Cada página se vuelve una sección con su propio encabezado, en el orden original; una base de datos se vuelve una tabla. Los enlaces entre páginas conservan su texto, no su destino — al fusionarse en un documento, ya no hay a dónde apuntar.',
+    seo: {
+      title: 'Convertir exportación de Notion a Markdown — TransformPipe',
+      description:
+        'Convierte un .zip de "Export as Markdown & CSV" de Notion en un documento Markdown, páginas en orden con índice. Convierte en tu navegador; nada se sube.',
+    },
+  },
+  'confluence-to-markdown': {
+    label: 'Confluence → Markdown',
+    short: 'Confluence → MD',
+    title: 'Exportación de Confluence a Markdown',
+    blurb:
+      'Sube el .zip del "Export → HTML" de un espacio de Confluence y obtén un documento Markdown: cada página en orden, con un índice.',
+    hint: 'Sube el .zip que produce la exportación de un espacio de Confluence. Cada página se vuelve una sección con su propio encabezado, en el orden original. Los enlaces entre páginas conservan su texto, no su destino — al fusionarse en un documento, ya no hay a dónde apuntar.',
+    seo: {
+      title: 'Convertir exportación de Confluence a Markdown — TransformPipe',
+      description:
+        'Convierte un .zip de exportación HTML de un espacio de Confluence en un documento Markdown, páginas en orden con índice. Convierte en tu navegador; nada se sube.',
+    },
+  },
 };

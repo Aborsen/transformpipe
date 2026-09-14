@@ -121,6 +121,9 @@ const KIND_BY_EXTENSION = {
   '.tsv': 'csv-to-markdown',
   '.json': 'json-to-markdown',
   '.docx': 'word-to-markdown',
+  // Notion and Confluence exports are both just a .zip — nothing in the name says which, and this
+  // client has no page to disambiguate by the way the app does. Refused below, the same as .docx.
+  '.zip': 'zip-export',
 };
 
 function kindFor(name) {
@@ -152,6 +155,10 @@ async function push() {
 
     if (kind === 'word-to-markdown') {
       fail(`${name}: a .docx is read in the browser. Convert it at ${HOST}/word-to-markdown and push the Markdown.`);
+    }
+
+    if (kind === 'zip-export') {
+      fail(`${name}: a Notion or Confluence export is read in the browser. Convert it at ${HOST}/notion-to-markdown or ${HOST}/confluence-to-markdown and push the Markdown.`);
     }
 
     return { name, kind, markdown: readFileSync(file, 'utf8') };

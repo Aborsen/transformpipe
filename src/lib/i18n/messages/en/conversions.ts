@@ -79,4 +79,30 @@ export const conversions: Content['conversions'] = {
         'Turn a JSON file into readable Markdown: arrays of records become tables, objects become sections. Converts in your browser; nothing is uploaded.',
     },
   },
+  'notion-to-markdown': {
+    label: 'Notion → Markdown',
+    short: 'Notion → MD',
+    title: 'Notion export to Markdown',
+    blurb:
+      'Upload the .zip from Notion’s "Export as Markdown & CSV" and get one document: every page in order, with a table of contents, databases included as tables.',
+    hint: 'Upload the .zip Notion exports. Every page becomes a section, in order, with its own heading; a database becomes a table. Links between pages keep their words, not their address — merged into one document, there is nowhere left for them to point.',
+    seo: {
+      title: 'Notion export to Markdown converter — TransformPipe',
+      description:
+        'Turn a Notion "Export as Markdown & CSV" .zip into one Markdown document, pages in order with a table of contents. Converts in your browser; nothing is uploaded.',
+    },
+  },
+  'confluence-to-markdown': {
+    label: 'Confluence → Markdown',
+    short: 'Confluence → MD',
+    title: 'Confluence export to Markdown',
+    blurb:
+      'Upload the .zip from a Confluence space’s "Export → HTML" and get one Markdown document: every page in order, with a table of contents.',
+    hint: 'Upload the .zip a Confluence space export produces. Every page becomes a section, in order, with its own heading. Links between pages keep their words, not their address — merged into one document, there is nowhere left for them to point.',
+    seo: {
+      title: 'Confluence export to Markdown converter — TransformPipe',
+      description:
+        'Turn a Confluence space HTML export .zip into one Markdown document, pages in order with a table of contents. Converts in your browser; nothing is uploaded.',
+    },
+  },
 };

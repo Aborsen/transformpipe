@@ -429,6 +429,91 @@ api.get('/documents/:id', async (c) => {
   });
 });
 
+/** A .docx of a document — the app's own "Download as Word" button. */
+api.get('/documents/:id/docx', async (c) => {
+  const userId = c.get('user').id;
+  const id = c.req.param('id');
+
+  const rows = (await sql()`
+    select name, markdown, blob_path from m2h_document
+    where user_id = ${userId} and id = ${id}
+  `) as Array<{ name: string; markdown: string | null; blob_path: string | null }>;
+
+  const row = rows[0];
+
+  if (!row) {
+    return c.json({ error: 'Not found' }, 404);
+  }
+
+  const markdown = await readSource({ ...row, user_id: userId });
+
+  if (markdown === null) {
+    return c.json({ error: 'The source of this document is missing' }, 410);
+  }
+
+  const { markdownToDocx } = await import('./docx.js');
+  const fileName = `${row.name.replace(/\.[^.]+$/, '')}.docx`;
+
+  let docx: Buffer;
+
+  try {
+    docx = await markdownToDocx(markdown, row.name);
+  } catch (cause) {
+    const why = cause instanceof Error ? cause.message : 'the converter failed';
+
+    return c.json({ error: `Could not build a .docx: ${why}` }, 502);
+  }
+
+  c.header(
+    'content-type',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  );
+  c.header('content-disposition', `attachment; filename="${fileName}"`);
+
+  return c.body(new Uint8Array(docx));
+});
+
+/** A .pdf of a document, built the same way as the public `GET /api/v1/documents/:id.pdf`. */
+api.get('/documents/:id/pdf', async (c) => {
+  const userId = c.get('user').id;
+  const id = c.req.param('id');
+
+  const rows = (await sql()`
+    select name, markdown, blob_path from m2h_document
+    where user_id = ${userId} and id = ${id}
+  `) as Array<{ name: string; markdown: string | null; blob_path: string | null }>;
+
+  const row = rows[0];
+
+  if (!row) {
+    return c.json({ error: 'Not found' }, 404);
+  }
+
+  const markdown = await readSource({ ...row, user_id: userId });
+
+  if (markdown === null) {
+    return c.json({ error: 'The source of this document is missing' }, 410);
+  }
+
+  const { markdownToPdf } = await import('./pdf.js');
+  const fileName = `${row.name.replace(/\.[^.]+$/, '')}.pdf`;
+
+  let pdf: Buffer;
+
+  try {
+    pdf = await markdownToPdf(markdown, row.name);
+  } catch (cause) {
+    const why = cause instanceof Error ? cause.message : 'the converter failed';
+
+    return c.json({ error: `Could not build a .pdf: ${why}` }, 502);
+  }
+
+  c.header('content-type', 'application/pdf');
+  c.header('content-disposition', `attachment; filename="${fileName}"`);
+
+  return c.body(new Uint8Array(pdf));
+});
+
 /**
  * Summarises a document for the app's own Summary tab — same behaviour as the public
  * `POST /api/v1/documents/:id/summary`, kept in step so a script and the app never disagree about

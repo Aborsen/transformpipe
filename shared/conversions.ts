@@ -25,7 +25,9 @@ export type ConversionId =
   | 'html-to-markdown'
   | 'word-to-markdown'
   | 'csv-to-markdown'
-  | 'json-to-markdown';
+  | 'json-to-markdown'
+  | 'notion-to-markdown'
+  | 'confluence-to-markdown';
 
 export interface Conversion {
   id: ConversionId;
@@ -74,6 +76,18 @@ export const CONVERSIONS: Conversion[] = [
     path: '/json-to-markdown',
     extensions: ['.json'],
   },
+  {
+    id: 'notion-to-markdown',
+    to: 'markdown',
+    path: '/notion-to-markdown',
+    extensions: ['.zip'],
+  },
+  {
+    id: 'confluence-to-markdown',
+    to: 'markdown',
+    path: '/confluence-to-markdown',
+    extensions: ['.zip'],
+  },
 ];
 
 export const DEFAULT_CONVERSION: ConversionId = 'markdown-to-html';
@@ -95,12 +109,22 @@ export const ALL_EXTENSIONS = [
   ...new Set(CONVERSIONS.flatMap((one) => one.extensions)),
 ];
 
-/** Which conversion a dropped file belongs to, by its extension. */
-export function conversionForFile(name: string): Conversion | null {
+/**
+ * Which conversion a dropped file belongs to, by its extension.
+ *
+ * `.zip` is the one extension two conversions share — a Notion export and a Confluence export are
+ * both just a .zip, and nothing in a file's name says which. `preferred` is how the screen a file
+ * landed on breaks that tie: dropping a .zip onto the Confluence page means the Confluence
+ * conversion, even though Notion's comes first in the list below. Without a matching `preferred`,
+ * or where the extension is not shared at all, the first (and normally only) match still wins.
+ */
+export function conversionForFile(
+  name: string,
+  preferred?: ConversionId
+): Conversion | null {
   const dot = name.toLowerCase().lastIndexOf('.');
   const extension = dot === -1 ? '' : name.toLowerCase().slice(dot);
+  const matches = CONVERSIONS.filter((one) => one.extensions.includes(extension));
 
-  return (
-    CONVERSIONS.find((one) => one.extensions.includes(extension)) ?? null
-  );
+  return matches.find((one) => one.id === preferred) ?? matches[0] ?? null;
 }

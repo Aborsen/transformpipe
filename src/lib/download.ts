@@ -12,7 +12,13 @@ import type { Translate } from './i18n/context';
  */
 
 function save(fileName: string, contents: string, type: string) {
-  const url = URL.createObjectURL(new Blob([contents], { type }));
+  saveBlob(fileName, new Blob([contents], { type }));
+}
+
+/** Same hand-off as `save`, for a file that already arrived as a `Blob` — a server response,
+ * rather than something built in the browser. */
+export function saveBlob(fileName: string, blob: Blob) {
+  const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
 
   link.href = url;

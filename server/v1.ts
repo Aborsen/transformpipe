@@ -249,6 +249,18 @@ v1.post('/documents', async (c) => {
   let docx: ArrayBuffer | null = null;
 
   /*
+   * Word, Notion and Confluence all arrive as bytes rather than text — a .docx is XML in a zip, a
+   * Notion or Confluence export is several files in one — so all three read the body as an
+   * ArrayBuffer instead of text, and share the same size check below before either gets anywhere
+   * near a parser.
+   */
+  const BINARY_KINDS = new Set<ConversionId>([
+    'word-to-markdown',
+    'notion-to-markdown',
+    'confluence-to-markdown',
+  ]);
+
+  /*
    * The `{name, markdown}` envelope belongs to Markdown alone.
    *
    * It is recognised by the content type, and the natural way to post a JSON file for conversion
@@ -256,7 +268,7 @@ v1.post('/documents', async (c) => {
    * envelope, find no `markdown` field in, and refuse. So a named conversion means the body is the
    * source file, whatever its content type says; only the default reads an envelope.
    */
-  if (kind === 'word-to-markdown') {
+  if (BINARY_KINDS.has(kind)) {
     docx = await c.req.arrayBuffer();
   } else if (kind === DEFAULT_CONVERSION && type.includes('application/json')) {
     const body = await c.req
@@ -271,7 +283,10 @@ v1.post('/documents', async (c) => {
 
   if (docx) {
     if (docx.byteLength === 0) {
-      return c.json({ error: 'Send the .docx file as the request body' }, 400);
+      return c.json(
+        { error: `Send the ${conversion(kind).extensions.join(' or ')} file as the request body` },
+        400
+      );
     }
 
     /*
@@ -300,7 +315,7 @@ v1.post('/documents', async (c) => {
 
   let markdown = source;
 
-  if (docx) {
+  if (docx && kind === 'word-to-markdown') {
     /*
      * Loaded here rather than at the top of the file: every other request through this module pays
      * for an import at the top, and only this one needs a zip reader.
@@ -379,6 +394,28 @@ v1.post('/documents', async (c) => {
           error:
             cause instanceof Error ? cause.message : 'That is not valid JSON',
         },
+        400
+      );
+    }
+  }
+
+  if (docx && (kind === 'notion-to-markdown' || kind === 'confluence-to-markdown')) {
+    /*
+     * `shared/from-notion.ts` and `shared/from-confluence.ts` are isomorphic — the same code the
+     * browser runs — so the only thing that changes here is where the bytes came from.
+     */
+    try {
+      markdown =
+        kind === 'notion-to-markdown'
+          ? await (await import('../shared/from-notion.js')).notionZipToMarkdown(
+              new Uint8Array(docx)
+            )
+          : await (
+              await import('../shared/from-confluence.js')
+            ).confluenceZipToMarkdown(new Uint8Array(docx));
+    } catch (cause) {
+      return c.json(
+        { error: cause instanceof Error ? cause.message : 'That is not a readable .zip' },
         400
       );
     }
@@ -500,8 +537,10 @@ async function findDocument(userId: string, id: string) {
 }
 
 v1.get('/documents/:id', async (c) => {
-  const id = c.req.param('id').replace(/\.html$/, '');
+  const id = c.req.param('id').replace(/\.(html|docx|pdf)$/, '');
   const wantsHtml = c.req.param('id').endsWith('.html');
+  const wantsDocx = c.req.param('id').endsWith('.docx');
+  const wantsPdf = c.req.param('id').endsWith('.pdf');
   const row = await findDocument(c.get('caller').id, id);
 
   if (!row) {
@@ -540,6 +579,49 @@ v1.get('/documents/:id', async (c) => {
         theme: c.req.query('theme') === 'dark' ? 'dark' : 'light',
       })
     );
+  }
+
+  if (wantsDocx) {
+    const { markdownToDocx } = await import('./docx.js');
+    const fileName = `${row.name.replace(/\.[^.]+$/, '')}.docx`;
+
+    let docx: Buffer;
+
+    try {
+      docx = await markdownToDocx(markdown, row.name);
+    } catch (cause) {
+      const why = cause instanceof Error ? cause.message : 'the converter failed';
+
+      return c.json({ error: `Could not build a .docx: ${why}` }, 502);
+    }
+
+    c.header(
+      'content-type',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    );
+    c.header('content-disposition', `attachment; filename="${fileName}"`);
+
+    return c.body(new Uint8Array(docx));
+  }
+
+  if (wantsPdf) {
+    const { markdownToPdf } = await import('./pdf.js');
+    const fileName = `${row.name.replace(/\.[^.]+$/, '')}.pdf`;
+
+    let pdf: Buffer;
+
+    try {
+      pdf = await markdownToPdf(markdown, row.name);
+    } catch (cause) {
+      const why = cause instanceof Error ? cause.message : 'the converter failed';
+
+      return c.json({ error: `Could not build a .pdf: ${why}` }, 502);
+    }
+
+    c.header('content-type', 'application/pdf');
+    c.header('content-disposition', `attachment; filename="${fileName}"`);
+
+    return c.body(new Uint8Array(pdf));
   }
 
   return c.json({ document: asDocument(c, row, { markdown, summary: row.summary ?? null }) });

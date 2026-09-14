@@ -44,7 +44,7 @@ import { SectionHeading } from '@/ui/components/SectionHeading';
 import { useTheme } from '@/lib/theme';
 import type { ConvertedDoc } from '@/lib/types';
 import { buildStandaloneHtml } from '@/lib/markdown';
-import { downloadDoc, printDoc } from '@/lib/download';
+import { downloadDoc, printDoc, saveBlob } from '@/lib/download';
 import {
   type DocFormat,
   FORMAT_LABELS,
@@ -71,6 +71,13 @@ import { IconButton } from '@/ui/components/IconButton';
 import { Typography } from '@/ui/components/Typography';
 import { cn } from '@/ui/lib/utils';
 import { toast } from '@/ui/components/Toast';
+
+/** Conversions with nothing to paste, because the source is a binary or an archive. */
+const BINARY_CONVERSIONS = new Set<ConversionId>([
+  'word-to-markdown',
+  'notion-to-markdown',
+  'confluence-to-markdown',
+]);
 
 interface ConverterPageProps {
   /** Which conversion this screen is: what it accepts and where it lives. Its words come from the catalogue. */
@@ -248,12 +255,12 @@ export function ConverterPage({
         />
 
         {/*
-         * Word is the exception, and the only one: a .docx is a zip, so there is nothing to paste.
-         * Every other conversion takes text, and the text becomes a file with this conversion's own
-         * extension so that `onFiles` does the converting, the size check and the rest exactly as
-         * it does for a dropped file.
+         * Word, Notion and Confluence are the exceptions: each takes a binary or an archive, so
+         * there is nothing to paste. Every other conversion takes text, and the text becomes a
+         * file with this conversion's own extension so that `onFiles` does the converting, the
+         * size check and the rest exactly as it does for a dropped file.
          */}
-        {conversion.id !== 'word-to-markdown' && (
+        {!BINARY_CONVERSIONS.has(conversion.id) && (
           <PasteBox
             isBusy={isBusy}
             extension={conversion.extensions[0]}
@@ -337,6 +344,23 @@ export function ConverterPage({
     toast.success(t('converter.download.done', { format: FORMAT_LABELS[format] }), {
       description: toFileName(doc.name, format),
     });
+  };
+
+  const handleDownloadDocx = async () => {
+    if (!doc.remoteId) {
+      return;
+    }
+
+    try {
+      const blob = await api.downloadDocx(doc.remoteId);
+
+      saveBlob(`${doc.name.replace(/\.[^.]+$/, '')}.docx`, blob);
+      toast.success(t('converter.download.done', { format: 'Word' }));
+    } catch (cause) {
+      toast.error(
+        cause instanceof Error ? cause.message : t('converter.download.docx.error')
+      );
+    }
   };
 
   const handlePrint = async () => {
@@ -512,6 +536,15 @@ export function ConverterPage({
                 <DropdownMenuItem onSelect={() => void handlePrint()}>
                   <Printer className="size-4" />
                   {t('converter.print')}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  disabled={!doc.remoteId}
+                  onSelect={() => void handleDownloadDocx()}
+                >
+                  <FileText className="size-4" />
+                  {doc.remoteId
+                    ? t('converter.download.docx')
+                    : t('converter.download.docx.needsSave')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -6,7 +6,7 @@ the CLI and the Action name the new domain. Nothing in `server/` carries a domai
 come from the request through `selfOrigin`, which is what made the move a matter of one trusted
 origin and a rebuild.
 
-Upload a file, see exactly what it became, and download it. Five conversions, each with its own
+Upload a file, see exactly what it became, and download it. Seven conversions, each with its own
 page and address:
 
 | Conversion | Takes | Produces |
@@ -16,12 +16,22 @@ page and address:
 | [Word → Markdown](https://transformpipe.com/word-to-markdown) | `.docx` | `.md` |
 | [CSV → Markdown table](https://transformpipe.com/csv-to-markdown) | `.csv` `.tsv` | `.md` |
 | [JSON → Markdown](https://transformpipe.com/json-to-markdown) | `.json` | `.md` |
+| [Notion export → Markdown](https://transformpipe.com/notion-to-markdown) | `.zip` (Export as Markdown & CSV) | `.md` |
+| [Confluence export → Markdown](https://transformpipe.com/confluence-to-markdown) | `.zip` (Export → HTML) | `.md` |
 
 They all normalise to Markdown, which is what a document is stored, previewed, shared and reached
-by a script as — one shape rather than five. Any document can then be handed over as Markdown,
-HTML, plain text, or printed to PDF. `shared/conversions.ts` is the single list; the header menu,
-the screens, the history chips, the badges and the prerendered pages all read it, so a sixth
-conversion is an entry there plus a converter.
+by a script as — one shape rather than seven. Any document can then be handed over as Markdown,
+HTML, plain text, Word, or printed to PDF. `shared/conversions.ts` is the single list; the header menu, the
+screens, the history chips, the badges and the prerendered pages all read it, so a new conversion is
+an entry there plus a converter.
+
+Notion and Confluence are the two that do not produce one document from one file: both exports are
+several pages in a `.zip`, and both come back as a single Markdown document — a table of contents,
+then every page in order, each a heading of its own (`shared/from-notion.ts`,
+`shared/from-confluence.ts`, sharing the zip-reading and merge convention in
+`shared/zip-import.ts`). A link from one page to another inside the export keeps its words and
+drops its address: once every page is a section of one document, there is nowhere left for it to
+point.
 
 Conversion happens in the browser — the `.docx` reader and the HTML parser load only when their
 page is used, so the front page's bundle does not carry them. Sign in with Google to keep your
@@ -106,6 +116,13 @@ step; a deployment made before them needs a redeploy to see them. The build is a
   when it opens: no scripts, and no webfont either. It used to link DM Sans from Google, which made
   "self-contained" false in the one file that is actually handed to someone else, so the export
   falls back through `ui-sans-serif` to the system face and asks for nothing.
+- **Download as Word** — a saved document's download menu gets a `.docx`, built server-side from
+  the same HTML the preview renders (`@turbodocx/html-to-docx` — pure JavaScript, no headless
+  browser). Needs a save first: the endpoint reads the account's copy, not the browser's.
+- **A .pdf from the API** — `GET /api/v1/documents/:id.pdf`, laid out by `pdfmake` from the same
+  HTML rather than a headless Chrome — no button for it in the app, deliberately: "Print or save as
+  PDF" already gives a signed-in person the browser's own, pixel-exact PDF, and this is for the
+  case that button cannot reach — a script, a CI job, a GitHub Action step with no browser at all.
 - **History** — signed in: stored in the account (up to 500 documents, 4 MB of source
   each), available on every device; signed out: the last 25 conversions in
   `localStorage`. Whatever was collected locally is moved into the account on
@@ -161,10 +178,12 @@ curl -H "Authorization: Bearer tp_live_…"      --data-binary @README.md      "
 
 | | |
 | --- | --- |
-| `POST /api/v1/documents` | Markdown as the body (`?name=`) or JSON `{name, markdown}`; `?share=link\|people` publishes it in the same call; `?kind=html-to-markdown\|csv-to-markdown\|json-to-markdown\|word-to-markdown` converts the body first — for Word, post the `.docx` itself as the body; `?replaces=<id>` links it to an earlier document as a new version, opt-in |
+| `POST /api/v1/documents` | Markdown as the body (`?name=`) or JSON `{name, markdown}`; `?share=link\|people` publishes it in the same call; `?kind=html-to-markdown\|csv-to-markdown\|json-to-markdown\|word-to-markdown\|notion-to-markdown\|confluence-to-markdown` converts the body first — for Word, Notion and Confluence, post the file itself (`.docx` or `.zip`) as the body; `?replaces=<id>` links it to an earlier document as a new version, opt-in |
 | `GET /api/v1/documents` | the newest 500; `?q=` searches content as well as name, ranked by relevance |
 | `GET /api/v1/documents/:id` | metadata and the source |
 | `GET /api/v1/documents/:id.html` | the standalone document, `?theme=dark` optional |
+| `GET /api/v1/documents/:id.docx` | a Word document, built from the same HTML on the way out |
+| `GET /api/v1/documents/:id.pdf` | a PDF, laid out from the same HTML by `pdfmake` — no headless browser |
 | `GET /api/v1/documents/:id/versions` | every document in the same version chain, oldest first |
 | `DELETE /api/v1/documents/:id` | removes the row and its source |
 | `GET \| PUT /api/v1/documents/:id/share` | `{mode, emails[]}`; `private` drops the token, so a link already sent stops working |

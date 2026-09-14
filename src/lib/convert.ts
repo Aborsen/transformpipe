@@ -97,6 +97,22 @@ export async function convertFile(
       };
     }
 
+    case 'notion-to-markdown': {
+      const { notionZipToMarkdown } = await import('@shared/from-notion');
+      const markdown = await notionZipToMarkdown(new Uint8Array(await file.arrayBuffer()));
+
+      return { markdown, name: renamed(file.name, '.md'), kind: id };
+    }
+
+    case 'confluence-to-markdown': {
+      const { confluenceZipToMarkdown } = await import('@shared/from-confluence');
+      const markdown = await confluenceZipToMarkdown(
+        new Uint8Array(await file.arrayBuffer())
+      );
+
+      return { markdown, name: renamed(file.name, '.md'), kind: id };
+    }
+
     case 'word-to-markdown': {
       const [{ htmlToMarkdown }, mammoth] = await Promise.all([
         import('@shared/from-html'),
@@ -149,7 +165,7 @@ export function conversionForFiles(
   files: File[],
   t: Translate
 ): { id: ConversionId; rejected?: string } {
-  const guesses = files.map((file) => conversionForFile(file.name));
+  const guesses = files.map((file) => conversionForFile(file.name, here));
   const unknown = files.find((file, index) => guesses[index] === null);
 
   if (unknown) {

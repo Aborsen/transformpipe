@@ -82,6 +82,14 @@
       "destination": "/index.html"
     },
     {
+      "source": "/notion-to-markdown",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/confluence-to-markdown",
+      "destination": "/index.html"
+    },
+    {
       "source": "/about",
       "destination": "/index.html"
     },
