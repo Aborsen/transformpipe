@@ -18,6 +18,12 @@ export interface FooterLink {
 export interface FooterColumn {
   heading: string;
   links: FooterLink[];
+  /**
+   * Splits this column's own list into two, side by side, once the layout has room for it (from
+   * `sm:` up). For a column with more links than the others — a growing list of conversions next
+   * to a handful of legal pages — one tall list reads as a wall; two shorter ones read as a menu.
+   */
+  twoLists?: boolean;
 }
 
 interface SiteFooterProps {
@@ -85,10 +91,18 @@ export function SiteFooter({
 
           <nav
             aria-label="Site"
-            className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:gap-12"
+            className="grid grid-cols-2 gap-8 sm:grid-cols-6 lg:gap-12"
           >
             {columns.map((column) => (
-              <div key={column.heading} className="flex flex-col gap-3">
+              <div
+                key={column.heading}
+                className={cn(
+                  'flex flex-col gap-3',
+                  // Half the grid on its own: two lists of five need close to as much room as the
+                  // other three columns combined, or the longer labels wrap where nothing else does.
+                  column.twoLists && 'sm:col-span-3'
+                )}
+              >
                 <Typography
                   variant="span"
                   weight="semibold"
@@ -98,9 +112,17 @@ export function SiteFooter({
                   {column.heading}
                 </Typography>
 
-                <ul className="flex flex-col gap-2">
+                <ul
+                  className={cn(
+                    'flex flex-col gap-2',
+                    column.twoLists && 'sm:block sm:columns-2 sm:gap-x-8'
+                  )}
+                >
                   {column.links.map((link) => (
-                    <li key={`${column.heading}-${link.label}`}>
+                    <li
+                      key={`${column.heading}-${link.label}`}
+                      className={column.twoLists ? 'sm:mb-2 sm:break-inside-avoid' : undefined}
+                    >
                       <a
                         href={link.href}
                         {...(link.external

@@ -50,6 +50,8 @@ export function AppFooter({
         href: one.path,
         onNavigate: () => onConversionChange(one.id),
       })),
+      // Ten conversions in one list read as a wall; two columns of five read as a menu.
+      twoLists: true,
     },
     {
       heading: t('footer.resources'),
