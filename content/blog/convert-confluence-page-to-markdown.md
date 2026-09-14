@@ -122,6 +122,8 @@ Everything about the export dialog above describes Confluence Cloud. Server and 
 3. **Check for macros that were live queries before converting anything.** A Jira issue macro or a page-tree macro renders to a snapshot; if the live version matters, note it separately before the export captures a frozen copy.
 4. **Read one converted page fully before trusting the rest.** Attachment links, heading anchors and macro-rendered `div`s are the three things that look fine in a diff and wrong when actually read.
 
+If the blocker turns out to be cost rather than mechanics — which Marketplace listings are actually free rather than free to try, and which routes need an administrator at all — [the free Confluence converters compared](/blog/free-confluence-to-markdown-converter) answers that separately.
+
 ## Conclusion
 
 Confluence to Markdown is a two-step conversion wearing the name of a one-step export: pick the HTML output, because it is the only one dense enough to convert well, then run a real HTML-to-Markdown pass over it rather than a script of string replacements. What survives is everything the storage format expressed as static structure — headings, lists, tables, links; what does not is anything that was a macro's live behaviour rather than its rendered output on the day you exported. For a whole space meant to become one document, skip the directory walk and hand the export zip to a converter that merges it directly. [How Notion and Obsidian compare](/blog/markdown-from-notion-obsidian-and-confluence) on the same export-then-repair problem is worth reading if Confluence is not the only source in play.

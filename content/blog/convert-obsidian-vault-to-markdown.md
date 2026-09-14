@@ -125,6 +125,8 @@ The rewrite above is worth doing for a vault staying a folder of separate files.
 3. **Watch for duplicate filenames across folders.** A wikilink to a non-unique name is ambiguous even inside Obsidian; a rewrite script inherits that ambiguity rather than resolving it for you.
 4. **Turn off wikilinks going forward regardless of which route you pick for the backlog.** It costs nothing and stops the problem from growing while you deal with what already exists.
 
+If the question is which tool rather than which route — every option here is free, and they differ in setup cost and in how much control they give you over the ambiguous cases — [the free Obsidian converters compared](/blog/free-obsidian-to-markdown-converter) is the shorter answer.
+
 ## Conclusion
 
 An Obsidian vault does not need exporting so much as translating: the files are Markdown already, and the work is entirely in the four places Obsidian wrote its own syntax on top — wikilinks, embeds, block references and callouts. Rewriting them in place keeps the vault a folder of separate, working files; merging the whole vault into one document solves the same wikilink problem by removing the need for a separate target to resolve to at all. Either way, nothing recovers a Dataview table or a plugin's rendered view, because neither was ever stored in the file to begin with — check for those while the vault is still open in Obsidian, not after. [How Notion and Confluence compare](/blog/markdown-from-notion-obsidian-and-confluence) on the same export-then-repair problem is worth reading if Obsidian is not the only source in play.

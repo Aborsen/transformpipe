@@ -179,7 +179,7 @@ The pragmatic answer for most business documents is the first row. If the maths 
 
 AI generated documentation is documentation. It goes out under your name, and the reader will hold you to it, not the model.
 
-Do this before you convert, not after. A rendered page looks finished, and things that look finished get read as though somebody checked them.
+Do this before you convert, not after. A rendered page looks finished, and things that look finished get read as though somebody checked them. Reading is the part a model cannot do for you here — [an AI summary of the document](/blog/free-ai-document-summarizer) tells you what it claims to say, which is a different question from whether any of it is true.
 
 - [ ] Every number: can you name where it came from?
 - [ ] Every link: open it. Plausible URLs that lead nowhere are a common failure.

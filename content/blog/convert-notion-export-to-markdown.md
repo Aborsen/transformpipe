@@ -12,7 +12,7 @@ None of that is a bug. Notion identifies a page by its id and treats the title a
 
 ### TL;DR
 
-Three routes actually work. **Export as Markdown & CSV, then rewrite the ids** is the general-purpose route: unzip, build a map from each file's id suffix to the name you actually want, rewrite every link and every filename from that one map. It is manual at ten pages and a script at a thousand. **`notion-to-md`**, an open-source Node package (ISC licence) that reads pages through Notion's own API, is the better fit for a scripted pipeline or a static site build, because it never produces the id-suffixed filenames in the first place — you name the output yourself. **Uploading the export zip directly to a converter that merges it** — [TransformPipe's Notion → Markdown conversion](/notion-to-markdown) is one — skips the id problem a third way: every page becomes a section of one document, in order, with a table of contents, and a cross-page link keeps its words rather than pointing at a file that will not exist. Pick the first for a folder of separate files you will maintain, the second for automation, the third for one document to read or share.
+Three routes actually work. **Export as Markdown & CSV, then rewrite the ids** is the general-purpose route: unzip, build a map from each file's id suffix to the name you actually want, rewrite every link and every filename from that one map. It is manual at ten pages and a script at a thousand. **`notion-to-md`**, an open-source Node package that reads pages through Notion's own API, is the better fit for a scripted pipeline or a static site build, because it never produces the id-suffixed filenames in the first place — you name the output yourself. **Uploading the export zip directly to a converter that merges it** — [TransformPipe's Notion → Markdown conversion](/notion-to-markdown) is one — skips the id problem a third way: every page becomes a section of one document, in order, with a table of contents, and a cross-page link keeps its words rather than pointing at a file that will not exist. Pick the first for a folder of separate files you will maintain, the second for automation, the third for one document to read or share.
 
 Whichever route, three things do not survive any of them: comments, because they are discussion attached to a page rather than page content; a database's non-default views, because Notion exports only the view you are looking at; and synced blocks, which come out as their content in every place they were shown, duplicated, with no marker that they were ever the same block.
 
@@ -90,7 +90,7 @@ for file in list(export_folder, recursive=true):
 
 ## `notion-to-md`: skip the id problem by never writing it
 
-Notion also publishes an official API, and reading pages through it rather than through the export button sidesteps the filename problem entirely — nothing about the API forces an id into a name, because you are the one calling `writeFileSync` at the end. [`notion-to-md`](https://github.com/souvikinator/notion-to-md) is the commonly used open-source package for this: Node, ISC licence, reads a page's block tree via the API and converts it to Markdown, MDX, or a handful of other targets. You choose the output filename, so there is nothing to rewrite afterward.
+Notion also publishes an official API, and reading pages through it rather than through the export button sidesteps the filename problem entirely — nothing about the API forces an id into a name, because you are the one calling `writeFileSync` at the end. [`notion-to-md`](https://github.com/souvikinator/notion-to-md) is the commonly used open-source package for this: Node, open source, reads a page's block tree via the API and converts it to Markdown, MDX, or a handful of other targets. You choose the output filename, so there is nothing to rewrite afterward.
 
 | Pros | Cons |
 | --- | --- |
@@ -98,7 +98,7 @@ Notion also publishes an official API, and reading pages through it rather than 
 | Fits naturally into a build script or a scheduled sync | One page at a time by id or database query; walking a whole workspace is your own recursion to write |
 | Runs in CI without a browser or a manual export click | Renders blocks you must map yourself for anything beyond the common set — a database view, a synced block — same losses as the export |
 
-**Price:** free, open source, ISC licence.
+**Price:** free, open source — the licence is worth checking yourself before you depend on it, because the published package's metadata and the repository's own `LICENSE` file do not currently agree (checked on npmjs.com and github.com, 14 September 2026).
 
 **Technical details:** the package requests a page's children as blocks from the Notion API and converts the block tree to Markdown, with hooks for handling block types it does not cover by default. It needs an integration created in Notion's own settings and that integration shared onto the pages or databases being read — a permission step, not a code step, and the one place this route is slower to start than clicking Export.
 
@@ -144,6 +144,8 @@ The export's own id problem disappears a third way if the destination was never 
 2. **Ask how often this happens.** Once, and the manual export-and-rewrite is finished before an API integration would be approved. Weekly or on every deploy, and `notion-to-md` in a build step pays for itself within a month.
 3. **Check for comments and non-default views before exporting, not after.** Both are invisible in the output with no error to flag them, so the only reliable check is looking at the source in Notion first.
 4. **Count the pages.** Ten pages tolerate a by-hand id rewrite. A hundred want a script. A thousand want the API route, because clicking Export and waiting up to thirty hours does not scale either.
+
+If the question is which tool rather than which route — all of these are free, and what separates them is setup cost rather than price — [the free Notion converters compared](/blog/free-notion-to-markdown-converter) is the shorter answer.
 
 ## Conclusion
 

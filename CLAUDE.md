@@ -47,3 +47,47 @@ is worse than one that is honestly English.
 - `npm run check-types && npm run build` — the prerenderer reads the same list, and a broken
   entry breaks 147 pages, not one.
 - A tagged release also wants the tag pushed and a GitHub release created with the same words.
+
+## A new article ships in all five languages
+
+Decided 2026-09-14, and it applies to articles written from that date on, not to the backlog.
+
+A new blog article is not finished in English. It is finished when `content/blog/<slug>.md` exists
+alongside `content/blog/de/`, `fr/`, `es/` and `it/` versions of the same slug — same commit, same
+day. The reason is the one the backlog demonstrates: 56 articles went out in English, German
+followed a language at a time, and the other three never started, because "translate it later" is a
+decision nobody ever makes on purpose.
+
+The backlog stays as it is. It is translated when somebody chooses to, in whatever order they
+choose; the rule is about not growing it.
+
+### What a translation is here
+
+Not a literal one. `content/blog/de/markdown-escaping.md` beside its English original is the
+worked example: formal register, prose rewritten rather than transposed, and `keywords` written
+around the phrase a reader of that language actually types rather than the English keywords
+translated word for word. What does not change: `date`, every link target, every code block, every
+table's structure, and every `(checked on <site>, <date>)` citation, which keeps the date it was
+actually checked on.
+
+The `tag` is translated, and these are the words in use — the first four are established by the
+existing German articles, the rest follow the same logic:
+
+| English | de | fr | es | it |
+| --- | --- | --- | --- | --- |
+| Converting | Konvertieren | Conversion | Conversión | Conversione |
+| Publishing | Veröffentlichen | Publication | Publicación | Pubblicazione |
+| Safety | Sicherheit | Sécurité | Seguridad | Sicurezza |
+| Automation | Automatisierung | Automatisation | Automatización | Automazione |
+| Syntax | Syntax | Syntaxe | Sintaxis | Sintassi |
+| Workflow | Workflow | Workflow | Workflow | Workflow |
+| Code | Code | Code | Código | Codice |
+
+### After the articles
+
+- `npm run og` draws the covers, including one per language — an article without them fails
+  `npm run blog:check`. It redraws every existing cover too, so commit only the new files.
+- `npm run check-types && npm run build`. The checker enforces the rest: a translation at least
+  two thirds the English length, a description of 100-165 characters, no `# ` H1 in the body, no
+  dead internal links, at most four mentions of the product's own name, and no orphan — something
+  has to link to the new article or nobody reaches it.
