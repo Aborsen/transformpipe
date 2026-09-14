@@ -105,4 +105,30 @@ export const conversions: Content['conversions'] = {
         'Turn a Confluence space HTML export .zip into one Markdown document, pages in order with a table of contents. Converts in your browser; nothing is uploaded.',
     },
   },
+  'text-to-markdown': {
+    label: 'Raw text → Markdown',
+    short: 'TXT → MD',
+    title: 'Plain text to Markdown',
+    blurb:
+      'Upload a .txt file that was never meant to be Markdown, and get Markdown that still says exactly what it said — a stray asterisk or underscore does not turn into emphasis.',
+    hint: 'Upload a .txt file. Markdown’s own characters — *, _, #, a leading dash — are escaped so the text renders exactly as written.',
+    seo: {
+      title: 'Plain text to Markdown converter — TransformPipe',
+      description:
+        'Turn plain text into Markdown without its own characters being misread as formatting — asterisks, underscores and line wraps preserved. Converts in your browser; nothing is uploaded.',
+    },
+  },
+  'excel-to-markdown': {
+    label: 'Excel → Markdown table',
+    short: 'XLSX → MD',
+    title: 'Excel to a Markdown table',
+    blurb:
+      'Upload an .xlsx and get a Markdown table for every sheet that has rows in it — more than one, and they come with a table of contents.',
+    hint: 'Upload an .xlsx workbook. The first row of each sheet becomes the table header; dates come out as plain ISO dates rather than Excel’s own serial numbers.',
+    seo: {
+      title: 'Excel to Markdown table converter — TransformPipe',
+      description:
+        'Turn an Excel .xlsx workbook into Markdown tables, one per sheet with a table of contents. Converts in your browser; nothing is uploaded.',
+    },
+  },
 };

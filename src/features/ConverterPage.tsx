@@ -77,6 +77,7 @@ const BINARY_CONVERSIONS = new Set<ConversionId>([
   'word-to-markdown',
   'notion-to-markdown',
   'confluence-to-markdown',
+  'excel-to-markdown',
 ]);
 
 interface ConverterPageProps {

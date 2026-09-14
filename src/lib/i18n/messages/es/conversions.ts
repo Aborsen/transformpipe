@@ -105,4 +105,30 @@ export const conversions: Content['conversions'] = {
         'Convierte un .zip de exportación HTML de un espacio de Confluence en un documento Markdown, páginas en orden con índice. Convierte en tu navegador; nada se sube.',
     },
   },
+  'text-to-markdown': {
+    label: 'Texto plano → Markdown',
+    short: 'TXT → MD',
+    title: 'Texto plano a Markdown',
+    blurb:
+      'Sube un archivo .txt que nunca fue pensado como Markdown, y obtén Markdown que dice exactamente lo mismo — un asterisco o un guion bajo suelto no se convierte en énfasis.',
+    hint: 'Sube un archivo .txt. Los propios caracteres de Markdown — *, _, #, un guion al inicio — se escapan para que el texto se muestre tal cual se escribió.',
+    seo: {
+      title: 'Convertir texto plano a Markdown — TransformPipe',
+      description:
+        'Convierte texto plano en Markdown sin que sus propios caracteres se interpreten como formato — asteriscos, guiones bajos y saltos de línea se conservan. Convierte en tu navegador; nada se sube.',
+    },
+  },
+  'excel-to-markdown': {
+    label: 'Excel → tabla Markdown',
+    short: 'XLSX → MD',
+    title: 'Excel a una tabla Markdown',
+    blurb:
+      'Sube un .xlsx y obtén una tabla Markdown por cada hoja con filas — si hay más de una, se añade un índice.',
+    hint: 'Sube un libro .xlsx. La primera fila de cada hoja se vuelve el encabezado de la tabla; las fechas salen como fechas ISO simples en lugar de los números de serie propios de Excel.',
+    seo: {
+      title: 'Convertir Excel a tabla Markdown — TransformPipe',
+      description:
+        'Convierte un libro Excel .xlsx en tablas Markdown, una por hoja con índice. Convierte en tu navegador; nada se sube.',
+    },
+  },
 };

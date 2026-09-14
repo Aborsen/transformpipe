@@ -103,4 +103,30 @@ export const conversions: Content['conversions'] = {
         'Convertir un .zip d’export HTML d’un espace Confluence en un document Markdown, pages dans l’ordre avec sommaire. Conversion locale, rien n’est téléversé.',
     },
   },
+  'text-to-markdown': {
+    label: 'Texte brut → Markdown',
+    short: 'TXT → MD',
+    title: 'Texte brut vers Markdown',
+    blurb:
+      'Déposez un fichier .txt qui n’a jamais été pensé comme du Markdown, et obtenez du Markdown qui dit exactement la même chose — un astérisque ou un tiret bas isolé ne devient pas une mise en emphase.',
+    hint: 'Déposez un fichier .txt. Les caractères propres à Markdown — *, _, #, un tiret en début de ligne — sont échappés pour que le texte s’affiche exactement tel qu’écrit.',
+    seo: {
+      title: 'Convertir du texte brut en Markdown — TransformPipe',
+      description:
+        'Convertir du texte brut en Markdown sans que ses propres caractères soient pris pour de la mise en forme — astérisques, tirets bas et retours à la ligne conservés. Conversion locale, rien n’est téléversé.',
+    },
+  },
+  'excel-to-markdown': {
+    label: 'Excel → tableau Markdown',
+    short: 'XLSX → MD',
+    title: 'Excel vers un tableau Markdown',
+    blurb:
+      'Déposez un .xlsx et obtenez un tableau Markdown pour chaque feuille contenant des lignes — plus d’une, et elles arrivent avec un sommaire.',
+    hint: 'Déposez un classeur .xlsx. La première ligne de chaque feuille devient l’en-tête du tableau ; les dates ressortent en date ISO plutôt qu’en numéro de série propre à Excel.',
+    seo: {
+      title: 'Convertir Excel en tableau Markdown — TransformPipe',
+      description:
+        'Convertir un classeur Excel .xlsx en tableaux Markdown, un par feuille avec sommaire. Conversion locale, rien n’est téléversé.',
+    },
+  },
 };

@@ -27,7 +27,9 @@ export type ConversionId =
   | 'csv-to-markdown'
   | 'json-to-markdown'
   | 'notion-to-markdown'
-  | 'confluence-to-markdown';
+  | 'confluence-to-markdown'
+  | 'text-to-markdown'
+  | 'excel-to-markdown';
 
 export interface Conversion {
   id: ConversionId;
@@ -50,7 +52,9 @@ export const CONVERSIONS: Conversion[] = [
     id: 'markdown-to-html',
     to: 'html',
     path: '/',
-    extensions: ['.md', '.markdown', '.mdown', '.mkd', '.txt'],
+    // .txt moved to its own conversion below: a plain-text file is not Markdown, and claiming it
+    // here meant an asterisk typed as a literal asterisk came out italic.
+    extensions: ['.md', '.markdown', '.mdown', '.mkd'],
   },
   {
     id: 'html-to-markdown',
@@ -87,6 +91,18 @@ export const CONVERSIONS: Conversion[] = [
     to: 'markdown',
     path: '/confluence-to-markdown',
     extensions: ['.zip'],
+  },
+  {
+    id: 'text-to-markdown',
+    to: 'markdown',
+    path: '/text-to-markdown',
+    extensions: ['.txt'],
+  },
+  {
+    id: 'excel-to-markdown',
+    to: 'markdown',
+    path: '/excel-to-markdown',
+    extensions: ['.xlsx'],
   },
 ];
 

@@ -249,15 +249,15 @@ v1.post('/documents', async (c) => {
   let docx: ArrayBuffer | null = null;
 
   /*
-   * Word, Notion and Confluence all arrive as bytes rather than text — a .docx is XML in a zip, a
-   * Notion or Confluence export is several files in one — so all three read the body as an
-   * ArrayBuffer instead of text, and share the same size check below before either gets anywhere
-   * near a parser.
+   * Word, Notion, Confluence and Excel all arrive as bytes rather than text — each is a zip (an
+   * .xlsx included) or, for Word, XML inside one — so all four read the body as an ArrayBuffer
+   * instead of text, and share the same size check below before any of them reaches a parser.
    */
   const BINARY_KINDS = new Set<ConversionId>([
     'word-to-markdown',
     'notion-to-markdown',
     'confluence-to-markdown',
+    'excel-to-markdown',
   ]);
 
   /*
@@ -419,6 +419,25 @@ v1.post('/documents', async (c) => {
         400
       );
     }
+  }
+
+  if (docx && kind === 'excel-to-markdown') {
+    try {
+      const { excelToMarkdown } = await import('../shared/from-excel.js');
+
+      markdown = await excelToMarkdown(docx, (name || 'document').replace(/\.[^.]+$/, ''));
+    } catch (cause) {
+      return c.json(
+        { error: cause instanceof Error ? cause.message : 'That is not a readable .xlsx' },
+        400
+      );
+    }
+  }
+
+  if (kind === 'text-to-markdown') {
+    const { textToMarkdown } = await import('../shared/from-text.js');
+
+    markdown = textToMarkdown(source);
   }
 
   if (!markdown.trim()) {

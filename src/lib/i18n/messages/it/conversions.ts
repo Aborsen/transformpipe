@@ -100,4 +100,30 @@ export const conversions: Content['conversions'] = {
         'Trasforma uno .zip di export HTML di uno spazio Confluence in un documento Markdown, pagine in ordine con indice. Converte nel browser, senza caricare nulla.',
     },
   },
+  'text-to-markdown': {
+    label: 'Testo semplice → Markdown',
+    short: 'TXT → MD',
+    title: 'Da testo semplice a Markdown',
+    blurb:
+      'Carica un file .txt che non è mai stato pensato come Markdown, e ottieni Markdown che dice esattamente la stessa cosa — un asterisco o un trattino basso capitati per caso non diventano un’enfasi.',
+    hint: 'Carica un file .txt. I caratteri propri di Markdown — *, _, #, un trattino a inizio riga — vengono escapati così il testo appare esattamente com’è stato scritto.',
+    seo: {
+      title: 'Da testo semplice a Markdown — TransformPipe',
+      description:
+        'Trasforma testo semplice in Markdown senza che i suoi caratteri vengano letti come formattazione — asterischi, trattini bassi e a capo conservati. Converte nel browser, senza caricare nulla.',
+    },
+  },
+  'excel-to-markdown': {
+    label: 'Excel → tabella Markdown',
+    short: 'XLSX → MD',
+    title: 'Da Excel a una tabella Markdown',
+    blurb:
+      'Carica un .xlsx e ottieni una tabella Markdown per ogni foglio con righe — più di uno, e arrivano con un indice.',
+    hint: 'Carica una cartella di lavoro .xlsx. La prima riga di ogni foglio diventa l’intestazione della tabella; le date escono come date ISO semplici invece dei numeri seriali propri di Excel.',
+    seo: {
+      title: 'Da Excel a tabella Markdown — TransformPipe',
+      description:
+        'Trasforma una cartella di lavoro Excel .xlsx in tabelle Markdown, una per foglio con indice. Converte nel browser, senza caricare nulla.',
+    },
+  },
 };

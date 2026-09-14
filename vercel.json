@@ -90,6 +90,14 @@
       "destination": "/index.html"
     },
     {
+      "source": "/text-to-markdown",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/excel-to-markdown",
+      "destination": "/index.html"
+    },
+    {
       "source": "/about",
       "destination": "/index.html"
     },

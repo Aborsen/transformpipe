@@ -97,6 +97,26 @@ export async function convertFile(
       };
     }
 
+    case 'text-to-markdown': {
+      const { textToMarkdown } = await import('@shared/from-text');
+
+      return {
+        markdown: textToMarkdown(await readText(file)),
+        name: renamed(file.name, '.md'),
+        kind: id,
+      };
+    }
+
+    case 'excel-to-markdown': {
+      const { excelToMarkdown } = await import('@shared/from-excel');
+
+      return {
+        markdown: await excelToMarkdown(await file.arrayBuffer(), renamed(file.name, '')),
+        name: renamed(file.name, '.md'),
+        kind: id,
+      };
+    }
+
     case 'notion-to-markdown': {
       const { notionZipToMarkdown } = await import('@shared/from-notion');
       const markdown = await notionZipToMarkdown(new Uint8Array(await file.arrayBuffer()));

@@ -124,6 +124,7 @@ const KIND_BY_EXTENSION = {
   // Notion and Confluence exports are both just a .zip — nothing in the name says which, and this
   // client has no page to disambiguate by the way the app does. Refused below, the same as .docx.
   '.zip': 'zip-export',
+  '.xlsx': 'excel-to-markdown',
 };
 
 function kindFor(name) {
@@ -159,6 +160,10 @@ async function push() {
 
     if (kind === 'zip-export') {
       fail(`${name}: a Notion or Confluence export is read in the browser. Convert it at ${HOST}/notion-to-markdown or ${HOST}/confluence-to-markdown and push the Markdown.`);
+    }
+
+    if (kind === 'excel-to-markdown') {
+      fail(`${name}: an .xlsx is read in the browser. Convert it at ${HOST}/excel-to-markdown and push the Markdown.`);
     }
 
     return { name, kind, markdown: readFileSync(file, 'utf8') };

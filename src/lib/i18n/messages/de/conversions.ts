@@ -107,4 +107,30 @@ export const conversions: Content['conversions'] = {
         'Eine .zip aus einem Confluence-HTML-Export in ein Markdown-Dokument umwandeln, Seiten der Reihe nach mit Inhaltsverzeichnis. Läuft im Browser; nichts wird hochgeladen.',
     },
   },
+  'text-to-markdown': {
+    label: 'Reintext → Markdown',
+    short: 'TXT → MD',
+    title: 'Reintext in Markdown',
+    blurb:
+      'Eine .txt-Datei hochladen, die nie als Markdown gedacht war, und Markdown erhalten, das genau das sagt, was dastand — ein zufälliges Sternchen oder ein Unterstrich wird nicht zu einer Hervorhebung.',
+    hint: 'Eine .txt-Datei hochladen. Markdowns eigene Zeichen — *, _, #, ein führender Bindestrich — werden maskiert, damit der Text genau so erscheint, wie er geschrieben wurde.',
+    seo: {
+      title: 'Reintext in Markdown umwandeln — TransformPipe',
+      description:
+        'Reintext in Markdown umwandeln, ohne dass eigene Zeichen als Formatierung missverstanden werden — Sternchen, Unterstriche und Zeilenumbrüche bleiben erhalten. Läuft im Browser; nichts wird hochgeladen.',
+    },
+  },
+  'excel-to-markdown': {
+    label: 'Excel → Markdown-Tabelle',
+    short: 'XLSX → MD',
+    title: 'Excel in eine Markdown-Tabelle',
+    blurb:
+      'Eine .xlsx hochladen und für jedes Tabellenblatt mit Zeilen eine Markdown-Tabelle erhalten — bei mehreren kommt ein Inhaltsverzeichnis dazu.',
+    hint: 'Eine .xlsx-Arbeitsmappe hochladen. Die erste Zeile jedes Blatts wird zur Tabellenüberschrift; Datumswerte erscheinen als reine ISO-Daten statt als Excels eigene Seriennummern.',
+    seo: {
+      title: 'Excel in Markdown-Tabelle umwandeln — TransformPipe',
+      description:
+        'Eine Excel-.xlsx-Arbeitsmappe in Markdown-Tabellen umwandeln, eine pro Blatt mit Inhaltsverzeichnis. Läuft im Browser; nichts wird hochgeladen.',
+    },
+  },
 };

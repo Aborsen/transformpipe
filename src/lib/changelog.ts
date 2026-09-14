@@ -32,6 +32,17 @@ export interface ChangelogEntry {
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-14',
+    title: 'Plain text and Excel, converted honestly',
+    body:
+      'Two more conversions. Raw text → Markdown escapes Markdown\'s own characters before '
+      + 'converting, so a `.txt` file with a literal asterisk or underscore in it comes out saying '
+      + 'the same thing rather than gaining accidental emphasis — `.txt` used to be accepted on '
+      + 'Markdown → HTML as though it already were Markdown, and no longer is. Excel → Markdown '
+      + 'table turns an `.xlsx` workbook into one table per sheet, with a table of contents once '
+      + 'there is more than one.',
+  },
+  {
+    date: '2026-09-14',
     title: 'Notion and Confluence exports, in one document',
     body:
       'Two new conversions: drop the .zip from Notion\'s "Export as Markdown & CSV" or a '
