@@ -16,6 +16,7 @@
  */
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import puppeteer from 'puppeteer-core';
 
 const ROOT = resolve('.');
 /*
@@ -163,6 +164,26 @@ const COLOURS = {
 
 const DEFAULT_COLOUR = COLOURS.Converting;
 
+/*
+ * The pages that are not articles.
+ *
+ * They have no frontmatter to read a topic from, so a hash was picking their subject — which put a
+ * knowledge graph on the front page, a picture that belongs to an article about Obsidian and says
+ * nothing about a converter. Named here instead, with the same accent `og-images.mjs` gives each
+ * one, so the whole site shares one set rather than the blog having a set and everything else
+ * having whatever came up.
+ */
+const PAGES = {
+  home: ['a flat document page on the left and a structured slab of stacked bars on the right, with a thick chevron arrow block between them pointing right', 'teal cyan'],
+  blog: ['a small stack of closed books lying flat with one open book resting on top of them', 'periwinkle blue'],
+  docs: ['a thick manual standing upright with a ribbon bookmark trailing from it', 'sky blue'],
+  about: ['three rounded cubes of different sizes grouped closely together', 'violet purple'],
+  contact: ['a paper envelope lying at an angle with its flap slightly open', 'violet purple'],
+  privacy: ['a chunky padlock with a rounded body and a thick shackle, closed', 'coral red'],
+  terms: ['a folded document with a round seal disc pressed onto its corner', 'coral red'],
+  cookies: ['a round cookie-shaped disc with a few raised round chips on its top face', 'coral red'],
+};
+
 function frontmatter(raw) {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   const data = {};
@@ -183,6 +204,10 @@ function frontmatter(raw) {
 }
 
 function subjectFor(slug) {
+  if (PAGES[slug]) {
+    return PAGES[slug][0];
+  }
+
   for (const [pattern, subject] of BY_TOPIC) {
     if (pattern.test(slug)) {
       return Array.isArray(subject)
@@ -238,14 +263,60 @@ async function draw(slug, colour) {
  * fades the square's edges into that same ground — a mismatch of a few values disappears in the
  * fade, where a keyed edge would have left a coloured fringe.
  */
+/*
+ * What comes back from the model is a 1024px image at full quality: about a megabyte each, 70 MB
+ * across the set, for something the cover then draws at 560px. So each one is shrunk on the way in.
+ * Done in the browser that already draws the covers rather than with an image library, for the same
+ * reason `og-images.mjs` renders there: a canvas is three lines and needs no new dependency.
+ */
+const CHROME =
+  process.env.CHROME_PATH ??
+  {
+    darwin: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    win32: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
+  }[process.platform] ??
+  'google-chrome';
+
+const SAVED_AT = 768;
+
+async function shrink(page, image) {
+  const smaller = await page.evaluate(
+    async (url, size) => {
+      const picture = new Image();
+
+      await new Promise((done) => {
+        picture.onload = done;
+        picture.src = url;
+      });
+
+      const canvas = document.createElement('canvas');
+
+      canvas.width = size;
+      canvas.height = size;
+      canvas.getContext('2d').drawImage(picture, 0, 0, size, size);
+
+      return canvas.toDataURL('image/webp', 0.86);
+    },
+    `data:image/webp;base64,${image.toString('base64')}`,
+    SAVED_AT
+  );
+
+  return Buffer.from(smaller.split(',')[1], 'base64');
+}
+
 const articles = readdirSync(join(ROOT, 'content', 'blog'))
   .filter((name) => name.endsWith('.md'))
   .map((name) => name.replace(/\.md$/, ''));
 
 const asked = process.argv.slice(2);
-const wanted = asked.length > 0 ? asked : articles;
+const pages = Object.keys(PAGES);
+const wanted =
+  asked.length > 0 ? asked : [...articles, ...pages];
 
 mkdirSync(OUT, { recursive: true });
+
+const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new' });
+const page = await browser.newPage();
 
 let drawn = 0;
 let skipped = 0;
@@ -259,23 +330,26 @@ for (const slug of wanted) {
     continue;
   }
 
-  if (!articles.includes(slug)) {
-    console.error(`${slug}: no such article`);
+  if (!articles.includes(slug) && !PAGES[slug]) {
+    console.error(`${slug}: neither an article nor a page`);
     continue;
   }
 
-  const data = frontmatter(
-    readFileSync(join(ROOT, 'content', 'blog', `${slug}.md`), 'utf8')
-  );
-  const colour = COLOURS[data.tag] ?? DEFAULT_COLOUR;
+  const colour = PAGES[slug]
+    ? PAGES[slug][1]
+    : COLOURS[
+        frontmatter(readFileSync(join(ROOT, 'content', 'blog', `${slug}.md`), 'utf8')).tag
+      ] ?? DEFAULT_COLOUR;
 
   try {
-    writeFileSync(file, await draw(slug, colour));
+    writeFileSync(file, await shrink(page, await draw(slug, colour)));
     drawn += 1;
     console.log(`drew ${slug} (${colour})`);
   } catch (cause) {
     console.error(`${slug}: ${cause.message}`);
   }
 }
+
+await browser.close();
 
 console.log(`\n${drawn} drawn, ${skipped} already there, in content/og-art`);
