@@ -29,7 +29,7 @@ function Popup() {
   const { locale } = useI18n();
   const { theme } = useTheme();
   const [document_, setDocument] = useState<PageDocument | null>(null);
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState<'none' | 'error' | 'restricted'>('none');
   const [fromSelection, setFromSelection] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -45,6 +45,29 @@ function Popup() {
 
         if (!tab?.id) {
           throw new Error('no tab');
+        }
+
+        /*
+         * The pages no extension may touch, named before trying rather than after failing.
+         *
+         * Chrome's own pages, the store and another extension's pages are refused by the browser,
+         * and "this page cannot be read" over the top of `chrome://extensions` reads as a broken
+         * extension rather than as the rule it is. A person who has just installed this is looking
+         * at exactly that page, so it is the first thing they would ever see it say.
+         */
+        if (
+          /^(chrome|edge|about|devtools|view-source|chrome-extension|moz-extension):/.test(
+            tab.url ?? ''
+          ) ||
+          /^https:\/\/chromewebstore\.google\.com|^https:\/\/chrome\.google\.com\/webstore/.test(
+            tab.url ?? ''
+          )
+        ) {
+          if (live) {
+            setFailed('restricted');
+          }
+
+          return;
         }
 
         const [result] = await chrome.scripting.executeScript({
@@ -71,7 +94,7 @@ function Popup() {
          * honest answer to all of them.
          */
         if (live) {
-          setFailed(true);
+          setFailed('error');
         }
       }
     };
@@ -90,11 +113,15 @@ function Popup() {
   return (
     <div className="flex w-[22rem] flex-col gap-3 bg-surface-page p-4">
       <div className="flex min-w-0 flex-col gap-1">
-        <Typography variant="span" weight="medium" className="truncate">
-          {failed
-            ? t('ext.failed')
-            : (document_?.title ?? t('ext.converting'))}
-        </Typography>
+        {failed === 'none' ? (
+          <Typography variant="span" weight="medium" className="truncate">
+            {document_?.title ?? t('ext.converting')}
+          </Typography>
+        ) : (
+          <Typography variant="p" textColor="secondary" className="text-sm">
+            {failed === 'restricted' ? t('ext.restricted') : t('ext.failed')}
+          </Typography>
+        )}
 
         {stats && document_ && (
           <Typography variant="span" textColor="secondary" className="text-xs">

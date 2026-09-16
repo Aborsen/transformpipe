@@ -156,3 +156,45 @@ Each of these is a real idea and each would double the surface:
   change.
 - A store review is somebody else's schedule, so the week that submits is never the week that has
   nothing else in it.
+
+
+---
+
+## Where it stands, 17 September 2026
+
+**Week one is built and works.** `npm run ext` produces `dist-extension/`, which loads unpacked from
+`chrome://extensions`. What exists:
+
+- `extension/popup.tsx` — converts the page it was opened over straight away; copy, download `.md`,
+  open in a tab, open files.
+- `extension/viewer.tsx` — the tab: preview and source, the counts, the picker, all ten conversions
+  through `src/lib/convert.ts`, several files chained through `merge.ts`.
+- `extension/background.ts` — two context-menu entries; the worker has no DOM, so it hands the raw
+  page to the viewer and the viewer converts.
+- `extension/extract.ts` — the only code that runs in somebody's page. Selection if there is one,
+  otherwise the document. Reads, never writes.
+- `shared/from-page.ts` — Readability picks the article, every address is made absolute, the title
+  becomes an `#` heading. Verified on a real article: navigation and footer gone, `/docs/install`
+  became `https://example.com/docs/install`.
+- `vite.extension.config.ts` — second build, same source tree; the manifest is generated so its
+  version is this repository's, and the icons come from `brand/mark.svg`.
+- Ten new strings in all five catalogues, plus the sentence Chrome's own pages get: an extension
+  cannot read `chrome://extensions`, and saying so is better than "this page cannot be read" on the
+  first page anybody sees after installing.
+
+**Known, not yet fixed:** in the extension build the icon inside a `Button` sits at the top of the
+button rather than beside the label — the same component is correct on the site, so it is a
+difference in how the stylesheet is assembled for this build, not in the component. Cosmetic, and
+first thing in week two.
+
+## Week two, in order
+
+1. **Save as HTML** — `downloadDoc` already writes the self-contained `.html`; the extension only
+   offers `.md`. Two buttons where there is one, in both the popup and the viewer. (Asked for
+   17 September.)
+2. **The icon alignment above.**
+3. **The account**: an API key in an options page, `chrome.storage.local`, then Save and Share
+   against `POST /api/v1/documents?share=link`.
+4. **Firefox**: same code, a different manifest key, packaged separately.
+5. **The store**: listing text, screenshots out of the viewer, the privacy answers — and the page on
+   this site that says the extension exists.

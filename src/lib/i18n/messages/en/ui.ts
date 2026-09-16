@@ -128,6 +128,7 @@ export const ui: Content['ui'] = {
   /* The browser extension — see extension/ and content/extension-plan.md. */
   'ext.converting': 'Converting…',
   'ext.failed': 'This page cannot be read',
+  'ext.restricted': 'Chrome does not let any extension read its own pages. Open an ordinary page and press the button again — or convert a file instead.',
   'ext.selection': 'Selection',
   'ext.stats': '{words} words · {size}',
   'ext.copy': 'Copy Markdown',
