@@ -9,6 +9,7 @@ import {
   KeyRound,
   Share2,
   Terminal,
+  Webhook,
 } from 'lucide-react';
 import { Fragment, useMemo, type ReactNode } from 'react';
 import { AppBreadcrumbs } from '@/components/AppBreadcrumbs';
@@ -51,6 +52,7 @@ const ICONS: Record<string, typeof BookOpen> = {
   sharing: Share2,
   account: KeyRound,
   api: Terminal,
+  webhooks: Webhook,
   cli: Terminal,
   action: Terminal,
   assistant: Plug,
@@ -443,6 +445,42 @@ export function DocsPage({ onGoToConverter }: { onGoToConverter: () => void }) {
               }}
             />
           </p>
+        </Section>
+
+        <Section id="webhooks" title={titles.webhooks.title}>
+          <p>
+            <Rich
+              text={t('docs.webhooks.intro')}
+              parts={{
+                webhooks: <strong>Webhooks</strong>,
+                api: <InlineCode>/api/v1</InlineCode>,
+              }}
+            />
+          </p>
+          <CodeBlock>{`{
+  "event": "document.created",
+  "created_at": "2026-09-11T12:00:00.000Z",
+  "data": { "id": "…", "name": "notes.md", "kind": "markdown-to-html", "size": 512 }
+}`}</CodeBlock>
+          <p>
+            <Rich
+              text={t('docs.webhooks.signature')}
+              parts={{
+                payload: <InlineCode>{'{timestamp}.{body}'}</InlineCode>,
+                header: (
+                  <InlineCode>
+                    x-transformpipe-signature: t=&lt;unix&gt;,v1=&lt;hex&gt;
+                  </InlineCode>
+                ),
+              }}
+            />
+          </p>
+          <CodeBlock>{`const expected = crypto
+  .createHmac('sha256', secret)
+  .update(\`\${timestamp}.\${rawBody}\`)
+  .digest('hex');`}</CodeBlock>
+          <p>{t('docs.webhooks.secret')}</p>
+          <p>{t('docs.webhooks.delivery')}</p>
         </Section>
 
         <Section id="cli" title={titles.cli.title}>

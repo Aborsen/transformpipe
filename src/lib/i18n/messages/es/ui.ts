@@ -112,6 +112,14 @@ export const ui: Content['ui'] = {
   'header.menu.close': 'Cerrar el menú',
   'header.menu.convert': 'Convertir',
   'header.menu.goto': 'Ir a',
+  'docs.webhooks.intro':
+    'El menú de la cuenta tiene una entrada {webhooks}: registras una URL y recibe un POST firmado cuando se crea un documento o se comparte con personas concretas. Vive tras una sesión y no bajo {api} a propósito: una clave capaz de registrar un webhook convertiría una fuga en un flujo permanente de todos los documentos futuros, en lugar del acceso puntual de ahora.',
+  'docs.webhooks.signature':
+    'El cuerpo se firma con HMAC-SHA256 sobre {payload} y se envía en la cabecera {header}: la misma forma que usan Stripe y GitHub, así que el código de verificación que ya tengas suele necesitar solo otro secreto.',
+  'docs.webhooks.secret':
+    'El secreto se muestra al crear el webhook y puede volver a mostrarse desde el diálogo. A diferencia de una clave de API, lo presenta esta aplicación y no se le presenta a ella, así que el propietario puede necesitar leerlo de nuevo al configurar un receptor.',
+  'docs.webhooks.delivery':
+    'La entrega es de mejor esfuerzo: una petición, cinco segundos de espera, sin reintentos ni cola. Un receptor caído pierde esa entrega, y el diálogo dice cuándo falló la última.',
   'palette.title': 'Buscar',
   'palette.placeholder': 'Buscar conversiones y páginas',
   'palette.empty': 'No hay coincidencias',

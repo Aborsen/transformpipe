@@ -121,6 +121,14 @@ export const ui: Content['ui'] = {
   'header.menu.close': 'Menü schließen',
   'header.menu.convert': 'Umwandeln',
   'header.menu.goto': 'Wechseln zu',
+  'docs.webhooks.intro':
+    'Im Konto-Menü gibt es den Eintrag {webhooks}: Sie hinterlegen eine URL, und sie erhält einen signierten POST, sobald ein Dokument angelegt oder mit benannten Personen geteilt wird. Das liegt bewusst hinter einer Sitzung und nicht unter {api} — ein Schlüssel, der Webhooks anlegen könnte, würde aus einem Leck einen dauerhaften Strom aller künftigen Dokumente machen statt des punktuellen Zugriffs von heute.',
+  'docs.webhooks.signature':
+    'Der Rumpf wird per HMAC-SHA256 über {payload} signiert und im Header {header} gesendet — dieselbe Form, die Stripe und GitHub verwenden, sodass vorhandener Prüfcode meist nur ein anderes Geheimnis braucht.',
+  'docs.webhooks.secret':
+    'Das Geheimnis wird beim Anlegen gezeigt und lässt sich im Dialog erneut anzeigen. Anders als ein API-Schlüssel wird es von dieser App vorgezeigt und nicht ihr gegenüber, also darf der Kontoinhaber es beim Einrichten eines Empfängers noch einmal lesen.',
+  'docs.webhooks.delivery':
+    'Die Zustellung ist ein Versuch: eine Anfrage, fünf Sekunden Zeitlimit, kein erneuter Versuch und keine Warteschlange. Ein Empfänger, der gerade nicht läuft, verpasst diese Zustellung, und der Dialog nennt den Zeitpunkt des letzten Fehlschlags.',
   'palette.title': 'Suche',
   'palette.placeholder': 'Konvertierungen und Seiten durchsuchen',
   'palette.empty': 'Dazu gibt es nichts',

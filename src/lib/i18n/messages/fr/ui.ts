@@ -107,6 +107,14 @@ export const ui: Content['ui'] = {
   'header.menu.close': 'Fermer le menu',
   'header.menu.convert': 'Convertir',
   'header.menu.goto': 'Aller à',
+  'docs.webhooks.intro':
+    'Le menu du compte contient une entrée {webhooks} : vous enregistrez une URL et elle reçoit un POST signé dès qu’un document est créé, ou partagé avec des personnes nommées. C’est derrière une session et non sous {api}, délibérément — une clé capable d’enregistrer un webhook transformerait une fuite en flux permanent de tous les documents à venir, au lieu de l’accès ponctuel d’aujourd’hui.',
+  'docs.webhooks.signature':
+    'Le corps est signé en HMAC-SHA256 sur {payload} et envoyé dans l’en-tête {header} — la forme utilisée par Stripe et GitHub, si bien qu’un code de vérification existant ne demande en général qu’un autre secret.',
+  'docs.webhooks.secret':
+    'Le secret est affiché à la création et peut être réaffiché depuis la fenêtre. Contrairement à une clé d’API, il est présenté par cette application et non à elle : le propriétaire du compte peut légitimement avoir besoin de le relire en configurant un récepteur.',
+  'docs.webhooks.delivery':
+    'La livraison est au mieux : une requête, cinq secondes de délai, aucune reprise et aucune file d’attente. Un récepteur arrêté rate cette livraison, et la fenêtre indique quand la dernière a échoué.',
   'palette.title': 'Recherche',
   'palette.placeholder': 'Rechercher une conversion ou une page',
   'palette.empty': 'Aucun résultat',

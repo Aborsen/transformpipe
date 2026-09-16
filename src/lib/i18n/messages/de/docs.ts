@@ -42,6 +42,11 @@ export const docs: Content['docs'] = {
     summary:
       'Jeder Endpunkt unter /api/v1, was jeder zurückgibt und was die Fehlerstatus bedeuten.',
   },
+  webhooks: {
+    title: 'Webhooks',
+    summary:
+      'Ein signierter POST an Ihre URL, wenn ein Dokument angelegt oder geteilt wird — und wie man ihn prüft.',
+  },
   cli: {
     title: 'Kommandozeile',
     summary:

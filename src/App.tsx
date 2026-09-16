@@ -103,6 +103,49 @@ function Shell() {
    * dropzone — the one thing that page exists for, off screen. `popstate` is deliberately left
    * alone: going Back should return you to where you were, which the browser already does.
    */
+  /*
+   * An anchor the app has not drawn yet.
+   *
+   * The footer's FAQ link points at a section of the converter, and the browser's own handling of
+   * `#faq` runs the moment the document loads — which on a single-page app is before the section
+   * exists, so the link landed at the top of the page with no sign of what it promised. Here the
+   * hash is remembered instead, and the scroll happens on the first frame the element is actually
+   * in the document. It gives up after a second: a hash that never resolves is a mistyped anchor,
+   * not a slow render, and the page stays where it is rather than jumping later.
+   */
+  const [pendingHash, setPendingHash] = useState<string | null>(() =>
+    window.location.hash ? window.location.hash.slice(1) : null
+  );
+
+  useEffect(() => {
+    if (!pendingHash) {
+      return;
+    }
+
+    let frames = 0;
+    let raf = 0;
+
+    const look = () => {
+      const target = document.getElementById(pendingHash);
+
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setPendingHash(null);
+        return;
+      }
+
+      if (frames++ < 60) {
+        raf = requestAnimationFrame(look);
+      } else {
+        setPendingHash(null);
+      }
+    };
+
+    raf = requestAnimationFrame(look);
+
+    return () => cancelAnimationFrame(raf);
+  }, [pendingHash]);
+
   const setView = useCallback((next: Destination) => {
     setViewState(next);
     setArticleSlug(null);
@@ -124,6 +167,22 @@ function Shell() {
     setDoc(null);
     goToConversion(next);
     window.scrollTo({ top: 0 });
+  }, []);
+
+  /**
+   * The FAQ, which is a section rather than a page.
+   *
+   * It lives at the foot of every converter screen, so "go to the FAQ" is two things: be on the
+   * converter, and be at that section. Going through `setView` would do the first and then scroll
+   * to the top, undoing the second.
+   */
+  const openFaq = useCallback(() => {
+    setViewState('converter');
+    setArticleSlug(null);
+    setPageId(null);
+    goTo('converter');
+    window.history.replaceState(null, '', `${window.location.pathname}#faq`);
+    setPendingHash('faq');
   }, []);
 
   const openArticle = useCallback((slug: string) => {
@@ -629,6 +688,7 @@ function Shell() {
         onConversionChange={chooseConversion}
         onViewChange={setView}
         onOpenPage={openPage}
+        onOpenFaq={openFaq}
       />
     </div>
     </BreadcrumbSlotProvider>

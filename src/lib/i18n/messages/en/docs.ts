@@ -42,6 +42,11 @@ export const docs: Content['docs'] = {
     summary:
       'Every endpoint under /api/v1, what each returns, and what the error statuses mean.',
   },
+  webhooks: {
+    title: 'Webhooks',
+    summary:
+      'A signed POST to a URL of yours when a document is created or shared, and how to verify it.',
+  },
   cli: {
     title: 'Command line',
     summary:

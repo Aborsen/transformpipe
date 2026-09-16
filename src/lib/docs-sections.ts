@@ -29,6 +29,7 @@ export const DOCS_SECTION_IDS = [
   'sharing',
   'account',
   'api',
+  'webhooks',
   'cli',
   'action',
   'assistant',

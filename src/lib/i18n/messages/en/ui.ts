@@ -117,6 +117,14 @@ export const ui: Content['ui'] = {
   'header.menu.close': 'Close menu',
   'header.menu.convert': 'Convert',
   'header.menu.goto': 'Go to',
+  'docs.webhooks.intro':
+    'The account menu has a {webhooks} entry: register a URL and it receives a signed POST when a document is created, or shared with named people. It lives behind a session rather than under {api} on purpose — a key that could register a webhook would turn a leak into a standing feed of every future document instead of the point-in-time access it is now.',
+  'docs.webhooks.signature':
+    'The body is signed with HMAC-SHA256 over {payload} and sent in the {header} header — the shape Stripe and GitHub use, so verification code you already have usually needs only a different secret.',
+  'docs.webhooks.secret':
+    'The secret is shown when the webhook is created and can be shown again from the dialog. Unlike an API key it is presented by this app rather than to it, so the owner may legitimately need to read it again while setting a receiver up.',
+  'docs.webhooks.delivery':
+    'Delivery is best effort: one request, a five-second timeout, no retry and no queue. A receiver that is down misses that delivery, and the dialog says when the last one failed.',
   'palette.title': 'Search',
   'palette.placeholder': 'Search conversions and pages',
   'palette.empty': 'Nothing matches that',
