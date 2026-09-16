@@ -20,7 +20,7 @@ export const docs: Content['docs'] = {
   converting: {
     title: 'Converting',
     summary:
-      'The five conversions — Markdown to HTML, and HTML, Word, CSV and JSON to Markdown — what each accepts, chaining several files into one document, the source tab, and the formats a download can hand over: Markdown, HTML, plain text or a printed PDF.',
+      'The ten conversions — Markdown to HTML, and HTML, Word, Excel, CSV, JSON, plain text and Notion, Confluence or Obsidian exports to Markdown — what each accepts, chaining several files into one document, the source tab, and the formats a download can hand over: Markdown, HTML, plain text or a printed PDF.',
   },
   history: {
     title: 'History',

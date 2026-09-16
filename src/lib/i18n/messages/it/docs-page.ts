@@ -15,7 +15,7 @@ export const docsPage = {
 
   'docs.title': 'Tutto quello che fa TransformPipe',
   'docs.lede':
-    'Markdown, HTML, Word, CSV o JSON in entrata — un documento in uscita come HTML, Markdown, testo semplice o stampa. Da questa pagina, da un terminale, da una pull request o da un assistente. È tutto qui; niente di tutto questo sta dietro a un piano a pagamento.',
+    'Markdown, HTML, Word, Excel, CSV, JSON, testo semplice o un intero export di Notion, Confluence o Obsidian in entrata — un documento in uscita come HTML, Markdown, testo semplice o stampa. Da questa pagina, da un terminale, da una pull request o da un assistente. È tutto qui; niente di tutto questo sta dietro a un piano a pagamento.',
 
   /* Under every screenshot, after the caption. */
   'docs.shot.enlarge': '— fai clic per ingrandire',

@@ -12,7 +12,7 @@ export const faq: Content['faq'] = [
   {
     question: 'Cosa può convertire?',
     answer:
-      'Cinque cose, ognuna con la sua pagina sotto Convertitore nell’intestazione: da Markdown a HTML, e da HTML, Word (.docx), CSV o TSV e JSON a Markdown. Tutto tranne la prima finisce come Markdown, che è la forma in cui qui un documento viene conservato, mostrato in anteprima e condiviso — così un file Word, un foglio di calcolo e una risposta di API diventano la stessa cosa una volta entrati.',
+      'Dieci cose, ognuna con la sua pagina sotto Convertitore nell’intestazione: da Markdown a HTML, e da HTML, Word (.docx), Excel (.xlsx), CSV o TSV, JSON, testo semplice e un export di Notion, Confluence o Obsidian a Markdown. Tutto tranne la prima finisce come Markdown, che è la forma in cui qui un documento viene conservato, mostrato in anteprima e condiviso — così un file Word, un foglio di calcolo e una risposta di API diventano la stessa cosa una volta entrati.',
   },
   {
     question: 'Il mio file viene caricato da qualche parte?',

@@ -33,7 +33,7 @@ export const docsPage = {
 
   'docs.title': 'Everything TransformPipe does',
   'docs.lede':
-    'Markdown, HTML, Word, CSV or JSON in — a document out as HTML, Markdown, plain text or print. From this page, from a terminal, from a pull request or from an assistant. This is the whole of it; nothing here sits behind a plan.',
+    'Markdown, HTML, Word, Excel, CSV, JSON, plain text or a whole Notion, Confluence or Obsidian export in — a document out as HTML, Markdown, plain text or print. From this page, from a terminal, from a pull request or from an assistant. This is the whole of it; nothing here sits behind a plan.',
 
   /* Under every screenshot, after the caption. */
   'docs.shot.enlarge': '— click to enlarge',

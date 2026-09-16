@@ -17,7 +17,7 @@ export const docs: Content['docs'] = {
   converting: {
     title: 'Conversione',
     summary:
-      'Le cinque conversioni — da Markdown a HTML, e da HTML, Word, CSV e JSON a Markdown — cosa accetta ciascuna, la concatenazione di più file in un solo documento, la scheda del sorgente e i formati che il download può consegnare: Markdown, HTML, testo semplice o un PDF stampato.',
+      'Le dieci conversioni — da Markdown a HTML, e da HTML, Word, Excel, CSV, JSON, testo semplice e gli export di Notion, Confluence o Obsidian a Markdown — cosa accetta ciascuna, la concatenazione di più file in un solo documento, la scheda del sorgente e i formati che il download può consegnare: Markdown, HTML, testo semplice o un PDF stampato.',
   },
   history: {
     title: 'Cronologia',

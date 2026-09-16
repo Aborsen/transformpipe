@@ -50,7 +50,7 @@ export const pages: Content['pages'] = {
     seo: {
       title: 'Acerca de TransformPipe',
       description:
-        'TransformPipe convierte documentos Markdown, HTML, Word, CSV y JSON en tu navegador, con API, CLI, GitHub Action y servidor MCP. Hecho por Raudar Labs.',
+        'TransformPipe convierte documentos a Markdown y de vuelta — diez formatos, en tu navegador, con API, CLI, GitHub Action y servidor MCP. Hecho por Raudar Labs.',
     },
   },
   contact: {

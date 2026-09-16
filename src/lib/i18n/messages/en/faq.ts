@@ -13,7 +13,7 @@ export const faq: Content['faq'] = [
   {
     question: 'What can it convert?',
     answer:
-      'Five things, each with its own page under Converter in the header: Markdown to HTML, and HTML, Word (.docx), CSV or TSV, and JSON to Markdown. Everything but the first ends as Markdown, which is what a document is stored, previewed and shared as here — so a Word file, a spreadsheet and an API response become the same kind of thing once they are in.',
+      'Ten things, each with its own page under Converter in the header: Markdown to HTML, and HTML, Word (.docx), Excel (.xlsx), CSV or TSV, JSON, plain text, and a Notion, Confluence or Obsidian export to Markdown. Everything but the first ends as Markdown, which is what a document is stored, previewed and shared as here — so a Word file, a spreadsheet and an API response become the same kind of thing once they are in.',
   },
   {
     question: 'Does my file get uploaded anywhere?',

@@ -20,7 +20,7 @@ export const docs: Content['docs'] = {
   converting: {
     title: 'Umwandeln',
     summary:
-      'Die fünf Umwandlungen — Markdown in HTML, und HTML, Word, CSV und JSON in Markdown —, was jede annimmt, das Verketten mehrerer Dateien zu einem Dokument, der Quelltext-Reiter und die Formate, die ein Download herausgeben kann: Markdown, HTML, reiner Text oder ein gedrucktes PDF.',
+      'Die zehn Umwandlungen — Markdown in HTML, und HTML, Word, Excel, CSV, JSON, reiner Text sowie Notion-, Confluence- und Obsidian-Exporte in Markdown —, was jede annimmt, das Verketten mehrerer Dateien zu einem Dokument, der Quelltext-Reiter und die Formate, die ein Download herausgeben kann: Markdown, HTML, reiner Text oder ein gedrucktes PDF.',
   },
   history: {
     title: 'Verlauf',
