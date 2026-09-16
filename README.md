@@ -261,7 +261,7 @@ it takes what the pull request changed, and with `pull-requests: write` it comme
 reviewer opens the rendered document instead of reading a diff of asterisks.
 
 ```yaml
-- uses: Aborsen/MD2HTML@main
+- uses: raudarlabs/transformpipe@main
   with:
     api-key: ${{ secrets.TP_API_KEY }}
 ```

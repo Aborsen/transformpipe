@@ -268,7 +268,7 @@ export async function sendWelcome(options: {
       '  Explore product updates, practical workflows, and ideas for automating document',
       '  conversion.',
       '* **Feedback and feature requests:**',
-      '  [Open a GitHub issue](https://github.com/Aborsen/MD2HTML/issues/new)',
+      '  [Open a GitHub issue](https://github.com/raudarlabs/transformpipe/issues/new)',
       '  Have an idea, found a bug, or want to share a workflow you’d like us to support? We’d',
       '  genuinely love to hear from you. Early community feedback directly shapes what we build',
       '  next.',

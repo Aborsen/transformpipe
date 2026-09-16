@@ -80,7 +80,7 @@ export interface StaticPage {
 }
 
 /** The repository, named once: the header links to it, the footer links to it, and so do the pages. */
-export const REPO_URL = 'https://github.com/Aborsen/MD2HTML';
+export const REPO_URL = 'https://github.com/raudarlabs/transformpipe';
 
 /** Where a question goes. There is no support inbox yet; the repository is the honest answer. */
 export const ISSUES_URL = `${REPO_URL}/issues`;

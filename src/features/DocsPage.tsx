@@ -488,7 +488,7 @@ node cli/tp.mjs usage                     # 65.8 kB of 100.0 MB · 3 of 500 docu
 
         <Section id="action" title={titles.action.title}>
           <p>{t('docs.action.intro')}</p>
-          <CodeBlock>{`- uses: Aborsen/MD2HTML@v1
+          <CodeBlock>{`- uses: raudarlabs/transformpipe@v1
   with:
     api-key: \${{ secrets.TP_API_KEY }}`}</CodeBlock>
           <p>
@@ -670,12 +670,12 @@ node cli/tp.mjs usage                     # 65.8 kB of 100.0 MB · 3 of 500 docu
         <footer className="border-stroke border-t pt-6 text-ink-secondary text-sm">
           {t('docs.footer.source')}{' '}
           <a
-            href="https://github.com/Aborsen/MD2HTML"
+            href="https://github.com/raudarlabs/transformpipe"
             target="_blank"
             rel="noreferrer"
             className="text-brand-tertiary underline underline-offset-2"
           >
-            github.com/Aborsen/MD2HTML
+            github.com/raudarlabs/transformpipe
           </a>
         </footer>
       </div>

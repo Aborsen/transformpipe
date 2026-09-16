@@ -52,7 +52,7 @@ jobs:
           fetch-depth: 0
 
       - id: publish
-        uses: Aborsen/MD2HTML@main
+        uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
 
@@ -107,7 +107,7 @@ The same guard with a different condition is how to handle a fork on purpose rat
 ```yaml
       - if: github.event.pull_request.head.repo.fork == false
         id: publish
-        uses: Aborsen/MD2HTML@main
+        uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
 ```
@@ -133,7 +133,7 @@ Every part of that is load-bearing. `--name-only` asks for paths rather than a p
 `fetch-depth: 0` fetches the full history, which costs real time on a repository with years of commits. If checkout is already the slow step, name the files yourself and keep the shallow clone:
 
 ```yaml
-      - uses: Aborsen/MD2HTML@main
+      - uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
           files: docs/handbook/intro.md docs/handbook/style.md
@@ -155,7 +155,7 @@ Most workflows do not write that diff themselves. `tj-actions/changed-files` is 
 
       - if: steps.changed.outputs.any_changed == 'true'
         id: publish
-        uses: Aborsen/MD2HTML@main
+        uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
           files: ${{ steps.changed.outputs.all_changed_files }}
@@ -201,7 +201,7 @@ jobs:
         with:
           fetch-depth: 2
 
-      - uses: Aborsen/MD2HTML@main
+      - uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
           files: docs/handbook.md
@@ -224,7 +224,7 @@ The fix is a sticky comment: one comment, rewritten in place. `marocchino/sticky
 
 ```yaml
       - id: publish
-        uses: Aborsen/MD2HTML@main
+        uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
           comment: false
@@ -327,7 +327,7 @@ jobs:
       HAS_KEY: ${{ secrets.TP_API_KEY != '' }}
     steps:
       - if: env.HAS_KEY == 'true'
-        uses: Aborsen/MD2HTML@main
+        uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
 ```

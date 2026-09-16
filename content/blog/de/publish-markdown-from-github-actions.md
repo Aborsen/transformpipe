@@ -52,7 +52,7 @@ jobs:
           fetch-depth: 0
 
       - id: publish
-        uses: Aborsen/MD2HTML@main
+        uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
 
@@ -107,7 +107,7 @@ Dieselbe Absicherung mit einer anderen Bedingung ist, wie man einen Fork absicht
 ```yaml
       - if: github.event.pull_request.head.repo.fork == false
         id: publish
-        uses: Aborsen/MD2HTML@main
+        uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
 ```
@@ -133,7 +133,7 @@ Jeder Teil davon trägt Gewicht. `--name-only` fragt nach Pfaden statt nach eine
 `fetch-depth: 0` holt die volle Historie, was auf einem Repository mit Jahren an Commits echte Zeit kostet. Wenn Checkout ohnehin schon der langsame Schritt ist, benennen Sie die Dateien selbst und behalten Sie den flachen Klon:
 
 ```yaml
-      - uses: Aborsen/MD2HTML@main
+      - uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
           files: docs/handbook/intro.md docs/handbook/style.md
@@ -155,7 +155,7 @@ Die meisten Workflows schreiben diesen Diff nicht selbst. `tj-actions/changed-fi
 
       - if: steps.changed.outputs.any_changed == 'true'
         id: publish
-        uses: Aborsen/MD2HTML@main
+        uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
           files: ${{ steps.changed.outputs.all_changed_files }}
@@ -201,7 +201,7 @@ jobs:
         with:
           fetch-depth: 2
 
-      - uses: Aborsen/MD2HTML@main
+      - uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
           files: docs/handbook.md
@@ -224,7 +224,7 @@ Die Abhilfe ist ein Sticky Comment: ein Kommentar, an Ort und Stelle neu geschri
 
 ```yaml
       - id: publish
-        uses: Aborsen/MD2HTML@main
+        uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
           comment: false
@@ -327,7 +327,7 @@ jobs:
       HAS_KEY: ${{ secrets.TP_API_KEY != '' }}
     steps:
       - if: env.HAS_KEY == 'true'
-        uses: Aborsen/MD2HTML@main
+        uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
 ```

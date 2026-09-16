@@ -23,6 +23,6 @@ jobs:
           # The action compares against the base commit, which has to be in the checkout.
           fetch-depth: 0
 
-      - uses: Aborsen/MD2HTML@main
+      - uses: raudarlabs/transformpipe@main
         with:
           api-key: ${{ secrets.TP_API_KEY }}
