@@ -6,9 +6,17 @@ built out of parts this repository already has, that does not become a second pr
 
 ## What it is
 
+Two ways in, one thing out.
+
 **The page you are looking at, as Markdown, in one click.** Press the toolbar button and the
 extension reads the rendered page, converts it here in the browser, and hands back Markdown: copy
 it, download it, or — signed in — save it to the account and get a link.
+
+**A file on your machine, converted without going to the site.** The same button opens a file
+picker; pick one of the ten formats the app accepts and it opens converted, in a new tab, rendered.
+Nothing is uploaded and nothing needs a network — every one of those conversions already runs in
+the browser, which is the promise the front page makes and the reason this costs days rather than
+weeks.
 
 That is the whole of version one. Not a second converter, not a second account system, not a
 mini-app in a popup: the app's own conversion, running where the file already is.
@@ -38,6 +46,10 @@ the next build, because they are the same file.
 | It needs | It imports | Not |
 | --- | --- | --- |
 | HTML → Markdown | `shared/from-html.ts` | a second converter tuned for pages |
+| The other nine conversions | `src/lib/convert.ts`, which loads each behind `import()` | a shorter list of formats in the extension than on the site |
+| Chaining several files into one | `src/lib/merge.ts` | dropping the behaviour people already know |
+| The preview, and the counts under it | `src/components/DocumentPreview.tsx`, `getDocStats` | a second renderer for the same Markdown |
+| Downloading as .md, .html or .txt | `src/lib/download.ts` | three more `Blob` calls |
 | The size limit, the extension list | `shared/limits.ts`, `shared/conversions.ts` | numbers typed twice |
 | Buttons, the switch, the toast | `src/ui/components/*` | a popup built from raw HTML |
 | Colours, spacing, the dark theme | `src/ui/globals.css` + the Tailwind preset | a second palette that drifts |
@@ -67,6 +79,17 @@ dependencies of its own, and it runs against a DOM — which an extension has, b
 just pressed, which is both the honest permission set and the one that clears a store review
 quickly. `storage` joins them in week two, for the key.
 
+**Two surfaces, and the second is a page of its own.** The popup is a launcher: it converts the
+current page and shows the result small. Anything worth reading opens in the **viewer** — a page
+inside the extension (`chrome-extension://…/viewer.html`) with the preview and source tabs, the
+counts, the download buttons and, with a key, Save and Share. It is where a picked file lands, and
+it is what the popup's "Open in a tab" opens.
+
+The viewer owns the file picker rather than the popup, deliberately: a popup closes the moment a
+tab opens in front of it, and a `File` cannot be handed from one page to another. So "Open files…"
+opens the viewer and the viewer asks for the files — the bytes are read once, in the page that
+shows them, and never move.
+
 The flow, in full:
 
 1. You press the button, or right-click a selection and choose **Convert to Markdown**.
@@ -75,10 +98,17 @@ The flow, in full:
 3. `shared/from-page.ts` turns that into Markdown, in the popup. Nothing has left the browser.
 4. The popup shows it: the rendered preview and the Markdown source, the same two tabs the
    converter has, at the same word and byte counts (`getDocStats`).
-5. Buttons: **Copy**, **Download .md**, and — with a key saved — **Save** and **Share**, which
-   `POST` to `/api/v1/documents` and put the link on the clipboard.
+5. Buttons: **Copy**, **Download .md**, **Open in a tab**, and — with a key saved — **Save** and
+   **Share**, which `POST` to `/api/v1/documents` and put the link on the clipboard.
 
-Signed out, it is a converter that never talks to us at all. That is the same promise the front
+A picked file takes the same path from step 3 on: `conversionForFiles` decides which conversion a
+`.docx`, a `.zip` or a `.xlsx` is, `convertFile` runs it, several files chain into one document in
+the order they were picked, and the viewer shows what came out. The handoff between the popup and
+the viewer, where there is one, goes through `chrome.storage.session` — memory that is gone when
+the browser closes, so a converted document is never written to disk on the way to being shown.
+
+Signed out, it is a converter that never talks to us at all — including with no network at all,
+which is worth saying plainly in the listing: **ten formats, converted offline, in a tab.** That is the same promise the front
 page makes, and it is worth making loudly in the store listing: *the page does not leave your
 browser.*
 
@@ -95,8 +125,13 @@ The extension does not need a second endpoint, and nothing about the API changes
 ## Two weeks, split
 
 **Week one — the converter.** The extension folder, the build, the popup, the extraction, the
-context menu, copy and download, `shared/from-page.ts` with its tests. At the end of it the thing
-is installable from a folder and genuinely useful, and the Chrome listing goes in for review.
+context menu, the viewer page with the file picker, copy and download, and `shared/from-page.ts`
+with its tests. At the end of it the thing is installable from a folder and genuinely useful, and
+the Chrome listing goes in for review.
+
+The file half is days rather than a week precisely because none of it is new: `convert.ts` already
+dispatches the ten conversions and already loads each behind `import()`, so the viewer downloads a
+Word reader only when somebody opens a `.docx`.
 
 **Week two — the account and the shelf.** Options page and key storage, Save and Share, the
 five-language catalogue wired in, the Firefox packaging (same code, a different manifest key), the
