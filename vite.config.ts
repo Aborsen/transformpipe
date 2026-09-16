@@ -25,6 +25,33 @@ export default defineConfig({
   define: {
     'process.env.LOG_PERF': 'false',
   },
+  /*
+   * The stylesheet keeps its name across deployments; everything else keeps its hash.
+   *
+   * A hashed name exists so a new build cannot be served an old file out of a cache. The host
+   * already answers `max-age=0, must-revalidate` for everything under /assets, so on this site the
+   * hash was buying nothing — and it was costing something. A session recorder stores the page's
+   * markup and fetches the stylesheet from us when somebody plays the session back; deploy twice
+   * and `index-CuR8xdKN.css` is gone, so every recording made before that deploy replays as
+   * unstyled markup and reads like the site was broken for that visitor.
+   *
+   * So: one stable name for the one file a replay needs. If long-lived caching is ever turned on
+   * for /assets, this file has to be excluded from it, or a visitor with yesterday's CSS and
+   * today's markup is the exact failure the hash was there to prevent.
+   */
+  build: {
+    rollupOptions: {
+      output: {
+        assetFileNames: (asset) => {
+          const names = asset.names ?? (asset.name ? [asset.name] : []);
+
+          return names.some((name) => name.endsWith('.css'))
+            ? 'assets/app.css'
+            : 'assets/[name]-[hash][extname]';
+        },
+      },
+    },
+  },
   server: {
     port: 5180,
     host: '127.0.0.1',
