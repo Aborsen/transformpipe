@@ -70,8 +70,9 @@ function fold(value: string): string {
  *
  * Documents are in it by name. The list the history is already holding is the list this searches,
  * so it costs no request and is exactly as complete as the history is — which for a signed-in
- * account is everything in it. What is still queued behind the content search on the roadmap is
- * searching *inside* documents; a name is what people actually remember, and it was already here.
+ * account is everything in it. Searching *inside* documents exists too and stays where it is: it
+ * asks the server, and the place to do that is the history, which can show what it found. A
+ * palette answers while you type or it is not a palette.
  *
  * Five of them show with an empty query, newest first, because a palette that opens on a blank
  * list makes you type before it tells you anything. The sixth row is the way to the rest.
