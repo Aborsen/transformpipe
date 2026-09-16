@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && npm run deploy:check && npm run blog:check && vite build && npm run prerender",
+    "ext": "vite build --config vite.extension.config.ts",
     "prerender": "vite build --ssr scripts/prerender.ts --outDir .prerender --emptyOutDir && node .prerender/prerender.js",
     "preview": "vite preview",
     "check-types": "tsc -b",
@@ -25,6 +26,7 @@
   "dependencies": {
     "@ai-sdk/google": "^4.0.67",
     "@hono/node-server": "^2.1.1",
+    "@mozilla/readability": "^0.6.0",
     "@neondatabase/serverless": "^1.1.0",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-avatar": "^1.1.11",
@@ -68,6 +70,7 @@
     "xss": "^1.0.15"
   },
   "devDependencies": {
+    "@types/chrome": "^0.3.0",
     "@types/diff": "^7.0.2",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.3",

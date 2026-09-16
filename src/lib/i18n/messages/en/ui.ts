@@ -125,6 +125,17 @@ export const ui: Content['ui'] = {
     'The secret is shown when the webhook is created and can be shown again from the dialog. Unlike an API key it is presented by this app rather than to it, so the owner may legitimately need to read it again while setting a receiver up.',
   'docs.webhooks.delivery':
     'Delivery is best effort: one request, a five-second timeout, no retry and no queue. A receiver that is down misses that delivery, and the dialog says when the last one failed.',
+  /* The browser extension — see extension/ and content/extension-plan.md. */
+  'ext.converting': 'Converting…',
+  'ext.failed': 'This page cannot be read',
+  'ext.selection': 'Selection',
+  'ext.stats': '{words} words · {size}',
+  'ext.copy': 'Copy Markdown',
+  'ext.copied': 'Copied',
+  'ext.download': 'Download .md',
+  'ext.open': 'Open in a tab',
+  'ext.files': 'Open files…',
+  'ext.viewer.empty': 'Choose files to convert — ten formats, all of it in this browser',
   'palette.title': 'Search',
   'palette.placeholder': 'Search conversions and pages',
   'palette.empty': 'Nothing matches that',

@@ -16,17 +16,19 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    "types": ["vite/client", "vite-plugin-svgr/client", "node"],
+    "types": ["vite/client", "vite-plugin-svgr/client", "node", "chrome"],
     "baseUrl": ".",
     "paths": { "@/*": ["./src/*"], "@shared/*": ["./shared/*"] }
   },
   "include": [
     "src",
     "shared",
+    "extension",
     "server",
     "api",
     "scripts/prerender.ts",
     "vite.config.ts",
+    "vite.extension.config.ts",
     "tailwind.config.ts",
     "tailwind.ui.config.ts"
   ]

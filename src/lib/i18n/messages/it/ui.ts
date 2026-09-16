@@ -113,6 +113,17 @@ export const ui: Content['ui'] = {
     'Il segreto viene mostrato alla creazione e può essere mostrato di nuovo dalla finestra. A differenza di una chiave API è presentato da questa app e non a essa, quindi il titolare può aver bisogno di rileggerlo mentre configura un ricevitore.',
   'docs.webhooks.delivery':
     'La consegna è al meglio possibile: una richiesta, cinque secondi di attesa, nessun nuovo tentativo e nessuna coda. Un ricevitore spento perde quella consegna, e la finestra dice quando l’ultima è fallita.',
+  /* The browser extension — see extension/ and content/extension-plan.md. */
+  'ext.converting': 'Conversione…',
+  'ext.failed': 'Questa pagina non si può leggere',
+  'ext.selection': 'Selezione',
+  'ext.stats': '{words} parole · {size}',
+  'ext.copy': 'Copia il Markdown',
+  'ext.copied': 'Copiato',
+  'ext.download': 'Scarica .md',
+  'ext.open': 'Apri in una scheda',
+  'ext.files': 'Apri file…',
+  'ext.viewer.empty': 'Scegli i file da convertire — dieci formati, tutto in questo browser',
   'palette.title': 'Cerca',
   'palette.placeholder': 'Cerca conversioni e pagine',
   'palette.empty': 'Nessun risultato',

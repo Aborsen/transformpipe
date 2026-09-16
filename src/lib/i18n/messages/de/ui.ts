@@ -129,6 +129,17 @@ export const ui: Content['ui'] = {
     'Das Geheimnis wird beim Anlegen gezeigt und lässt sich im Dialog erneut anzeigen. Anders als ein API-Schlüssel wird es von dieser App vorgezeigt und nicht ihr gegenüber, also darf der Kontoinhaber es beim Einrichten eines Empfängers noch einmal lesen.',
   'docs.webhooks.delivery':
     'Die Zustellung ist ein Versuch: eine Anfrage, fünf Sekunden Zeitlimit, kein erneuter Versuch und keine Warteschlange. Ein Empfänger, der gerade nicht läuft, verpasst diese Zustellung, und der Dialog nennt den Zeitpunkt des letzten Fehlschlags.',
+  /* The browser extension — see extension/ and content/extension-plan.md. */
+  'ext.converting': 'Wird umgewandelt…',
+  'ext.failed': 'Diese Seite lässt sich nicht lesen',
+  'ext.selection': 'Auswahl',
+  'ext.stats': '{words} Wörter · {size}',
+  'ext.copy': 'Markdown kopieren',
+  'ext.copied': 'Kopiert',
+  'ext.download': '.md herunterladen',
+  'ext.open': 'In einem Tab öffnen',
+  'ext.files': 'Dateien öffnen…',
+  'ext.viewer.empty': 'Dateien zum Umwandeln wählen — zehn Formate, alles in diesem Browser',
   'palette.title': 'Suche',
   'palette.placeholder': 'Konvertierungen und Seiten durchsuchen',
   'palette.empty': 'Dazu gibt es nichts',

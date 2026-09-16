@@ -8,7 +8,12 @@ import uiConfig from './tailwind.ui.config';
  */
 const config: Config = {
   ...uiConfig,
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+    /* The extension's pages are built from the same components and need the same classes. */
+    './extension/**/*.{js,ts,jsx,tsx,html}',
+  ],
   plugins: [...(uiConfig.plugins ?? []), animate],
 };
 
