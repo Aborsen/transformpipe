@@ -99,6 +99,13 @@
     --surface-card: var(--white); /* #FFFFFF */
     --surface-card2: var(--slate-100); /* #F1F5F9 */
     --surface-chips: var(--slate-50); /* #F8FAFC */
+    /*
+     * The bar at the top of the app, and the one thing it must not be is the brightest band on the
+     * screen — a light plank across a page reads as a slab of chrome before it reads as navigation.
+     * On paper-coloured light it stays white and is separated by its border; on dark it goes under
+     * the page rather than over it.
+     */
+    --surface-header: var(--white); /* #FFFFFF */
     --surface-page: var(
       --slate-50
     ); /* #F8FAFC — page background (was legacy --background) */
@@ -394,6 +401,7 @@
     --surface-card: var(--grey-900); /* #17171E */
     --surface-card2: var(--grey-800); /* #21212C */
     --surface-chips: var(--grey-700); /* #2A2834 */
+    --surface-header: 250 20% 5%; /* #0B0A0F — a shade under the page */
     --surface-page: var(
       --grey-950
     ); /* #0F0E14 — page background (was legacy --background) */

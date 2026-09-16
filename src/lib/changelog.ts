@@ -32,6 +32,15 @@ export interface ChangelogEntry {
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-16',
+    title: 'A bar you can type into',
+    body:
+      'The header is rebuilt around a search box: press `⌘K` — `Ctrl K` away from a Mac — and every '
+      + 'conversion and every page in the app is two letters away. The bar itself now sits under the '
+      + 'page rather than on top of it, the conversion you are on is the first thing on it, and the '
+      + 'trail saying where you are moved out of the page and into a line of its own underneath.',
+  },
+  {
+    date: '2026-09-16',
     title: 'A new mark',
     body:
       'The name is now a drawing rather than six characters of monospace: a `T` and a `p` sharing '

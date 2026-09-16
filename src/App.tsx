@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { AppFooter } from './components/AppFooter';
+import { BreadcrumbSlotProvider } from './components/BreadcrumbSlot';
 import { AppHeader } from './components/AppHeader';
 import { MAX_FILE_SIZE } from './components/Dropzone';
 import { KEEP_BYTES } from '@shared/limits';
@@ -521,6 +522,7 @@ function Shell() {
   }, [history, t]);
 
   return (
+    <BreadcrumbSlotProvider>
     <div className="flex min-h-full flex-col bg-surface-page">
       <AppHeader
         view={view}
@@ -627,6 +629,7 @@ function Shell() {
         onOpenPage={openPage}
       />
     </div>
+    </BreadcrumbSlotProvider>
   );
 }
 

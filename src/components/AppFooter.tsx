@@ -24,6 +24,40 @@ interface AppFooterProps {
  * failure this replaced: a footer that promised a self-contained HTML export and one line about
  * the browser, and nothing else.
  */
+/** Whoever built this, and where they are. */
+const MAKER = 'Raudar Labs';
+const MAKER_URL = 'https://raudar.dev/';
+
+/**
+ * The name in "Built by Raudar Labs", made a link without a second string to translate.
+ *
+ * The sentence is translated five ways and the name is the same word in all five, so the line is
+ * split on it rather than stored as three pieces per language — one of which every future
+ * translation would have to get exactly right for the link to land anywhere.
+ */
+function linkToMaker(sentence: string) {
+  const [before, ...rest] = sentence.split(MAKER);
+
+  if (rest.length === 0) {
+    return sentence;
+  }
+
+  return (
+    <>
+      {before}
+      <a
+        href={MAKER_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 transition-colors hover:text-brand-tertiary"
+      >
+        {MAKER}
+      </a>
+      {rest.join(MAKER)}
+    </>
+  );
+}
+
 export function AppFooter({
   onConversionChange,
   onViewChange,
@@ -90,7 +124,7 @@ export function AppFooter({
     <SiteFooter
       brand={<Logo />}
       tagline={t('footer.tagline')}
-      builtBy={t('footer.builtby')}
+      builtBy={linkToMaker(t('footer.builtby'))}
       columns={columns}
       /* The year is a number, not a word: it goes in as a value the sentence has a hole for. */
       note={t('footer.note', { year: new Date().getFullYear() })}

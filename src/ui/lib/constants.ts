@@ -45,6 +45,8 @@ export const THEME_COLORS = {
     card2: 'hsl(var(--surface-card2) / <alpha-value>)',
     chips: 'hsl(var(--surface-chips) / <alpha-value>)',
     accent: 'hsl(var(--surface-accent) / <alpha-value>)',
+    /* The app's own bar. Not a card: chrome sits under the page, not on top of it. */
+    header: 'hsl(var(--surface-header) / <alpha-value>)',
   },
   stroke: {
     DEFAULT: 'hsl(var(--stroke-border) / <alpha-value>)',

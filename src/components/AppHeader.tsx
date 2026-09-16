@@ -2,12 +2,15 @@ import {
   BookOpen,
   Check,
   ChevronDown,
-  FileCode2,
   History,
   Newspaper,
+  Search,
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { CONVERSIONS, type ConversionId } from '@shared/conversions';
 import { useI18n, useT } from '@/lib/i18n/context';
+import { useBreadcrumbSlot } from './BreadcrumbSlot';
+import { CommandPalette } from './CommandPalette';
 import { Logo } from './Logo';
 import { LanguageMenu } from './LanguageMenu';
 import { MobileNav } from './MobileNav';
@@ -20,7 +23,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/components/DropdownMenu';
-import { Separator } from '@/ui/components/Separator';
 import { Typography } from '@/ui/components/Typography';
 import { cn } from '@/ui/lib/utils';
 
@@ -42,13 +44,6 @@ interface AppHeaderProps {
 }
 
 /*
- * The converter is a menu of its own; these are the destinations beside it.
- *
- * A key rather than a label: what a destination is called is language, and the words come from the
- * catalogue at render time. What is here is what does not change with the language — which view,
- * and which glyph.
- */
-/*
  * The order, the ids and the glyphs. Every label is read from the catalogue at render time.
  */
 const NAV_ITEMS = [
@@ -58,25 +53,31 @@ const NAV_ITEMS = [
 ];
 
 /*
- * Nothing here has a fixed width, and that is the point.
+ * The bar, rebuilt.
  *
- * Two attempts went the other way. Per-item minimums sized to the longest translation, then one
- * width for all three — and both made the spacing worse, because what a reader sees is the gap
- * between words, not between invisible boxes. Equal boxes with unequal labels put the leftover room
- * beside the short ones: "Docs" ended up with more air around it than "History", and the Converter
- * trigger beside them had no minimum at all, so the first gap was a different kind from the rest.
+ * What it was: one fill lighter than the page, running the full width, holding a wordmark, a line
+ * repeating the page's own heading, four labelled destinations, a language, a theme and an account
+ * — nine things of equal weight on a band that was the brightest thing on the screen.
  *
- * Content-width with one gap is even by construction. Every one of these controls, the Converter
- * dropdown included, carries the same `md:px-3`, and the nav sets `md:gap-1` — so the distance from
- * any word to the next is 12 + 4 + 12 in every language.
+ * What it is now, in three parts:
  *
- * The reason a fixed width seemed necessary was the bar moving on a language switch, and it was
- * never this bar: `nav` is pushed right by `ml-auto` and the controls sit after it with `md:ml-0`,
- * so the nav grows leftwards into empty space and the buttons on the right do not move. Measured:
- * the nav went 399px to 446px between English and French while the language button stayed at the
- * same x. What did move was the Sign in button, which is the one thing that still has a minimum.
+ *   The bar goes *under* the page rather than over it — `--surface-header` is a shade darker than
+ *   `--surface-page` on dark — and the only bright thing on it is a two-pixel line of brand along
+ *   the top edge. Chrome that recedes is chrome you stop seeing, which is the job.
+ *
+ *   The middle is a search box instead of a sentence. The line beside the wordmark said what the
+ *   page's own h1 says three centimetres lower; what it replaces is the thing this app had no way
+ *   to do at all — ten conversions and nineteen pages, reachable by typing two letters of the name.
+ *   ⌘K opens it from anywhere, which is where the second half of the roadmap is going.
+ *
+ *   The three destinations lose their words and keep their glyphs, with the name in `title` and
+ *   `aria-label`, because the room they were taking is now the search box and every one of them is
+ *   also a named link in the footer.
+ *
+ * Under it sits a strip for the page's breadcrumb trail — see `BreadcrumbSlot`. The trail is still
+ * built by the page; it just no longer sits inside the page's own column, between the bar and the
+ * heading, where it read as the first line of the content.
  */
-
 export function AppHeader({
   view,
   conversionId,
@@ -88,80 +89,84 @@ export function AppHeader({
 }: AppHeaderProps) {
   const t = useT();
   const { content } = useI18n();
+  const slot = useBreadcrumbSlot();
+  const [palette, setPalette] = useState(false);
+  const [apple, setApple] = useState(false);
   const isConverter = view === 'converter';
+
+  /*
+   * The shortcut, and the one thing it must not do is eat somebody's browser shortcut on a machine
+   * where it means something else — so it is the combination every other palette uses, and it is
+   * bound once, here, because this bar is on every page of the app.
+   */
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        setPalette((open) => !open);
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
+
+  /* Which key to draw on the hint. Read after mount, because the server has no keyboard. */
+  useEffect(() => {
+    setApple(/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent));
+  }, []);
+
   return (
-    <header className="sticky top-0 z-20 border-stroke border-b bg-surface-card/85 backdrop-blur">
-      <div className="mx-auto flex h-14 w-full max-w-content items-center gap-2 px-4 sm:gap-4 sm:px-6">
-        <button
-          type="button"
-          onClick={onHome}
-          aria-label={t('header.home')}
-          className={cn(
-            'cursor-pointer rounded-md px-1 py-0.5 transition-opacity',
-            'hover:opacity-80',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2'
-          )}
-        >
-          <Logo />
-        </button>
+    <header className="sticky top-0 z-20">
+      {/* The one bright thing on the bar, and it is two pixels tall. */}
+      <div
+        aria-hidden="true"
+        className="h-0.5 bg-gradient-to-r from-brand-tertiary via-brand-primary to-transparent"
+      />
 
-        <Separator orientation="vertical" className="hidden h-5 lg:block" />
+      <div className="border-stroke border-b bg-surface-header/90 backdrop-blur">
+        <div className="mx-auto flex h-14 w-full max-w-content items-center gap-2 px-4 sm:gap-3 sm:px-6">
+          <button
+            type="button"
+            onClick={onHome}
+            aria-label={t('header.home')}
+            className={cn(
+              'shrink-0 cursor-pointer rounded-md px-1 py-0.5 transition-opacity',
+              'hover:opacity-80',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2'
+            )}
+          >
+            <Logo />
+          </button>
 
-        {/*
-          * The line beside the wordmark says which conversion you are on, because with four of
-          * them a fixed "Markdown to HTML converter" is wrong on three pages out of four. Away
-          * from the converter it names the app instead of whatever conversion was last picked.
-          *
-          * It waits for `lg`. At 768 the row is wordmark, this line, four labelled destinations
-          * and an account — 888px of content in a 768px window — and of those, this line is the
-          * one the page's own h1 already says.
-          */}
-        <Typography
-          variant="span"
-          weight="medium"
-          textColor="secondary"
-          className="hidden lg:block"
-        >
-          {view === 'converter'
-            ? t('header.tagline.conversion', {
-                name: content.conversions[conversionId].label,
-              })
-            : t('header.tagline.app')}
-        </Typography>
-
-        {/*
-          * The row of destinations belongs to a wide screen. Below `md` it is a sheet — see
-          * `MobileNav` — because four conversions, three destinations, a theme switch and an
-          * account do not fit in 390px, and the version that did fit was a row of unnamed icons.
-          */}
-        <nav className="ml-auto hidden items-center gap-0.5 md:flex md:gap-1">
           {/*
-            * Four conversions behind one item. A row of four in the header would crowd out the rest
-            * of the app on a phone and still not say which one you are on; a menu says both.
+            * Ten conversions behind one control, and the control says which one you are on. It is
+            * the first thing after the wordmark because it is the thing people come back to change.
             */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
                 aria-label={t('header.nav.converter')}
-                title={t('header.nav.converter')}
                 className={cn(
-                  'flex h-9 cursor-pointer items-center gap-1.5 rounded-md border border-transparent px-2 font-medium text-sm transition-colors md:px-3',
+                  'hidden h-9 max-w-[14rem] shrink-0 cursor-pointer items-center gap-1.5 rounded-full border px-3 font-medium text-sm transition-colors sm:flex',
                   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2',
                   isConverter
-                    ? 'bg-surface-accent text-ink-highlight'
-                    : 'text-ink-secondary hover:bg-state-hover hover:text-ink-body'
+                    ? 'border-brand-tertiary/40 bg-surface-accent text-ink-highlight'
+                    : 'border-stroke text-ink-secondary hover:border-stroke-hover hover:text-ink-body'
                 )}
               >
-                <FileCode2 className="size-4 shrink-0" />
-                <span className="hidden md:inline">
-                  {t('header.nav.converter')}
+                <span className="truncate">
+                  {isConverter
+                    ? content.conversions[conversionId].label
+                    : t('header.nav.converter')}
                 </span>
                 <ChevronDown className="size-3.5 shrink-0 opacity-70" />
               </button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end" className="w-64">
+            <DropdownMenuContent align="start" className="w-64">
               {CONVERSIONS.map((one) => (
                 <DropdownMenuItem
                   key={one.id}
@@ -188,8 +193,8 @@ export function AppHeader({
               ))}
 
               {/*
-               * Under a rule, because it is not a sixth conversion: the five above turn a file into
-               * something, this one is a place to type. It belongs in this menu all the same —
+               * Under a rule, because it is not an eleventh conversion: the ten above turn a file
+               * into something, this one is a place to type. It belongs in this menu all the same —
                * "Converter" is what a person opens when they want a different tool, and a page
                * reachable only from the footer is a page nobody reaches.
                */}
@@ -217,63 +222,133 @@ export function AppHeader({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {NAV_ITEMS.map(({ id, label: key, icon: Icon }) => {
-            const isActive = view === id;
-            const label = t(key);
+          {/* The search box: a button that looks like a field, because nothing is typed into it. */}
+          <button
+            type="button"
+            onClick={() => setPalette(true)}
+            aria-label={t('palette.title')}
+            className={cn(
+              'mx-auto hidden h-9 w-full max-w-md min-w-0 cursor-pointer items-center gap-2 rounded-lg border border-stroke bg-surface-page/70 px-3 text-ink-inactive text-sm transition-colors md:flex',
+              'hover:border-stroke-hover hover:text-ink-secondary',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand'
+            )}
+          >
+            <Search className="size-4 shrink-0" />
+            <span className="min-w-0 flex-1 truncate text-left">
+              {t('palette.placeholder')}
+            </span>
+            <span className="flex shrink-0 items-center gap-1">
+              <kbd className="rounded border border-stroke bg-surface-card2 px-1.5 py-0.5 font-sans text-xxs">
+                {apple ? '⌘' : 'Ctrl'}
+              </kbd>
+              <kbd className="rounded border border-stroke bg-surface-card2 px-1.5 py-0.5 font-sans text-xxs">
+                K
+              </kbd>
+            </span>
+          </button>
 
-            return (
-              <button
-                key={id}
-                type="button"
-                onClick={() => onViewChange(id)}
-                aria-current={isActive ? 'page' : undefined}
-                aria-label={label}
-                title={label}
-                className={cn(
-                  'flex h-9 cursor-pointer items-center gap-1.5 rounded-md border border-transparent px-2 font-medium text-sm transition-colors md:px-3',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2',
-                  isActive
-                    ? 'bg-surface-accent text-ink-highlight'
-                    : 'text-ink-secondary hover:bg-state-hover hover:text-ink-body'
-                )}
-              >
-                <Icon className="size-4 shrink-0" />
-                <span className="hidden md:inline">{label}</span>
-                {id === 'history' && historyCount > 0 && (
-                  <span className="ml-0.5 rounded-full bg-surface-card2 px-1.5 py-0.5 text-ink-secondary text-xxs">
-                    {historyCount}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </nav>
+          <div className="ml-auto flex items-center gap-0.5 md:ml-0 md:gap-1">
+            {/* The same search, for a screen with no room for the box. */}
+            <button
+              type="button"
+              onClick={() => setPalette(true)}
+              aria-label={t('palette.title')}
+              title={t('palette.title')}
+              className={cn(
+                'flex size-9 cursor-pointer items-center justify-center rounded-md text-ink-secondary transition-colors md:hidden',
+                'hover:bg-state-hover hover:text-ink-body',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand'
+              )}
+            >
+              <Search className="size-4" />
+            </button>
 
-        <Separator orientation="vertical" className="hidden h-5 md:block" />
+            {/*
+              * Glyph, name in the tooltip. The words moved out to make room for the search box, and
+              * every one of these is a named link in the footer as well — see `AppFooter`.
+              */}
+            <nav
+              aria-label={t('header.menu.goto')}
+              className="hidden items-center gap-0.5 md:flex"
+            >
+              {NAV_ITEMS.map(({ id, label: key, icon: Icon }) => {
+                const isActive = view === id;
+                const label = t(key);
 
-        <div className="ml-auto flex items-center gap-1 md:ml-0">
-          {/*
-            * Before the account, and outside it on purpose.
-            *
-            * A reader who has landed in a language they cannot read has to be able to get out
-            * without opening a menu whose label they cannot read either — so the switcher is a
-            * button in the bar, not an entry inside the account dropdown, and it is there whether
-            * anybody is signed in or not.
-            */}
-          <LanguageMenu className="hidden sm:inline-flex" />
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => onViewChange(id)}
+                    aria-current={isActive ? 'page' : undefined}
+                    aria-label={label}
+                    title={label}
+                    className={cn(
+                      'relative flex size-9 cursor-pointer items-center justify-center rounded-md transition-colors',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand',
+                      isActive
+                        ? 'bg-surface-accent text-ink-highlight'
+                        : 'text-ink-secondary hover:bg-state-hover hover:text-ink-body'
+                    )}
+                  >
+                    <Icon className="size-4 shrink-0" />
+                    {id === 'history' && historyCount > 0 && (
+                      <span className="-top-0.5 -right-0.5 absolute rounded-full bg-surface-card2 px-1 py-px text-ink-secondary text-xxs leading-tight">
+                        {historyCount}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </nav>
 
-          <UserMenu />
+            {/*
+              * Before the account, and outside it on purpose.
+              *
+              * A reader who has landed in a language they cannot read has to be able to get out
+              * without opening a menu whose label they cannot read either — so the switcher is a
+              * button in the bar, not an entry inside the account dropdown, and it is there whether
+              * anybody is signed in or not.
+              */}
+            <LanguageMenu className="hidden sm:inline-flex" />
 
-          <MobileNav
-            view={view}
-            conversionId={conversionId}
-            historyCount={historyCount}
-            onViewChange={onViewChange}
-            onConversionChange={onConversionChange}
-            onOpenPage={onOpenPage}
-          />
+            <UserMenu />
+
+            <MobileNav
+              view={view}
+              conversionId={conversionId}
+              historyCount={historyCount}
+              onViewChange={onViewChange}
+              onConversionChange={onConversionChange}
+              onOpenPage={onOpenPage}
+            />
+          </div>
         </div>
       </div>
+
+      {/*
+        * The second tier: where you are, on its own line. Hidden rather than absent when the page
+        * has no trail, so the element the trail portals into never has to be remounted.
+        */}
+      <div
+        className={cn(
+          'border-stroke/60 border-b bg-surface-header/70 backdrop-blur',
+          !slot?.filled && 'hidden'
+        )}
+      >
+        <div
+          ref={slot?.setNode}
+          className="mx-auto flex h-9 w-full max-w-content items-center px-4 sm:px-6"
+        />
+      </div>
+
+      <CommandPalette
+        open={palette}
+        onOpenChange={setPalette}
+        onViewChange={onViewChange}
+        onConversionChange={onConversionChange}
+        onOpenPage={onOpenPage}
+      />
     </header>
   );
 }

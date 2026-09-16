@@ -97,8 +97,6 @@ export const ui: Content['ui'] = {
 
   /* La barre du haut, sur grand écran et dans le panneau du téléphone. */
   'header.home': 'Nouveau fichier',
-  'header.tagline.conversion': 'convertisseur {name}',
-  'header.tagline.app': 'convertisseur de documents',
   'header.nav.converter': 'Convertisseur',
   'header.nav.history': 'Historique',
   'header.nav.docs': 'Docs',
@@ -109,6 +107,10 @@ export const ui: Content['ui'] = {
   'header.menu.close': 'Fermer le menu',
   'header.menu.convert': 'Convertir',
   'header.menu.goto': 'Aller à',
+  'palette.title': 'Recherche',
+  'palette.placeholder': 'Rechercher une conversion ou une page',
+  'palette.empty': 'Aucun résultat',
+  'palette.group.read': 'Lire',
   'header.account': 'Compte',
   'header.signin': 'Se connecter',
   'header.logout': 'Se déconnecter',
@@ -460,7 +462,7 @@ export const ui: Content['ui'] = {
 
   /* Le pied du site. La colonne des conversions et les liens légaux tirent leurs mots d’ailleurs. */
   'footer.tagline':
-    'Documents Markdown, HTML, Word, CSV et JSON, convertis dans votre navigateur.',
+    'Conversion de documents pour les humains, les applications et les agents IA.',
   /*
    * The live preview at /markdown-live-preview, and the paste box on the converter.
    *

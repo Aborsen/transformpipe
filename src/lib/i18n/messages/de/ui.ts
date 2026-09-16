@@ -111,8 +111,6 @@ export const ui: Content['ui'] = {
 
   /* Die Leiste am Kopf, auf breitem Bildschirm und im Menü des Telefons. */
   'header.home': 'Neue Datei',
-  'header.tagline.conversion': '{name}-Konverter',
-  'header.tagline.app': 'Dokumentkonverter',
   'header.nav.converter': 'Konverter',
   'header.nav.history': 'Verlauf',
   'header.nav.docs': 'Doku',
@@ -123,6 +121,10 @@ export const ui: Content['ui'] = {
   'header.menu.close': 'Menü schließen',
   'header.menu.convert': 'Umwandeln',
   'header.menu.goto': 'Wechseln zu',
+  'palette.title': 'Suche',
+  'palette.placeholder': 'Konvertierungen und Seiten durchsuchen',
+  'palette.empty': 'Dazu gibt es nichts',
+  'palette.group.read': 'Lesen',
   'header.account': 'Konto',
   'header.signin': 'Anmelden',
   'header.logout': 'Abmelden',
@@ -474,7 +476,7 @@ export const ui: Content['ui'] = {
 
   /* Der Fuß der Seite. Die Spalte der Umwandlungen und die Rechtslinks holen ihre Worte anderswo. */
   'footer.tagline':
-    'Markdown-, HTML-, Word-, CSV- und JSON-Dokumente, umgewandelt im Browser.',
+    'Dokumentkonvertierung für Menschen, Anwendungen und KI-Agenten.',
   /*
    * The live preview at /markdown-live-preview, and the paste box on the converter.
    *
