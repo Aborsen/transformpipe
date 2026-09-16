@@ -107,10 +107,9 @@ the order they were picked, and the viewer shows what came out. The handoff betw
 the viewer, where there is one, goes through `chrome.storage.session` — memory that is gone when
 the browser closes, so a converted document is never written to disk on the way to being shown.
 
-Signed out, it is a converter that never talks to us at all — including with no network at all,
-which is worth saying plainly in the listing: **ten formats, converted offline, in a tab.** That is the same promise the front
-page makes, and it is worth making loudly in the store listing: *the page does not leave your
-browser.*
+Signed out, it is a converter that never talks to us at all, network or no network. That is the
+promise the front page already makes, and it is the line the store listing should lead with: *ten
+formats, converted in your browser, offline.*
 
 ### The account, in week two
 
