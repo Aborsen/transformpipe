@@ -261,27 +261,23 @@ for (const slug of slugs) {
 }
 
 /*
- * Both covers exist, in every language that has the article.
+ * Both covers exist for every article.
  *
- * `npm run og` draws them and is not part of the build, so an article written without running it
- * gets a card with a broken image and a share with no picture — and neither shows up until somebody
- * looks at the index or posts a link. Cheap to check, invisible otherwise. The pictures carry the
- * headline as drawn text, which is why a translation needs its own rather than the English one.
+ * One picture per slug, not one per language: the covers carry no words since 2026-09-16, so a
+ * translation shows the same file the English article does — see `src/lib/covers.ts`. `npm run og`
+ * draws them and is not part of the build, so an article written without running it would ship a
+ * card with a broken image and a share with no picture, and neither shows up until somebody looks
+ * at the index or posts a link. Cheap to check, invisible otherwise.
  */
-for (const locale of LOCALES) {
-  const under = locale === DEFAULT_LOCALE ? '' : `/${locale}`;
+for (const file of filesIn(DEFAULT_LOCALE)) {
+  const slug = file.replace(/\.md$/, '');
 
-  for (const file of filesIn(locale)) {
-    const slug = file.replace(/\.md$/, '');
-    const name = locale === DEFAULT_LOCALE ? slug : `${locale}/${slug}`;
-
-    for (const [kind, path] of [
-      ['share image', `public/og/blog${under}/${slug}.jpg`],
-      ['card image', `public/og/card${under}/${slug}.webp`],
-    ]) {
-      if (!existsSync(path)) {
-        problems.push(`${name}: no ${kind} — run \`npm run og\``);
-      }
+  for (const [kind, path] of [
+    ['share image', `public/og/blog/${slug}.jpg`],
+    ['card image', `public/og/card/${slug}.webp`],
+  ]) {
+    if (!existsSync(path)) {
+      problems.push(`${slug}: no ${kind} — run \`npm run og\``);
     }
   }
 }

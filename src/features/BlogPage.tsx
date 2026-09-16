@@ -111,7 +111,7 @@ export function BlogPage({ onOpenArticle, onGoToConverter }: BlogPageProps) {
             title={lead.title}
             description={lead.description}
             href={articlePath(lead.slug, locale)}
-            image={articleCardImage(lead.slug, locale)}
+            image={articleCardImage(lead.slug)}
             onOpen={() => onOpenArticle(lead.slug)}
             tag={lead.tag}
             meta={t('blog.card.meta', {
@@ -126,7 +126,7 @@ export function BlogPage({ onOpenArticle, onGoToConverter }: BlogPageProps) {
               title={article.title}
               description={article.description}
               href={articlePath(article.slug, locale)}
-              image={articleCardImage(article.slug, locale)}
+              image={articleCardImage(article.slug)}
               onOpen={() => onOpenArticle(article.slug)}
               tag={article.tag}
               meta={t('blog.card.meta', {

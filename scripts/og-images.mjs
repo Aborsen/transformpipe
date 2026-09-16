@@ -55,7 +55,7 @@ const HEIGHT = 630;
  * 1200px source was four times the pixels the browser needed on every card on the page.
  */
 const VARIANTS = {
-  og: { scale: 1, type: 'jpeg', quality: 94, ext: 'jpg' },
+  og: { scale: 1, type: 'jpeg', quality: 78, ext: 'jpg' },
   card: { scale: 2 / 3, type: 'webp', quality: 90, ext: 'webp' },
 };
 
@@ -112,14 +112,53 @@ const fontUrl = pathToFileURL(
 ).href;
 
 /*
- * The document, drawn as shape rather than printed as code.
+ * The picture, drawn as shape and carrying no words at all.
  *
- * The first version of these cards put three literal lines of Markdown and three of HTML on the
- * picture in a monospace face. At 1200px it read as a screenshot of a terminal; on a 330px card it
- * read as grey noise. This is the same idea in geometry: a stack of bars on the left with nothing
- * to tell them apart, the caret, and the same stack on the right with a heading, an indent and a
- * grid in it. It says "structure came out of flat text" at any size, and it has no text to misread.
+ * It used to print the headline into the image. That cost twice: on the blog index the title was
+ * read once in the picture and again in the card underneath it, which is what made the page feel
+ * loud; and because the words were in the picture, a translated article needed its own copy of
+ * every cover, so 63 articles in five languages meant 276 files to draw and keep in step.
+ *
+ * With no text, one picture serves every language, and the grid stops repeating itself — see
+ * `src/lib/covers.ts`, which no longer takes a locale.
+ *
+ * What replaces the words is a scene built per article rather than one motif reused: the same
+ * vocabulary of document parts — paragraphs, a heading, a table, a list, a code block, a quote, an
+ * image — arranged from a hash of the slug, so every cover differs and all of them are obviously
+ * the same family. The composition itself is the product's own claim: flat text on the left, the
+ * caret, structure on the right.
  */
+
+/** A small, stable hash: the same slug draws the same picture on every machine, forever. */
+function seedOf(slug) {
+  let h = 2166136261;
+
+  for (let i = 0; i < slug.length; i++) {
+    h ^= slug.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+
+  return h >>> 0;
+}
+
+/** A deterministic sequence from that seed. Not random: reproducible, which is the whole point. */
+function pickerFor(slug) {
+  let state = seedOf(slug) || 1;
+
+  return () => {
+    state ^= state << 13;
+    state ^= state >>> 17;
+    state ^= state << 5;
+    state >>>= 0;
+
+    return state / 4294967296;
+  };
+}
+
+const MUTED = '#34344a';
+const MUTED_SOFT = '#2b2b3d';
+const LINE = '#474760';
+
 const bars = (widths, colour, thickness, gap) =>
   widths
     .map(
@@ -128,56 +167,126 @@ const bars = (widths, colour, thickness, gap) =>
     )
     .join('');
 
-function shape(accent) {
+/*
+ * The vocabulary. Each piece takes the accent and the picker, so the same kind of block is never
+ * drawn at quite the same proportions twice, and returns a fragment sized in percentages — the
+ * scene decides how much room it gets, not the piece.
+ */
+const PIECES = {
+  paragraph: (accent, rand) => {
+    const count = 3 + Math.floor(rand() * 2);
+    const widths = Array.from({ length: count }, () => 58 + Math.floor(rand() * 42));
+
+    return `<div>${bars(widths, MUTED, 15, 18)}</div>`;
+  },
+
+  heading: (accent, rand) => `
+    <div>
+      <div style="width:${46 + Math.floor(rand() * 26)}%;height:21px;border-radius:999px;background:${accent}"></div>
+      <div style="margin-top:18px">${bars([100, 72 + Math.floor(rand() * 24)], LINE, 15, 18)}</div>
+    </div>`,
+
+  table: (accent, rand) => {
+    const cols = 2 + Math.floor(rand() * 2);
+    const rows = 2 + Math.floor(rand() * 2);
+    const cells = Array.from({ length: cols * rows }, () => '<span></span>').join('');
+
+    return `<div class="grid" style="grid-template-columns:repeat(${cols},1fr)">${cells}</div>`;
+  },
+
+  list: (accent, rand) => {
+    const count = 3 + Math.floor(rand() * 2);
+
+    return `<div>${Array.from({ length: count }, (unused, index) => {
+      const width = 54 + Math.floor(rand() * 40);
+
+      return `<div style="display:flex;align-items:center;gap:14px;${index ? 'margin-top:15px;' : ''}">
+        <span style="width:16px;height:16px;border-radius:999px;background:${accent};flex:none"></span>
+        <span style="width:${width}%;height:15px;border-radius:999px;background:${MUTED}"></span>
+      </div>`;
+    }).join('')}</div>`;
+  },
+
+  checklist: (accent, rand) => {
+    const count = 3 + Math.floor(rand() * 2);
+
+    return `<div>${Array.from({ length: count }, (unused, index) => {
+      const width = 52 + Math.floor(rand() * 40);
+
+      return `<div style="display:flex;align-items:center;gap:14px;${index ? 'margin-top:15px;' : ''}">
+        <span style="width:20px;height:20px;border-radius:5px;border:3px solid ${index === 0 ? accent : LINE};flex:none"></span>
+        <span style="width:${width}%;height:15px;border-radius:999px;background:${MUTED}"></span>
+      </div>`;
+    }).join('')}</div>`;
+  },
+
+  code: (accent, rand) => `
+    <div style="border:3px solid ${LINE};border-radius:12px;padding:24px 26px">
+      ${bars([38 + Math.floor(rand() * 20), 76, 56 + Math.floor(rand() * 26)], MUTED, 13, 16)}
+    </div>`,
+
+  quote: (accent, rand) => `
+    <div style="display:flex;gap:18px">
+      <span style="width:7px;border-radius:999px;background:${accent};flex:none"></span>
+      <div style="flex:1 1 0">${bars([100, 64 + Math.floor(rand() * 30)], MUTED, 15, 18)}</div>
+    </div>`,
+
+  media: (accent, rand) => `
+    <div style="border:3px solid ${LINE};border-radius:12px;height:${118 + Math.floor(rand() * 44)}px;position:relative;overflow:hidden">
+      <span style="position:absolute;left:26px;top:24px;width:28px;height:28px;border-radius:999px;background:${accent}"></span>
+      <span style="position:absolute;left:-6%;bottom:-38px;width:112%;height:76px;background:${MUTED_SOFT};transform:rotate(-7deg)"></span>
+    </div>`,
+};
+
+/** What can sit on the left: the document before anything read it. */
+const FLAT = ['paragraph', 'quote', 'code', 'paragraph'];
+
+/** And on the right: what the conversion made of it. */
+const STRUCTURED = ['table', 'list', 'heading', 'checklist', 'media', 'table'];
+
+function stack(names, accent, rand) {
+  return `<div class="stack">${names
+    .map((name, index) => `<div${index ? ' style="margin-top:34px"' : ''}>${PIECES[name](accent, rand)}</div>`)
+    .join('')}</div>`;
+}
+
+/**
+ * One article's scene.
+ *
+ * Two pieces a side at most: three fits, and at card size a frame with six blocks in it reads as
+ * texture rather than as a document. The caret between them is the brand's own mark and the only
+ * glyph in the picture — a shape by now, not a word.
+ */
+function scene(accent, slug) {
+  const rand = pickerFor(slug);
+  const of = (list) => list[Math.floor(rand() * list.length)];
+
+  const left = [of(FLAT)];
+  const right = [of(STRUCTURED)];
+
+  left.push(of(FLAT.filter((name) => name !== left[0])));
+  right.push(of(STRUCTURED.filter((name) => name !== right[0])));
+
   return `
     <div class="shape">
-      <div class="stack">${bars([100, 74, 88, 62], '#34344a', 11, 13)}</div>
+      ${stack(left, accent, rand)}
       <div class="arrow">&gt;</div>
-      <div class="stack">
-        <div style="width:64%;height:15px;border-radius:999px;background:${accent}"></div>
-        <div style="margin-top:13px">${bars([100, 82], '#474760', 11, 13)}</div>
-        <div class="grid">
-          <span></span><span></span><span></span>
-          <span></span><span></span><span></span>
-        </div>
-      </div>
+      ${stack(right, accent, rand)}
     </div>`;
 }
 
 /**
- * The card, as a page.
+ * The card, as a page: a ground, an accent wash, and the scene across it.
  *
- * The headline is in the picture, in both sizes. The card variant used to leave it out, on the
- * argument that a title inside a 390px image sitting three inches from the real title is
- * unreadable text pretending to be a picture. Set small, in the top-left of a frame with room in
- * it, it is legible and it is what stops a grid of covers reading as coloured rectangles — which is
- * what a grid of shapes without words turned out to be.
- *
- * The layout: an accent rule, the tag above the headline, the headline over about three lines, the
- * motif entering from the right edge rather than sitting inside a column, and the mark and the
- * domain together at the bottom. The motif bleeds off the frame on purpose — a shape that stops
- * before the edge is a diagram, and one that runs off it is a background.
+ * Both sizes are this same composition — the share image and the index card differ only in how
+ * many pixels come out of the screenshot, which is what keeps them from drifting apart.
  */
-function card({ title, eyebrow, accent }) {
-  /*
-   * Three sizes rather than a computed one, and all smaller than they were: the headline now shares
-   * the frame with a motif that reaches into it, and at the old 70px a nine-word title ran into the
-   * arcs. Every value is one somebody chose.
-   */
-  const size = title.length > 78 ? 40 : title.length > 48 ? 46 : 54;
-
+function card({ accent, slug = '' }) {
   return `<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <style>
-  @font-face {
-    font-family: "DM Sans";
-    src: url("${fontUrl}") format("woff2");
-    font-weight: 100 1000;
-    font-display: block;
-  }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
@@ -186,146 +295,58 @@ function card({ title, eyebrow, accent }) {
     position: relative;
     overflow: hidden;
     /*
-     * Two lifts rather than one. The accent glow sits behind the motif on the right, where the
-     * colour belongs; a colder one behind the headline on the left keeps the text off a flat
-     * rectangle without tinting the words.
+     * Two lifts rather than one: the accent glow behind the structured half, where the colour
+     * belongs, and a colder one behind the flat half so neither side sits on a flat rectangle.
      */
     background:
-      radial-gradient(90% 120% at 96% 8%, ${accent}20 0%, ${accent}00 62%),
-      radial-gradient(70% 90% at 6% 40%, #1c1c28 0%, #1c1c2800 70%),
+      radial-gradient(85% 115% at 82% 14%, ${accent}22 0%, ${accent}00 62%),
+      radial-gradient(70% 90% at 12% 82%, #1c1c28 0%, #1c1c2800 70%),
       linear-gradient(160deg, #14141d 0%, #0f0e14 64%);
-    font-family: "DM Sans", system-ui, sans-serif;
+    font-family: system-ui, sans-serif;
     color: #f9fafb;
   }
 
-  /*
-   * The motif, entering from the right edge.
-   *
-   * Positioned rather than laid out in a column, and pushed past the frame so it is cropped by it.
-   * Behind the text in the stacking order and dimmed, because the headline is the picture's job and
-   * the shape is what the frame is made of.
-   */
-  .art {
-    position: absolute;
-    top: 50%;
-    right: -96px;
-    width: 640px;
-    transform: translateY(-50%);
-    opacity: 0.88;
-  }
-
+  /* The scene sits in the frame rather than bleeding off it: with no words beside it, it is the picture. */
   .frame {
     position: absolute;
     inset: 0;
-    padding: 64px 72px 58px;
+    padding: 76px 86px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
   }
 
-  /*
-   * The words never run under the motif: a hard ceiling, not a hope about title length.
-   *
-   * Auto margins top and bottom rather than a top alignment, so a two-line title and a four-line
-   * one both sit on the frame's middle. Top-aligned, a short title left a hand's width of empty
-   * ground above the footer, which reads as something that failed to load.
-   */
-  .words {
-    max-width: 62%;
-    margin-top: auto;
-    margin-bottom: auto;
-  }
-
-  /* The accent, as a rule above the tag. */
-  .rule {
-    width: 44px;
-    height: 3px;
-    border-radius: 999px;
-    background: ${accent};
-  }
-
-  .eyebrow {
-    margin-top: 20px;
-    font-size: 19px;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: ${accent};
-  }
-
-  h1 {
-    margin-top: 18px;
-    font-size: ${size}px;
-    font-weight: 600;
-    line-height: 1.16;
-    letter-spacing: -0.02em;
-    text-wrap: balance;
-  }
-
-  /* Both marks together, bottom left, the way a masthead sits. */
-  .foot {
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-    font-size: 19px;
-    color: #6b6b7b;
-  }
-
-  .brand {
-    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    font-weight: 600;
-    font-size: 23px;
-    letter-spacing: -0.02em;
-    color: #f9fafb;
-  }
-
-  .brand span { color: ${accent}; }
-
-  /* The shape: two stacks of bars and the caret between them. */
   .shape {
     display: flex;
     align-items: center;
-    gap: 34px;
+    gap: 72px;
+    width: 100%;
   }
 
   .stack { flex: 1 1 0; min-width: 0; }
 
   .arrow {
     font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    font-size: 62px;
+    font-size: 96px;
     font-weight: 600;
     line-height: 1;
     color: ${accent};
+    flex: none;
   }
 
   .grid {
-    margin-top: 16px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
+    gap: 8px;
   }
 
   .grid span {
-    height: 20px;
-    border: 2px solid #474760;
-    border-radius: 4px;
+    height: 34px;
+    border: 3px solid ${LINE};
+    border-radius: 5px;
   }
 </style>
 </head>
 <body>
-  <div class="art">${shape(accent)}</div>
-
-  <div class="frame">
-    <div class="words">
-      <div class="rule"></div>
-      <div class="eyebrow">${escape(eyebrow)}</div>
-      <h1>${escape(title)}</h1>
-    </div>
-
-    <div class="foot">
-      <div class="brand">T<span>&gt;</span>pipe</div>
-      <div>transformpipe.com</div>
-    </div>
-  </div>
+  <div class="frame">${scene(accent, slug)}</div>
 </body>
 </html>`;
 }
@@ -335,62 +356,26 @@ function card({ title, eyebrow, accent }) {
 const cards = [];
 
 /*
- * Written out rather than imported from src/lib/i18n/locales.ts: this script is plain Node with no
- * bundler in front of it. A language added there and forgotten here draws no covers, and
- * `npm run blog:check` fails on the missing files rather than shipping broken images.
- */
-const LOCALES = ['en', 'de', 'fr', 'es', 'it'];
-
-const articleDir = (locale) =>
-  locale === 'en'
-    ? join(ROOT, 'content', 'blog')
-    : join(ROOT, 'content', 'blog', locale);
-
-/*
- * The accent belongs to the topic, not to the word.
+ * One cover per article, not one per language.
  *
- * ACCENTS is keyed by the English tag, and a translated article carries a translated one — so
- * looking the colour up by the tag as written would drop every translation onto the default and
- * the same piece would be a different colour in each language. The slug is the same in every
- * language, so the English tag is what decides.
+ * The picture carries no words, so a German reader and an English one can be shown the same file —
+ * which is why this reads only the English directory. It is also why adding a language costs no
+ * images at all: `src/lib/covers.ts` resolves every locale to the same path.
  */
-const accents = new Map();
+const articleDir = join(ROOT, 'content', 'blog');
 
-for (const name of readdirSync(articleDir('en')).sort()) {
-  if (name.endsWith('.md')) {
-    const data = frontmatter(readFileSync(join(articleDir('en'), name), 'utf8'));
-
-    accents.set(name.replace(/\.md$/, ''), ACCENTS[data.tag] ?? DEFAULT_ACCENT);
-  }
-}
-
-for (const locale of LOCALES) {
-  const dir = articleDir(locale);
-
-  if (!existsSync(dir)) {
+for (const name of readdirSync(articleDir).sort()) {
+  if (!name.endsWith('.md')) {
     continue;
   }
 
-  for (const name of readdirSync(dir).sort()) {
-    if (!name.endsWith('.md')) {
-      continue;
-    }
+  const slug = name.replace(/\.md$/, '');
+  const data = frontmatter(readFileSync(join(articleDir, name), 'utf8'));
+  const one = { slug, accent: ACCENTS[data.tag] ?? DEFAULT_ACCENT };
 
-    const slug = name.replace(/\.md$/, '');
-    const data = frontmatter(readFileSync(join(dir, name), 'utf8'));
-    const under = locale === 'en' ? '' : `/${locale}`;
-
-    const one = {
-      slug,
-      title: data.title ?? slug,
-      eyebrow: data.tag ?? 'Blog',
-      accent: accents.get(slug) ?? DEFAULT_ACCENT,
-    };
-
-    // The same picture twice: full size for a share, two thirds for the card that shows it.
-    cards.push({ ...one, dir: `blog${under}`, variant: 'og' });
-    cards.push({ ...one, dir: `card${under}`, variant: 'card' });
-  }
+  // The same picture twice: full size for a share, two thirds for the card that shows it.
+  cards.push({ ...one, dir: 'blog', variant: 'og' });
+  cards.push({ ...one, dir: 'card', variant: 'card' });
 }
 
 /*

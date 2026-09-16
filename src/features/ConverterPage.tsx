@@ -314,7 +314,7 @@ export function ConverterPage({
                     title={article.title}
                     description={article.description}
                     href={articlePath(article.slug, locale)}
-                    image={articleCardImage(article.slug, locale)}
+                    image={articleCardImage(article.slug)}
                     onOpen={() => onOpenArticle(article.slug)}
                     tag={article.tag}
                     meta={formatArticleDate(article.date, INTL_LOCALES[locale])}

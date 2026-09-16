@@ -325,7 +325,7 @@ export function ArticlePage({
                 title={other.title}
                 description={other.description}
                 href={articlePath(other.slug, locale)}
-                image={articleCardImage(other.slug, locale)}
+                image={articleCardImage(other.slug)}
                 onOpen={() => onOpenArticle(other.slug)}
                 tag={other.tag}
                 meta={t('article.more.meta', {

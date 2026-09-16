@@ -375,7 +375,7 @@ for (const locale of LOCALES) {
       languages: LOCALES.filter((one) => hasArticleIn(article.slug, one)),
       title: `${article.title} — TransformPipe`,
       description: article.description,
-      image: articleCover(article.slug, locale),
+      image: articleCover(article.slug),
       lastmod: article.updated ?? article.date,
       listed: true,
       head: [
