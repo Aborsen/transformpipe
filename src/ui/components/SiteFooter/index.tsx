@@ -34,8 +34,8 @@ interface SiteFooterProps {
   /** Who made it. Shown under the tagline, where a reader looks for it. */
   builtBy?: ReactNode;
   columns: FooterColumn[];
-  /** The bottom line: a copyright, usually. */
-  note?: string;
+  /** The bottom line: a copyright, usually. A node, because the name in it can be a link. */
+  note?: ReactNode;
   /**
    * What a screen reader hears after the name of a link that leaves the site.
    *

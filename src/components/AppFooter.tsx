@@ -127,7 +127,7 @@ export function AppFooter({
       builtBy={linkToMaker(t('footer.builtby'))}
       columns={columns}
       /* The year is a number, not a word: it goes in as a value the sentence has a hole for. */
-      note={t('footer.note', { year: new Date().getFullYear() })}
+      note={linkToMaker(t('footer.note', { year: new Date().getFullYear() }))}
       externalLabel={t('footer.external')}
     />
   );
