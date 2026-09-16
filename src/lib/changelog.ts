@@ -32,6 +32,14 @@ export interface ChangelogEntry {
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-17',
+    title: 'Your documents, two letters away',
+    body:
+      '`⌘K` now opens on the five documents you converted last, and typing searches them by name '
+      + 'alongside the conversions and the pages — every document in the list, not only the five. '
+      + '`See all documents` goes to the history.',
+  },
+  {
+    date: '2026-09-17',
     title: 'The cookie question, asked properly',
     body:
       'A banner on a first visit, with three answers of one click each: accept, only necessary, or '

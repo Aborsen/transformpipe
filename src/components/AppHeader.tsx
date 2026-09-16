@@ -15,6 +15,7 @@ import { Logo } from './Logo';
 import { LanguageMenu } from './LanguageMenu';
 import { MobileNav } from './MobileNav';
 import { UserMenu } from './UserMenu';
+import type { HistoryEntry } from '@/lib/history';
 import type { StaticPageId } from '@/lib/pages';
 import {
   DropdownMenu,
@@ -35,6 +36,9 @@ interface AppHeaderProps {
   /** Which conversion the converter is on, so the menu can show it as the current one. */
   conversionId: ConversionId;
   historyCount: number;
+  /** The documents themselves, for the palette: a name is the thing people search by. */
+  documents: HistoryEntry[];
+  onOpenDocument: (entry: HistoryEntry) => void;
   onViewChange: (view: Destination) => void;
   onConversionChange: (id: ConversionId) => void;
   /** Only the phone's menu offers these; on a wide screen they live in the footer. */
@@ -82,6 +86,8 @@ export function AppHeader({
   view,
   conversionId,
   historyCount,
+  documents,
+  onOpenDocument,
   onViewChange,
   onConversionChange,
   onOpenPage,
@@ -370,6 +376,8 @@ export function AppHeader({
       <CommandPalette
         open={palette}
         onOpenChange={setPalette}
+        documents={documents}
+        onOpenDocument={onOpenDocument}
         onViewChange={onViewChange}
         onConversionChange={onConversionChange}
         onOpenPage={onOpenPage}

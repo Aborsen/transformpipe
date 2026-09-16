@@ -125,8 +125,10 @@ export const ui: Content['ui'] = {
   'ext.files': 'Apri file…',
   'ext.viewer.empty': 'Scegli i file da convertire — dieci formati, tutto in questo browser',
   'palette.title': 'Cerca',
-  'palette.placeholder': 'Cerca conversioni e pagine',
+  'palette.placeholder': 'Cerca documenti, conversioni e pagine',
   'palette.empty': 'Nessun risultato',
+  'palette.group.recent': 'Recenti',
+  'palette.seeall': 'Vedi tutti i documenti',
   'palette.group.read': 'Leggi',
 
   /* The consent banner and its switches. See src/lib/consent.tsx for what each one turns on. */

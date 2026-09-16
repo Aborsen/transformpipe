@@ -573,6 +573,8 @@ function Shell() {
         view={view}
         conversionId={conversionId}
         historyCount={history.entries.length}
+        documents={history.entries}
+        onOpenDocument={(entry) => void handleOpenFromHistory(entry)}
         onViewChange={setView}
         onConversionChange={chooseConversion}
         onOpenPage={openPage}

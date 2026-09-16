@@ -2,6 +2,7 @@ import {
   BookOpen,
   CornerDownLeft,
   FileCode2,
+  FileText,
   History,
   Newspaper,
   Search,
@@ -11,6 +12,7 @@ import type { LucideIcon } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { CONVERSIONS, type ConversionId } from '@shared/conversions';
 import { useI18n, useT } from '@/lib/i18n/context';
+import type { HistoryEntry } from '@/lib/history';
 import { STATIC_PAGES, type StaticPageId } from '@/lib/pages';
 import type { Destination } from '@/lib/route';
 import { Input } from '@/ui/components/Input';
@@ -24,6 +26,9 @@ interface CommandPaletteProps {
   onViewChange: (view: Destination) => void;
   onConversionChange: (id: ConversionId) => void;
   onOpenPage: (id: StaticPageId) => void;
+  /** What is in the history right now — the account's documents, or this browser's. */
+  documents: HistoryEntry[];
+  onOpenDocument: (entry: HistoryEntry) => void;
 }
 
 interface Command {
@@ -63,17 +68,25 @@ function fold(value: string): string {
  * nineteen pages behind a footer — which is a reasonable header and a slow way to get anywhere once
  * you know what you want. This is the fast way: type two letters of it.
  *
- * Documents are deliberately not in here yet. Searching what somebody saved means asking the
- * server, and the honest version of that is the content search this is queued behind; a palette
- * that searched only the titles the browser happens to have would be a different feature wearing
- * this one's name.
+ * Documents are in it by name. The list the history is already holding is the list this searches,
+ * so it costs no request and is exactly as complete as the history is — which for a signed-in
+ * account is everything in it. What is still queued behind the content search on the roadmap is
+ * searching *inside* documents; a name is what people actually remember, and it was already here.
+ *
+ * Five of them show with an empty query, newest first, because a palette that opens on a blank
+ * list makes you type before it tells you anything. The sixth row is the way to the rest.
  */
+/** How many recent documents the palette shows before somebody searches. */
+const RECENT = 5;
+
 export function CommandPalette({
   open,
   onOpenChange,
   onViewChange,
   onConversionChange,
   onOpenPage,
+  documents,
+  onOpenDocument,
 }: CommandPaletteProps) {
   const t = useT();
   const { content } = useI18n();
@@ -82,6 +95,21 @@ export function CommandPalette({
   const list = useRef<HTMLDivElement>(null);
 
   const commands = useMemo<Command[]>(() => {
+    /*
+     * Newest first, and the whole list: the trimming to five happens after the filter, so a search
+     * reaches every document while an empty palette stays short.
+     */
+    const recent = [...documents]
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .map((entry) => ({
+        key: `document:${entry.id}`,
+        group: t('palette.group.recent'),
+        label: entry.name,
+        detail: content.conversions[entry.kind]?.short,
+        icon: FileText,
+        run: () => onOpenDocument(entry),
+      }));
+
     const conversions = CONVERSIONS.map((one) => ({
       key: `conversion:${one.id}`,
       group: t('header.menu.convert'),
@@ -108,22 +136,56 @@ export function CommandPalette({
       run: () => onOpenPage(page.id),
     }));
 
-    return [...conversions, ...places, ...pages];
-  }, [content, t, onConversionChange, onViewChange, onOpenPage]);
+    return [...recent, ...conversions, ...places, ...pages];
+  }, [
+    content,
+    t,
+    documents,
+    onConversionChange,
+    onViewChange,
+    onOpenPage,
+    onOpenDocument,
+  ]);
 
   const matches = useMemo(() => {
     const needle = fold(query.trim());
 
-    if (!needle) {
-      return commands;
+    const found = needle
+      ? commands.filter((command) =>
+          fold(
+            `${command.label} ${command.detail ?? ''} ${command.group}`
+          ).includes(needle)
+        )
+      : commands;
+
+    if (needle) {
+      return found;
     }
 
-    return commands.filter((command) =>
-      fold(`${command.label} ${command.detail ?? ''} ${command.group}`).includes(
-        needle
-      )
+    /*
+     * With nothing typed, the documents are cut to five and the rest of the list follows whole. A
+     * palette that opened on forty file names would bury the ten conversions under them.
+     */
+    const documents_ = found.filter((command) =>
+      command.key.startsWith('document:')
     );
-  }, [commands, query]);
+    const rest = found.filter((command) => !command.key.startsWith('document:'));
+
+    const seeAll: Command[] =
+      documents_.length > RECENT
+        ? [
+            {
+              key: 'document:all',
+              group: t('palette.group.recent'),
+              label: t('palette.seeall'),
+              icon: History,
+              run: () => onViewChange('history'),
+            },
+          ]
+        : [];
+
+    return [...documents_.slice(0, RECENT), ...seeAll, ...rest];
+  }, [commands, query, t, onViewChange]);
 
   /* A new search is a new list, so the highlight goes back to the top of it. */
   useEffect(() => setActive(0), [query]);
