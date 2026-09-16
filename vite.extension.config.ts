@@ -72,6 +72,13 @@ function assets(): Plugin {
           default_popup: 'popup.html',
         },
         background: { service_worker: 'background.js', type: 'module' },
+        options_ui: { page: 'options.html', open_in_tab: true },
+        /*
+         * Asked for when somebody connects an account, never at install: until there is a key this
+         * extension has no reason to talk to us at all, and an origin in the install dialog reads
+         * the same whether it is used or not.
+         */
+        optional_host_permissions: ['https://transformpipe.com/*'],
         /*
          * Two permissions, and neither is a host permission: nothing runs in a page until somebody
          * presses the button on that page, and nothing is read from any other tab, ever.
@@ -117,6 +124,7 @@ export default defineConfig({
       input: {
         popup: path.join(ROOT, 'extension', 'popup.html'),
         viewer: path.join(ROOT, 'extension', 'viewer.html'),
+        options: path.join(ROOT, 'extension', 'options.html'),
         background: path.join(ROOT, 'extension', 'background.ts'),
       },
       output: {

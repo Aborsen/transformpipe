@@ -130,6 +130,21 @@ export const ui: Content['ui'] = {
   'docs.webhooks.delivery':
     'Die Zustellung ist ein Versuch: eine Anfrage, fünf Sekunden Zeitlimit, kein erneuter Versuch und keine Warteschlange. Ein Empfänger, der gerade nicht läuft, verpasst diese Zustellung, und der Dialog nennt den Zeitpunkt des letzten Fehlschlags.',
   /* The browser extension — see extension/ and content/extension-plan.md. */
+  'ext.account': 'Konto',
+  'ext.key.hint':
+    'Fügen Sie einen API-Schlüssel aus Ihrem Konto ein, dann kann diese Erweiterung eine umgewandelte Seite dort speichern und einen Link veröffentlichen. Der Schlüssel bleibt nur in diesem Browser, und vor einem Klick auf Speichern wird nichts gesendet.',
+  'ext.key.placeholder': 'tp_live_…',
+  'ext.key.connect': 'Verbinden',
+  'ext.key.connected': 'Verbunden',
+  'ext.key.disconnect': 'Trennen',
+  'ext.key.where': 'Woher bekomme ich einen Schlüssel?',
+  'ext.key.refused':
+    'Der Schlüssel wurde abgelehnt, oder der Zugriff auf transformpipe.com wurde nicht erteilt.',
+  'ext.save': 'Speichern',
+  'ext.saved': 'Gespeichert',
+  'ext.share': 'Teilen',
+  'ext.shared': 'Link kopiert',
+  'ext.connect': 'Konto verbinden, um zu speichern und zu teilen',
   'ext.converting': 'Wird umgewandelt…',
   'ext.failed': 'Diese Seite lässt sich nicht lesen',
   'ext.restricted': 'Chrome lässt keine Erweiterung seine eigenen Seiten lesen. Öffnen Sie eine normale Seite und drücken Sie erneut — oder wandeln Sie stattdessen eine Datei um.',

@@ -4,8 +4,12 @@ import {
   Download,
   FileCode2,
   FileInput,
+  Link2,
+  Loader2,
   Lock,
   Maximize2,
+  Save,
+  Settings,
 } from 'lucide-react';
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -24,6 +28,7 @@ import { Skeleton } from '@/ui/components/Skeleton';
 import { Typography } from '@/ui/components/Typography';
 import { extract } from './extract';
 import { copyText, openInViewer, openViewerForFiles } from './lib/clipboard';
+import { useAccount } from './lib/useAccount';
 import { Providers } from './lib/Providers';
 import '@/index.css';
 
@@ -50,6 +55,7 @@ function Popup() {
   const [host, setHost] = useState('');
   const [fromSelection, setFromSelection] = useState(false);
   const [copied, setCopied] = useState(false);
+  const account = useAccount();
 
   useEffect(() => {
     let live = true;
@@ -286,6 +292,75 @@ function Popup() {
           </div>
         </div>
       </div>
+
+      {/*
+        * The account, or the offer of one. Saving and publishing are the two things this panel
+        * cannot do in the page, so they are the two things a key buys — and with no key the row is
+        * one quiet sentence rather than two disabled buttons nobody can explain.
+        */}
+      {failed === 'none' && (
+        <div className="flex items-center gap-2 border-stroke border-t px-4 py-2">
+          {account.connected ? (
+            <>
+              <Button
+                variant="secondary"
+                size="sm"
+                className="flex-1"
+                disabled={!document_ || account.state === 'busy'}
+                leftSlot={
+                  account.state === 'busy' ? (
+                    <Loader2 className="animate-spin" />
+                  ) : (
+                    <Save />
+                  )
+                }
+                onClick={() =>
+                  document_ &&
+                  void account.save(document_.name, document_.markdown, false)
+                }
+              >
+                {account.state === 'done' && !account.link
+                  ? t('ext.saved')
+                  : t('ext.save')}
+              </Button>
+
+              <Button
+                variant="secondary"
+                size="sm"
+                className="flex-1"
+                disabled={!document_ || account.state === 'busy'}
+                leftSlot={<Link2 />}
+                onClick={async () => {
+                  if (!document_) {
+                    return;
+                  }
+
+                  const saved = await account.save(
+                    document_.name,
+                    document_.markdown,
+                    true
+                  );
+
+                  if (saved?.share?.url) {
+                    await copyText(saved.share.url);
+                  }
+                }}
+              >
+                {account.link ? t('ext.shared') : t('ext.share')}
+              </Button>
+            </>
+          ) : (
+            <Button
+              variant="transparent"
+              size="sm"
+              leftSlot={<Settings />}
+              onClick={() => chrome.runtime.openOptionsPage()}
+            >
+              {t('ext.connect')}
+            </Button>
+          )}
+        </div>
+      )}
 
       {/* The two ways out of the popup, on their own ground so they read as a footer. */}
       <div className="flex items-center gap-1 border-stroke border-t px-2 py-1.5">

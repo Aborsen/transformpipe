@@ -114,6 +114,21 @@ export const ui: Content['ui'] = {
   'docs.webhooks.delivery':
     'La consegna è al meglio possibile: una richiesta, cinque secondi di attesa, nessun nuovo tentativo e nessuna coda. Un ricevitore spento perde quella consegna, e la finestra dice quando l’ultima è fallita.',
   /* The browser extension — see extension/ and content/extension-plan.md. */
+  'ext.account': 'Account',
+  'ext.key.hint':
+    'Incolla una chiave API del tuo account e questa estensione potrà salvarci una pagina convertita e pubblicare un link. La chiave resta solo in questo browser e nulla viene inviato finché non premi Salva.',
+  'ext.key.placeholder': 'tp_live_…',
+  'ext.key.connect': 'Collega',
+  'ext.key.connected': 'Collegato',
+  'ext.key.disconnect': 'Scollega',
+  'ext.key.where': 'Dove trovo una chiave?',
+  'ext.key.refused':
+    'Chiave rifiutata, o accesso a transformpipe.com non concesso.',
+  'ext.save': 'Salva',
+  'ext.saved': 'Salvato',
+  'ext.share': 'Condividi',
+  'ext.shared': 'Link copiato',
+  'ext.connect': 'Collega un account per salvare e condividere',
   'ext.converting': 'Conversione…',
   'ext.failed': 'Questa pagina non si può leggere',
   'ext.restricted': 'Chrome non consente a nessuna estensione di leggere le proprie pagine. Apri una pagina normale e riprova, oppure converti un file.',

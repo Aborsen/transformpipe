@@ -116,6 +116,20 @@ export const ui: Content['ui'] = {
   'docs.webhooks.delivery':
     'La livraison est au mieux : une requête, cinq secondes de délai, aucune reprise et aucune file d’attente. Un récepteur arrêté rate cette livraison, et la fenêtre indique quand la dernière a échoué.',
   /* The browser extension — see extension/ and content/extension-plan.md. */
+  'ext.account': 'Compte',
+  'ext.key.hint':
+    'Collez une clé d’API de votre compte et cette extension pourra y enregistrer une page convertie et publier un lien. La clé reste dans ce navigateur, et rien n’est envoyé avant que vous appuyiez sur Enregistrer.',
+  'ext.key.placeholder': 'tp_live_…',
+  'ext.key.connect': 'Connecter',
+  'ext.key.connected': 'Connecté',
+  'ext.key.disconnect': 'Déconnecter',
+  'ext.key.where': 'Où trouver une clé ?',
+  'ext.key.refused': 'Clé refusée, ou accès à transformpipe.com non accordé.',
+  'ext.save': 'Enregistrer',
+  'ext.saved': 'Enregistré',
+  'ext.share': 'Partager',
+  'ext.shared': 'Lien copié',
+  'ext.connect': 'Connectez un compte pour enregistrer et partager',
   'ext.converting': 'Conversion…',
   'ext.failed': 'Cette page ne peut pas être lue',
   'ext.restricted': 'Chrome n’autorise aucune extension à lire ses propres pages. Ouvrez une page ordinaire et réessayez — ou convertissez un fichier à la place.',

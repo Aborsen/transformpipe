@@ -1,4 +1,13 @@
-import { Copy, Download, FileCode2, FileInput, Loader2 } from 'lucide-react';
+import {
+  Copy,
+  Download,
+  FileCode2,
+  FileInput,
+  Link2,
+  Loader2,
+  Save,
+  Settings,
+} from 'lucide-react';
 import { StrictMode, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { pageToMarkdown } from '@shared/from-page';
@@ -24,6 +33,7 @@ import {
 } from '@/ui/components/Tabs';
 import { Typography } from '@/ui/components/Typography';
 import { copyText, takeHandoff } from './lib/clipboard';
+import { useAccount } from './lib/useAccount';
 import { Providers } from './lib/Providers';
 import '@/index.css';
 
@@ -53,6 +63,7 @@ function Viewer() {
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const account = useAccount();
   const picker = useRef<HTMLInputElement>(null);
 
   /* Whatever the popup left in session memory, or nothing, which means "ask for files". */
@@ -220,6 +231,63 @@ function Viewer() {
                 >
                   {t('ext.download.html')}
                 </Button>
+
+                {account.connected ? (
+                  <>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      disabled={account.state === 'busy'}
+                      leftSlot={
+                        account.state === 'busy' ? (
+                          <Loader2 className="animate-spin" />
+                        ) : (
+                          <Save />
+                        )
+                      }
+                      onClick={() =>
+                        void account.save(
+                          document_.name,
+                          document_.markdown,
+                          false
+                        )
+                      }
+                    >
+                      {account.state === 'done' && !account.link
+                        ? t('ext.saved')
+                        : t('ext.save')}
+                    </Button>
+
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      disabled={account.state === 'busy'}
+                      leftSlot={<Link2 />}
+                      onClick={async () => {
+                        const saved = await account.save(
+                          document_.name,
+                          document_.markdown,
+                          true
+                        );
+
+                        if (saved?.share?.url) {
+                          await copyText(saved.share.url);
+                        }
+                      }}
+                    >
+                      {account.link ? t('ext.shared') : t('ext.share')}
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    variant="transparent"
+                    size="sm"
+                    leftSlot={<Settings />}
+                    onClick={() => chrome.runtime.openOptionsPage()}
+                  >
+                    {t('ext.connect')}
+                  </Button>
+                )}
 
                 <Button
                   size="sm"

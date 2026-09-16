@@ -126,6 +126,21 @@ export const ui: Content['ui'] = {
   'docs.webhooks.delivery':
     'Delivery is best effort: one request, a five-second timeout, no retry and no queue. A receiver that is down misses that delivery, and the dialog says when the last one failed.',
   /* The browser extension — see extension/ and content/extension-plan.md. */
+  'ext.account': 'Account',
+  'ext.key.hint':
+    'Paste an API key from your account and this extension can save a converted page to it, and publish a link. The key is kept in this browser only, and nothing is sent anywhere until you press Save.',
+  'ext.key.placeholder': 'tp_live_…',
+  'ext.key.connect': 'Connect',
+  'ext.key.connected': 'Connected',
+  'ext.key.disconnect': 'Disconnect',
+  'ext.key.where': 'Where do I get a key?',
+  'ext.key.refused':
+    'That key was refused, or access to transformpipe.com was not granted.',
+  'ext.save': 'Save',
+  'ext.saved': 'Saved',
+  'ext.share': 'Share',
+  'ext.shared': 'Link copied',
+  'ext.connect': 'Connect an account to save and share',
   'ext.converting': 'Converting…',
   'ext.failed': 'This page cannot be read',
   'ext.restricted': 'Chrome does not let any extension read its own pages. Open an ordinary page and press the button again — or convert a file instead.',

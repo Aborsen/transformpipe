@@ -191,9 +191,12 @@ new code written against a guess.
 
 ## Week two, in order
 
-1. ~~Save as HTML~~ and ~~the icon alignment~~ — both done.
-2. **The account**: an API key in an options page, `chrome.storage.local`, then Save and Share
-   against `POST /api/v1/documents?share=link`.
+1. ~~Save as HTML~~, ~~the icon alignment~~ and ~~the account~~ — done. The account is an API key
+   pasted into the options page, checked against `GET /api/v1/usage` before it is kept, stored in
+   `chrome.storage.local`, and spent on `POST /api/v1/documents?share=link`. Reaching
+   transformpipe.com is an *optional* host permission requested at the moment somebody connects:
+   until a key exists this extension has no reason to talk to us at all, and an origin in the
+   install dialog reads the same whether it is used or not.
 3. **Firefox**: same code, a different manifest key, packaged separately.
 4. **The store**: listing text, screenshots out of the viewer, the privacy answers — and the page on
    this site that says the extension exists.
