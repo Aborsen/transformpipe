@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AppFooter } from './components/AppFooter';
 import { BreadcrumbSlotProvider } from './components/BreadcrumbSlot';
 import { CookieBanner } from './components/CookieBanner';
@@ -48,6 +48,7 @@ import {
   goToPath,
   hasTranslation,
   readRoute,
+  replaceDocument,
 } from './lib/route';
 import type { ConvertedDoc } from './lib/types';
 import { useHistory } from './lib/use-history';
@@ -310,6 +311,9 @@ function Shell() {
             : current
         );
 
+        /* So a reload lands back on this document rather than on an empty converter. */
+        replaceDocument(id, kept.id);
+
         toast.success(
           files.length > 1
             ? t('common.chained', { count: files.length })
@@ -402,6 +406,34 @@ function Shell() {
     return stored;
   }, [doc, history, sizes, t, user]);
 
+  /*
+   * The document the address names, put back on screen once the history holding it has loaded.
+   *
+   * Reloading while reading a document used to land on an empty converter: the document lived in
+   * React state and the address said nothing about it. Now `?doc=` names a row — a local one for
+   * anything converted in this browser, the account's id for anything saved — and this is the half
+   * that reads it back. It runs once per id: a row that is not there any more (history cleared, or
+   * another browser entirely) leaves the converter empty rather than retrying forever.
+   */
+  const restored = useRef<string | null>(null);
+
+  useEffect(() => {
+    const wanted = readRoute().docId;
+
+    if (!wanted || doc || restored.current === wanted) {
+      return;
+    }
+
+    const entry = history.entries.find((one) => one.id === wanted);
+
+    if (!entry) {
+      return;
+    }
+
+    restored.current = wanted;
+    void handleOpenFromHistory(entry);
+  });
+
   const handleOpenFromHistory = useCallback(
     async (entry: HistoryEntry) => {
       const markdown = await history.getSource(entry);
@@ -421,6 +453,7 @@ function Shell() {
 
       setDoc(entry.remote ? { ...reopened, remoteId: entry.id } : reopened);
       setView('converter');
+      replaceDocument(entry.kind, entry.id);
     },
     [history, setView, t]
   );
@@ -501,6 +534,9 @@ function Shell() {
             ? { ...current, localId: kept.id }
             : current
         );
+
+        /* So a reload lands back on this document rather than on an empty converter. */
+        replaceDocument(converted.kind, kept.id);
 
         toast.success(t('common.chained', { count: parts.length }), {
           description: converted.name,

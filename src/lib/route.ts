@@ -56,6 +56,15 @@ export interface Route {
   conversionId: ConversionId;
   /** The history's active chip, carried so a refresh keeps looking at the same list. */
   filter: string | null;
+  /**
+   * The document on screen, when there is one.
+   *
+   * A converted document used to live in React state and nowhere else, so reloading the page while
+   * reading one landed on an empty converter — the one place in this app where the address stopped
+   * describing what was on the screen. Every conversion is kept in this browser the moment it is
+   * made, and a saved one has an id in the account, so there is always an id to put here.
+   */
+  docId: string | null;
   /** Set when the address is a shared document. */
   sharedToken: string | null;
   /** Set when the address is one article rather than the blog's index. */
@@ -82,6 +91,7 @@ export function readRoute(): Route {
     view: viewFor(path, Boolean(page), Boolean(shared)),
     conversionId: (conversionForPath(path)?.id ?? DEFAULT_CONVERSION),
     filter: new URLSearchParams(window.location.search).get('filter'),
+    docId: new URLSearchParams(window.location.search).get('doc'),
     sharedToken: shared ? decodeURIComponent(shared[1]) : null,
     articleSlug: article ? decodeURIComponent(article[1]) : null,
     pageId: page?.id ?? null,
@@ -236,6 +246,20 @@ export function goTo(view: Destination, filter?: string | null) {
 /** Moves to one conversion's own page. */
 export function goToConversion(id: ConversionId) {
   move(inCurrentLocale(conversion(id).path));
+}
+
+/**
+ * Says which document is open, without leaving the conversion's page.
+ *
+ * `replaceState`, not a new entry: opening a document is the result of the click that just added
+ * one, and pushing a second would make Back mean "the same page with nothing on it". The address
+ * stays the conversion's own — a query is a state, not a place, which is also what keeps
+ * `/word-to-markdown` the one address a search engine is ever shown.
+ */
+export function replaceDocument(id: ConversionId, docId: string | null) {
+  const path = inCurrentLocale(conversion(id).path);
+
+  window.history.replaceState(null, '', docId ? `${path}?doc=${docId}` : path);
 }
 
 /** Moves to one of the pages of words. */
