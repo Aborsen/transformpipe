@@ -124,7 +124,6 @@ export function AppFooter({
     <SiteFooter
       brand={<Logo />}
       tagline={t('footer.tagline')}
-      builtBy={linkToMaker(t('footer.builtby'))}
       columns={columns}
       /* The year is a number, not a word: it goes in as a value the sentence has a hole for. */
       note={linkToMaker(t('footer.note', { year: new Date().getFullYear() }))}

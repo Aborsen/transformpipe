@@ -539,7 +539,6 @@ export const ui: Content['ui'] = {
   'notfound.seo.description':
     'Esta dirección no corresponde a ninguna página del sitio. El conversor, la documentación y el blog están a un clic.',
 
-  'footer.builtby': 'Hecho por Raudar Labs.',
   'footer.note': '© Raudar Labs {year}',
   'footer.converter': 'Conversor',
   'footer.resources': 'Recursos',

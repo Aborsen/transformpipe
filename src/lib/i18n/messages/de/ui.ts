@@ -554,7 +554,6 @@ export const ui: Content['ui'] = {
   'notfound.seo.description':
     'Diese Adresse passt zu keiner Seite dieser Website. Der Konverter, die Dokumentation und der Blog sind einen Klick entfernt.',
 
-  'footer.builtby': 'Gebaut von Raudar Labs.',
   'footer.note': '© Raudar Labs {year}',
   'footer.converter': 'Konverter',
   'footer.resources': 'Ressourcen',

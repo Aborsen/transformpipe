@@ -538,7 +538,6 @@ export const ui: Content['ui'] = {
   'notfound.seo.description':
     'This address does not match any page on the site. The converter, the documentation and the blog are one click away.',
 
-  'footer.builtby': 'Built by Raudar Labs.',
   'footer.note': '© Raudar Labs {year}',
   'footer.converter': 'Converter',
   'footer.resources': 'Resources',
