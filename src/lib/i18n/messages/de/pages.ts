@@ -252,4 +252,326 @@ export const pages: Content['pages'] = {
         'Zwei First-Party-Sitzungscookies, beide zum Anmelden nötig. Keine Analyse, keine Werbung, nichts Optionales zum Einstellen.',
     },
   },
+
+  /*
+   * Die Anleitungsseiten: eine je Endung, die die Ablagefläche annimmt.
+   *
+   * Sie antworten, statt zu argumentieren, und genau das trennt sie vom Blog. Jemand hat eine Datei
+   * und keine Ahnung, was sie öffnet; er hat nach der Endung gesucht; er will die Antwort im ersten
+   * Absatz und unten einen Weg aus dem Problem heraus. Also: was das Ding ist, was es auf welcher
+   * Art von Rechner öffnet, was schiefgeht, und die Umwandlung, die die Frage beendet.
+   */
+  'how-to-md': {
+    label: 'Eine .md-Datei öffnen',
+    title: 'Wie man eine .md-Datei öffnet',
+    lede: 'Eine Markdown-Datei ist reiner Text. Alles, was Text öffnet, öffnet sie — die Frage ist, was sie wie ein Dokument aussehen lässt.',
+    sections: [
+      {
+        heading: 'Was es ist',
+        body: [
+          'Eine `.md`-Datei ist eine Textdatei mit ein paar Konventionen darin: eine Raute für eine Überschrift, Sternchen für Betonung, Bindestriche für eine Liste. Nichts in der Datei ist binär und nichts ist komprimiert, ein Texteditor zeigt also sofort die ganze Wahrheit über sie.',
+          'Genau deshalb sieht sie unfertig aus. Die Konventionen sind Anweisungen für einen Renderer, und bis etwas sie rendert, liest man die Anweisungen statt des Dokuments.',
+        ],
+      },
+      {
+        heading: 'Auf einem Computer',
+        body: [
+          'Unter Windows öffnet Notepad sie und zeigt den rohen Text. Auf einem Mac tut TextEdit dasselbe, fragt aber unter Umständen zuerst, ob es die Datei umwandeln soll — ablehnen, dann bleibt sie reiner Text. Auf beiden rendert VS Code eine Live-Vorschau neben der Quelle, und das kommt der fertigen Seite am nächsten, ohne den Editor zu verlassen.',
+          'Die Datei auf ein Browserfenster zu ziehen funktioniert nicht so, wie man es erwartet: der Browser zeigt den rohen Text oder bietet an, ihn herunterzuladen, denn kein Browser rendert Markdown von sich aus.',
+        ],
+      },
+      {
+        heading: 'Auf einem Telefon',
+        body: [
+          'Auf den meisten Telefonen ist kein Markdown-Reader installiert, und sie bieten an, die Datei in einer Notizen- oder Dateien-App zu öffnen, die den Text so zeigt, wie er geschrieben ist. Unter iOS zeigt Dateien eine Vorschau als reinen Text; unter Android hängt das Verhalten davon ab, welcher Texteditor installiert ist.',
+          'Sie vorher in HTML umzuwandeln geht meist schneller, als einen Reader zu suchen, denn jedes Telefon hat schon einen Browser, und jeder Browser öffnet HTML.',
+        ],
+      },
+      {
+        heading: 'Was üblicherweise schiefgeht',
+        body: [
+          'Eine Datei, die ein Texteditor mit seiner eigenen Endung als `notes.md.txt` gespeichert hat, wird von nichts erkannt, das nach Markdown sucht. Umbenennen, und das Problem ist weg.',
+          'Tabellen, Fußnoten und Aufgabenlisten stehen nicht in der ursprünglichen Markdown-Spezifikation, ein Reader, der die Pipe-Zeichen und Klammern wörtlich anzeigt, ist also nicht kaputt — er setzt den Kern um und nicht die Erweiterungen.',
+        ],
+      },
+    ],
+    action: 'Eine .md-Datei in HTML umwandeln',
+    seo: {
+      title: 'Wie man eine .md-Datei öffnet — TransformPipe',
+      description:
+        'Was eine Markdown-Datei ist, was sie unter Windows, macOS und am Telefon öffnet, warum der Browser rohen Text zeigt und wie daraus eine Seite wird.',
+    },
+  },
+  'how-to-html': {
+    label: 'Eine .html-Datei öffnen',
+    title: 'Wie man eine .html-Datei öffnet',
+    lede: 'Jeder Browser öffnet sie. Die interessante Frage ist, was man tut, wenn man die Worte daraus haben will und nicht die Seite.',
+    sections: [
+      {
+        heading: 'Was es ist',
+        body: [
+          'Eine `.html`-Datei ist die Seite selbst: der Text und das Markup, das sagt, welcher Teil eine Überschrift, ein Link, eine Tabelle ist. Sie kann außerdem auf Stile, Bilder und Skripte verweisen, die anderswo liegen, und deshalb sieht eine gespeicherte Seite manchmal nach gar nichts aus.',
+        ],
+      },
+      {
+        heading: 'Sie öffnen',
+        body: [
+          'Ein Doppelklick öffnet sie auf jedem Desktop-System im Standardbrowser. Öffnet sie sich stattdessen in einem Editor, per Rechtsklick „Öffnen mit“ wählen und dann einen Browser.',
+          'Auf einem Telefon reicht ein Dateimanager sie meist an den Browser weiter. Weigert er sich, hilft es normalerweise, sich die Datei selbst zu mailen und den Anhang zu öffnen, denn Mail-Programme geben HTML an eine Web-Ansicht.',
+        ],
+      },
+      {
+        heading: 'Wenn sie leer oder ohne Gestaltung öffnet',
+        body: [
+          'Eine Seite, die mit „Speichern unter, Webseite, komplett“ gesichert wurde, behält ihre Stile und Bilder in einem Ordner neben der Datei. Verschiebt man die Datei ohne den Ordner, verliert die Seite alles außer ihrem Text.',
+          'Eine Seite, die als einzelne Datei gespeichert wurde, hat alles in sich und öffnet überall gleich. Deshalb ist ein Export, der sich zu behalten lohnt, ein in sich geschlossener.',
+        ],
+      },
+      {
+        heading: 'Den Text herausbekommen',
+        body: [
+          'Aus dem Browser zu kopieren gibt einem die Worte und verliert die Struktur: Überschriften werden zu gewöhnlichen Zeilen, Tabellen zu aneinandergereihtem Text. Die Datei in Markdown umzuwandeln behält die Struktur als etwas, das man lesen und bearbeiten kann — und das ist meist, was eigentlich gemeint war.',
+        ],
+      },
+    ],
+    action: 'Eine .html-Datei in Markdown umwandeln',
+    seo: {
+      title: 'Wie man eine .html-Datei öffnet — TransformPipe',
+      description:
+        'Wie man eine HTML-Datei am Computer oder am Telefon öffnet, warum eine gespeicherte Seite ihre Gestaltung verliert und wie der Text samt Struktur herauskommt.',
+    },
+  },
+  'how-to-docx': {
+    label: 'Eine .docx-Datei öffnen',
+    title: 'Wie man eine .docx-Datei öffnet',
+    lede: 'Eine .docx ist ein Zip-Archiv aus XML. Word öffnet sie, und einiges Kostenlose tut es auch.',
+    sections: [
+      {
+        heading: 'Was es ist',
+        body: [
+          'Eine `.docx` ist kein einzelnes Dokument, sondern ein komprimierter Ordner: benennt man sie in `.zip` um, lässt sie sich öffnen, und darin liegen der Text, die Stile und die Bilder als getrennte Dateien. Das ist das Format, und deshalb lässt sich eine `.docx` in einem Texteditor nicht sinnvoll lesen.',
+        ],
+      },
+      {
+        heading: 'Ohne Word zu kaufen',
+        body: [
+          'Google Docs öffnet eine `.docx`, indem man sie in Drive hochlädt, LibreOffice Writer öffnet sie auf jedem Desktop-System und ist kostenlos, und sowohl Apple Pages als auch Microsofts eigene Web-Version von Word öffnen eine ohne bezahlte Lizenz.',
+          'Auf einem Telefon öffnet die Word-App `.docx`-Dateien zum Lesen ohne Abonnement; beim Bearbeiten fängt die Bezahlschranke an.',
+        ],
+      },
+      {
+        heading: 'Wenn sie sich nicht öffnen lässt',
+        body: [
+          'Eine Datei, die als `document.docx` ankommt, sich aber in nichts öffnen lässt, ist oft eine `.doc` — das ältere Format — mit der falschen Endung, oder eine Datei, deren Download nicht fertig wurde. Zuerst die Größe prüfen: ein abgebrochener Download ist meist offensichtlich zu klein.',
+          'Eine passwortgeschützte `.docx` öffnet den Dialog und sonst nichts. Daran kommt kein Konverter vorbei, was eine Eigenschaft der Datei ist und keine Grenze des Werkzeugs.',
+        ],
+      },
+      {
+        heading: 'Die Worte behalten, das Layout fallen lassen',
+        body: [
+          'Die Umwandlung in Markdown behält die Überschriften, Listen, Links und Tabellen und wirft Schriften, Ränder und Seitenumbrüche weg. Für Text, der in einem Repository, einem Wiki oder einem Diff leben muss, ist dieser Tausch der Sinn der Sache und kein Verlust.',
+        ],
+      },
+    ],
+    action: 'Eine .docx-Datei in Markdown umwandeln',
+    seo: {
+      title: 'Wie man eine .docx-Datei öffnet — TransformPipe',
+      description:
+        'Was eine .docx wirklich ist, wie man eine ohne Word öffnet, was zu tun ist, wenn sie sich nicht öffnen lässt, und wie der Text bleibt und das Layout geht.',
+    },
+  },
+  'how-to-csv': {
+    label: 'Eine .csv-Datei öffnen',
+    title: 'Wie man eine .csv-Datei öffnet',
+    lede: 'Eine Tabellenkalkulation öffnet sie, ein Texteditor zeigt, was wirklich darin steht, und der Unterschied wiegt schwerer, als es klingt.',
+    sections: [
+      {
+        heading: 'Was es ist',
+        body: [
+          'Eine `.csv` sind Zeilen aus Text mit einem Trennzeichen zwischen den Feldern — meist ein Komma, manchmal ein Semikolon oder ein Tabulator. Es gibt keine Typen, keine Formeln und keine Formatierung: jeder Wert ist eine Zeichenkette, und alles, was wie ein Datum oder eine Zahl aussieht, ist eine Vermutung Ihrer Software.',
+        ],
+      },
+      {
+        heading: 'Sie öffnen',
+        body: [
+          'Ein Doppelklick öffnet sie auf den meisten Rechnern in Excel oder Numbers, und in LibreOffice Calc, wenn das installiert ist. Google Sheets importiert eine über „Datei, Importieren“.',
+          'Sie zuerst in einem Texteditor zu öffnen ist die zehn Sekunden wert: er zeigt das tatsächliche Trennzeichen, ob die erste Zeile eine Kopfzeile ist und ob die Felder in Anführungszeichen stehen — drei Dinge, die eine Tabellenkalkulation stillschweigend für Sie entscheidet.',
+        ],
+      },
+      {
+        heading: 'Wenn die Spalten falsch herauskommen',
+        body: [
+          'Landet alles in einer Spalte, ist das Trennzeichen Ihrer Datei nicht das, was Ihre Tabellenkalkulation erwartet hat. Nehmen Sie in Excel „Daten, Aus Text/CSV“ statt des Doppelklicks und setzen Sie das Trennzeichen selbst.',
+          'Kommen Akzentzeichen als Unsinn heraus, passen die Kodierungen nicht zusammen: die Datei ist UTF-8, und das Programm hat etwas anderes angenommen. Derselbe Import-Dialog lässt Sie das sagen.',
+          'Führende Nullen, die aus Postleitzahlen oder Teilenummern verschwinden, sind hinterher nicht wiederherstellbar — die Tabellenkalkulation hat den Wert beim Öffnen in eine Zahl verwandelt. Importieren Sie die Spalte stattdessen als Text.',
+        ],
+      },
+      {
+        heading: 'Sie in ein Dokument bringen',
+        body: [
+          'Einen Tabellenbereich in ein Dokument zu kopieren gibt einem entweder ein Bild einer Tabelle oder ein Durcheinander, je nachdem, wohin man es einfügt. Die Datei in eine Markdown-Tabelle umzuwandeln gibt einem Zeilen, die ein Kopieren, einen Diff und einen Pull Request überstehen.',
+        ],
+      },
+    ],
+    action: 'Eine .csv-Datei in eine Markdown-Tabelle umwandeln',
+    seo: {
+      title: 'Wie man eine .csv-Datei öffnet — TransformPipe',
+      description:
+        'Wie man eine CSV öffnet, warum die Spalten manchmal in einer einzigen landen, was führende Nullen und Akzentzeichen zerstört und wie eine Tabelle daraus wird.',
+    },
+  },
+  'how-to-json': {
+    label: 'Eine .json-Datei öffnen',
+    title: 'Wie man eine .json-Datei öffnet',
+    lede: 'Es ist Text, also öffnet alles sie. Das Lesen ist der Teil, der Hilfe braucht.',
+    sections: [
+      {
+        heading: 'Was es ist',
+        body: [
+          'Eine `.json`-Datei enthält strukturierte Daten: Objekte mit benannten Feldern, Listen von Dingen, Zahlen und Zeichenketten. Es ist das Format, in dem eine API antwortet, und das, in das die meisten Programme ihre Einstellungen exportieren — deshalb taucht eine ohne Erklärung im Download-Ordner auf.',
+        ],
+      },
+      {
+        heading: 'Sie öffnen',
+        body: [
+          'Sie in ein Browserfenster zu ziehen funktioniert gut: Firefox und Chrome zeigen beide eine aufklappbare, durchsuchbare Ansicht statt rohen Textes. VS Code öffnet sie mit Faltung und formatiert eine einzeilige Datei mit einem Befehl neu.',
+          'Ein sehr großer Export — zig Megabyte — bringt einen Editor ins Straucheln. Ein Kommandozeilen-Werkzeug wie `jq` liest solche Dateien, ohne die ganze Datei in ein Fenster zu laden.',
+        ],
+      },
+      {
+        heading: 'Wenn sie sich nicht parsen lässt',
+        body: [
+          'Die drei üblichen Fehler sind ein Komma hinter dem letzten Eintrag, einfache Anführungszeichen, wo das Format doppelte verlangt, und ein Kommentar — JSON hat keine Kommentare, wie auch immer die Datei ausgesehen hat, aus der es kam.',
+          'Einer Fehlermeldung, die Zeile und Spalte nennt, kann man trauen: der Parser hat genau dort aufgehört, und der Fehler liegt meist ein Zeichen davor.',
+        ],
+      },
+      {
+        heading: 'Sie für einen Menschen lesbar machen',
+        body: [
+          'Eine aufklappbare Ansicht ist zum Prüfen von Daten da. Geht es darum, sie jemandem zu zeigen, macht die Umwandlung in Markdown aus einer Liste von Datensätzen eine Tabelle und aus verschachtelten Objekten Abschnitte mit Überschriften — dieselbe Information, in einer Form, die das Einfügen in ein Dokument übersteht.',
+        ],
+      },
+    ],
+    action: 'Eine .json-Datei in Markdown umwandeln',
+    seo: {
+      title: 'Wie man eine .json-Datei öffnet — TransformPipe',
+      description:
+        'Wie man eine JSON-Datei im Browser oder im Editor öffnet und liest, die drei Dinge, die das Parsen meist zerstören, und wie etwas Lesbares daraus wird.',
+    },
+  },
+  'how-to-txt': {
+    label: 'Eine .txt-Datei öffnen',
+    title: 'Wie man eine .txt-Datei öffnet',
+    lede: 'Nichts öffnet sich leichter. Die Probleme fangen an, wenn der Text auf einer anderen Art von Rechner geschrieben wurde.',
+    sections: [
+      {
+        heading: 'Was es ist',
+        body: [
+          'Eine `.txt`-Datei besteht aus Zeichen und Zeilenumbrüchen, und nichts darin beschreibt, wie das aussehen soll. Das ist ihre Stärke: sie öffnet sich auf jedem je gebauten System und wird sich auch in dreißig Jahren noch öffnen.',
+        ],
+      },
+      {
+        heading: 'Sie öffnen',
+        body: [
+          'Jedes Betriebssystem hat einen Editor, der sie per Doppelklick öffnet — Notepad, TextEdit, gedit. Ein Browser öffnet eine, die man auf sein Fenster zieht. Ein Telefon zeigt sie in seiner Dateien-App als Vorschau.',
+        ],
+      },
+      {
+        heading: 'Wenn sie als eine lange Zeile oder als Kästchen öffnet',
+        body: [
+          'Unter Windows geschriebener Text beendet seine Zeilen mit zwei Zeichen, unter Unix geschriebener mit einem. Ältere Editoren, die die jeweils andere Konvention erwarten, zeigen die Datei als eine einzige durchlaufende Zeile oder zeichnen an jedem Umbruch ein kleines Kästchen. Jeder moderne Editor kommt mit beidem zurecht; Notepad seit 2018.',
+          'Unsinnige Zeichen dort, wo Akzente oder Anführungszeichen stehen sollten, sind eine nicht passende Kodierung — die Datei ist UTF-8, und der Editor hat eine ältere Ein-Byte-Kodierung geraten. Die meisten Editoren lassen einen die Datei mit einer selbst genannten Kodierung erneut öffnen.',
+        ],
+      },
+      {
+        heading: 'Wenn daraus ein Dokument werden soll',
+        body: [
+          'Reinen Text als Markdown zu behandeln sieht so lange nach einer guten Idee aus, bis eine Zeile, die mit einem Bindestrich beginnt, zum Aufzählungspunkt wird, ein Sternchen mitten im Satz den halben Absatz kursiv setzt und eine Jahreszahl am Zeilenanfang zur nummerierten Liste. Eine ordentliche Umwandlung maskiert diese Zeichen zuerst, sodass die Seite sagt, was die Datei gesagt hat.',
+        ],
+      },
+    ],
+    action: 'Eine .txt-Datei in Markdown umwandeln',
+    seo: {
+      title: 'Wie man eine .txt-Datei öffnet — TransformPipe',
+      description:
+        'Wie man eine Textdatei öffnet, warum sie manchmal als eine lange Zeile oder als Kästchen erscheint und wie daraus ein Dokument ohne neue Formatierung wird.',
+    },
+  },
+  'how-to-xlsx': {
+    label: 'Eine .xlsx-Datei öffnen',
+    title: 'Wie man eine .xlsx-Datei öffnet',
+    lede: 'Excel ist nicht das Einzige, was eine öffnet, und zum Lesen einer Tabelle ist es selten das Schnellste.',
+    sections: [
+      {
+        heading: 'Was es ist',
+        body: [
+          'Eine `.xlsx` ist ein Zip-Archiv aus XML, gebaut wie eine `.docx`: Blätter, Stile und gemeinsam genutzte Zeichenketten als getrennte Dateien in einem komprimierten Ordner. Sie hält Typen, Formeln, Formatierung und mehrere Blätter auf einmal, also alles, was eine CSV nicht kann.',
+        ],
+      },
+      {
+        heading: 'Ohne Excel zu kaufen',
+        body: [
+          'Google Sheets importiert eine über „Datei, Importieren“. LibreOffice Calc öffnet sie auf jedem Desktop-System und ist kostenlos. Apple Numbers öffnet eine auf einem Mac, und Microsofts eigene Web-Version von Excel liest eine ohne bezahlte Lizenz.',
+        ],
+      },
+      {
+        heading: 'Was zu prüfen ist, bevor man den Zahlen traut',
+        body: [
+          'Eine Zelle, die `####` zeigt, ist eine zu schmale Spalte und keine kaputte Datei. Ein Datum, das als fünfstellige Zahl dasteht, ist der zugrunde liegende Serienwert, dem die Formatierung abhandengekommen ist.',
+          'Formeln werden neben ihrem zuletzt berechneten Ergebnis gespeichert. Eine Datei, die in etwas geöffnet wird, das sie nicht auswertet, zeigt die Ergebnisse, und die stimmen für den Zeitpunkt, an dem die Datei zuletzt gespeichert wurde, nicht unbedingt für jetzt.',
+        ],
+      },
+      {
+        heading: 'Ein Blatt in ein Dokument bekommen',
+        body: [
+          'Der übliche Weg ist, jedes Blatt nach CSV zu exportieren und das umzuwandeln, wobei alles außer dem aktiven Blatt verloren geht. Die Arbeitsmappe direkt umzuwandeln gibt einem eine Markdown-Tabelle je Blatt, mit einem Inhaltsverzeichnis, wenn es mehr als eines gibt.',
+        ],
+      },
+    ],
+    action: 'Eine .xlsx-Datei in Markdown-Tabellen umwandeln',
+    seo: {
+      title: 'Wie man eine .xlsx-Datei öffnet — TransformPipe',
+      description:
+        'Wie man eine Excel-Arbeitsmappe ohne Excel öffnet, was #### und fünfstellige Datumswerte bedeuten und wie aus jedem Blatt eine Markdown-Tabelle wird.',
+    },
+  },
+  'how-to-zip': {
+    label: 'Einen .zip-Export öffnen',
+    title: 'Wie man einen .zip-Export aus Notion, Confluence oder Obsidian öffnet',
+    lede: 'Das Entpacken ist die leichte Hälfte. Darin liegt ein Ordner voller Dateien, die alle aufeinander zeigen.',
+    sections: [
+      {
+        heading: 'Was darin ist',
+        body: [
+          'Ein Notion-Export ist eine Markdown-Datei je Seite, mit einer langen Kennung an jedem Dateinamen, dazu eine CSV je Datenbank. Ein Confluence-Export eines Bereichs ist eine HTML-Datei je Seite mit den Anhängen daneben. Ein Obsidian-Vault ist bereits Markdown, in den Ordnern, die Sie angelegt haben.',
+          'Alle drei lassen sich mit den Werkzeugen entpacken, die schon auf dem Rechner sind: Doppelklick unter Windows oder macOS, `unzip` im Terminal.',
+        ],
+      },
+      {
+        heading: 'Warum die Links kaputt sind',
+        body: [
+          'Notion schreibt Links gegen genau den Dateinamen, den es erzeugt hat, Kennung inklusive. Benennt man die Dateien in etwas Lesbares um, löst kein Link zwischen den Seiten mehr auf, und das ist die mit Abstand häufigste Art, wie eine Migration schiefgeht.',
+          'Confluence-Links zeigen auf seine eigenen Seiten-ids, und Anhänge auf eine Download-URL, die erwartet, dass man angemeldet ist. Obsidian benutzt `[[wikilinks]]`, die nur seine eigene App auflöst.',
+        ],
+      },
+      {
+        heading: 'Es lesen, ohne es zu reparieren',
+        body: [
+          'Hundert Dateien einzeln zu öffnen, um herauszufinden, was ein Arbeitsbereich enthielt, ist die falsche Art von Arbeit. Den Export zu einem Dokument zusammenzuführen — jede Seite der Reihe nach, mit einem Inhaltsverzeichnis — ergibt etwas, das sich in einem Durchgang lesen lässt, und genau dafür ist ein archivierter Export meist da.',
+        ],
+      },
+      {
+        heading: 'Wenn man die Dateien doch einzeln braucht',
+        body: [
+          'Müssen die Seiten getrennte Dateien mit funktionierenden Links bleiben, müssen das Umbenennen und das Umschreiben der Links zusammen geschehen, aus einer einzigen Zuordnung von altem zu neuem Namen. In zwei Durchgängen bleibt ein Ordner voller Dokumente zurück, die alle auf Namen zeigen, die es nicht mehr gibt.',
+        ],
+      },
+    ],
+    action: 'Einen .zip-Export in Markdown umwandeln',
+    seo: {
+      title: 'Wie man einen .zip-Export aus Notion oder Confluence öffnet — TransformPipe',
+      description:
+        'Was in einem Export aus Notion, Confluence oder Obsidian steckt, warum die Links zwischen den Seiten brechen und wie sich alles als ein Dokument lesen lässt.',
+    },
+  },
 };

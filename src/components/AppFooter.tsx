@@ -1,7 +1,7 @@
 import { CONVERSIONS, type ConversionId } from '@shared/conversions';
 import { Logo } from '@/components/Logo';
 import { useI18n, useT } from '@/lib/i18n/context';
-import { REPO_URL, STATIC_PAGES, type StaticPageId } from '@/lib/pages';
+import { pagesIn, REPO_URL, STATIC_PAGES, type StaticPageId } from '@/lib/pages';
 import type { Destination } from '@/lib/route';
 import {
   SiteFooter,
@@ -78,6 +78,15 @@ export function AppFooter({
         },
         { label: t('footer.git'), href: REPO_URL, external: true },
       ],
+    },
+    {
+      /*
+       * Built from the group rather than named one by one: a ninth how-to page is an entry in
+       * `src/lib/pages.ts` and appears here, in the reader's language, without anybody remembering
+       * this file exists.
+       */
+      heading: t('footer.howto'),
+      links: pagesIn('how-to').map((one) => page(one.id)),
     },
     {
       heading: t('footer.company'),

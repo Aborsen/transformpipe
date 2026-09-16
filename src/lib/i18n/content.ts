@@ -58,6 +58,8 @@ export interface PageWords {
   title: string;
   lede: string;
   sections: PageSectionWords[];
+  /** The one button a how-to page ends on. Its address is in `src/lib/pages.ts`. */
+  action?: string;
   seo: { title: string; description: string };
 }
 

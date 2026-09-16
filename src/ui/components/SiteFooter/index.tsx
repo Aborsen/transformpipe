@@ -91,7 +91,7 @@ export function SiteFooter({
 
           <nav
             aria-label="Site"
-            className="grid grid-cols-2 gap-8 sm:grid-cols-6 lg:gap-12"
+            className="grid grid-cols-2 gap-8 sm:grid-cols-7 lg:gap-10"
           >
             {columns.map((column) => (
               <div

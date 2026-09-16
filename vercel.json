@@ -102,6 +102,10 @@
       "destination": "/index.html"
     },
     {
+      "source": "/how-to/:page",
+      "destination": "/index.html"
+    },
+    {
       "source": "/about",
       "destination": "/index.html"
     },

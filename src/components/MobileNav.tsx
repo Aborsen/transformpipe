@@ -14,7 +14,7 @@ import {
   type ConversionId,
 } from '@shared/conversions';
 import { useI18n, useT } from '@/lib/i18n/context';
-import { STATIC_PAGES, type StaticPageId } from '@/lib/pages';
+import { pagesIn, type StaticPageId } from '@/lib/pages';
 import type { AppView, Destination } from '@/lib/route';
 import { IconButton } from '@/ui/components/IconButton';
 import {
@@ -217,9 +217,14 @@ export function MobileNav({
             })}
           </section>
 
-          {/* The footer's columns are a long scroll away on a phone; these are the ones asked for. */}
+          {/*
+            * The footer's columns are a long scroll away on a phone; these are the ones asked for.
+            * The how-to pages are deliberately not among them: there are eight, they are answers to
+            * a search rather than somewhere a person navigates, and a phone menu with thirteen rows
+            * in it is a list nobody reads.
+            */}
           <section className="flex flex-col gap-1 border-stroke border-t pt-4">
-            {STATIC_PAGES.map((one) => (
+            {[...pagesIn('company'), ...pagesIn('legal')].map((one) => (
               <button
                 key={one.id}
                 type="button"

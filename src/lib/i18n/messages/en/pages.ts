@@ -250,4 +250,326 @@ export const pages: Content['pages'] = {
         'Two first-party session cookies, both needed to sign in. No analytics, no advertising, nothing optional to configure.',
     },
   },
+
+  /*
+   * The how-to pages: one per extension the dropzone takes.
+   *
+   * These answer rather than argue, which is what separates them from the blog. Somebody has a file
+   * and no idea what makes it open; they searched the extension; they want the answer in the first
+   * paragraph and a way out of the problem at the bottom. So: what the thing is, what opens it on
+   * each kind of machine, what goes wrong, and the conversion that ends the question.
+   */
+  'how-to-md': {
+    label: 'Open an .md file',
+    title: 'How to open an .md file',
+    lede: 'A Markdown file is plain text. Anything that opens text opens it — the question is what makes it look like a document.',
+    sections: [
+      {
+        heading: 'What it is',
+        body: [
+          'An `.md` file is a text file with a few conventions in it: a hash for a heading, asterisks for emphasis, hyphens for a list. Nothing in the file is binary and nothing is compressed, so a text editor shows you the whole truth of it immediately.',
+          'That is also why it looks unfinished. The conventions are instructions for a renderer, and until something renders them you are reading the instructions rather than the document.',
+        ],
+      },
+      {
+        heading: 'On a computer',
+        body: [
+          'On Windows, Notepad opens it and shows the raw text. On a Mac, TextEdit does the same, though it may ask to convert the file first — decline, and it stays plain. On either, VS Code renders a live preview beside the source, which is the closest thing to the finished page without leaving your editor.',
+          'Dragging the file onto a browser window does not work the way people expect: the browser shows the raw text or offers to download it, because no browser renders Markdown on its own.',
+        ],
+      },
+      {
+        heading: 'On a phone',
+        body: [
+          'Most phones have no Markdown reader installed and will offer to open the file in a notes or files app, which shows the text as written. On iOS, Files previews it as plain text; on Android, the behaviour depends on which text editor is installed.',
+          'Converting it to HTML first is usually quicker than finding a reader, because every phone already has a browser and every browser opens HTML.',
+        ],
+      },
+      {
+        heading: 'What usually goes wrong',
+        body: [
+          'A file saved as `notes.md.txt` by a text editor that added its own extension will not be recognised by anything looking for Markdown. Rename it and the problem disappears.',
+          'Tables, footnotes and task lists are not in the original Markdown specification, so a reader that shows the pipes and brackets literally is not broken — it implements the core and not the extensions.',
+        ],
+      },
+    ],
+    action: 'Convert an .md file to HTML',
+    seo: {
+      title: 'How to open an .md file — TransformPipe',
+      description:
+        'What a Markdown file is, what opens it on Windows, macOS and a phone, why the browser shows raw text, and how to turn it into a page you can read.',
+    },
+  },
+  'how-to-html': {
+    label: 'Open an .html file',
+    title: 'How to open an .html file',
+    lede: 'Every browser opens it. The interesting question is what to do when you want the words out of it rather than the page.',
+    sections: [
+      {
+        heading: 'What it is',
+        body: [
+          'An `.html` file is the page itself: the text, and the markup that says which part is a heading, a link, a table. It may also reference styles, images and scripts that live elsewhere, which is why a saved page sometimes opens looking like nothing at all.',
+        ],
+      },
+      {
+        heading: 'Opening it',
+        body: [
+          'Double-clicking opens it in your default browser on every desktop system. If it opens in an editor instead, right-click and choose Open with, then a browser.',
+          'On a phone, a file manager will usually hand it to the browser. If it refuses, emailing the file to yourself and opening the attachment normally works, because mail clients pass HTML to a web view.',
+        ],
+      },
+      {
+        heading: 'When it opens blank or unstyled',
+        body: [
+          'A page saved with Save As, Web Page, complete keeps its styles and images in a folder beside the file. Move the file without the folder and the page loses everything except its text.',
+          'A page saved as a single file keeps everything inside it and opens the same anywhere. This is why an export worth keeping is a self-contained one.',
+        ],
+      },
+      {
+        heading: 'Getting the text out',
+        body: [
+          'Copying from the browser gives you the words and loses the structure: headings become ordinary lines, tables become runs of text. Converting the file to Markdown keeps the structure as something you can read and edit, which is usually what people actually wanted.',
+        ],
+      },
+    ],
+    action: 'Convert an .html file to Markdown',
+    seo: {
+      title: 'How to open an .html file — TransformPipe',
+      description:
+        'How to open an HTML file on a computer or a phone, why a saved page sometimes loses its styling, and how to get the text out with its structure intact.',
+    },
+  },
+  'how-to-docx': {
+    label: 'Open a .docx file',
+    title: 'How to open a .docx file',
+    lede: 'A .docx is a zip archive of XML. Word opens it, and so do several things that are free.',
+    sections: [
+      {
+        heading: 'What it is',
+        body: [
+          'A `.docx` is not a single document but a compressed folder: rename it to `.zip` and you can open it to find the text, the styles and the images as separate files inside. That is the format, and it is why a `.docx` cannot be read usefully in a text editor.',
+        ],
+      },
+      {
+        heading: 'Without buying Word',
+        body: [
+          'Google Docs opens a `.docx` by uploading it to Drive, LibreOffice Writer opens it on any desktop system and is free, and both Apple Pages and Microsoft’s own web version of Word open one without a paid licence.',
+          'On a phone, the Word app opens `.docx` files for reading without a subscription; editing is where the paywall starts.',
+        ],
+      },
+      {
+        heading: 'When it will not open',
+        body: [
+          'A file that arrives as `document.docx` but refuses to open in anything is often a `.doc` — the older format — with the wrong extension, or a file that did not finish downloading. Check the size first: a truncated download is usually obviously too small.',
+          'A password-protected `.docx` will open the dialogue and nothing else. No converter can pass that, which is a property of the file rather than a limitation of the tool.',
+        ],
+      },
+      {
+        heading: 'Keeping the words, dropping the layout',
+        body: [
+          'Converting to Markdown keeps the headings, lists, links and tables and throws away fonts, margins and page breaks. For text that has to live in a repository, a wiki or a diff, that trade is the point rather than a loss.',
+        ],
+      },
+    ],
+    action: 'Convert a .docx file to Markdown',
+    seo: {
+      title: 'How to open a .docx file — TransformPipe',
+      description:
+        'What a .docx actually is, how to open one without buying Word, what to do when it refuses to open, and how to keep the text while dropping the layout.',
+    },
+  },
+  'how-to-csv': {
+    label: 'Open a .csv file',
+    title: 'How to open a .csv file',
+    lede: 'A spreadsheet opens it, a text editor shows you what is really in it, and the difference matters more than it sounds.',
+    sections: [
+      {
+        heading: 'What it is',
+        body: [
+          'A `.csv` is rows of text with a separator between the fields — usually a comma, sometimes a semicolon or a tab. There are no types, no formulas and no formatting: every value is a string, and anything that looks like a date or a number is your software guessing.',
+        ],
+      },
+      {
+        heading: 'Opening it',
+        body: [
+          'Double-clicking opens it in Excel or Numbers on most machines, and in LibreOffice Calc if that is installed. Google Sheets imports one through File, Import.',
+          'Opening it in a text editor first is worth the ten seconds: it shows the real separator, whether the first row is a header, and whether the fields are quoted — three things a spreadsheet decides for you silently.',
+        ],
+      },
+      {
+        heading: 'When the columns come out wrong',
+        body: [
+          'Everything landing in one column means the separator your file uses is not the one your spreadsheet expected. In Excel, use Data, From Text/CSV rather than double-clicking, and set the delimiter yourself.',
+          'Accented characters coming out as nonsense is an encoding mismatch: the file is UTF-8 and the program assumed something else. The same import dialogue lets you say so.',
+          'Leading zeros disappearing from postcodes or part numbers is not recoverable after the fact — the spreadsheet converted the value to a number on open. Import the column as text instead.',
+        ],
+      },
+      {
+        heading: 'Putting it in a document',
+        body: [
+          'Pasting a spreadsheet range into a document gives you either a picture of a table or a mess, depending on where you paste it. Converting the file to a Markdown table gives you rows that survive a copy, a diff and a pull request.',
+        ],
+      },
+    ],
+    action: 'Convert a .csv file to a Markdown table',
+    seo: {
+      title: 'How to open a .csv file — TransformPipe',
+      description:
+        'How to open a CSV, why the columns sometimes collapse into one, what breaks leading zeros and accented characters, and how to turn one into a table.',
+    },
+  },
+  'how-to-json': {
+    label: 'Open a .json file',
+    title: 'How to open a .json file',
+    lede: 'It is text, so everything opens it. Reading it is the part that needs help.',
+    sections: [
+      {
+        heading: 'What it is',
+        body: [
+          'A `.json` file holds structured data: objects with named fields, lists of things, numbers and strings. It is the format an API answers in and the one most applications export their settings to, which is why one turns up in a download folder without explanation.',
+        ],
+      },
+      {
+        heading: 'Opening it',
+        body: [
+          'Dragging it into a browser window works well: Firefox and Chrome both show a folding, searchable view rather than raw text. VS Code opens it with folding and will reformat a single-line file with one command.',
+          'A very large export — tens of megabytes — will make an editor struggle. A command-line tool such as `jq` reads those without loading the whole file into a window.',
+        ],
+      },
+      {
+        heading: 'When it will not parse',
+        body: [
+          'The three usual faults are a trailing comma after the last item, single quotes where the format requires double, and a comment — JSON has no comments, whatever the file it came from looked like.',
+          'An error naming a line and column is worth trusting: the parser stopped exactly there, and the fault is usually one character earlier.',
+        ],
+      },
+      {
+        heading: 'Making it readable by a person',
+        body: [
+          'A folding viewer is for inspecting data. When the point is to show it to somebody, converting to Markdown turns a list of records into a table and nested objects into headed sections — the same information, in a shape that survives being pasted into a document.',
+        ],
+      },
+    ],
+    action: 'Convert a .json file to Markdown',
+    seo: {
+      title: 'How to open a .json file — TransformPipe',
+      description:
+        'How to open and read a JSON file in a browser or an editor, the three things that usually break parsing, and how to turn one into something readable.',
+    },
+  },
+  'how-to-txt': {
+    label: 'Open a .txt file',
+    title: 'How to open a .txt file',
+    lede: 'Nothing opens more easily. The problems start when the text was written on a different kind of machine.',
+    sections: [
+      {
+        heading: 'What it is',
+        body: [
+          'A `.txt` file is characters and line breaks, with nothing describing how any of it should look. That is its virtue: it opens on every system ever made and will still open in thirty years.',
+        ],
+      },
+      {
+        heading: 'Opening it',
+        body: [
+          'Every operating system has an editor that opens it by double-clicking — Notepad, TextEdit, gedit. A browser opens one dropped onto its window. A phone previews it in its files app.',
+        ],
+      },
+      {
+        heading: 'When it opens as one long line, or as boxes',
+        body: [
+          'Text written on Windows ends its lines with two characters and text written on Unix with one. Older editors that expect the other convention show the file as a single run-on line, or draw a small box at every break. Any modern editor handles both; Notepad has since 2018.',
+          'Nonsense characters where accents or quotation marks should be is an encoding mismatch — the file is UTF-8 and the editor guessed an older single-byte encoding. Most editors let you reopen with an encoding you name.',
+        ],
+      },
+      {
+        heading: 'When it needs to become a document',
+        body: [
+          'Treating plain text as Markdown looks like it works until a line beginning with a hyphen becomes a bullet, an asterisk in a sentence turns half a paragraph italic, and a year at the start of a line becomes a numbered list. Converting it properly escapes those characters first, so what the file said is what the page says.',
+        ],
+      },
+    ],
+    action: 'Convert a .txt file to Markdown',
+    seo: {
+      title: 'How to open a .txt file — TransformPipe',
+      description:
+        'How to open a plain text file anywhere, why it sometimes shows as one long line or as boxes, and how to turn it into a document without it gaining formatting.',
+    },
+  },
+  'how-to-xlsx': {
+    label: 'Open an .xlsx file',
+    title: 'How to open an .xlsx file',
+    lede: 'Excel is not the only thing that opens one, and for reading a sheet it is rarely the quickest.',
+    sections: [
+      {
+        heading: 'What it is',
+        body: [
+          'An `.xlsx` is a zip archive of XML, the same construction as a `.docx`: sheets, styles and shared strings as separate files inside one compressed folder. It holds types, formulas, formatting and several sheets at once, which is everything a CSV cannot.',
+        ],
+      },
+      {
+        heading: 'Without buying Excel',
+        body: [
+          'Google Sheets imports one through File, Import. LibreOffice Calc opens it on any desktop system and is free. Apple Numbers opens one on a Mac, and Microsoft’s own web version of Excel reads one without a paid licence.',
+        ],
+      },
+      {
+        heading: 'What to check before trusting the numbers',
+        body: [
+          'A cell showing `####` is a column too narrow to display the value, not a broken file. A date that reads as a five-digit number is the underlying serial value with the formatting lost.',
+          'Formulas are stored alongside their last computed result. A file opened in something that does not evaluate them shows the results, which are correct as of whenever the file was last saved and not necessarily now.',
+        ],
+      },
+      {
+        heading: 'Getting a sheet into a document',
+        body: [
+          'The usual route is exporting each sheet to CSV and converting that, which loses everything but the active sheet. Converting the workbook directly gives you a Markdown table per sheet, with a table of contents when there is more than one.',
+        ],
+      },
+    ],
+    action: 'Convert an .xlsx file to Markdown tables',
+    seo: {
+      title: 'How to open an .xlsx file — TransformPipe',
+      description:
+        'How to open an Excel workbook without buying Excel, what #### and five-digit dates actually mean, and how to turn every sheet into a Markdown table.',
+    },
+  },
+  'how-to-zip': {
+    label: 'Open an export .zip',
+    title: 'How to open a .zip export from Notion, Confluence or Obsidian',
+    lede: 'Unzipping it is the easy half. What is inside is a folder of files that all point at each other.',
+    sections: [
+      {
+        heading: 'What is in it',
+        body: [
+          'A Notion export is one Markdown file per page with a long identifier appended to every filename, plus a CSV for each database. A Confluence space export is one HTML file per page with its attachments beside it. An Obsidian vault is already Markdown, in the folders you made.',
+          'All three unzip with the tools already on your machine: double-click on Windows or macOS, `unzip` on a terminal.',
+        ],
+      },
+      {
+        heading: 'Why the links are broken',
+        body: [
+          'Notion writes links against the exact filename it generated, identifier included. Rename the files to something readable and every link between pages stops resolving, which is the single most common way a migration goes wrong.',
+          'Confluence links point at its own page ids, and attachments at a download URL that expects you to be signed in. Obsidian uses `[[wikilinks]]`, which only its own app resolves.',
+        ],
+      },
+      {
+        heading: 'Reading it without repairing it',
+        body: [
+          'Opening a hundred files one at a time to find out what a workspace contained is the wrong shape of work. Merging the export into one document — every page in order, with a table of contents — gives you something readable in one pass, which is usually what an archived export is for.',
+        ],
+      },
+      {
+        heading: 'When you do need the files separate',
+        body: [
+          'If the pages have to stay separate files with working links, the rename and the link rewrite have to happen together, from one map of old name to new. Doing them in two passes leaves a folder of documents that all point at names that no longer exist.',
+        ],
+      },
+    ],
+    action: 'Convert an export .zip to Markdown',
+    seo: {
+      title: 'How to open a .zip export from Notion or Confluence — TransformPipe',
+      description:
+        'What is inside a Notion, Confluence or Obsidian export, why the links between pages break, and how to read the whole thing as one document.',
+    },
+  },
 };

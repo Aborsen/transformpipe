@@ -541,6 +541,7 @@ export const ui: Content['ui'] = {
   'footer.note': '© Raudar Labs {year}',
   'footer.converter': 'Convertisseur',
   'footer.resources': 'Ressources',
+  'footer.howto': 'Guides pratiques',
   'footer.company': 'Société',
   'footer.legal': 'Mentions légales',
   'footer.docs': 'Documentation',

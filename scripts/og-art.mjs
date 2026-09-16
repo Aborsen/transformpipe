@@ -15,7 +15,7 @@
  * separately generated pictures look like one set rather than sixty.
  */
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import puppeteer from 'puppeteer-core';
 
 const ROOT = resolve('.');
@@ -182,6 +182,16 @@ const PAGES = {
   privacy: ['a chunky padlock with a rounded body and a thick shackle, closed', 'coral red'],
   terms: ['a folded document with a round seal disc pressed onto its corner', 'coral red'],
   cookies: ['a round cookie-shaped disc with a few raised round chips on its top face', 'coral red'],
+
+  /* The how-to pages: the file itself, as an object somebody is about to open. */
+  'how-to/open-md': ['a single document page standing upright with a few raised lines of text on it and one corner turned over', 'teal cyan'],
+  'how-to/open-html': ['a browser window panel floating at an angle with a few raised bars inside it', 'teal cyan'],
+  'how-to/open-docx': ['a thick bound document lying at an angle with a few raised lines on its cover', 'warm amber'],
+  'how-to/open-csv': ['a narrow slab of two columns of small raised cells, like a comma-separated file', 'mint green'],
+  'how-to/open-json': ['two facing curly brace blocks with a small stack of tiles between them', 'sky blue'],
+  'how-to/open-txt': ['a plain flat page with evenly spaced raised lines and nothing else on it', 'periwinkle blue'],
+  'how-to/open-xlsx': ['a workbook of three stacked sheets, the top one a grid of raised cells', 'mint green'],
+  'how-to/open-zip': ['a closed archive box with a zip seam running across its lid', 'violet purple'],
 };
 
 function frontmatter(raw) {
@@ -342,6 +352,8 @@ for (const slug of wanted) {
       ] ?? DEFAULT_COLOUR;
 
   try {
+    // A page id can carry a slash — `how-to/open-md` — so the folder may not exist yet.
+    mkdirSync(dirname(file), { recursive: true });
     writeFileSync(file, await shrink(page, await draw(slug, colour)));
     drawn += 1;
     console.log(`drew ${slug} (${colour})`);

@@ -244,4 +244,326 @@ export const pages: Content['pages'] = {
         'Deux cookies de session propriétaires, tous deux nécessaires pour se connecter. Aucune mesure d’audience, aucune publicité, rien d’optionnel à configurer.',
     },
   },
+
+  /*
+   * Les pages pratiques : une par extension que la zone de dépôt accepte.
+   *
+   * Elles répondent au lieu d’argumenter, et c’est ce qui les sépare du blog. Quelqu’un a un fichier
+   * et aucune idée de ce qui l’ouvre ; il a cherché l’extension ; il veut la réponse dans le premier
+   * paragraphe et, en bas, une sortie de secours. Donc : ce qu’est la chose, ce qui l’ouvre sur
+   * chaque genre de machine, ce qui coince, et la conversion qui met fin à la question.
+   */
+  'how-to-md': {
+    label: 'Ouvrir un fichier .md',
+    title: 'Comment ouvrir un fichier .md',
+    lede: 'Un fichier Markdown est du texte brut. Tout ce qui ouvre du texte l’ouvre — la question est de savoir ce qui lui donne l’allure d’un document.',
+    sections: [
+      {
+        heading: 'Ce que c’est',
+        body: [
+          'Un fichier `.md` est un fichier texte avec quelques conventions dedans : un dièse pour un titre, des astérisques pour la mise en valeur, des tirets pour une liste. Rien dans le fichier n’est binaire et rien n’est compressé, donc un éditeur de texte vous en montre immédiatement toute la vérité.',
+          'C’est aussi pour cela qu’il a l’air inachevé. Les conventions sont des instructions destinées à un moteur de rendu, et tant que rien ne les rend, vous lisez les instructions plutôt que le document.',
+        ],
+      },
+      {
+        heading: 'Sur un ordinateur',
+        body: [
+          'Sous Windows, Notepad l’ouvre et affiche le texte brut. Sur un Mac, TextEdit fait de même, même s’il peut d’abord proposer de convertir le fichier — refusez, et il reste brut. Sur les deux, VS Code affiche un aperçu en direct à côté de la source, et c’est ce qui ressemble le plus à la page finie sans quitter votre éditeur.',
+          'Faire glisser le fichier sur une fenêtre de navigateur ne fonctionne pas comme on l’imagine : le navigateur affiche le texte brut ou propose de le télécharger, parce qu’aucun navigateur ne rend le Markdown de lui-même.',
+        ],
+      },
+      {
+        heading: 'Sur un téléphone',
+        body: [
+          'La plupart des téléphones n’ont aucun lecteur Markdown installé et proposeront d’ouvrir le fichier dans une application de notes ou de fichiers, qui affiche le texte tel qu’il est écrit. Sous iOS, Fichiers en donne un aperçu en texte brut ; sous Android, le comportement dépend de l’éditeur de texte installé.',
+          'Le convertir d’abord en HTML va généralement plus vite que de chercher un lecteur, parce que chaque téléphone a déjà un navigateur et que chaque navigateur ouvre le HTML.',
+        ],
+      },
+      {
+        heading: 'Ce qui coince le plus souvent',
+        body: [
+          'Un fichier enregistré sous le nom `notes.md.txt` par un éditeur de texte qui a ajouté sa propre extension ne sera reconnu par rien de ce qui cherche du Markdown. Renommez-le et le problème disparaît.',
+          'Les tableaux, les notes de bas de page et les listes de tâches ne figurent pas dans la spécification Markdown d’origine : un lecteur qui affiche littéralement les barres verticales et les crochets n’est donc pas cassé — il met en œuvre le cœur et pas les extensions.',
+        ],
+      },
+    ],
+    action: 'Convertir un fichier .md en HTML',
+    seo: {
+      title: 'Comment ouvrir un fichier .md — TransformPipe',
+      description:
+        'Ce qu’est un fichier Markdown, ce qui l’ouvre sous Windows, macOS et au téléphone, pourquoi le navigateur affiche du texte brut, et comment en faire une page.',
+    },
+  },
+  'how-to-html': {
+    label: 'Ouvrir un fichier .html',
+    title: 'Comment ouvrir un fichier .html',
+    lede: 'Tous les navigateurs l’ouvrent. La question intéressante est de savoir quoi faire quand on veut en tirer les mots plutôt que la page.',
+    sections: [
+      {
+        heading: 'Ce que c’est',
+        body: [
+          'Un fichier `.html` est la page elle-même : le texte, et le balisage qui dit quelle partie est un titre, un lien, un tableau. Il peut aussi renvoyer à des styles, des images et des scripts qui vivent ailleurs, et c’est pourquoi une page enregistrée s’ouvre parfois en n’ayant l’air de rien.',
+        ],
+      },
+      {
+        heading: 'L’ouvrir',
+        body: [
+          'Un double-clic l’ouvre dans votre navigateur par défaut sur tous les systèmes de bureau. Si elle s’ouvre plutôt dans un éditeur, faites un clic droit, choisissez « Ouvrir avec », puis un navigateur.',
+          'Sur un téléphone, un gestionnaire de fichiers la passe généralement au navigateur. S’il refuse, s’envoyer le fichier par e-mail et ouvrir la pièce jointe fonctionne normalement, parce que les logiciels de messagerie confient le HTML à une vue web.',
+        ],
+      },
+      {
+        heading: 'Quand elle s’ouvre vide ou sans mise en forme',
+        body: [
+          'Une page enregistrée avec « Enregistrer sous, Page web, complète » garde ses styles et ses images dans un dossier à côté du fichier. Déplacez le fichier sans le dossier et la page perd tout sauf son texte.',
+          'Une page enregistrée en un seul fichier garde tout à l’intérieur et s’ouvre partout de la même façon. C’est pourquoi un export qui vaut la peine d’être gardé est un export autonome.',
+        ],
+      },
+      {
+        heading: 'En sortir le texte',
+        body: [
+          'Copier depuis le navigateur vous donne les mots et perd la structure : les titres deviennent des lignes ordinaires, les tableaux des suites de texte. Convertir le fichier en Markdown garde la structure sous une forme qui se lit et se modifie, ce qui est généralement ce que l’on voulait vraiment.',
+        ],
+      },
+    ],
+    action: 'Convertir un fichier .html en Markdown',
+    seo: {
+      title: 'Comment ouvrir un fichier .html — TransformPipe',
+      description:
+        'Comment ouvrir un fichier HTML sur un ordinateur ou un téléphone, pourquoi une page enregistrée perd sa mise en forme, et comment en tirer le texte structuré.',
+    },
+  },
+  'how-to-docx': {
+    label: 'Ouvrir un fichier .docx',
+    title: 'Comment ouvrir un fichier .docx',
+    lede: 'Un .docx est une archive zip de XML. Word l’ouvre, et plusieurs outils gratuits aussi.',
+    sections: [
+      {
+        heading: 'Ce que c’est',
+        body: [
+          'Un `.docx` n’est pas un document unique mais un dossier compressé : renommez-le en `.zip` et vous pourrez l’ouvrir pour y trouver le texte, les styles et les images sous forme de fichiers séparés. C’est cela, le format, et c’est pourquoi un `.docx` ne se lit pas utilement dans un éditeur de texte.',
+        ],
+      },
+      {
+        heading: 'Sans acheter Word',
+        body: [
+          'Google Docs ouvre un `.docx` en le téléversant dans Drive, LibreOffice Writer l’ouvre sur n’importe quel système de bureau et est gratuit, et Apple Pages comme la version web de Word de Microsoft en ouvrent un sans licence payante.',
+          'Sur un téléphone, l’application Word ouvre les fichiers `.docx` en lecture sans abonnement ; c’est à la modification que commence le péage.',
+        ],
+      },
+      {
+        heading: 'Quand il refuse de s’ouvrir',
+        body: [
+          'Un fichier qui arrive sous le nom `document.docx` mais que rien n’ouvre est souvent un `.doc` — l’ancien format — avec la mauvaise extension, ou un fichier dont le téléchargement n’est pas allé au bout. Regardez d’abord la taille : un téléchargement interrompu est en général manifestement trop petit.',
+          'Un `.docx` protégé par mot de passe ouvre la boîte de dialogue et rien d’autre. Aucun convertisseur ne passe outre, ce qui est une propriété du fichier plutôt qu’une limite de l’outil.',
+        ],
+      },
+      {
+        heading: 'Garder les mots, laisser la mise en page',
+        body: [
+          'Convertir en Markdown garde les titres, les listes, les liens et les tableaux, et jette les polices, les marges et les sauts de page. Pour du texte qui doit vivre dans un dépôt, un wiki ou un diff, ce troc est le but plutôt qu’une perte.',
+        ],
+      },
+    ],
+    action: 'Convertir un fichier .docx en Markdown',
+    seo: {
+      title: 'Comment ouvrir un fichier .docx — TransformPipe',
+      description:
+        'Ce qu’est vraiment un .docx, comment en ouvrir un sans acheter Word, que faire quand il refuse de s’ouvrir, et comment garder le texte sans la mise en page.',
+    },
+  },
+  'how-to-csv': {
+    label: 'Ouvrir un fichier .csv',
+    title: 'Comment ouvrir un fichier .csv',
+    lede: 'Un tableur l’ouvre, un éditeur de texte vous montre ce qu’il contient vraiment, et la différence compte plus qu’il n’y paraît.',
+    sections: [
+      {
+        heading: 'Ce que c’est',
+        body: [
+          'Un `.csv`, ce sont des lignes de texte avec un séparateur entre les champs — le plus souvent une virgule, parfois un point-virgule ou une tabulation. Il n’y a ni types, ni formules, ni mise en forme : chaque valeur est une chaîne de caractères, et tout ce qui ressemble à une date ou à un nombre est une supposition de votre logiciel.',
+        ],
+      },
+      {
+        heading: 'L’ouvrir',
+        body: [
+          'Un double-clic l’ouvre dans Excel ou Numbers sur la plupart des machines, et dans LibreOffice Calc si celui-ci est installé. Google Sheets en importe un par « Fichier, Importer ».',
+          'L’ouvrir d’abord dans un éditeur de texte vaut les dix secondes que cela prend : il montre le vrai séparateur, si la première ligne est un en-tête, et si les champs sont entre guillemets — trois choses qu’un tableur décide pour vous en silence.',
+        ],
+      },
+      {
+        heading: 'Quand les colonnes sortent de travers',
+        body: [
+          'Tout qui atterrit dans une seule colonne veut dire que le séparateur de votre fichier n’est pas celui qu’attendait votre tableur. Dans Excel, passez par « Données, À partir d’un fichier texte/CSV » plutôt que par le double-clic, et fixez le délimiteur vous-même.',
+          'Des caractères accentués qui sortent en charabia sont un décalage d’encodage : le fichier est en UTF-8 et le programme a supposé autre chose. La même boîte de dialogue d’importation vous laisse le dire.',
+          'Les zéros de tête qui disparaissent des codes postaux ou des références ne se récupèrent pas après coup — le tableur a converti la valeur en nombre à l’ouverture. Importez plutôt la colonne comme du texte.',
+        ],
+      },
+      {
+        heading: 'Le mettre dans un document',
+        body: [
+          'Coller une plage de tableur dans un document vous donne soit une image de tableau, soit un désordre, selon l’endroit où vous collez. Convertir le fichier en tableau Markdown vous donne des lignes qui survivent à une copie, à un diff et à une pull request.',
+        ],
+      },
+    ],
+    action: 'Convertir un fichier .csv en tableau Markdown',
+    seo: {
+      title: 'Comment ouvrir un fichier .csv — TransformPipe',
+      description:
+        'Comment ouvrir un CSV, pourquoi les colonnes se replient parfois en une seule, ce qui casse les zéros de tête et les accents, et comment en faire un tableau.',
+    },
+  },
+  'how-to-json': {
+    label: 'Ouvrir un fichier .json',
+    title: 'Comment ouvrir un fichier .json',
+    lede: 'C’est du texte, donc tout l’ouvre. C’est le lire qui demande de l’aide.',
+    sections: [
+      {
+        heading: 'Ce que c’est',
+        body: [
+          'Un fichier `.json` contient des données structurées : des objets aux champs nommés, des listes, des nombres et des chaînes de caractères. C’est le format dans lequel une API répond et celui vers lequel la plupart des applications exportent leurs réglages, ce qui explique qu’il en apparaisse un dans un dossier de téléchargements sans explication.',
+        ],
+      },
+      {
+        heading: 'L’ouvrir',
+        body: [
+          'Le faire glisser dans une fenêtre de navigateur marche bien : Firefox et Chrome affichent tous deux une vue repliable où l’on peut chercher, plutôt que du texte brut. VS Code l’ouvre avec le repliement et reformate d’une seule commande un fichier tenant sur une ligne.',
+          'Un très gros export — des dizaines de mégaoctets — met un éditeur en difficulté. Un outil en ligne de commande comme `jq` lit ceux-là sans charger tout le fichier dans une fenêtre.',
+        ],
+      },
+      {
+        heading: 'Quand il refuse d’être analysé',
+        body: [
+          'Les trois fautes habituelles sont une virgule en trop après le dernier élément, des guillemets simples là où le format en exige des doubles, et un commentaire — le JSON n’a pas de commentaires, quoi qu’ait pu contenir le fichier d’où il vient.',
+          'Une erreur qui nomme une ligne et une colonne mérite qu’on lui fasse confiance : l’analyseur s’est arrêté exactement là, et la faute est généralement un caractère plus tôt.',
+        ],
+      },
+      {
+        heading: 'Le rendre lisible par une personne',
+        body: [
+          'Une vue repliable sert à inspecter des données. Quand il s’agit de les montrer à quelqu’un, convertir en Markdown transforme une liste d’enregistrements en tableau et les objets imbriqués en sections avec titres — la même information, dans une forme qui survit à un collage dans un document.',
+        ],
+      },
+    ],
+    action: 'Convertir un fichier .json en Markdown',
+    seo: {
+      title: 'Comment ouvrir un fichier .json — TransformPipe',
+      description:
+        'Comment ouvrir et lire un fichier JSON dans un navigateur ou un éditeur, les trois choses qui cassent habituellement l’analyse, et comment le rendre lisible.',
+    },
+  },
+  'how-to-txt': {
+    label: 'Ouvrir un fichier .txt',
+    title: 'Comment ouvrir un fichier .txt',
+    lede: 'Rien ne s’ouvre plus facilement. Les ennuis commencent quand le texte a été écrit sur un autre genre de machine.',
+    sections: [
+      {
+        heading: 'Ce que c’est',
+        body: [
+          'Un fichier `.txt`, ce sont des caractères et des retours à la ligne, sans rien qui décrive de quoi tout cela devrait avoir l’air. C’est sa vertu : il s’ouvre sur tous les systèmes jamais construits et s’ouvrira encore dans trente ans.',
+        ],
+      },
+      {
+        heading: 'L’ouvrir',
+        body: [
+          'Chaque système d’exploitation a un éditeur qui l’ouvre d’un double-clic — Notepad, TextEdit, gedit. Un navigateur en ouvre un déposé sur sa fenêtre. Un téléphone en donne un aperçu dans son application de fichiers.',
+        ],
+      },
+      {
+        heading: 'Quand il s’ouvre sur une seule longue ligne, ou en carrés',
+        body: [
+          'Le texte écrit sous Windows termine ses lignes par deux caractères et le texte écrit sous Unix par un seul. Les éditeurs anciens qui attendent l’autre convention affichent le fichier comme une seule ligne interminable, ou dessinent un petit carré à chaque retour. N’importe quel éditeur moderne gère les deux ; Notepad depuis 2018.',
+          'Des caractères absurdes là où devraient se trouver des accents ou des guillemets sont un décalage d’encodage — le fichier est en UTF-8 et l’éditeur a deviné un ancien encodage sur un octet. La plupart des éditeurs permettent de rouvrir avec un encodage que vous nommez.',
+        ],
+      },
+      {
+        heading: 'Quand il doit devenir un document',
+        body: [
+          'Traiter du texte brut comme du Markdown a l’air de fonctionner jusqu’à ce qu’une ligne commençant par un tiret devienne une puce, qu’un astérisque au milieu d’une phrase mette la moitié d’un paragraphe en italique, et qu’une année en début de ligne devienne une liste numérotée. Le convertir correctement échappe d’abord ces caractères, pour que ce que disait le fichier soit ce que dit la page.',
+        ],
+      },
+    ],
+    action: 'Convertir un fichier .txt en Markdown',
+    seo: {
+      title: 'Comment ouvrir un fichier .txt — TransformPipe',
+      description:
+        'Comment ouvrir un fichier texte partout, pourquoi il s’affiche parfois sur une seule ligne ou en carrés, et comment en faire un document sans formatage ajouté.',
+    },
+  },
+  'how-to-xlsx': {
+    label: 'Ouvrir un fichier .xlsx',
+    title: 'Comment ouvrir un fichier .xlsx',
+    lede: 'Excel n’est pas le seul à en ouvrir un, et pour lire une feuille il est rarement le plus rapide.',
+    sections: [
+      {
+        heading: 'Ce que c’est',
+        body: [
+          'Un `.xlsx` est une archive zip de XML, la même construction qu’un `.docx` : les feuilles, les styles et les chaînes partagées sous forme de fichiers séparés dans un même dossier compressé. Il porte des types, des formules, de la mise en forme et plusieurs feuilles à la fois, c’est-à-dire tout ce qu’un CSV ne peut pas.',
+        ],
+      },
+      {
+        heading: 'Sans acheter Excel',
+        body: [
+          'Google Sheets en importe un par « Fichier, Importer ». LibreOffice Calc l’ouvre sur n’importe quel système de bureau et est gratuit. Apple Numbers en ouvre un sur un Mac, et la version web d’Excel de Microsoft en lit un sans licence payante.',
+        ],
+      },
+      {
+        heading: 'Ce qu’il faut vérifier avant de croire les chiffres',
+        body: [
+          'Une cellule qui affiche `####` est une colonne trop étroite pour afficher la valeur, pas un fichier cassé. Une date qui se lit comme un nombre à cinq chiffres est la valeur de série sous-jacente, dont la mise en forme s’est perdue.',
+          'Les formules sont conservées à côté de leur dernier résultat calculé. Un fichier ouvert dans quelque chose qui ne les évalue pas affiche ces résultats, qui sont justes au moment du dernier enregistrement et pas nécessairement maintenant.',
+        ],
+      },
+      {
+        heading: 'Faire entrer une feuille dans un document',
+        body: [
+          'Le chemin habituel consiste à exporter chaque feuille en CSV et à convertir cela, ce qui perd tout sauf la feuille active. Convertir directement le classeur vous donne un tableau Markdown par feuille, avec une table des matières lorsqu’il y en a plus d’une.',
+        ],
+      },
+    ],
+    action: 'Convertir un fichier .xlsx en tableaux Markdown',
+    seo: {
+      title: 'Comment ouvrir un fichier .xlsx — TransformPipe',
+      description:
+        'Comment ouvrir un classeur Excel sans acheter Excel, ce que veulent dire #### et les dates à cinq chiffres, et comment en tirer un tableau Markdown par feuille.',
+    },
+  },
+  'how-to-zip': {
+    label: 'Ouvrir un export .zip',
+    title: 'Comment ouvrir un export .zip de Notion, Confluence ou Obsidian',
+    lede: 'Le dézipper est la moitié facile. Ce qu’il y a dedans est un dossier de fichiers qui pointent tous les uns vers les autres.',
+    sections: [
+      {
+        heading: 'Ce qu’il y a dedans',
+        body: [
+          'Un export Notion, c’est un fichier Markdown par page avec un long identifiant ajouté à chaque nom de fichier, plus un CSV par base de données. Un export d’espace Confluence, c’est un fichier HTML par page avec ses pièces jointes à côté. Un coffre Obsidian est déjà du Markdown, dans les dossiers que vous avez faits.',
+          'Tous les trois se décompressent avec les outils déjà présents sur votre machine : un double-clic sous Windows ou macOS, `unzip` dans un terminal.',
+        ],
+      },
+      {
+        heading: 'Pourquoi les liens sont cassés',
+        body: [
+          'Notion écrit ses liens en fonction du nom de fichier exact qu’il a généré, identifiant compris. Renommez les fichiers pour quelque chose de lisible et tous les liens entre les pages cessent de fonctionner, ce qui est la manière la plus courante de rater une migration.',
+          'Les liens de Confluence pointent vers ses propres ids de page, et les pièces jointes vers une URL de téléchargement qui attend que vous soyez connecté. Obsidian utilise des `[[wikilinks]]`, que seule son application résout.',
+        ],
+      },
+      {
+        heading: 'Le lire sans le réparer',
+        body: [
+          'Ouvrir cent fichiers un par un pour découvrir ce que contenait un espace de travail est un travail de la mauvaise forme. Fusionner l’export en un seul document — chaque page dans l’ordre, avec une table des matières — vous donne quelque chose qui se lit d’une traite, ce qui est généralement à cela que sert un export archivé.',
+        ],
+      },
+      {
+        heading: 'Quand il vous faut vraiment les fichiers séparés',
+        body: [
+          'Si les pages doivent rester des fichiers séparés avec des liens qui fonctionnent, le renommage et la réécriture des liens doivent se faire ensemble, à partir d’une seule table des anciens noms vers les nouveaux. Les faire en deux passes laisse un dossier de documents qui pointent tous vers des noms qui n’existent plus.',
+        ],
+      },
+    ],
+    action: 'Convertir un export .zip en Markdown',
+    seo: {
+      title: 'Comment ouvrir un export .zip de Notion ou Confluence — TransformPipe',
+      description:
+        'Ce que contient un export Notion, Confluence ou Obsidian, pourquoi les liens entre les pages se cassent, et comment lire l’ensemble comme un seul document.',
+    },
+  },
 };

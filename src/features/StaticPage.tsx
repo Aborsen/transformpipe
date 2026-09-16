@@ -24,6 +24,31 @@ interface StaticPageProps {
  * the catalogue under that same id, so the five shapes are one renderer in five languages rather
  * than twenty-five components.
  */
+/**
+ * The one piece of markup these pages are allowed: `like this` becomes a code span.
+ *
+ * The bodies are plain strings — the prerenderer runs in Node with no React in it, and a catalogue
+ * a translator edits should not be a place where a stray angle bracket can break a page. But a page
+ * explaining what a `.docx` is has file names and commands in nearly every sentence, and printing
+ * the backticks is worse than having no emphasis at all. So exactly one thing is parsed, by
+ * splitting on the character rather than by running a parser: odd pieces are code, even pieces are
+ * words.
+ */
+function inlineCode(text: string) {
+  return text.split('`').map((piece, index) =>
+    index % 2 === 1 ? (
+      <code
+        key={`${index}-${piece}`}
+        className="rounded bg-surface-card2 px-1 py-0.5 font-mono text-[0.9em] text-ink-body"
+      >
+        {piece}
+      </code>
+    ) : (
+      piece
+    )
+  );
+}
+
 export function StaticPage({ page, onGoToConverter }: StaticPageProps) {
   const t = useT();
   const { content, locale } = useI18n();
@@ -80,7 +105,7 @@ export function StaticPage({ page, onGoToConverter }: StaticPageProps) {
                 textColor="secondary"
                 className="text-sm leading-relaxed"
               >
-                {paragraph}
+                {inlineCode(paragraph)}
               </Typography>
             ))}
 
@@ -99,6 +124,25 @@ export function StaticPage({ page, onGoToConverter }: StaticPageProps) {
           </section>
         ))}
       </div>
+
+      {/*
+        * A how-to page ends on the thing it was describing.
+        *
+        * A real anchor rather than an in-app handler: somebody arrives here from a search engine
+        * having asked how to open a file, and the honest end of that page is a link they can open
+        * in a new tab, copy, or crawl. The address comes from `src/lib/pages.ts` and the words from
+        * the catalogue — a path is the same in five languages and a label is not.
+        */}
+      {page.action && words.action && (
+        <div className="border-stroke border-t pt-6">
+          <a
+            href={page.action}
+            className="inline-flex items-center rounded-lg bg-brand-primary px-4 py-2.5 font-semibold text-sm text-white no-underline transition-colors hover:bg-brand-primary/90"
+          >
+            {words.action}
+          </a>
+        </div>
+      )}
 
       {/*
         * Every one of these pages ends by telling somebody where a question goes.
