@@ -112,21 +112,19 @@ const fontUrl = pathToFileURL(
 ).href;
 
 /*
- * The picture, drawn as shape and carrying no words at all.
+ * The picture: one solid object per article, built in isometry, with no words in it.
  *
- * It used to print the headline into the image. That cost twice: on the blog index the title was
- * read once in the picture and again in the card underneath it, which is what made the page feel
- * loud; and because the words were in the picture, a translated article needed its own copy of
- * every cover, so 63 articles in five languages meant 276 files to draw and keep in step.
+ * Three versions got here. The first printed the headline into the image, so the index read every
+ * title twice and a translation needed its own copy of every cover. The second dropped the words
+ * but varied one flat composition — paragraphs left, a table or a list right — which at card size
+ * is not variety: sixty covers of grey bars read as one cover repeated. The third drew flat line
+ * icons: distinct, and weightless.
  *
- * With no text, one picture serves every language, and the grid stops repeating itself — see
- * `src/lib/covers.ts`, which no longer takes a locale.
- *
- * What replaces the words is a scene built per article rather than one motif reused: the same
- * vocabulary of document parts — paragraphs, a heading, a table, a list, a code block, a quote, an
- * image — arranged from a hash of the slug, so every cover differs and all of them are obviously
- * the same family. The composition itself is the product's own claim: flat text on the left, the
- * caret, structure on the right.
+ * This one gives each article a solid seen from the same corner — boxes, plates, cylinders and
+ * spheres projected isometrically and filled in three shades of the topic's own accent, light on
+ * top, mid on the left, dark on the right, which is what reads as depth. A different silhouette per
+ * article, identical light and angle across all of them, and nothing language-specific inside, so
+ * one file still serves every locale.
  */
 
 /** A small, stable hash: the same slug draws the same picture on every machine, forever. */
@@ -141,147 +139,336 @@ function seedOf(slug) {
   return h >>> 0;
 }
 
-/** A deterministic sequence from that seed. Not random: reproducible, which is the whole point. */
-function pickerFor(slug) {
-  let state = seedOf(slug) || 1;
+/** Blend a hex colour towards another, which is how the three faces of one solid are derived. */
+function mix(hex, towards, amount) {
+  const read = (value, at) => parseInt(value.slice(at, at + 2), 16);
+  const channel = (at) =>
+    Math.round(read(hex, at) + (read(towards, at) - read(hex, at)) * amount)
+      .toString(16)
+      .padStart(2, '0');
 
-  return () => {
-    state ^= state << 13;
-    state ^= state >>> 17;
-    state ^= state << 5;
-    state >>>= 0;
+  return `#${channel(1)}${channel(3)}${channel(5)}`;
+}
 
-    return state / 4294967296;
+/*
+ * Isometry, the 2:1 kind every drawing program means by the word: one unit along x goes right and
+ * down, one along y goes left and down, one along z goes straight up. Scenes are drawn in units
+ * roughly between -40 and 40 and projected into the 240-square box the SVG declares.
+ */
+const U = 2.05;
+
+const at = (x, y, z) => [
+  120 + (x - y) * 0.866 * U,
+  128 + ((x + y) * 0.5 - z) * U,
+];
+
+const pt = (x, y, z) => at(x, y, z).map((n) => n.toFixed(1)).join(',');
+
+const poly = (points, fill) => `<polygon points="${points.join(' ')}" fill="${fill}"/>`;
+
+/** A solid box: the top face, then the two visible sides. Order matters — later covers earlier. */
+function box(shade, x, y, z, w, d, h) {
+  return (
+    poly(
+      [pt(x, y, z + h), pt(x + w, y, z + h), pt(x + w, y + d, z + h), pt(x, y + d, z + h)],
+      shade.top
+    ) +
+    poly(
+      [pt(x, y + d, z), pt(x + w, y + d, z), pt(x + w, y + d, z + h), pt(x, y + d, z + h)],
+      shade.left
+    ) +
+    poly(
+      [pt(x + w, y, z), pt(x + w, y + d, z), pt(x + w, y + d, z + h), pt(x + w, y, z + h)],
+      shade.right
+    )
+  );
+}
+
+/** A thin box: a page, a slab, a screen lying down. */
+const plate = (shade, x, y, z, w, d) => box(shade, x, y, z, w, d, 2.6);
+
+/** A panel standing on its edge and facing the viewer: a screen, a shield, a card. */
+function panel(shade, x, y, z, w, h) {
+  return (
+    poly([pt(x, y, z), pt(x + w, y, z), pt(x + w, y, z + h), pt(x, y, z + h)], shade.left) +
+    poly(
+      [pt(x, y, z + h), pt(x + w, y, z + h), pt(x + w, y + 2.4, z + h), pt(x, y + 2.4, z + h)],
+      shade.top
+    ) +
+    poly(
+      [pt(x + w, y, z), pt(x + w, y + 2.4, z), pt(x + w, y + 2.4, z + h), pt(x + w, y, z + h)],
+      shade.right
+    )
+  );
+}
+
+/** A cylinder, as a wall and a lid: a database, a stack of discs, a wheel lying flat. */
+function cylinder(shade, x, y, z, r, h) {
+  const [cx, base] = at(x, y, z + h);
+  const rx = r * 0.866 * U;
+  const ry = r * 0.5 * U;
+
+  return (
+    `<path d="M${(cx - rx).toFixed(1)} ${base.toFixed(1)} a${rx.toFixed(1)} ${ry.toFixed(1)} 0 0 0 ${(rx * 2).toFixed(1)} 0 v${(h * U).toFixed(1)} a${rx.toFixed(1)} ${ry.toFixed(1)} 0 0 1 ${(-rx * 2).toFixed(1)} 0 z" fill="${shade.left}"/>` +
+    `<ellipse cx="${cx.toFixed(1)}" cy="${base.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" fill="${shade.top}"/>`
+  );
+}
+
+/** A sphere under the same light: a node in a graph, a dot that matters. */
+function orb(shade, x, y, z, r) {
+  const [cx, cy] = at(x, y, z);
+
+  return (
+    `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${(r * U).toFixed(1)}" fill="${shade.left}"/>` +
+    `<circle cx="${(cx - r * U * 0.28).toFixed(1)}" cy="${(cy - r * U * 0.32).toFixed(1)}" r="${(r * U * 0.56).toFixed(1)}" fill="${shade.top}"/>`
+  );
+}
+
+/** A line between two points in space: what connects the solids. */
+function wire(colour, a, b, width = 2.6) {
+  const [x1, y1] = at(...a);
+  const [x2, y2] = at(...b);
+
+  return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${colour}" stroke-width="${width}" stroke-linecap="round"/>`;
+}
+
+/*
+ * The vocabulary: one function per subject, each a scene built from the solids above. `s` is the
+ * topic's shade set, `hi` the same accent at full strength, spent on the one part of each picture
+ * that carries its meaning.
+ */
+const SUBJECTS = {
+  /* A stack of pages: documents, and one becoming another. */
+  stack: (s, hi) =>
+    plate(s.deep, -26, -26, -16, 52, 52) +
+    plate(s, -21, -21, -7, 52, 52) +
+    plate(hi, -16, -16, 2, 52, 52),
+
+  /* A screen on a stand: a browser, a preview, the page as somebody else opens it. */
+  screen: (s, hi) =>
+    box(s.deep, -9, -5, -28, 18, 10, 7) +
+    panel(s, -34, 4, -21, 68, 46) +
+    panel(hi, -27, 3, -12, 30, 6) +
+    panel(s.deep, -27, 3, -2, 48, 5),
+
+  /* A terminal: the same screen, with the product's own caret lit on it. */
+  terminal: (s, hi) =>
+    box(s.deep, -9, -5, -28, 18, 10, 7) +
+    panel(s, -34, 4, -21, 68, 46) +
+    panel(hi, -27, 3, -10, 11, 6) +
+    panel(s.deep, -13, 3, -10, 27, 6) +
+    panel(s.deep, -27, 3, 2, 40, 5),
+
+  /* A grid of cells on a slab: a spreadsheet, a table, rows out of a system. */
+  grid: (s, hi) => {
+    let out = plate(s.deep, -31, -31, -18, 62, 62);
+
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        out += box(j === 0 ? hi : s, -26 + i * 18, -26 + j * 18, -14, 14, 14, 4);
+      }
+    }
+
+    return out;
+  },
+
+  /* An archive: a box with its lid lifted off, which is what every export arrives as. */
+  archive: (s, hi) =>
+    box(s, -25, -25, -24, 50, 50, 28) +
+    box(hi, -29, -29, 8, 58, 58, 8),
+
+  /* A database: discs on discs, a system's own store rather than a document. */
+  database: (s, hi) =>
+    cylinder(s, 0, 0, -28, 25, 15) +
+    cylinder(s, 0, 0, -11, 25, 15) +
+    cylinder(hi, 0, 0, 6, 25, 15),
+
+  /* A graph: notes that mean something because of what they link to. */
+  graph: (s, hi) =>
+    plate(s.deep, -32, -32, -24, 64, 64) +
+    wire(s.top, [-18, -18, -8], [16, -8, 6]) +
+    wire(s.top, [-18, -18, -8], [-6, 20, 0]) +
+    wire(s.top, [16, -8, 6], [-6, 20, 0]) +
+    orb(s, -18, -18, -8, 7) +
+    orb(hi, 16, -8, 6, 9) +
+    orb(s, -6, 20, 0, 7),
+
+  /* An open book: a wiki, a space, documentation read end to end. */
+  book: (s, hi) =>
+    box(s, -31, -6, -18, 29, 36, 6) +
+    box(s, 2, -6, -18, 29, 36, 6) +
+    box(hi, -2, -8, -13, 4, 40, 8),
+
+  /* A shield: sanitising, safety, whether the thing can be trusted. */
+  shield: (s, hi) =>
+    box(s.deep, -8, -6, -30, 16, 12, 8) +
+    panel(s, -25, 2, -22, 50, 48) +
+    panel(hi, -13, 1, -6, 26, 18),
+
+  /* Two rings through each other: sharing, and the address a document gets. */
+  link: (s, hi) =>
+    cylinder(s, -13, -13, -8, 15, 7) +
+    cylinder(s.deep, -13, -13, -3, 8, 9) +
+    cylinder(hi, 13, 13, -16, 15, 7) +
+    cylinder(s.deep, 13, 13, -11, 8, 9),
+
+  /* A lit cube with a spark over it: the model wrote it, or the model read it. */
+  spark: (s, hi) => {
+    const [tx, ty] = at(0, 0, 30);
+
+    return (
+      box(s, -19, -19, -26, 38, 38, 30) +
+      box(hi, -13, -13, 4, 26, 26, 6) +
+      `<path d="M${tx.toFixed(1)} ${(ty - 26).toFixed(1)} l7 17 17 7 -17 7 -7 17 -7 -17 -17 -7 17 -7 z" fill="${hi.top}"/>`
+    );
+  },
+
+  /* Cloud shapes over a plate: an export, a file that came from somewhere else. */
+  cloud: (s, hi) =>
+    plate(s.deep, -30, -30, -26, 60, 60) +
+    cylinder(s, -13, -11, 0, 13, 10) +
+    cylinder(s, 9, 3, -4, 15, 11) +
+    cylinder(hi, -3, 14, -2, 11, 9),
+
+  /* A magnifier over a slab: comparing things, reading one before trusting it. */
+  magnifier: (s, hi) =>
+    plate(s, -30, -30, -22, 60, 60) +
+    box(s.deep, -23, -22, -18, 44, 8, 4) +
+    box(s.deep, -23, -8, -18, 30, 8, 4) +
+    cylinder(hi, 5, 5, 2, 17, 7) +
+    cylinder(s.deep, 5, 5, 7, 11, 5),
+
+  /* A toolbox: the set somebody reaches for, rather than one thing from it. */
+  toolbox: (s, hi) =>
+    box(s, -27, -19, -24, 54, 38, 22) +
+    box(hi, -29, -21, -2, 58, 42, 7) +
+    box(s.deep, -7, -5, 5, 14, 10, 10),
+
+  /* A gear on a plate: something that runs without a person, on a schedule or a push. */
+  gear: (s, hi) => {
+    let teeth = '';
+
+    for (let i = 0; i < 6; i++) {
+      const angle = (i / 6) * Math.PI * 2;
+
+      teeth += box(s, Math.cos(angle) * 21 - 4.5, Math.sin(angle) * 21 - 4.5, -8, 9, 9, 7);
+    }
+
+    return plate(s.deep, -31, -31, -20, 62, 62) + teeth + cylinder(hi, 0, 0, -8, 16, 9);
+  },
+
+  /* A folder standing open: a directory, a repository, docs beside the code. */
+  folder: (s, hi) =>
+    box(s, -28, -24, -22, 56, 46, 7) +
+    panel(s, -28, 22, -15, 56, 32) +
+    panel(hi, -24, 21, -15, 21, 9),
+
+  /* A clock: scheduling, a build that runs at two in the morning. */
+  clock: (s, hi) =>
+    cylinder(s, 0, 0, -26, 25, 13) +
+    cylinder(s.deep, 0, 0, -13, 20, 5) +
+    wire(hi.top, [0, 0, -8], [0, -15, -8], 3.6) +
+    wire(hi.top, [0, 0, -8], [13, 5, -8], 3.6),
+
+  /* Plates converging into one: merging many files into a document somebody reads. */
+  merge: (s, hi) =>
+    plate(s, -35, -28, -16, 28, 19) +
+    plate(s, -35, 9, -16, 28, 19) +
+    wire(s.top, [-6, -18, -13], [12, -4, -2]) +
+    wire(s.top, [-6, 19, -13], [12, 9, -2]) +
+    plate(hi, 4, -15, -2, 32, 31),
+
+  /* A plug into a socket: an API, a connector, a program calling another program. */
+  plug: (s, hi) =>
+    box(s, 3, -17, -24, 26, 34, 28) +
+    box(hi, -23, -9, -14, 27, 18, 11) +
+    wire(s.top, [-23, 0, -8], [-40, 0, -8], 3.6),
+
+  /* Braces facing each other: syntax, escaping, the characters that mean something. */
+  braces: (s, hi) =>
+    plate(s.deep, -31, -31, -22, 62, 62) +
+    box(s, -25, -17, -16, 9, 34, 9) +
+    box(s, -16, -17, -16, 9, 9, 9) +
+    box(s, -16, 8, -16, 9, 9, 9) +
+    box(hi, 9, -17, -16, 9, 34, 9) +
+    box(hi, 0, -17, -16, 9, 9, 9) +
+    box(hi, 0, 8, -16, 9, 9, 9),
+};
+
+/*
+ * Which object an article gets.
+ *
+ * Matched on the slug, most specific first, because the slug is the one piece of metadata that is
+ * identical in every language — a German translation shows the same picture as its English original
+ * without anybody mapping words twice. Anything unmatched falls back to a stable pick from the hash
+ * rather than to one default, so a new article is never the sixth identical stack of pages.
+ */
+const BY_TOPIC = [
+  [/obsidian|vault|wikilink/, 'graph'],
+  [/confluence|wiki|documentation-that-lives|static-site/, 'book'],
+  [/notion|zip|archive|export/, 'archive'],
+  [/summar|assistant|chatgpt|mcp|ai-output/, 'spark'],
+  [/excel|csv|tsv|spreadsheet|table/, 'grid'],
+  [/json|database/, 'database'],
+  [/command-line|\bcli\b|terminal|pandoc/, 'terminal'],
+  [/github-actions|automat|batch|publish-markdown-from/, 'gear'],
+  [/\bapi\b|connector/, 'plug'],
+  [/safe|saniti|xss|secure/, 'shield'],
+  [/share|link|shareable/, 'link'],
+  [/merg|combine|many-markdown/, 'merge'],
+  [/escap|syntax|footnote|flavour|commonmark|line-breaks|code-blocks|front-matter/, 'braces'],
+  [/editor|vs-code|typora|dillinger|stackedit|live-preview|in-javascript|in-python/, 'screen'],
+  [/best-|compare|alternative|choosing|converters|what-not-to-keep/, 'magnifier'],
+  [/release-notes|changelog|schedule/, 'clock'],
+  [/repo|folder|docs-in|how-to-open|open-md/, 'folder'],
+  [/google-docs|cloud|web-page|save-a-web|online-document/, 'cloud'],
+  [/workflow|toolbox|mammoth|turndown|libraries/, 'toolbox'],
+  [/pdf|word|docx|plain-text|html|markdown-to/, 'stack'],
+];
+
+const SUBJECT_NAMES = Object.keys(SUBJECTS);
+
+function subjectFor(slug) {
+  for (const [pattern, name] of BY_TOPIC) {
+    if (pattern.test(slug)) {
+      return name;
+    }
+  }
+
+  return SUBJECT_NAMES[seedOf(slug) % SUBJECT_NAMES.length];
+}
+
+/** The faces of a solid, derived from one colour so every picture is lit the same way. */
+function shadesOf(colour) {
+  return {
+    top: mix(colour, '#ffffff', 0.3),
+    left: mix(colour, '#05050a', 0.4),
+    right: mix(colour, '#05050a', 0.64),
+    deep: {
+      top: mix(colour, '#05050a', 0.58),
+      left: mix(colour, '#05050a', 0.72),
+      right: mix(colour, '#05050a', 0.82),
+    },
   };
 }
 
-const MUTED = '#34344a';
-const MUTED_SOFT = '#2b2b3d';
-const LINE = '#474760';
-
-const bars = (widths, colour, thickness, gap) =>
-  widths
-    .map(
-      (width, index) =>
-        `<div style="width:${width}%;height:${thickness}px;border-radius:999px;background:${colour};${index ? `margin-top:${gap}px;` : ''}"></div>`
-    )
-    .join('');
-
-/*
- * The vocabulary. Each piece takes the accent and the picker, so the same kind of block is never
- * drawn at quite the same proportions twice, and returns a fragment sized in percentages — the
- * scene decides how much room it gets, not the piece.
- */
-const PIECES = {
-  paragraph: (accent, rand) => {
-    const count = 3 + Math.floor(rand() * 2);
-    const widths = Array.from({ length: count }, () => 58 + Math.floor(rand() * 42));
-
-    return `<div>${bars(widths, MUTED, 15, 18)}</div>`;
-  },
-
-  heading: (accent, rand) => `
-    <div>
-      <div style="width:${46 + Math.floor(rand() * 26)}%;height:21px;border-radius:999px;background:${accent}"></div>
-      <div style="margin-top:18px">${bars([100, 72 + Math.floor(rand() * 24)], LINE, 15, 18)}</div>
-    </div>`,
-
-  table: (accent, rand) => {
-    const cols = 2 + Math.floor(rand() * 2);
-    const rows = 2 + Math.floor(rand() * 2);
-    const cells = Array.from({ length: cols * rows }, () => '<span></span>').join('');
-
-    return `<div class="grid" style="grid-template-columns:repeat(${cols},1fr)">${cells}</div>`;
-  },
-
-  list: (accent, rand) => {
-    const count = 3 + Math.floor(rand() * 2);
-
-    return `<div>${Array.from({ length: count }, (unused, index) => {
-      const width = 54 + Math.floor(rand() * 40);
-
-      return `<div style="display:flex;align-items:center;gap:14px;${index ? 'margin-top:15px;' : ''}">
-        <span style="width:16px;height:16px;border-radius:999px;background:${accent};flex:none"></span>
-        <span style="width:${width}%;height:15px;border-radius:999px;background:${MUTED}"></span>
-      </div>`;
-    }).join('')}</div>`;
-  },
-
-  checklist: (accent, rand) => {
-    const count = 3 + Math.floor(rand() * 2);
-
-    return `<div>${Array.from({ length: count }, (unused, index) => {
-      const width = 52 + Math.floor(rand() * 40);
-
-      return `<div style="display:flex;align-items:center;gap:14px;${index ? 'margin-top:15px;' : ''}">
-        <span style="width:20px;height:20px;border-radius:5px;border:3px solid ${index === 0 ? accent : LINE};flex:none"></span>
-        <span style="width:${width}%;height:15px;border-radius:999px;background:${MUTED}"></span>
-      </div>`;
-    }).join('')}</div>`;
-  },
-
-  code: (accent, rand) => `
-    <div style="border:3px solid ${LINE};border-radius:12px;padding:24px 26px">
-      ${bars([38 + Math.floor(rand() * 20), 76, 56 + Math.floor(rand() * 26)], MUTED, 13, 16)}
-    </div>`,
-
-  quote: (accent, rand) => `
-    <div style="display:flex;gap:18px">
-      <span style="width:7px;border-radius:999px;background:${accent};flex:none"></span>
-      <div style="flex:1 1 0">${bars([100, 64 + Math.floor(rand() * 30)], MUTED, 15, 18)}</div>
-    </div>`,
-
-  media: (accent, rand) => `
-    <div style="border:3px solid ${LINE};border-radius:12px;height:${118 + Math.floor(rand() * 44)}px;position:relative;overflow:hidden">
-      <span style="position:absolute;left:26px;top:24px;width:28px;height:28px;border-radius:999px;background:${accent}"></span>
-      <span style="position:absolute;left:-6%;bottom:-38px;width:112%;height:76px;background:${MUTED_SOFT};transform:rotate(-7deg)"></span>
-    </div>`,
-};
-
-/** What can sit on the left: the document before anything read it. */
-const FLAT = ['paragraph', 'quote', 'code', 'paragraph'];
-
-/** And on the right: what the conversion made of it. */
-const STRUCTURED = ['table', 'list', 'heading', 'checklist', 'media', 'table'];
-
-function stack(names, accent, rand) {
-  return `<div class="stack">${names
-    .map((name, index) => `<div${index ? ' style="margin-top:34px"' : ''}>${PIECES[name](accent, rand)}</div>`)
-    .join('')}</div>`;
-}
-
 /**
- * One article's scene.
+ * The card, as a page: a ground, a faint grid, a shadow under the object, and the object on it.
  *
- * Two pieces a side at most: three fits, and at card size a frame with six blocks in it reads as
- * texture rather than as a document. The caret between them is the brand's own mark and the only
- * glyph in the picture — a shape by now, not a word.
- */
-function scene(accent, slug) {
-  const rand = pickerFor(slug);
-  const of = (list) => list[Math.floor(rand() * list.length)];
-
-  const left = [of(FLAT)];
-  const right = [of(STRUCTURED)];
-
-  left.push(of(FLAT.filter((name) => name !== left[0])));
-  right.push(of(STRUCTURED.filter((name) => name !== right[0])));
-
-  return `
-    <div class="shape">
-      ${stack(left, accent, rand)}
-      <div class="arrow">&gt;</div>
-      ${stack(right, accent, rand)}
-    </div>`;
-}
-
-/**
- * The card, as a page: a ground, an accent wash, and the scene across it.
- *
- * Both sizes are this same composition — the share image and the index card differ only in how
- * many pixels come out of the screenshot, which is what keeps them from drifting apart.
+ * Both sizes are this same composition — the share image and the index card differ only in how many
+ * pixels come out of the screenshot, which is what keeps them from drifting apart.
  */
 function card({ accent, slug = '' }) {
+  const s = shadesOf(accent);
+  const hi = {
+    top: mix(accent, '#ffffff', 0.42),
+    left: accent,
+    right: mix(accent, '#05050a', 0.38),
+    deep: s.deep,
+  };
+
+  const drawing = SUBJECTS[subjectFor(slug)](s, hi);
+
   return `<!doctype html>
 <html>
 <head>
@@ -294,59 +481,42 @@ function card({ accent, slug = '' }) {
     height: ${HEIGHT}px;
     position: relative;
     overflow: hidden;
-    /*
-     * Two lifts rather than one: the accent glow behind the structured half, where the colour
-     * belongs, and a colder one behind the flat half so neither side sits on a flat rectangle.
-     */
     background:
-      radial-gradient(85% 115% at 82% 14%, ${accent}22 0%, ${accent}00 62%),
-      radial-gradient(70% 90% at 12% 82%, #1c1c28 0%, #1c1c2800 70%),
-      linear-gradient(160deg, #14141d 0%, #0f0e14 64%);
-    font-family: system-ui, sans-serif;
-    color: #f9fafb;
+      radial-gradient(52% 84% at 50% 46%, ${accent}24 0%, ${accent}00 68%),
+      linear-gradient(160deg, #14141d 0%, #0f0e14 68%);
   }
 
-  /* The scene sits in the frame rather than bleeding off it: with no words beside it, it is the picture. */
-  .frame {
+  /* The ground the objects stand on, faint enough to be a room rather than a pattern. */
+  .grid {
     position: absolute;
     inset: 0;
-    padding: 76px 86px;
+    background-image:
+      linear-gradient(${accent}12 1px, transparent 1px),
+      linear-gradient(90deg, ${accent}12 1px, transparent 1px);
+    background-size: 58px 58px;
+    mask-image: radial-gradient(56% 68% at 50% 50%, #000 0%, transparent 76%);
+    -webkit-mask-image: radial-gradient(56% 68% at 50% 50%, #000 0%, transparent 76%);
+  }
+
+  .art {
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
 
-  .shape {
-    display: flex;
-    align-items: center;
-    gap: 72px;
-    width: 100%;
-  }
-
-  .stack { flex: 1 1 0; min-width: 0; }
-
-  .arrow {
-    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    font-size: 96px;
-    font-weight: 600;
-    line-height: 1;
-    color: ${accent};
-    flex: none;
-  }
-
-  .grid {
-    display: grid;
-    gap: 8px;
-  }
-
-  .grid span {
-    height: 34px;
-    border: 3px solid ${LINE};
-    border-radius: 5px;
-  }
+  svg { width: 440px; height: 440px; }
 </style>
 </head>
 <body>
-  <div class="frame">${scene(accent, slug)}</div>
+  <div class="grid"></div>
+  <div class="art">
+    <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="120" cy="198" rx="72" ry="16" fill="#05050a" opacity="0.5"/>
+      ${drawing}
+    </svg>
+  </div>
 </body>
 </html>`;
 }
