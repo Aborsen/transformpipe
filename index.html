@@ -2,7 +2,16 @@
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
+    <!--
+      Four lines rather than one, and each has somebody who needs it: the SVG is what every current
+      browser takes, the PNG is for whatever is left, iOS has never read an SVG for a home-screen
+      icon, and the manifest is where Android's launcher finds a version it may crop. All of them
+      are drawn from `brand/mark.svg` by `npm run icons`.
+    -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!--

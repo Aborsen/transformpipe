@@ -31,6 +31,15 @@ export interface ChangelogEntry {
 
 const ENTRIES: ChangelogEntry[] = [
   {
+    date: '2026-09-16',
+    title: 'A new mark',
+    body:
+      'The name is now a drawing rather than six characters of monospace: a `T` and a `p` sharing '
+      + 'one stem. The same pair, on its own, is the icon — so the tab, the bookmark, the phone '
+      + 'home screen and the Android launcher all get a real icon instead of a letter the browser '
+      + 'guessed at.',
+  },
+  {
     date: '2026-09-14',
     title: 'An Obsidian vault, in one document',
     body:
