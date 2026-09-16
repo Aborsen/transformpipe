@@ -157,10 +157,18 @@ export function AppHeader({
                     : 'border-stroke text-ink-secondary hover:border-stroke-hover hover:text-ink-body'
                 )}
               >
+                {/*
+                  * The conversion, named, on every page of the app — not only on the converter.
+                  *
+                  * It used to fall back to the word "Converter" once you left, which changed the
+                  * width of the control, which moved the search box and everything after it: the
+                  * bar jumped on the way to the documentation and jumped back on the way out. It
+                  * also threw away the answer to the question the control exists to answer — which
+                  * conversion you are coming back to. Arriving straight on a page that is not a
+                  * conversion, it is the default one, which is where Back lands anyway.
+                  */}
                 <span className="truncate">
-                  {isConverter
-                    ? content.conversions[conversionId].label
-                    : t('header.nav.converter')}
+                  {content.conversions[conversionId].label}
                 </span>
                 <ChevronDown className="size-3.5 shrink-0 opacity-70" />
               </button>
