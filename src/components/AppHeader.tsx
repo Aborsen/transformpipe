@@ -166,9 +166,26 @@ export function AppHeader({
                   * also threw away the answer to the question the control exists to answer — which
                   * conversion you are coming back to. Arriving straight on a page that is not a
                   * conversion, it is the default one, which is where Back lands anyway.
+                  *
+                  * All ten names are here and nine of them are invisible, stacked in one grid cell,
+                  * so the control is as wide as the longest of them in whatever language is on and
+                  * stops resizing as you switch between `JSON → Markdown` and `Excel → Markdown
+                  * table`. Ten spans rather than a measured width: the browser is better at this
+                  * than a `ResizeObserver` is, and it gets the answer before the first paint.
                   */}
-                <span className="truncate">
-                  {content.conversions[conversionId].label}
+                <span className="grid min-w-0">
+                  {CONVERSIONS.map((one) => (
+                    <span
+                      key={one.id}
+                      aria-hidden={one.id !== conversionId}
+                      className={cn(
+                        'col-start-1 row-start-1 truncate',
+                        one.id !== conversionId && 'invisible'
+                      )}
+                    >
+                      {content.conversions[one.id].label}
+                    </span>
+                  ))}
                 </span>
                 <ChevronDown className="size-3.5 shrink-0 opacity-70" />
               </button>

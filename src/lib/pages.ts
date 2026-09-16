@@ -60,6 +60,15 @@ export interface StaticPage {
    */
   action?: string;
   /**
+   * The other conversions this page answers for, where one file extension has several.
+   *
+   * A `.zip` is three conversions here — a Notion export, a Confluence space and an Obsidian vault
+   * — and one guide covers opening the file in all three cases. Without this the converter screens
+   * for two of them had no guide to point at, because `action` names the one conversion the page's
+   * own button goes to, and it can only name one.
+   */
+  covers?: string[];
+  /**
    * When it was last changed, for the pages where a reader is entitled to know. ISO, `2026-09-08`.
    *
    * A machine date, not a written one. It used to be the English "8 September 2026", which was the
@@ -99,7 +108,13 @@ export const STATIC_PAGES: StaticPage[] = [
   { id: 'how-to-json', path: '/how-to/open-json', group: 'how-to', action: '/json-to-markdown' },
   { id: 'how-to-txt', path: '/how-to/open-txt', group: 'how-to', action: '/text-to-markdown' },
   { id: 'how-to-xlsx', path: '/how-to/open-xlsx', group: 'how-to', action: '/excel-to-markdown' },
-  { id: 'how-to-zip', path: '/how-to/open-zip', group: 'how-to', action: '/notion-to-markdown' },
+  {
+    id: 'how-to-zip',
+    path: '/how-to/open-zip',
+    group: 'how-to',
+    action: '/notion-to-markdown',
+    covers: ['/confluence-to-markdown', '/obsidian-to-markdown'],
+  },
 
   /*
    * The odd one in this group: not a file extension but the other way documents arrive here — an

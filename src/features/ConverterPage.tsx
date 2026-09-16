@@ -293,14 +293,20 @@ export function ConverterPage({
           * The how-to page for this format, linked from the one screen where somebody is holding
           * that kind of file. Found by matching the page's own `action` against this conversion's
           * address rather than by a second mapping — the pages already say which conversion they
-          * end on, and two lists of the same fact is one list that goes stale.
+          * end on, and two lists of the same fact is one list that goes stale. `covers` is the same
+          * page saying which *other* conversions it answers for, which is how the three screens
+          * that all take a `.zip` share one guide.
           *
           * This is also what keeps those pages reachable. They used to sit in the footer as a
           * column of nine, which was a wall on every page of the site to serve a reader who has
           * exactly one file in front of them.
           */}
         {(() => {
-          const guide = STATIC_PAGES.find((one) => one.action === conversion.path);
+          const guide = STATIC_PAGES.find(
+            (one) =>
+              one.action === conversion.path ||
+              one.covers?.includes(conversion.path)
+          );
 
           return guide ? (
             <Typography variant="p" textColor="light" className="text-center text-sm">
