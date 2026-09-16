@@ -207,7 +207,7 @@ export const ui: Content['ui'] = {
   'converter.tab.preview': 'Aperçu',
   'converter.tab.html': 'Source HTML',
   'converter.tab.markdown': 'Markdown',
-  'converter.tab.summary': 'Résumé',
+  'converter.tab.summary': 'Résumé IA',
   'converter.fullscreen.enter': 'Lire en plein écran',
   'converter.fullscreen.exit': 'Quitter le plein écran',
   'converter.fullscreen.error': 'Le plein écran n’est pas disponible ici',

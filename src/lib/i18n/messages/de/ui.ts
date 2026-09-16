@@ -221,7 +221,7 @@ export const ui: Content['ui'] = {
   'converter.tab.preview': 'Vorschau',
   'converter.tab.html': 'HTML-Quelltext',
   'converter.tab.markdown': 'Markdown',
-  'converter.tab.summary': 'Zusammenfassung',
+  'converter.tab.summary': 'KI-Zusammenfassung',
   'converter.fullscreen.enter': 'Im Vollbild lesen',
   'converter.fullscreen.exit': 'Vollbild beenden',
   'converter.fullscreen.error': 'Vollbild ist hier nicht verfügbar',

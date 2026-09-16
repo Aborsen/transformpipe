@@ -204,7 +204,7 @@ export const ui: Content['ui'] = {
   'converter.tab.preview': 'Anteprima',
   'converter.tab.html': 'Sorgente HTML',
   'converter.tab.markdown': 'Markdown',
-  'converter.tab.summary': 'Riepilogo',
+  'converter.tab.summary': 'Riepilogo IA',
   'converter.fullscreen.enter': 'Leggi a schermo intero',
   'converter.fullscreen.exit': 'Esci da schermo intero',
   'converter.fullscreen.error': 'Lo schermo intero non è disponibile qui',

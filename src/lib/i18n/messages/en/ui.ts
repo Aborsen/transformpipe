@@ -216,7 +216,7 @@ export const ui: Content['ui'] = {
   'converter.tab.preview': 'Preview',
   'converter.tab.html': 'HTML source',
   'converter.tab.markdown': 'Markdown',
-  'converter.tab.summary': 'Summary',
+  'converter.tab.summary': 'AI Summary',
   'converter.fullscreen.enter': 'Read fullscreen',
   'converter.fullscreen.exit': 'Exit fullscreen',
   'converter.fullscreen.error': 'Fullscreen is not available here',
