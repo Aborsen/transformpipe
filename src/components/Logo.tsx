@@ -13,8 +13,8 @@ interface LogoProps {
  * and in a picture somebody screenshots.
  *
  * Inline rather than an `<img src="/logo.svg">` because of the two things an image cannot do: it
- * cannot take the colour of the text around it, and it arrives one request late, which on the
- * prerendered pages means the first thing a visitor sees is a gap where the name goes.
+ * cannot take the colour of the text around it, and it arrives a request later than the markup
+ * that asks for it — a hole where the name goes, in the corner a visitor looks at first.
  *
  * The light half is `currentColor` for that first reason — the wordmark sits on the dark chrome
  * today, and a light surface would otherwise need a second file. The cyan is written out. It is
