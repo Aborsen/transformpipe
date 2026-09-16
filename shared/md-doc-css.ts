@@ -334,7 +334,7 @@ export const MD_PREVIEW_STYLE = `
  * for. The exported document has no header, and this rule is not in its stylesheet.
  */
 .md-doc :is(h1, h2, h3, h4, h5, h6) {
-  scroll-margin-top: 5.5rem;
+  scroll-margin-top: 7rem;
 }
 
 .md-preview-frame:fullscreen {

@@ -12,8 +12,6 @@ interface AppFooterProps {
   onConversionChange: (id: ConversionId) => void;
   onViewChange: (view: Destination) => void;
   onOpenPage: (id: StaticPageId) => void;
-  /** The FAQ is a section of the converter, not a page — see `openFaq` in `App`. */
-  onOpenFaq: () => void;
 }
 
 /**
@@ -64,7 +62,6 @@ export function AppFooter({
   onConversionChange,
   onViewChange,
   onOpenPage,
-  onOpenFaq,
 }: AppFooterProps) {
   const t = useT();
   const { content } = useI18n();
@@ -113,7 +110,6 @@ export function AppFooter({
           href: '/changelog',
           onNavigate: () => onViewChange('changelog'),
         },
-        { label: t('footer.faq'), href: '/#faq', onNavigate: onOpenFaq },
         page('contact'),
       ],
     },

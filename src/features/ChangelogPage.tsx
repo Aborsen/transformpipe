@@ -131,7 +131,7 @@ export function ChangelogPage({
             <section
               key={year.year}
               id={`changelog-${year.year}`}
-              className="flex scroll-mt-24 flex-col gap-6"
+              className="flex scroll-mt-28 flex-col gap-6"
             >
               {/*
                * The year is a heading only where it is one: with a single year on the page it is

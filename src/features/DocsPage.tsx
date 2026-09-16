@@ -111,7 +111,7 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className="scroll-mt-20">
+    <section id={id} className="scroll-mt-28">
       <Typography variant="h2" className="mb-3 text-xl md:text-xl">
         {title}
       </Typography>

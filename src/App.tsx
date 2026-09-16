@@ -169,22 +169,6 @@ function Shell() {
     window.scrollTo({ top: 0 });
   }, []);
 
-  /**
-   * The FAQ, which is a section rather than a page.
-   *
-   * It lives at the foot of every converter screen, so "go to the FAQ" is two things: be on the
-   * converter, and be at that section. Going through `setView` would do the first and then scroll
-   * to the top, undoing the second.
-   */
-  const openFaq = useCallback(() => {
-    setViewState('converter');
-    setArticleSlug(null);
-    setPageId(null);
-    goTo('converter');
-    window.history.replaceState(null, '', `${window.location.pathname}#faq`);
-    setPendingHash('faq');
-  }, []);
-
   const openArticle = useCallback((slug: string) => {
     setViewState('blog');
     setArticleSlug(slug);
@@ -688,7 +672,6 @@ function Shell() {
         onConversionChange={chooseConversion}
         onViewChange={setView}
         onOpenPage={openPage}
-        onOpenFaq={openFaq}
       />
     </div>
     </BreadcrumbSlotProvider>

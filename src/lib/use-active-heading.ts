@@ -35,8 +35,9 @@ export function useActiveHeading(ids: string[]): string {
       for (const id of all) {
         const element = document.getElementById(id);
 
-        // 88px: the sticky header plus the breathing room `scroll-mt-20` leaves under it.
-        if (element && element.getBoundingClientRect().top <= 88) {
+        // 112px: the sticky header — bar, accent line and the breadcrumb strip — plus the
+        // breathing room `scroll-mt-28` leaves under it.
+        if (element && element.getBoundingClientRect().top <= 112) {
           current = id;
         }
       }
