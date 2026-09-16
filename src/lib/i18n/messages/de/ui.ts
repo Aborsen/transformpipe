@@ -142,6 +142,8 @@ export const ui: Content['ui'] = {
   'ext.open': 'In einem Tab öffnen',
   'ext.files': 'Dateien öffnen…',
   'ext.viewer.empty': 'Dateien zum Umwandeln wählen — zehn Formate, alles in diesem Browser',
+  'ext.viewer.hint':
+    'Datei hierher ziehen oder auswählen — Word, Excel, CSV, JSON, HTML, reiner Text oder ein Notion-, Confluence- oder Obsidian-Export. Mehrere Dateien werden zu einem Dokument verkettet. Nichts verlässt diesen Browser.',
   'palette.title': 'Suche',
   'palette.placeholder': 'Dokumente, Konvertierungen und Seiten durchsuchen',
   'palette.empty': 'Dazu gibt es nichts',

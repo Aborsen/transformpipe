@@ -128,6 +128,8 @@ export const ui: Content['ui'] = {
   'ext.open': 'Ouvrir dans un onglet',
   'ext.files': 'Ouvrir des fichiers…',
   'ext.viewer.empty': 'Choisissez des fichiers à convertir — dix formats, le tout dans ce navigateur',
+  'ext.viewer.hint':
+    'Déposez un fichier ou choisissez-en un — Word, Excel, CSV, JSON, HTML, texte brut, ou un export Notion, Confluence ou Obsidian. Plusieurs fichiers sont enchaînés en un seul document. Rien ne quitte ce navigateur.',
   'palette.title': 'Recherche',
   'palette.placeholder': 'Rechercher un document, une conversion ou une page',
   'palette.empty': 'Aucun résultat',

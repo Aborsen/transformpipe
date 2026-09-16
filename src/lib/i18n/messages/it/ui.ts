@@ -126,6 +126,8 @@ export const ui: Content['ui'] = {
   'ext.open': 'Apri in una scheda',
   'ext.files': 'Apri file…',
   'ext.viewer.empty': 'Scegli i file da convertire — dieci formati, tutto in questo browser',
+  'ext.viewer.hint':
+    'Trascina un file o scegline uno — Word, Excel, CSV, JSON, HTML, testo semplice o un export di Notion, Confluence o Obsidian. Più file vengono concatenati in un solo documento. Niente esce da questo browser.',
   'palette.title': 'Cerca',
   'palette.placeholder': 'Cerca documenti, conversioni e pagine',
   'palette.empty': 'Nessun risultato',

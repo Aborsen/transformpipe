@@ -133,6 +133,8 @@ export const ui: Content['ui'] = {
   'ext.open': 'Abrir en una pestaña',
   'ext.files': 'Abrir archivos…',
   'ext.viewer.empty': 'Elige archivos para convertir: diez formatos, todo en este navegador',
+  'ext.viewer.hint':
+    'Suelta un archivo o elige uno: Word, Excel, CSV, JSON, HTML, texto plano o una exportación de Notion, Confluence u Obsidian. Varios archivos se encadenan en un solo documento. Nada sale de este navegador.',
   'palette.title': 'Buscar',
   'palette.placeholder': 'Buscar documentos, conversiones y páginas',
   'palette.empty': 'No hay coincidencias',

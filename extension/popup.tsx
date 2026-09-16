@@ -4,12 +4,15 @@ import {
   Download,
   FileCode2,
   FileInput,
+  Lock,
   Maximize2,
 } from 'lucide-react';
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { pageToMarkdown, type PageDocument } from '@shared/from-page';
 import { getDocStats } from '@shared/markdown';
+import { DocumentPreview } from '@/components/DocumentPreview';
+import { Logo } from '@/components/Logo';
 import { downloadDoc } from '@/lib/download';
 import { formatBytes } from '@/lib/format';
 import { useI18n, useT } from '@/lib/i18n/context';
@@ -17,6 +20,7 @@ import { INTL_LOCALES } from '@/lib/i18n/locales';
 import { markdownToHtml } from '@/lib/markdown';
 import { useTheme } from '@/lib/theme';
 import { Button } from '@/ui/components/Button';
+import { Skeleton } from '@/ui/components/Skeleton';
 import { Typography } from '@/ui/components/Typography';
 import { extract } from './extract';
 import { copyText, openInViewer, openViewerForFiles } from './lib/clipboard';
@@ -24,19 +28,26 @@ import { Providers } from './lib/Providers';
 import '@/index.css';
 
 /*
- * The popup: a launcher that happens to answer the question straight away.
+ * The popup: a launcher that answers before it is asked.
  *
- * It converts the page it was opened over before anybody asks it to, because the alternative is a
- * panel with one button in it that says "convert" — a click to ask for the only thing this panel
- * does. What it shows is small on purpose: the name, what it weighs, and four ways out of here.
- * Anything worth reading goes to the viewer, which has a page's worth of room.
+ * It converts the page it was opened over straight away, because the alternative is a panel with
+ * one button in it saying "convert" — a click to ask for the only thing this panel does.
+ *
+ * What it then shows is the document *rendered*, in the product's own stylesheet, rather than a
+ * wall of monospace. Somebody presses this button to find out whether the page came out well, and
+ * a screenful of Markdown source does not answer that question — it is the thing you look at after
+ * you already trust the conversion. Anything worth actually reading goes to the viewer, which has
+ * a page's worth of room; this is a glance, so it fades out rather than scrolls.
  */
+const PREVIEW_CHARACTERS = 1800;
+
 function Popup() {
   const t = useT();
   const { locale } = useI18n();
   const { theme } = useTheme();
   const [document_, setDocument] = useState<PageDocument | null>(null);
   const [failed, setFailed] = useState<'none' | 'error' | 'restricted'>('none');
+  const [host, setHost] = useState('');
   const [fromSelection, setFromSelection] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -92,14 +103,11 @@ function Popup() {
 
         if (live) {
           setFromSelection(page.selection);
+          setHost(new URL(page.url).hostname.replace(/^www\./, ''));
           setDocument(converted);
         }
       } catch {
-        /*
-         * The pages a browser will not let anybody script — its own settings, the store, a PDF
-         * viewer — land here, and so does a tab that has not finished loading. One sentence is the
-         * honest answer to all of them.
-         */
+        /* A tab that has not finished loading lands here, and so does anything unforeseen. */
         if (live) {
           setFailed('error');
         }
@@ -118,122 +126,188 @@ function Popup() {
     : null;
 
   return (
-    <div className="flex w-[22rem] flex-col gap-3 bg-surface-page p-4">
-      <div className="flex min-w-0 flex-col gap-1">
-        {failed === 'none' ? (
-          <Typography variant="span" weight="medium" className="truncate">
-            {document_?.title ?? t('ext.converting')}
-          </Typography>
-        ) : (
-          <Typography variant="p" textColor="secondary" className="text-sm">
-            {failed === 'restricted' ? t('ext.restricted') : t('ext.failed')}
-          </Typography>
-        )}
+    <div className="flex w-[23rem] flex-col bg-surface-page">
+      {/* The same two pixels of brand the site's own bar carries, for the same reason. */}
+      <div
+        aria-hidden="true"
+        className="h-0.5 bg-gradient-to-r from-brand-tertiary via-brand-primary to-transparent"
+      />
 
-        {stats && document_ && (
-          <Typography variant="span" textColor="secondary" className="text-xs">
-            {fromSelection ? `${t('ext.selection')} · ` : ''}
-            {t('ext.stats', {
-              words: stats.words.toLocaleString(),
-              size: formatBytes(
-                new Blob([document_.markdown]).size,
-                INTL_LOCALES[locale]
-              ),
-            })}
+      <div className="flex items-center gap-2 px-4 pt-3 pb-2">
+        <Logo className="h-5" />
+
+        {host && (
+          <Typography
+            variant="span"
+            textColor="light"
+            className="ml-auto min-w-0 truncate text-xs"
+          >
+            {host}
           </Typography>
         )}
       </div>
 
-      {document_ && (
-        <div className="max-h-40 overflow-y-auto rounded-lg border border-stroke bg-surface-card p-3">
-          <pre className="whitespace-pre-wrap break-words font-mono text-ink-secondary text-xs">
-            {document_.markdown.slice(0, 600)}
-            {document_.markdown.length > 600 ? '…' : ''}
-          </pre>
+      <div className="flex flex-col gap-3 px-4 pb-4">
+        {failed === 'none' ? (
+          <div className="flex min-w-0 flex-col gap-1">
+            {document_ ? (
+              <>
+                <Typography
+                  variant="span"
+                  weight="medium"
+                  className="line-clamp-2 leading-snug"
+                >
+                  {document_.title}
+                </Typography>
+
+                {stats && (
+                  <Typography
+                    variant="span"
+                    textColor="secondary"
+                    className="text-xs"
+                  >
+                    {fromSelection ? `${t('ext.selection')} · ` : ''}
+                    {t('ext.stats', {
+                      words: stats.words.toLocaleString(),
+                      size: formatBytes(
+                        new Blob([document_.markdown]).size,
+                        INTL_LOCALES[locale]
+                      ),
+                    })}
+                  </Typography>
+                )}
+              </>
+            ) : (
+              <>
+                <Skeleton className="h-4 w-2/3" />
+                <Skeleton className="h-3 w-1/3" />
+              </>
+            )}
+          </div>
+        ) : (
+          <div className="flex items-start gap-3 rounded-xl border border-stroke bg-surface-card p-3">
+            <Lock className="mt-0.5 size-4 shrink-0 text-ink-inactive" />
+            <Typography variant="p" textColor="secondary" className="text-sm">
+              {failed === 'restricted' ? t('ext.restricted') : t('ext.failed')}
+            </Typography>
+          </div>
+        )}
+
+        {failed === 'none' && (
+          <div className="relative max-h-52 overflow-hidden rounded-xl border border-stroke">
+            {document_ ? (
+              /*
+                * Scaled down rather than restyled. The document's stylesheet is the product's, and
+                * editing its sizes here would make the popup the one place a heading is not a
+                * heading; `zoom` shrinks the whole thing — headings, code, tables — in proportion,
+                * which is what "a small version of the page" means.
+                */
+              <div className="[zoom:0.7]">
+                <DocumentPreview
+                  className="p-4"
+                  html={markdownToHtml(
+                    document_.markdown.slice(0, PREVIEW_CHARACTERS)
+                  )}
+                />
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2 p-3">
+                <Skeleton className="h-3 w-full" />
+                <Skeleton className="h-3 w-11/12" />
+                <Skeleton className="h-3 w-4/5" />
+                <Skeleton className="h-3 w-full" />
+                <Skeleton className="h-3 w-3/5" />
+              </div>
+            )}
+
+            {/* What says there is more of it, without a scrollbar inside a panel this size. */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-surface-page to-transparent" />
+          </div>
+        )}
+
+        <div className="flex flex-col gap-2">
+          <Button
+            disabled={!document_}
+            leftSlot={copied ? <Check /> : <Copy />}
+            onClick={async () => {
+              if (!document_) {
+                return;
+              }
+
+              setCopied(await copyText(document_.markdown));
+            }}
+          >
+            {copied ? t('ext.copied') : t('ext.copy')}
+          </Button>
+
+          {/*
+            * Two downloads, because the app has two: the Markdown, and the self-contained page
+            * `buildStandaloneHtml` writes — styles inline, no fonts to fetch, no requests of any
+            * kind. That second file is the one people send to somebody who does not read Markdown.
+            */}
+          <div className="flex gap-2">
+            <Button
+              variant="secondary"
+              className="flex-1"
+              disabled={!document_}
+              leftSlot={<Download />}
+              onClick={() =>
+                document_ &&
+                downloadDoc(
+                  document_.name,
+                  document_.markdown,
+                  Date.now(),
+                  theme,
+                  'md'
+                )
+              }
+            >
+              .md
+            </Button>
+
+            <Button
+              variant="secondary"
+              className="flex-1"
+              disabled={!document_}
+              leftSlot={<FileCode2 />}
+              onClick={() =>
+                document_ &&
+                downloadDoc(
+                  document_.name,
+                  document_.markdown,
+                  Date.now(),
+                  theme,
+                  'html'
+                )
+              }
+            >
+              .html
+            </Button>
+          </div>
         </div>
-      )}
+      </div>
 
-      <div className="flex flex-col gap-2">
+      {/* The two ways out of the popup, on their own ground so they read as a footer. */}
+      <div className="flex items-center gap-1 border-stroke border-t px-2 py-1.5">
         <Button
+          variant="transparent"
+          size="sm"
           disabled={!document_}
-          leftSlot={copied ? <Check /> : <Copy />}
-          onClick={async () => {
-            if (!document_) {
-              return;
-            }
-
-            setCopied(await copyText(document_.markdown));
-          }}
+          leftSlot={<Maximize2 />}
+          onClick={() => document_ && void openInViewer(document_)}
         >
-          {copied ? t('ext.copied') : t('ext.copy')}
+          {t('ext.open')}
         </Button>
 
-        {/*
-          * Two downloads, because the app has two: the Markdown, and the self-contained page that
-          * `buildStandaloneHtml` writes — styles inline, no fonts to fetch, no requests of any
-          * kind. That second file is the one people send to somebody who does not read Markdown,
-          * and it was on the site from the first week while the extension offered only the `.md`.
-          */}
-        <div className="flex gap-2">
-          <Button
-            variant="secondary"
-            className="flex-1"
-            disabled={!document_}
-            leftSlot={<Download />}
-            onClick={() =>
-              document_ &&
-              downloadDoc(
-                document_.name,
-                document_.markdown,
-                Date.now(),
-                theme,
-                'md'
-              )
-            }
-          >
-            {t('ext.download')}
-          </Button>
-
-          <Button
-            variant="secondary"
-            className="flex-1"
-            disabled={!document_}
-            leftSlot={<FileCode2 />}
-            onClick={() =>
-              document_ &&
-              downloadDoc(
-                document_.name,
-                document_.markdown,
-                Date.now(),
-                theme,
-                'html'
-              )
-            }
-          >
-            {t('ext.download.html')}
-          </Button>
-        </div>
-
-        <div className="flex gap-2">
-          <Button
-            variant="tertiary"
-            className="flex-1"
-            disabled={!document_}
-            leftSlot={<Maximize2 />}
-            onClick={() => document_ && void openInViewer(document_)}
-          >
-            {t('ext.open')}
-          </Button>
-
-          <Button
-            variant="tertiary"
-            className="flex-1"
-            leftSlot={<FileInput />}
-            onClick={() => void openViewerForFiles()}
-          >
-            {t('ext.files')}
-          </Button>
-        </div>
+        <Button
+          variant="transparent"
+          size="sm"
+          className="ml-auto"
+          leftSlot={<FileInput />}
+          onClick={() => void openViewerForFiles()}
+        >
+          {t('ext.files')}
+        </Button>
       </div>
     </div>
   );

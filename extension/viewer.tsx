@@ -3,10 +3,10 @@ import { StrictMode, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { pageToMarkdown } from '@shared/from-page';
 import { getDocStats } from '@shared/markdown';
-import { MAX_FILE_SIZE } from '@/components/Dropzone';
+import { Dropzone, MAX_FILE_SIZE } from '@/components/Dropzone';
 import { DocumentPreview } from '@/components/DocumentPreview';
 import { Logo } from '@/components/Logo';
-import { DEFAULT_CONVERSION } from '@shared/conversions';
+import { CONVERSIONS, DEFAULT_CONVERSION } from '@shared/conversions';
 import { conversionForFiles, convertFile } from '@/lib/convert';
 import { downloadDoc } from '@/lib/download';
 import { formatBytes } from '@/lib/format';
@@ -36,6 +36,9 @@ import '@/index.css';
  * that shows them and go nowhere else. With no account and no network, this is a complete
  * converter for all ten formats, which is what `src/lib/convert.ts` already was.
  */
+/** Every extension any conversion takes, in the order the conversions are declared. */
+const ACCEPTS = [...new Set(CONVERSIONS.flatMap((one) => one.extensions))];
+
 interface Loaded {
   title: string;
   name: string;
@@ -150,8 +153,13 @@ function Viewer() {
 
   return (
     <div className="flex min-h-screen flex-col bg-surface-page">
-      <header className="sticky top-0 z-10 border-stroke border-b bg-surface-header/90 backdrop-blur">
-        <div className="mx-auto flex h-14 w-full max-w-content items-center gap-4 px-6">
+      <header className="sticky top-0 z-10 bg-surface-header/90 backdrop-blur">
+        {/* The site's own two pixels of brand, so the tab is recognisably the same product. */}
+        <div
+          aria-hidden="true"
+          className="h-0.5 bg-gradient-to-r from-brand-tertiary via-brand-primary to-transparent"
+        />
+        <div className="mx-auto flex h-14 w-full max-w-content items-center gap-4 border-stroke border-b px-6">
           <Logo />
 
           {document_ && (
@@ -260,15 +268,19 @@ function Viewer() {
           </Typography>
         )}
 
+        {/*
+          * The site's own dropzone, not a rectangle drawn again here: it already takes a drop,
+          * opens a picker, names what it accepts and says the file is read in this browser. The
+          * only thing it needs telling is that here it accepts everything — a page with one
+          * conversion asks for that conversion's extensions; this page asks for all of them.
+          */}
         {!busy && !document_ && !error && (
-          <button
-            type="button"
-            onClick={() => picker.current?.click()}
-            className="flex w-full cursor-pointer flex-col items-center gap-2 rounded-2xl border border-stroke border-dashed py-24 text-ink-secondary transition-colors hover:border-stroke-hover"
-          >
-            <FileInput className="size-6" />
-            {t('ext.viewer.empty')}
-          </button>
+          <Dropzone
+            extensions={ACCEPTS}
+            title={t('ext.viewer.empty')}
+            hint={t('ext.viewer.hint')}
+            onFiles={(files) => void onFiles(files)}
+          />
         )}
 
         {!busy && document_ && (
