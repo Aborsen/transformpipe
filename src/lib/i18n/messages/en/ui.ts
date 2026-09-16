@@ -142,6 +142,7 @@ export const ui: Content['ui'] = {
    */
   'converter.accepts': 'Takes {extensions}, up to 10 MB, converted in your browser.',
   'converter.picker.label': 'Or convert something else',
+  'converter.howto': 'New to this format?',
   'converter.blog.eyebrow': 'Blog',
   'converter.blog.title': 'Making Markdown behave',
   'converter.blog.blurb':
@@ -544,7 +545,7 @@ export const ui: Content['ui'] = {
   'footer.legal': 'Legal',
   'footer.docs': 'Documentation',
   'footer.blog': 'Blog',
-  'footer.git': 'Git',
+  'footer.faq': 'FAQ',
   /* Read out after the link's own name, so it opens with the space that separates them. */
   'footer.external': ' (opens in a new tab)',
 };

@@ -147,6 +147,7 @@ export const ui: Content['ui'] = {
    */
   'converter.accepts': 'Nimmt {extensions}, bis 10 MB, umgewandelt im Browser.',
   'converter.picker.label': 'Oder etwas anderes umwandeln',
+  'converter.howto': 'Zum ersten Mal mit diesem Format?',
   'converter.blog.eyebrow': 'Blog',
   'converter.blog.title': 'Markdown im Zaum halten',
   'converter.blog.blurb':
@@ -560,7 +561,7 @@ export const ui: Content['ui'] = {
   'footer.legal': 'Rechtliches',
   'footer.docs': 'Dokumentation',
   'footer.blog': 'Blog',
-  'footer.git': 'Git',
+  'footer.faq': 'FAQ',
   /* Wird nach dem eigenen Namen des Links vorgelesen, beginnt also mit dem trennenden Leerzeichen. */
   'footer.external': ' (öffnet in einem neuen Tab)',
 };

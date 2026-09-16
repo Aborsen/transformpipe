@@ -76,18 +76,9 @@ export function AppFooter({
           href: '/changelog',
           onNavigate: () => onViewChange('changelog'),
         },
-        { label: t('footer.git'), href: REPO_URL, external: true },
+        { label: t('footer.faq'), href: '/#faq' },
         page('contact'),
       ],
-    },
-    {
-      /*
-       * Built from the group rather than named one by one: a tenth how-to page is an entry in
-       * `src/lib/pages.ts` and appears here, in the reader's language, without anybody remembering
-       * this file exists.
-       */
-      heading: t('footer.howto'),
-      links: pagesIn('how-to').map((one) => page(one.id)),
     },
     {
       heading: t('footer.legal'),

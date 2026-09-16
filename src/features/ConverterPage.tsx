@@ -25,6 +25,7 @@ import { ShareDialog } from '@/components/ShareDialog';
 import { AppBreadcrumbs } from '@/components/AppBreadcrumbs';
 import { ConversionPicker } from '@/components/ConversionPicker';
 import { crumbsForConversion } from '@/lib/breadcrumbs';
+import { STATIC_PAGES } from '@/lib/pages';
 import { articleCardImage } from '@/lib/covers';
 import { Dropzone } from '@/components/Dropzone';
 import { PasteBox } from '@/components/PasteBox';
@@ -288,6 +289,32 @@ export function ConverterPage({
           }
         />
 
+        {/*
+          * The how-to page for this format, linked from the one screen where somebody is holding
+          * that kind of file. Found by matching the page's own `action` against this conversion's
+          * address rather than by a second mapping — the pages already say which conversion they
+          * end on, and two lists of the same fact is one list that goes stale.
+          *
+          * This is also what keeps those pages reachable. They used to sit in the footer as a
+          * column of nine, which was a wall on every page of the site to serve a reader who has
+          * exactly one file in front of them.
+          */}
+        {(() => {
+          const guide = STATIC_PAGES.find((one) => one.action === conversion.path);
+
+          return guide ? (
+            <Typography variant="p" textColor="light" className="text-center text-sm">
+              {t('converter.howto')}{' '}
+              <a
+                href={guide.path}
+                className="text-brand-tertiary underline-offset-2 hover:underline"
+              >
+                {content.pages[guide.id].label}
+              </a>
+            </Typography>
+          ) : null;
+        })()}
+
         <ConversionPicker
           current={conversion.id}
           onChange={onConversionChange}
@@ -328,7 +355,11 @@ export function ConverterPage({
           </section>
         )}
 
-        <section className="mt-10 flex flex-col items-center gap-8 rounded-2xl border border-stroke bg-surface-card2/40 px-4 py-12 sm:px-10">
+        {/* Addressable: the footer links here, so it needs somewhere to land. */}
+        <section
+          id="faq"
+          className="mt-10 flex flex-col items-center gap-8 rounded-2xl border border-stroke bg-surface-card2/40 px-4 py-12 sm:px-10"
+        >
           <SectionHeading
             align="center"
             size="lg"

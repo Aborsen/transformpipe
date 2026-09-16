@@ -91,7 +91,7 @@ export function SiteFooter({
 
           <nav
             aria-label="Site"
-            className="grid grid-cols-2 gap-8 sm:grid-cols-6 lg:gap-12"
+            className="grid grid-cols-2 gap-8 sm:grid-cols-5 lg:gap-12"
           >
             {columns.map((column) => (
               <div
@@ -100,7 +100,7 @@ export function SiteFooter({
                   'flex flex-col gap-3',
                   // Half the grid on its own: two lists of five need close to as much room as the
                   // other three columns combined, or the longer labels wrap where nothing else does.
-                  column.twoLists && 'sm:col-span-3'
+                  column.twoLists && 'sm:col-span-2'
                 )}
               >
                 <Typography

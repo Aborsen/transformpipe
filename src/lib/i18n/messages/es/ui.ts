@@ -138,6 +138,7 @@ export const ui: Content['ui'] = {
    */
   'converter.accepts': 'Acepta {extensions}, hasta 10 MB, convertidos en tu navegador.',
   'converter.picker.label': 'O convertir otra cosa',
+  'converter.howto': '¿Es la primera vez con este formato?',
   'converter.blog.eyebrow': 'Blog',
   'converter.blog.title': 'Cómo domar Markdown',
   'converter.blog.blurb':
@@ -545,7 +546,7 @@ export const ui: Content['ui'] = {
   'footer.legal': 'Legal',
   'footer.docs': 'Documentación',
   'footer.blog': 'Blog',
-  'footer.git': 'Git',
+  'footer.faq': 'Preguntas frecuentes',
   /* Se lee después del nombre del propio enlace, así que empieza con el espacio que los separa. */
   'footer.external': ' (se abre en una pestaña nueva)',
 };
