@@ -459,6 +459,18 @@ function shadesOf(colour) {
  * pixels come out of the screenshot, which is what keeps them from drifting apart.
  */
 function card({ accent, slug = '' }) {
+  /*
+   * A rendered object if `scripts/og-art.mjs` has drawn one, the isometric drawing below if not.
+   *
+   * The drawn version is the floor, not the plan: it means a new article has a cover the moment it
+   * exists, without an API key, a bill, or a person waiting on a model. Where a rendered object is
+   * there, it wins — same frame, same ground, same accent around it either way.
+   */
+  const art = join(ROOT, 'content', 'og-art', `${slug}.webp`);
+  const rendered = existsSync(art)
+    ? `data:image/webp;base64,${readFileSync(art).toString('base64')}`
+    : null;
+
   const s = shadesOf(accent);
   const hi = {
     top: mix(accent, '#ffffff', 0.42),
@@ -507,15 +519,39 @@ function card({ accent, slug = '' }) {
   }
 
   svg { width: 440px; height: 440px; }
+
+  /*
+   * The rendered object, sized to the same square the drawing occupies so the two are
+   * interchangeable, with a soft shadow under it standing in for the ground the model was told not
+   * to draw.
+   */
+  /*
+   * The rendered square, melted into the ground.
+   *
+   * It carries its own near-black background rather than transparency — see og-art.mjs for why a
+   * chroma key was the wrong answer — so the edges are faded out radially. A few values of
+   * mismatch between the model's black and ours vanish in that fade; a hard edge would not.
+   */
+  img {
+    width: 560px;
+    height: 560px;
+    object-fit: contain;
+    mask-image: radial-gradient(closest-side, #000 52%, transparent 94%);
+    -webkit-mask-image: radial-gradient(closest-side, #000 52%, transparent 94%);
+  }
 </style>
 </head>
 <body>
   <div class="grid"></div>
   <div class="art">
-    <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+    ${
+      rendered
+        ? `<img src="${rendered}" alt="">`
+        : `<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
       <ellipse cx="120" cy="198" rx="72" ry="16" fill="#05050a" opacity="0.5"/>
       ${drawing}
-    </svg>
+    </svg>`
+    }
   </div>
 </body>
 </html>`;
