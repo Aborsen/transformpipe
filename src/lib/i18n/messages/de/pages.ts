@@ -574,4 +574,54 @@ export const pages: Content['pages'] = {
         'Was in einem Export aus Notion, Confluence oder Obsidian steckt, warum die Links zwischen den Seiten brechen und wie sich alles als ein Dokument lesen lässt.',
     },
   },
+  'how-to-assistant': {
+    label: 'Aus einem Assistenten teilen',
+    title: 'Wie man ein Dokument aus einem KI-Assistenten umwandelt und teilt',
+    lede: 'Ein Assistent schreibt den ganzen Tag Markdown und kann Ihnen trotzdem keine Seite geben. Verbindet man diesen hier, kann er beides — ohne dass jemand Text zwischen Tabs kopiert.',
+    sections: [
+      {
+        heading: 'Was ein Connector ist',
+        body: [
+          'TransformPipe betreibt unter `/api/mcp` einen MCP-Server. MCP ist das Protokoll, über das Assistenten Werkzeuge aufrufen; die Adresse als Connector einzutragen gibt dem Assistenten also eine Reihe von Verben, die er in Ihrem Namen benutzen kann: das hier umwandeln, es speichern, es teilen, auflisten, was da ist.',
+          'Es gibt keinen Schlüssel einzufügen. Beim Hinzufügen des Connectors werden Sie durch eine normale Anmeldung geschickt, und der Assistent erhält Zugriff auf dieses Konto, bis Sie ihn wieder trennen — dieselbe Form wie bei der Anmeldung an irgendeiner anderen Anwendung mit Ihrem Konto.',
+        ],
+      },
+      {
+        heading: 'Ihn hinzufügen',
+        body: [
+          'Auf claude.ai: „Settings“, dann „Connectors“, dann „Add custom connector“, und dort `https://transformpipe.com/api/mcp` angeben. Melden Sie sich an, wenn danach gefragt wird, und im nächsten Gespräch sind die Werkzeuge da.',
+          'Aus einem Terminal erledigt ein einziger Befehl dasselbe: `claude mcp add --transport http transformpipe https://transformpipe.com/api/mcp`.',
+          'Mehr ist nicht einzurichten. Der Connector lässt sich auf demselben Bildschirm wieder entfernen, und das Entfernen widerruft den Zugriff sofort.',
+        ],
+      },
+      {
+        heading: 'Was er dann kann',
+        body: [
+          'Elf Werkzeuge, alle mit `tp_` benannt. Die, auf die es in einem Gespräch ankommt, sind `tp_convert_markdown`, das aus Markdown ein fertiges HTML-Dokument macht, `tp_convert_to_markdown` für eine Datei in die andere Richtung, `tp_save_document`, das das Ergebnis in Ihrem Konto behält, und `tp_share_document`, das es veröffentlicht und einen Link zurückgibt, den Sie verschicken können.',
+          'Der Rest sind die, nach denen ein Assistent von sich aus greift: `tp_list_documents` und `tp_get_document`, um etwas wiederzufinden, das Sie früher gemacht haben, `tp_summarize_document`, um zu sagen, was in einem langen steht, `tp_document_versions`, um zu zeigen, was was ersetzt hat, `tp_usage`, um zu prüfen, wie viel Platz noch bleibt, und `tp_delete_document`.',
+          'In der Praxis ist der nützliche Satz kurz. Bitten Sie ihn, die Release Notes zu schreiben, und dann, sie zu veröffentlichen — der Assistent wandelt um, speichert und teilt und antwortet mit der Adresse.',
+        ],
+      },
+      {
+        heading: 'Woran er kommt und woran nicht',
+        body: [
+          'Der Connector handelt als Sie, in Ihrem Konto, an Dokumenten, die Ihnen gehören. Er kann das Konto nicht ändern, Ihr Passwort nicht lesen, keine API-Schlüssel erstellen und an die Dokumente anderer nicht heran.',
+          'Eine Berechtigung kann auch nur lesend sein; dann kann der Assistent auflisten, abrufen und zusammenfassen, aber nicht speichern, teilen oder löschen — und diese Einschränkung wird an der Berechtigung selbst durchgesetzt, nicht an den Werkzeugen, sie hält also, ganz gleich, wonach der Assistent fragt.',
+          'Zu wissen, nicht zu fürchten: ein Assistent mit einem Connector ist eine dauerhafte Vollmacht zu handeln, und ein Dokument, das er liest, kann Anweisungen enthalten, die an ihn gerichtet sind. Das ist der ehrliche Preis der Bequemlichkeit und der Grund, warum eine nur lesende Berechtigung für alles, was Sie nicht selbst geschrieben haben, die richtige Voreinstellung ist.',
+        ],
+      },
+      {
+        heading: 'Wann man ihn nicht nimmt',
+        body: [
+          'Ein Connector passt zu dem Dokument, das in einem Gespräch existiert und sonst nirgends. Für eine Datei, die schon auf der Platte liegt, geht es schneller, sie auf den Konverter zu ziehen; für etwas, das bei jedem Merge passiert, sind die API oder die GitHub Action die richtige Form; und für einen Ordner mit vierhundert Dateien schlägt ein lokaler Konverter jedes Gespräch.',
+        ],
+      },
+    ],
+    action: 'Die Dokumentation lesen',
+    seo: {
+      title: 'Ein Dokument aus einem KI-Assistenten umwandeln und teilen — TransformPipe',
+      description:
+        'Wie man TransformPipe als MCP-Connector zu Claude hinzufügt, was die elf Werkzeuge tun und woran ein Assistent in Ihrem Konto kommt und woran nicht.',
+    },
+  },
 };

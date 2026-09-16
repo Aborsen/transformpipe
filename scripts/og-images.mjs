@@ -611,6 +611,7 @@ const PAGES = [
   ['how-to/open-txt', 'How to open a .txt file', 'How to', ACCENTS.Syntax],
   ['how-to/open-xlsx', 'How to open an .xlsx file', 'How to', ACCENTS.Automation],
   ['how-to/open-zip', 'How to open an export .zip', 'How to', ACCENTS.Workflow],
+  ['how-to/assistant', 'Share from an assistant', 'How to', ACCENTS.Automation],
   ['about', 'About TransformPipe', 'Company', ACCENTS.Workflow],
   ['contact', 'Contact us', 'Company', ACCENTS.Workflow],
   ['privacy', 'Privacy', 'Legal', ACCENTS.Safety],

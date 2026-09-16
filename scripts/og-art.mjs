@@ -192,6 +192,7 @@ const PAGES = {
   'how-to/open-txt': ['a plain flat page with evenly spaced raised lines and nothing else on it', 'periwinkle blue'],
   'how-to/open-xlsx': ['a workbook of three stacked sheets, the top one a grid of raised cells', 'mint green'],
   'how-to/open-zip': ['a closed archive box with a zip seam running across its lid', 'violet purple'],
+  'how-to/assistant': ['a rounded plug sliding into a socket block with a small four-pointed sparkle floating above the join', 'mint green'],
 };
 
 function frontmatter(raw) {

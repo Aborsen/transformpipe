@@ -566,4 +566,54 @@ export const pages: Content['pages'] = {
         'Ce que contient un export Notion, Confluence ou Obsidian, pourquoi les liens entre les pages se cassent, et comment lire l’ensemble comme un seul document.',
     },
   },
+  'how-to-assistant': {
+    label: 'Partager depuis un assistant',
+    title: 'Comment convertir et partager un document depuis un assistant IA',
+    lede: 'Un assistant écrit du Markdown à longueur de journée et ne sait pas vous remettre une page. Connecter celui-ci lui permet de faire les deux, sans que personne ne recopie du texte d’un onglet à l’autre.',
+    sections: [
+      {
+        heading: 'Ce qu’est un connecteur',
+        body: [
+          'TransformPipe fait tourner un serveur MCP à l’adresse `/api/mcp`. MCP est le protocole par lequel les assistants appellent des outils : ajouter cette adresse comme connecteur donne donc à l’assistant une série de verbes qu’il peut employer en votre nom — convertir ceci, l’enregistrer, le partager, lister ce qui est là.',
+          'Il n’y a aucune clé à coller. Ajouter le connecteur vous fait passer par une connexion ordinaire, et l’assistant reçoit l’accès à ce compte jusqu’à ce que vous le déconnectiez — la même forme que se connecter à n’importe quelle autre application avec votre compte.',
+        ],
+      },
+      {
+        heading: 'L’ajouter',
+        body: [
+          'Sur claude.ai : Paramètres, puis Connecteurs, puis Ajouter un connecteur personnalisé, et donnez-lui `https://transformpipe.com/api/mcp`. Connectez-vous quand on vous le demande, et les outils apparaissent dans la conversation suivante.',
+          'Depuis un terminal, une seule commande fait la même chose : `claude mcp add --transport http transformpipe https://transformpipe.com/api/mcp`.',
+          'Rien d’autre n’est à configurer. Le connecteur se retire depuis le même écran, et le retirer révoque l’accès immédiatement.',
+        ],
+      },
+      {
+        heading: 'Ce qu’il peut alors faire',
+        body: [
+          'Onze outils, tous nommés `tp_`. Ceux qui comptent dans une conversation sont `tp_convert_markdown`, qui transforme du Markdown en document HTML fini, `tp_convert_to_markdown` pour un fichier qui fait le chemin inverse, `tp_save_document`, qui garde le résultat dans votre compte, et `tp_share_document`, qui le publie et renvoie un lien que vous pouvez envoyer.',
+          'Les autres sont ceux qu’un assistant emploie de lui-même : `tp_list_documents` et `tp_get_document` pour retrouver quelque chose que vous avez fait plus tôt, `tp_summarize_document` pour dire ce que contient un document long, `tp_document_versions` pour montrer ce qui a remplacé quoi, `tp_usage` pour vérifier la place qu’il reste, et `tp_delete_document`.',
+          'En pratique, la phrase utile est courte. Demandez-lui d’écrire les notes de version, puis demandez-lui de les publier — l’assistant convertit, enregistre et partage, et répond avec l’adresse.',
+        ],
+      },
+      {
+        heading: 'Ce qu’il peut atteindre, et ce qu’il ne peut pas',
+        body: [
+          'Le connecteur agit en tant que vous, dans votre compte, sur les documents qui vous appartiennent. Il ne peut pas modifier le compte, lire votre mot de passe, créer des clés API, ni atteindre les documents de quelqu’un d’autre.',
+          'Un accès peut aussi être accordé en lecture seule, auquel cas l’assistant peut lister, récupérer et résumer mais ne peut ni enregistrer, ni partager, ni supprimer — et cette restriction s’applique au jeton lui-même plutôt qu’aux outils, elle tient donc quoi que l’assistant demande.',
+          'Bon à savoir plutôt qu’à redouter : un assistant muni d’un connecteur dispose d’une autorité permanente pour agir, et un document qu’il lit peut contenir des instructions qui lui sont destinées. C’est le coût honnête de la commodité, et la raison pour laquelle un accès en lecture seule est le bon réglage par défaut pour tout ce que vous n’avez pas écrit vous-même.',
+        ],
+      },
+      {
+        heading: 'Quand ne pas l’utiliser',
+        body: [
+          'Un connecteur convient au document qui existe à l’intérieur d’une conversation et nulle part ailleurs. Pour un fichier déjà sur le disque, le déposer sur le convertisseur va plus vite ; pour quelque chose qui se produit à chaque merge, l’API ou la GitHub Action est la bonne forme ; et pour un dossier de quatre cents fichiers, un convertisseur local l’emporte sur une conversation.',
+        ],
+      },
+    ],
+    action: 'Lire la documentation',
+    seo: {
+      title: 'Convertir et partager un document depuis un assistant IA — TransformPipe',
+      description:
+        'Comment ajouter TransformPipe à Claude comme connecteur MCP, ce que font les onze outils, et ce qu’un assistant peut atteindre ou non dans votre compte.',
+    },
+  },
 };

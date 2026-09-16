@@ -565,4 +565,54 @@ export const pages: Content['pages'] = {
         'Cosa c’è dentro un’esportazione di Notion, Confluence o Obsidian, perché i link tra le pagine si rompono e come leggere il tutto come un unico documento.',
     },
   },
+  'how-to-assistant': {
+    label: 'Condividere da un assistente',
+    title: 'Come convertire e condividere un documento da un assistente AI',
+    lede: 'Un assistente scrive Markdown tutto il giorno e non riesce a consegnarti una pagina. Collegare questo gli permette di fare entrambe le cose, senza che nessuno copi testo da una scheda all’altra.',
+    sections: [
+      {
+        heading: 'Che cos’è un connettore',
+        body: [
+          'TransformPipe espone un server MCP su `/api/mcp`. MCP è il protocollo con cui gli assistenti chiamano gli strumenti, quindi aggiungere quell’indirizzo come connettore dà all’assistente una serie di verbi che può usare al posto tuo: converti questo, salvalo, condividilo, elenca cosa c’è.',
+          'Non c’è nessuna chiave da incollare. Aggiungere il connettore ti fa passare da un normale accesso, e all’assistente viene concesso l’accesso a quell’account fino a quando non lo scolleghi — la stessa forma che ha l’accesso a qualsiasi altra applicazione con il tuo account.',
+        ],
+      },
+      {
+        heading: 'Aggiungerlo',
+        body: [
+          'Su claude.ai: Impostazioni, poi Connettori, poi Aggiungi connettore personalizzato, e indica `https://transformpipe.com/api/mcp`. Accedi quando te lo chiede, e gli strumenti compaiono nella conversazione successiva.',
+          'Da un terminale fa lo stesso un solo comando: `claude mcp add --transport http transformpipe https://transformpipe.com/api/mcp`.',
+          'Non c’è altro da configurare. Il connettore si può rimuovere dalla stessa schermata, e rimuoverlo revoca l’accesso immediatamente.',
+        ],
+      },
+      {
+        heading: 'Cosa può fare a quel punto',
+        body: [
+          'Undici strumenti, tutti con il prefisso `tp_`. Quelli che contano in una conversazione sono `tp_convert_markdown`, che trasforma il Markdown in un documento HTML finito, `tp_convert_to_markdown` per un file che fa il percorso inverso, `tp_save_document`, che conserva il risultato nel tuo account, e `tp_share_document`, che lo pubblica e restituisce un link da mandare.',
+          'Gli altri sono quelli a cui un assistente ricorre da sé: `tp_list_documents` e `tp_get_document` per ritrovare qualcosa fatto prima, `tp_summarize_document` per dire cosa contiene un documento lungo, `tp_document_versions` per mostrare cosa ha sostituito cosa, `tp_usage` per controllare quanto spazio resta, e `tp_delete_document`.',
+          'In pratica la frase utile è breve. Chiedigli di scrivere le note di rilascio, poi chiedigli di pubblicarle — l’assistente converte, salva e condivide, e risponde con l’indirizzo.',
+        ],
+      },
+      {
+        heading: 'Cosa può raggiungere, e cosa no',
+        body: [
+          'Il connettore agisce come te, nel tuo account, sui documenti che possiedi. Non può cambiare l’account, leggere la tua password, creare chiavi API o raggiungere i documenti di qualcun altro.',
+          'Una concessione può anche essere in sola lettura, e in quel caso l’assistente può elencare, recuperare e riassumere ma non può salvare, condividere o eliminare — e quella restrizione è applicata sulla credenziale stessa più che sugli strumenti, quindi vale qualunque cosa l’assistente chieda.',
+          'Da sapere più che da temere: un assistente con un connettore è un’autorità permanente ad agire, e un documento che legge può contenere istruzioni rivolte a lui. È il costo onesto della comodità, ed è il motivo per cui una concessione in sola lettura è l’impostazione giusta per tutto quello che non hai scritto tu.',
+        ],
+      },
+      {
+        heading: 'Quando non usarlo',
+        body: [
+          'Un connettore è adatto al documento che esiste dentro una conversazione e da nessun’altra parte. Per un file già su disco è più rapido trascinarlo sul convertitore; per qualcosa che succede a ogni merge la forma giusta è l’API o la GitHub Action; e per una cartella di quattrocento file un convertitore locale batte una conversazione.',
+        ],
+      },
+    ],
+    action: 'Leggere la documentazione',
+    seo: {
+      title: 'Convertire e condividere un documento da un assistente AI — TransformPipe',
+      description:
+        'Come aggiungere TransformPipe a Claude come connettore MCP, cosa fanno gli undici strumenti e cosa un assistente può e non può raggiungere nel tuo account.',
+    },
+  },
 };

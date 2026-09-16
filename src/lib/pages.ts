@@ -27,7 +27,8 @@ export type StaticPageId =
   | 'how-to-json'
   | 'how-to-txt'
   | 'how-to-xlsx'
-  | 'how-to-zip';
+  | 'how-to-zip'
+  | 'how-to-assistant';
 
 /**
  * Which part of the footer a page belongs under.
@@ -91,6 +92,14 @@ export const STATIC_PAGES: StaticPage[] = [
   { id: 'how-to-txt', path: '/how-to/open-txt', group: 'how-to', action: '/text-to-markdown' },
   { id: 'how-to-xlsx', path: '/how-to/open-xlsx', group: 'how-to', action: '/excel-to-markdown' },
   { id: 'how-to-zip', path: '/how-to/open-zip', group: 'how-to', action: '/notion-to-markdown' },
+
+  /*
+   * The odd one in this group: not a file extension but the other way documents arrive here — an
+   * assistant holding Markdown it just wrote, with no file and no repository behind it. Its button
+   * goes to the documentation rather than to a conversion, because the thing to do next is connect
+   * something rather than drop something.
+   */
+  { id: 'how-to-assistant', path: '/how-to/assistant', group: 'how-to', action: '/docs' },
 ];
 
 /** The pages of one group, in the order declared — what the footer builds a column from. */

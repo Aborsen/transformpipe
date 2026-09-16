@@ -572,4 +572,54 @@ export const pages: Content['pages'] = {
         'What is inside a Notion, Confluence or Obsidian export, why the links between pages break, and how to read the whole thing as one document.',
     },
   },
+  'how-to-assistant': {
+    label: 'Share from an assistant',
+    title: 'How to convert and share a document from an AI assistant',
+    lede: 'An assistant writes Markdown all day and cannot hand you a page. Connecting this one lets it do both, without anybody copying text between tabs.',
+    sections: [
+      {
+        heading: 'What a connector is',
+        body: [
+          'TransformPipe runs an MCP server at `/api/mcp`. MCP is the protocol assistants use to call tools, so adding the address as a connector gives the assistant a set of verbs it can use on your behalf: convert this, save it, share it, list what is there.',
+          'There is no key to paste. Adding the connector sends you through a normal sign-in, and the assistant is granted access to that account until you disconnect it — the same shape as signing into any other application with your account.',
+        ],
+      },
+      {
+        heading: 'Adding it',
+        body: [
+          'On claude.ai: Settings, then Connectors, then Add custom connector, and give it `https://transformpipe.com/api/mcp`. Sign in when asked, and the tools appear in the next conversation.',
+          'From a terminal, one command does the same thing: `claude mcp add --transport http transformpipe https://transformpipe.com/api/mcp`.',
+          'Nothing else is configured. The connector can be removed from the same screen, and removing it revokes the access immediately.',
+        ],
+      },
+      {
+        heading: 'What it can then do',
+        body: [
+          'Eleven tools, all named `tp_`. The ones that matter in a conversation are `tp_convert_markdown`, which turns Markdown into a finished HTML document, `tp_convert_to_markdown` for a file going the other way, `tp_save_document`, which keeps the result in your account, and `tp_share_document`, which publishes it and returns a link you can send.',
+          'The rest are the ones an assistant reaches for on its own: `tp_list_documents` and `tp_get_document` to find something you made earlier, `tp_summarize_document` to say what a long one contains, `tp_document_versions` to show what replaced what, `tp_usage` to check how much room is left, and `tp_delete_document`.',
+          'In practice the useful sentence is short. Ask it to write the release notes, then ask it to publish them — the assistant converts, saves and shares, and answers with the address.',
+        ],
+      },
+      {
+        heading: 'What it can reach, and what it cannot',
+        body: [
+          'The connector acts as you, in your account, on documents you own. It cannot change the account, read your password, create API keys, or reach anybody else’s documents.',
+          'A grant can also be read-only, in which case the assistant can list, fetch and summarise but cannot save, share or delete — and that restriction is enforced on the credential itself rather than on the tools, so it holds whatever the assistant asks for.',
+          'Worth knowing rather than worrying about: an assistant with a connector is standing authority to act, and a document it reads can contain instructions aimed at it. That is the honest cost of the convenience, and the reason a read-only grant is the right default for anything you have not written yourself.',
+        ],
+      },
+      {
+        heading: 'When not to use it',
+        body: [
+          'A connector suits the document that exists inside a conversation and nowhere else. For a file already on disk, dropping it on the converter is quicker; for something that happens on every merge, the API or the GitHub Action is the right shape; and for a folder of four hundred files, a local converter beats a conversation.',
+        ],
+      },
+    ],
+    action: 'Read the documentation',
+    seo: {
+      title: 'Convert and share a document from an AI assistant — TransformPipe',
+      description:
+        'How to add TransformPipe to Claude as an MCP connector, what the eleven tools do, and what an assistant can and cannot reach in your account.',
+    },
+  },
 };
