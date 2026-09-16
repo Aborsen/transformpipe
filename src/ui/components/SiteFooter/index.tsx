@@ -89,9 +89,15 @@ export function SiteFooter({
             )}
           </div>
 
+          {/*
+            * Four units wide and stretched to fill what the brand block leaves: the double column
+            * takes two, the two single ones take one each. It used to declare five while only four
+            * were ever occupied, so a unit of the row sat empty — which read as a gap on the right
+            * and squeezed the converter's labels onto two lines apiece.
+            */}
           <nav
             aria-label="Site"
-            className="grid grid-cols-2 gap-8 sm:grid-cols-5 lg:gap-12"
+            className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:flex-1 lg:gap-12"
           >
             {columns.map((column) => (
               <div
