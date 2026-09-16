@@ -182,19 +182,18 @@ Each of these is a real idea and each would double the surface:
   cannot read `chrome://extensions`, and saying so is better than "this page cannot be read" on the
   first page anybody sees after installing.
 
-**Known, not yet fixed:** in the extension build the icon inside a `Button` sits at the top of the
-button rather than beside the label — the same component is correct on the site, so it is a
-difference in how the stylesheet is assembled for this build, not in the component. Cosmetic, and
-first thing in week two.
+**Done since:** both surfaces offer the self-contained `.html` as well as the `.md` — the same
+`downloadDoc` the site uses, styles inline and no requests — and the icons sit beside their labels
+again. That last one was not a stylesheet problem at all: `Button` takes its icon as `leftSlot` and
+wraps `children` in an inline-block span, so an icon passed as a child was a block element inside
+that span and went on its own line. The site's own call sites had it right; the extension's were
+new code written against a guess.
 
 ## Week two, in order
 
-1. **Save as HTML** — `downloadDoc` already writes the self-contained `.html`; the extension only
-   offers `.md`. Two buttons where there is one, in both the popup and the viewer. (Asked for
-   17 September.)
-2. **The icon alignment above.**
-3. **The account**: an API key in an options page, `chrome.storage.local`, then Save and Share
+1. ~~Save as HTML~~ and ~~the icon alignment~~ — both done.
+2. **The account**: an API key in an options page, `chrome.storage.local`, then Save and Share
    against `POST /api/v1/documents?share=link`.
-4. **Firefox**: same code, a different manifest key, packaged separately.
-5. **The store**: listing text, screenshots out of the viewer, the privacy answers — and the page on
+3. **Firefox**: same code, a different manifest key, packaged separately.
+4. **The store**: listing text, screenshots out of the viewer, the privacy answers — and the page on
    this site that says the extension exists.

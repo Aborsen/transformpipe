@@ -1,4 +1,4 @@
-import { Copy, Download, FileInput, Loader2 } from 'lucide-react';
+import { Copy, Download, FileCode2, FileInput, Loader2 } from 'lucide-react';
 import { StrictMode, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { pageToMarkdown } from '@shared/from-page';
@@ -177,9 +177,9 @@ function Viewer() {
             <Button
               variant="secondary"
               size="sm"
+              leftSlot={<FileInput />}
               onClick={() => picker.current?.click()}
             >
-              <FileInput />
               {t('ext.files')}
             </Button>
 
@@ -188,16 +188,34 @@ function Viewer() {
                 <Button
                   variant="secondary"
                   size="sm"
+                  leftSlot={<Copy />}
                   onClick={async () =>
                     setCopied(await copyText(document_.markdown))
                   }
                 >
-                  <Copy />
                   {copied ? t('ext.copied') : t('ext.copy')}
                 </Button>
 
                 <Button
+                  variant="secondary"
                   size="sm"
+                  leftSlot={<FileCode2 />}
+                  onClick={() =>
+                    downloadDoc(
+                      document_.name,
+                      document_.markdown,
+                      Date.now(),
+                      theme,
+                      'html'
+                    )
+                  }
+                >
+                  {t('ext.download.html')}
+                </Button>
+
+                <Button
+                  size="sm"
+                  leftSlot={<Download />}
                   onClick={() =>
                     downloadDoc(
                       document_.name,
@@ -208,7 +226,6 @@ function Viewer() {
                     )
                   }
                 >
-                  <Download />
                   {t('ext.download')}
                 </Button>
               </>

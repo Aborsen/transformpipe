@@ -124,6 +124,7 @@ export const ui: Content['ui'] = {
   'ext.copy': 'Copier le Markdown',
   'ext.copied': 'Copié',
   'ext.download': 'Télécharger le .md',
+  'ext.download.html': 'Télécharger le .html',
   'ext.open': 'Ouvrir dans un onglet',
   'ext.files': 'Ouvrir des fichiers…',
   'ext.viewer.empty': 'Choisissez des fichiers à convertir — dix formats, le tout dans ce navigateur',

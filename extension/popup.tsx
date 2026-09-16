@@ -1,4 +1,11 @@
-import { Check, Copy, Download, FileInput, Maximize2 } from 'lucide-react';
+import {
+  Check,
+  Copy,
+  Download,
+  FileCode2,
+  FileInput,
+  Maximize2,
+} from 'lucide-react';
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { pageToMarkdown, type PageDocument } from '@shared/from-page';
@@ -149,6 +156,7 @@ function Popup() {
       <div className="flex flex-col gap-2">
         <Button
           disabled={!document_}
+          leftSlot={copied ? <Check /> : <Copy />}
           onClick={async () => {
             if (!document_) {
               return;
@@ -157,15 +165,21 @@ function Popup() {
             setCopied(await copyText(document_.markdown));
           }}
         >
-          {copied ? <Check /> : <Copy />}
           {copied ? t('ext.copied') : t('ext.copy')}
         </Button>
 
+        {/*
+          * Two downloads, because the app has two: the Markdown, and the self-contained page that
+          * `buildStandaloneHtml` writes — styles inline, no fonts to fetch, no requests of any
+          * kind. That second file is the one people send to somebody who does not read Markdown,
+          * and it was on the site from the first week while the extension offered only the `.md`.
+          */}
         <div className="flex gap-2">
           <Button
             variant="secondary"
             className="flex-1"
             disabled={!document_}
+            leftSlot={<Download />}
             onClick={() =>
               document_ &&
               downloadDoc(
@@ -177,7 +191,6 @@ function Popup() {
               )
             }
           >
-            <Download />
             {t('ext.download')}
           </Button>
 
@@ -185,17 +198,42 @@ function Popup() {
             variant="secondary"
             className="flex-1"
             disabled={!document_}
-            onClick={() => document_ && void openInViewer(document_)}
+            leftSlot={<FileCode2 />}
+            onClick={() =>
+              document_ &&
+              downloadDoc(
+                document_.name,
+                document_.markdown,
+                Date.now(),
+                theme,
+                'html'
+              )
+            }
           >
-            <Maximize2 />
-            {t('ext.open')}
+            {t('ext.download.html')}
           </Button>
         </div>
 
-        <Button variant="tertiary" onClick={() => void openViewerForFiles()}>
-          <FileInput />
-          {t('ext.files')}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="tertiary"
+            className="flex-1"
+            disabled={!document_}
+            leftSlot={<Maximize2 />}
+            onClick={() => document_ && void openInViewer(document_)}
+          >
+            {t('ext.open')}
+          </Button>
+
+          <Button
+            variant="tertiary"
+            className="flex-1"
+            leftSlot={<FileInput />}
+            onClick={() => void openViewerForFiles()}
+          >
+            {t('ext.files')}
+          </Button>
+        </div>
       </div>
     </div>
   );
