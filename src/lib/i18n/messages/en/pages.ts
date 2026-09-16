@@ -113,7 +113,7 @@ export const pages: Content['pages'] = {
       {
         heading: 'What we do not do',
         body: [
-          'There is no analytics, no advertising, no tracking pixel and no third-party script on this site — not a reduced set, none. Nothing is sold, and nothing is shared with anyone except the infrastructure that runs the service: the database, the blob store, the authentication provider, the email provider and the host.',
+          'There is no advertising, no tracking pixel and nothing sold. One third-party script loads at all — Google Tag Manager — and it brings Google Analytics only if you allowed it in the cookie banner; refused or unanswered, Google’s tags write nothing to your browser. Nothing is shared with anyone except the infrastructure that runs the service: the database, the blob store, the authentication provider, the email provider and the host.',
           'Your documents are not read by us, and they are not used to train anything.',
         ],
       },
@@ -154,7 +154,7 @@ export const pages: Content['pages'] = {
     seo: {
       title: 'Privacy — TransformPipe',
       description:
-        'Signed out, no file leaves your browser. Signed in, we store the document, its metadata and your account identity — no analytics, no tracking, no third-party scripts.',
+        'Signed out, no file leaves your browser. Signed in, we store the document, its metadata and your account identity — analytics only if you allow it, no tracking pixels, nothing sold.',
     },
   },
   terms: {
@@ -212,13 +212,13 @@ export const pages: Content['pages'] = {
   cookies: {
     label: 'Cookies',
     title: 'Cookies',
-    lede: 'There are two, both required to sign in, and nothing to configure.',
+    lede: 'Two are needed to sign in. One thing is optional — analytics — and it stays off until you allow it.',
     sections: [
       {
-        heading: 'Nothing to switch off',
+        heading: 'The one thing you choose',
         body: [
-          'Most cookie pages exist to let you decline analytics and advertising. This site has neither, so this page has no switches — declining is the only setting, and it is already how the site works.',
-          'Signed out, this site sets no cookies at all.',
+          'Most cookie pages exist to let you decline analytics and advertising. There is no advertising here at all. Analytics is Google Analytics, loaded through Google Tag Manager, and it is the single switch on this site: the banner asks on a first visit, the button at the foot of this page reopens the answer, and until you allow it Google’s tags write nothing to your browser and send cookieless pings at most.',
+          'Signed out, with analytics refused or unanswered, this site sets no cookies at all.',
         ],
       },
       {
@@ -240,14 +240,14 @@ export const pages: Content['pages'] = {
       {
         heading: 'If that changes',
         body: [
-          'If anything optional is ever added, this page gets a real control before it is set, not after. The date above will say when.',
+          'Anything optional gets a real control before it is set, not after — that is what the banner and the button below are. The date above says when this last changed.',
         ],
       },
     ],
     seo: {
       title: 'Cookies — TransformPipe',
       description:
-        'Two first-party session cookies, both needed to sign in. No analytics, no advertising, nothing optional to configure.',
+        'Two first-party session cookies needed to sign in, and analytics you can refuse. No advertising, and nothing set in your browser before you answer.',
     },
   },
 

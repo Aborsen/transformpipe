@@ -111,7 +111,7 @@ export const pages: Content['pages'] = {
       {
         heading: 'Lo que no hacemos',
         body: [
-          'No hay analítica, ni publicidad, ni píxel de seguimiento, ni ningún script de terceros en este sitio — no un conjunto reducido: ninguno. Nada se vende, y nada se comparte con nadie salvo con la infraestructura que hace funcionar el servicio: la base de datos, el almacén de blobs, el proveedor de autenticación, el proveedor de correo y el alojamiento.',
+          'No hay publicidad, ni píxel de seguimiento, y nada se vende. Se carga un único script de terceros — Google Tag Manager — y solo trae Google Analytics si lo permitiste en el aviso de cookies; si lo rechazas o no respondes, las etiquetas de Google no escriben nada en tu navegador. Nada se comparte con nadie salvo con la infraestructura que hace funcionar el servicio: la base de datos, el almacén de blobs, el proveedor de autenticación, el proveedor de correo y el alojamiento.',
           'Nosotros no leemos tus documentos, y no se usan para entrenar nada.',
         ],
       },
@@ -152,7 +152,7 @@ export const pages: Content['pages'] = {
     seo: {
       title: 'Privacidad — TransformPipe',
       description:
-        'Sin sesión iniciada, ningún archivo sale de tu navegador. Con sesión guardamos el documento, sus metadatos y tu identidad de cuenta: sin analítica ni seguimiento.',
+        'Sin sesión iniciada, ningún archivo sale de tu navegador. Con sesión guardamos el documento, sus metadatos y tu identidad de cuenta: analítica solo si la permites, sin píxeles de seguimiento y sin vender nada.',
     },
   },
   terms: {
@@ -210,13 +210,13 @@ export const pages: Content['pages'] = {
   cookies: {
     label: 'Cookies',
     title: 'Cookies',
-    lede: 'Hay dos, las dos necesarias para iniciar sesión, y nada que configurar.',
+    lede: 'Dos son necesarias para iniciar sesión. Una cosa es opcional — la analítica — y está desactivada hasta que la permitas.',
     sections: [
       {
-        heading: 'Nada que desactivar',
+        heading: 'Lo único que eliges',
         body: [
-          'La mayoría de las páginas de cookies existen para que puedas rechazar la analítica y la publicidad. Este sitio no tiene ni una ni otra, así que esta página no tiene interruptores — rechazar es el único ajuste, y ya es así como funciona el sitio.',
-          'Sin la sesión iniciada, este sitio no pone ninguna cookie.',
+          'La mayoría de las páginas de cookies existen para que puedas rechazar la analítica y la publicidad. Aquí no hay publicidad ninguna. La analítica es Google Analytics, cargado mediante Google Tag Manager, y es el único interruptor del sitio: el aviso pregunta en la primera visita, el botón al pie de esta página reabre la respuesta, y hasta que la permitas las etiquetas de Google no escriben nada en tu navegador y envían como mucho pings sin cookies.',
+          'Sin la sesión iniciada, y con la analítica rechazada o sin responder, este sitio no pone ninguna cookie.',
         ],
       },
       {

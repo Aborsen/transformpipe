@@ -31,6 +31,16 @@ export interface ChangelogEntry {
 
 const ENTRIES: ChangelogEntry[] = [
   {
+    date: '2026-09-17',
+    title: 'The cookie question, asked properly',
+    body:
+      'A banner on a first visit, with three answers of one click each: accept, only necessary, or '
+      + 'open the switches. Analytics is the single optional thing on this site and it stays off '
+      + 'until it is allowed — before an answer, Google’s tags write nothing to your browser. The '
+      + 'answer is kept in this browser, so the banner is asked once; the button at the foot of the '
+      + '[cookies page](/cookies) reopens it, and the privacy and cookies pages now say all of this.',
+  },
+  {
     date: '2026-09-16',
     title: 'A bar you can type into',
     body:

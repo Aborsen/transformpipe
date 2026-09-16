@@ -1,10 +1,12 @@
 import { AppBreadcrumbs } from '@/components/AppBreadcrumbs';
 import { ScrollToTop } from '@/components/ScrollToTop';
 import { crumbsForStaticPage } from '@/lib/breadcrumbs';
+import { useConsent } from '@/lib/consent';
 import { formatDate } from '@/lib/format';
 import { useI18n, useT } from '@/lib/i18n/context';
 import { INTL_LOCALES } from '@/lib/i18n/locales';
 import { ISSUES_URL, type StaticPage as Page } from '@/lib/pages';
+import { Button } from '@/ui/components/Button';
 import { Typography } from '@/ui/components/Typography';
 
 interface StaticPageProps {
@@ -52,6 +54,7 @@ function inlineCode(text: string) {
 export function StaticPage({ page, onGoToConverter }: StaticPageProps) {
   const t = useT();
   const { content, locale } = useI18n();
+  const { setSettingsOpen } = useConsent();
   const words = content.pages[page.id];
   /* A page can open with another's sections — see `also` in `src/lib/pages.ts`. */
   const sections = page.also
@@ -137,6 +140,19 @@ export function StaticPage({ page, onGoToConverter }: StaticPageProps) {
         * in a new tab, copy, or crawl. The address comes from `src/lib/pages.ts` and the words from
         * the catalogue — a path is the same in five languages and a label is not.
         */}
+      {/*
+        * The cookies page is the one that can do something rather than link somewhere: it opens the
+        * switches, which is where an answer given to the banner is changed. A page about a choice
+        * with no way to revisit the choice is a page that describes somebody else's site.
+        */}
+      {page.id === 'cookies' && (
+        <div className="border-stroke border-t pt-6">
+          <Button onClick={() => setSettingsOpen(true)}>
+            {t('cookies.settings.open')}
+          </Button>
+        </div>
+      )}
+
       {page.action && words.action && (
         <div className="border-stroke border-t pt-6">
           <a

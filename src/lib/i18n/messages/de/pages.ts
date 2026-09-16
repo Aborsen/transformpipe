@@ -115,7 +115,7 @@ export const pages: Content['pages'] = {
       {
         heading: 'Was wir nicht tun',
         body: [
-          'Es gibt auf dieser Seite keine Analyse, keine Werbung, kein Tracking-Pixel und kein Skript von Dritten — nicht einen reduzierten Satz, keines. Nichts wird verkauft, und nichts wird mit irgendjemandem geteilt außer mit der Infrastruktur, die den Dienst betreibt: der Datenbank, dem Blob-Speicher, dem Authentifizierungsanbieter, dem E-Mail-Anbieter und dem Hoster.',
+          'Es gibt keine Werbung, kein Tracking-Pixel und nichts wird verkauft. Genau ein Skript von Dritten lädt überhaupt — der Google Tag Manager — und es bringt Google Analytics nur mit, wenn Sie im Cookie-Banner zugestimmt haben; bei Ablehnung oder ohne Antwort schreiben Googles Tags nichts in Ihren Browser. Nichts wird mit irgendjemandem geteilt außer mit der Infrastruktur, die den Dienst betreibt: der Datenbank, dem Blob-Speicher, dem Authentifizierungsanbieter, dem E-Mail-Anbieter und dem Hoster.',
           'Ihre Dokumente werden von uns nicht gelesen, und sie werden nicht dazu benutzt, irgendetwas zu trainieren.',
         ],
       },
@@ -156,7 +156,7 @@ export const pages: Content['pages'] = {
     seo: {
       title: 'Datenschutz — TransformPipe',
       description:
-        'Abgemeldet verlässt keine Datei den Browser. Angemeldet speichern wir Dokument, Metadaten und Konto-Identität — keine Analyse, kein Tracking, keine Fremdskripte.',
+        'Abgemeldet verlässt keine Datei den Browser. Angemeldet speichern wir Dokument, Metadaten und Konto-Identität — Analyse nur mit Ihrer Zustimmung, keine Tracking-Pixel, nichts wird verkauft.',
     },
   },
   terms: {
@@ -214,13 +214,13 @@ export const pages: Content['pages'] = {
   cookies: {
     label: 'Cookies',
     title: 'Cookies',
-    lede: 'Es sind zwei, beide zum Anmelden nötig, und es gibt nichts einzustellen.',
+    lede: 'Zwei sind zum Anmelden nötig. Eines ist optional — die Analyse — und es bleibt aus, bis Sie zustimmen.',
     sections: [
       {
-        heading: 'Nichts zum Abschalten',
+        heading: 'Das eine, das Sie wählen',
         body: [
-          'Die meisten Cookie-Seiten bestehen, damit man Analyse und Werbung ablehnen kann. Diese Seite hat weder das eine noch das andere, also hat sie keine Schalter — Ablehnen ist die einzige Einstellung, und so arbeitet die Seite bereits.',
-          'Abgemeldet setzt diese Seite überhaupt keine Cookies.',
+          'Die meisten Cookie-Seiten bestehen, damit man Analyse und Werbung ablehnen kann. Werbung gibt es hier überhaupt nicht. Die Analyse ist Google Analytics, geladen über den Google Tag Manager, und sie ist der einzige Schalter dieser Seite: Beim ersten Besuch fragt das Banner, der Knopf am Fuß dieser Seite öffnet die Antwort wieder, und bis Sie zustimmen schreiben Googles Tags nichts in Ihren Browser und senden höchstens cookielose Pings.',
+          'Abgemeldet und mit abgelehnter oder unbeantworteter Analyse setzt diese Seite überhaupt keine Cookies.',
         ],
       },
       {

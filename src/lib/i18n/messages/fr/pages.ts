@@ -107,7 +107,7 @@ export const pages: Content['pages'] = {
       {
         heading: 'Ce que nous ne faisons pas',
         body: [
-          'Il n’y a sur ce site ni mesure d’audience, ni publicité, ni pixel de suivi, ni script tiers — pas un jeu réduit : aucun. Rien n’est vendu, et rien n’est communiqué à personne en dehors de l’infrastructure qui fait tourner le service : la base de données, le stockage d’objets, le prestataire d’authentification, le prestataire d’e-mail et l’hébergeur.',
+          'Il n’y a ni publicité, ni pixel de suivi, et rien n’est vendu. Un seul script tiers se charge — Google Tag Manager — et il n’apporte Google Analytics que si vous l’avez autorisé dans la bannière cookies ; refusé ou sans réponse, les balises de Google n’écrivent rien dans votre navigateur. Rien n’est communiqué à personne en dehors de l’infrastructure qui fait tourner le service : la base de données, le stockage d’objets, le prestataire d’authentification, le prestataire d’e-mail et l’hébergeur.',
           'Vos documents ne sont pas lus par nous, et ils ne servent pas à entraîner quoi que ce soit.',
         ],
       },
@@ -148,7 +148,7 @@ export const pages: Content['pages'] = {
     seo: {
       title: 'Confidentialité — TransformPipe',
       description:
-        'Déconnecté, rien ne quitte le navigateur. Connecté, nous conservons le document, ses métadonnées et votre identité de compte — ni audience, ni suivi, ni script tiers.',
+        'Déconnecté, rien ne quitte le navigateur. Connecté, nous conservons le document, ses métadonnées et votre identité de compte — la mesure d’audience seulement si vous l’autorisez, aucun pixel de suivi, rien de vendu.',
     },
   },
   terms: {
@@ -206,13 +206,13 @@ export const pages: Content['pages'] = {
   cookies: {
     label: 'Cookies',
     title: 'Cookies',
-    lede: 'Il y en a deux, tous deux nécessaires pour se connecter, et rien à configurer.',
+    lede: 'Deux sont nécessaires pour se connecter. Une chose est facultative — la mesure d’audience — et elle reste désactivée tant que vous ne l’autorisez pas.',
     sections: [
       {
-        heading: 'Rien à désactiver',
+        heading: 'La seule chose que vous choisissez',
         body: [
-          'La plupart des pages cookies existent pour vous laisser refuser la mesure d’audience et la publicité. Ce site n’a ni l’une ni l’autre, donc cette page n’a aucun interrupteur — refuser est le seul réglage, et c’est déjà ainsi que le site fonctionne.',
-          'Déconnecté, ce site ne pose aucun cookie.',
+          'La plupart des pages cookies existent pour vous laisser refuser la mesure d’audience et la publicité. Ici, il n’y a aucune publicité. La mesure d’audience, c’est Google Analytics chargé via Google Tag Manager, et c’est le seul interrupteur du site : la bannière pose la question à la première visite, le bouton au bas de cette page rouvre la réponse, et tant que vous n’autorisez rien les balises de Google n’écrivent rien dans votre navigateur et envoient tout au plus des pings sans cookie.',
+          'Déconnecté, et avec la mesure d’audience refusée ou sans réponse, ce site ne pose aucun cookie.',
         ],
       },
       {

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { AppFooter } from './components/AppFooter';
 import { BreadcrumbSlotProvider } from './components/BreadcrumbSlot';
+import { CookieBanner } from './components/CookieBanner';
 import { AppHeader } from './components/AppHeader';
 import { MAX_FILE_SIZE } from './components/Dropzone';
 import { KEEP_BYTES } from '@shared/limits';
@@ -23,6 +24,7 @@ import { SharedDocumentPage } from './features/SharedDocumentPage';
 import { StaticPage } from './features/StaticPage';
 import { staticPage, type StaticPageId } from './lib/pages';
 import { AuthProvider, useAuth } from './lib/auth';
+import { ConsentProvider } from './lib/consent';
 import { ThemeProvider, useTheme } from './lib/theme';
 import { autoLocale, I18nProvider, useI18n, useT } from './lib/i18n/context';
 import {
@@ -714,10 +716,18 @@ export default function App() {
     <ThemeProvider>
       <I18nProvider locale={locale} onNavigate={navigate}>
         <AuthProvider>
-          <TooltipProvider delayDuration={200}>
-            {token ? <SharedDocumentPage token={token} /> : <Shell />}
-            <Toaster />
-          </TooltipProvider>
+          <ConsentProvider>
+            <TooltipProvider delayDuration={200}>
+              {token ? <SharedDocumentPage token={token} /> : <Shell />}
+              {/*
+                * Outside the page and inside the consent provider: the banner belongs to the app,
+                * not to whichever view is on screen, and the embed never reaches this branch —
+                * asking for consent inside somebody else's iframe is asking on their behalf.
+                */}
+              <CookieBanner />
+              <Toaster />
+            </TooltipProvider>
+          </ConsentProvider>
         </AuthProvider>
       </I18nProvider>
     </ThemeProvider>

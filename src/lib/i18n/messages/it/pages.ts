@@ -106,7 +106,7 @@ export const pages: Content['pages'] = {
       {
         heading: 'Cosa non facciamo',
         body: [
-          'Su questo sito non c’è nessuna analisi statistica, nessuna pubblicità, nessun pixel di tracciamento e nessuno script di terze parti — non un insieme ridotto: nessuno. Niente viene venduto, e niente viene condiviso con nessuno tranne l’infrastruttura che fa funzionare il servizio: il database, l’archivio blob, il fornitore di autenticazione, il fornitore di e-mail e l’hosting.',
+          'Non c’è pubblicità, non c’è nessun pixel di tracciamento e niente viene venduto. Si carica un solo script di terze parti — Google Tag Manager — e porta con sé Google Analytics soltanto se lo hai consentito nel banner dei cookie; se lo rifiuti o non rispondi, i tag di Google non scrivono nulla nel browser. Niente viene condiviso con nessuno tranne l’infrastruttura che fa funzionare il servizio: il database, l’archivio blob, il fornitore di autenticazione, il fornitore di e-mail e l’hosting.',
           'I tuoi documenti non vengono letti da noi, e non vengono usati per addestrare niente.',
         ],
       },
@@ -147,7 +147,7 @@ export const pages: Content['pages'] = {
     seo: {
       title: 'Privacy — TransformPipe',
       description:
-        'Senza accesso nessun file lascia il browser. Con l’accesso: documento, metadati e identità dell’account. Nessuna analisi, nessun tracciamento, né script di terze parti.',
+        'Senza accesso nessun file lascia il browser. Con l’accesso: documento, metadati e identità dell’account. Statistiche solo se le consenti, nessun pixel di tracciamento, niente in vendita.',
     },
   },
   terms: {
@@ -205,13 +205,13 @@ export const pages: Content['pages'] = {
   cookies: {
     label: 'Cookie',
     title: 'Cookie',
-    lede: 'Sono due, entrambi necessari per accedere, e non c’è niente da configurare.',
+    lede: 'Due servono per accedere. Una cosa è facoltativa — le statistiche — e resta spenta finché non la consenti.',
     sections: [
       {
-        heading: 'Niente da disattivare',
+        heading: 'L’unica cosa che scegli',
         body: [
-          'La maggior parte delle pagine sui cookie esiste per permettere di rifiutare analisi statistiche e pubblicità. Questo sito non ha né le une né l’altra, quindi questa pagina non ha interruttori: rifiutare è l’unica impostazione, ed è già il modo in cui il sito funziona.',
-          'Senza accesso, questo sito non imposta alcun cookie.',
+          'La maggior parte delle pagine sui cookie esiste per permettere di rifiutare analisi statistiche e pubblicità. Qui non c’è alcuna pubblicità. Le statistiche sono Google Analytics, caricato tramite Google Tag Manager, e sono l’unico interruttore del sito: il banner chiede alla prima visita, il pulsante in fondo a questa pagina riapre la risposta, e finché non le consenti i tag di Google non scrivono nulla nel browser e inviano al massimo ping senza cookie.',
+          'Senza accesso, e con le statistiche rifiutate o senza risposta, questo sito non imposta alcun cookie.',
         ],
       },
       {

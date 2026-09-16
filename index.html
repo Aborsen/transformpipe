@@ -25,10 +25,12 @@
     <!--
       Consent, before the tag manager rather than after it.
 
-      The cookies page promises that anything optional gets a real control BEFORE it is set. There
-      is no banner yet, so the defaults are denied: Google's tags then write nothing to the browser
-      and send cookieless pings at most. When a banner exists it calls gtag('consent', 'update').
-      Until then this is what keeps that promise true.
+      The cookies page promises that anything optional gets a real control BEFORE it is set, and
+      this is the half of that promise which has to happen before any script runs: everything
+      optional starts denied, so Google's tags write nothing to the browser and send cookieless
+      pings at most. The banner — src/components/CookieBanner.tsx — is the other half, and what it
+      does with an answer is call gtag('consent', 'update'). An answer from an earlier visit is
+      replayed on load, so a granted category is granted again and nothing else ever is.
     -->
     <script>
       window.dataLayer = window.dataLayer || [];
