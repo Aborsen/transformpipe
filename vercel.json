@@ -1,5 +1,17 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/about",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/:locale(de|fr|es|it)/about",
+      "destination": "/:locale/contact",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/embed",
@@ -103,10 +115,6 @@
     },
     {
       "source": "/how-to/:page",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/about",
       "destination": "/index.html"
     },
     {

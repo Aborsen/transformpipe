@@ -44,6 +44,15 @@ export interface StaticPage {
   path: string;
   group: PageGroup;
   /**
+   * Another page whose sections this one shows first, before its own.
+   *
+   * About was a page of its own and is now the opening half of Contact: the two answered the same
+   * question from different ends — what this is, and who to ask about it — and a reader who wanted
+   * either had to guess which. Its words stay in the catalogue under their own key, translated as
+   * they were, rather than being pasted into another entry in five languages.
+   */
+  also?: StaticPageId;
+  /**
    * The conversion this page is about, for the one button it ends on.
    *
    * The address lives here and its words live in the catalogue, the same split as everything else:
@@ -70,8 +79,7 @@ export const ISSUES_URL = `${REPO_URL}/issues`;
 const UPDATED = '2026-09-08';
 
 export const STATIC_PAGES: StaticPage[] = [
-  { id: 'about', path: '/about', group: 'company' },
-  { id: 'contact', path: '/contact', group: 'company' },
+  { id: 'contact', path: '/contact', group: 'company', also: 'about' },
   { id: 'privacy', path: '/privacy', group: 'legal', updated: UPDATED },
   { id: 'terms', path: '/terms', group: 'legal', updated: UPDATED },
   { id: 'cookies', path: '/cookies', group: 'legal', updated: UPDATED },

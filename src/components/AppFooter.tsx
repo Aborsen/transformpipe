@@ -77,20 +77,17 @@ export function AppFooter({
           onNavigate: () => onViewChange('changelog'),
         },
         { label: t('footer.git'), href: REPO_URL, external: true },
+        page('contact'),
       ],
     },
     {
       /*
-       * Built from the group rather than named one by one: a ninth how-to page is an entry in
+       * Built from the group rather than named one by one: a tenth how-to page is an entry in
        * `src/lib/pages.ts` and appears here, in the reader's language, without anybody remembering
        * this file exists.
        */
       heading: t('footer.howto'),
       links: pagesIn('how-to').map((one) => page(one.id)),
-    },
-    {
-      heading: t('footer.company'),
-      links: [page('about'), page('contact')],
     },
     {
       heading: t('footer.legal'),

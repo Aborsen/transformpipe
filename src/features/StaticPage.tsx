@@ -53,6 +53,10 @@ export function StaticPage({ page, onGoToConverter }: StaticPageProps) {
   const t = useT();
   const { content, locale } = useI18n();
   const words = content.pages[page.id];
+  /* A page can open with another's sections — see `also` in `src/lib/pages.ts`. */
+  const sections = page.also
+    ? [...content.pages[page.also].sections, ...words.sections]
+    : words.sections;
 
   return (
     <article className="mx-auto flex w-full max-w-3xl flex-col gap-8">
@@ -87,7 +91,7 @@ export function StaticPage({ page, onGoToConverter }: StaticPageProps) {
       </header>
 
       <div className="flex flex-col gap-8">
-        {words.sections.map((section) => (
+        {sections.map((section) => (
           <section key={section.heading} className="flex flex-col gap-3">
             <Typography
               variant="h2"
