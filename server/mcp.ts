@@ -50,6 +50,39 @@ const SPOKEN = new Set(['2024-11-05', '2025-03-26', '2025-06-18', '2025-11-25'])
 const NEWEST = '2025-11-25';
 const SERVER = { name: 'TransformPipe', version: '1.0.0' };
 
+/**
+ * Who this server says it is, in the words a client can put on a screen.
+ *
+ * `name` is the identifier and was all there was; a directory listing and a connector picker show
+ * a person a row, and a row with no icon and no sentence is the one nobody clicks. `title`,
+ * `description`, `websiteUrl` and `icons` are the protocol's own fields for that — see the
+ * Implementation object in the 2025-11-25 schema — and a client that predates them ignores what it
+ * does not know.
+ *
+ * The addresses are built from the request rather than written down, because the spec asks a
+ * client to check that an icon comes from the same origin as the server, and a hard-coded
+ * production URL fails that check on every preview deployment.
+ *
+ * PNG first: a client that renders icons at all must handle PNG, and the SVG is last for the ones
+ * that would rather scale it. All three are `brand/mark.svg` through `npm run icons`.
+ */
+const serverInfo = (c: Context) => {
+  const origin = selfOrigin(c);
+
+  return {
+    ...SERVER,
+    title: 'TransformPipe',
+    description:
+      'Convert documents to Markdown and back — Word, PDF, spreadsheets, HTML, CSV and more — and keep, search and share them on your own TransformPipe account.',
+    websiteUrl: origin,
+    icons: [
+      { src: `${origin}/icon-192.png`, mimeType: 'image/png', sizes: ['192x192'] },
+      { src: `${origin}/icon-512.png`, mimeType: 'image/png', sizes: ['512x512'] },
+      { src: `${origin}/favicon.svg`, mimeType: 'image/svg+xml', sizes: ['any'] },
+    ],
+  };
+};
+
 /** Long enough to be useful, short enough that a document does not eat a conversation. */
 const MAX_TEXT = 40_000;
 
@@ -962,12 +995,6 @@ const LISTED = MCP_TOOL_NAMES.map((name) => ({
 /* ---------------------------------------------------------------- the endpoint */
 
 mcp.post('/', async (c) => {
-  const caller = await resolveCaller(c);
-
-  if (!caller) {
-    return unauthorised(c, 'Sign in to TransformPipe');
-  }
-
   for (const [key, value] of Object.entries(CORS)) {
     c.header(key, value);
   }
@@ -991,6 +1018,19 @@ mcp.post('/', async (c) => {
     return c.body(null, 202);
   }
 
+  /*
+   * `initialize` and `ping` answer without a token; everything else needs one.
+   *
+   * Not a relaxation of anything: what `initialize` returns is the server's name, its icon, its
+   * version and the sentence describing it — a page of a directory, and nothing about anybody's
+   * account. Gating it meant a client could not show a person what they were about to connect to
+   * until after they had connected, and a listing that has to sign in to learn what to draw draws
+   * nothing.
+   *
+   * The sign-in flow is unaffected: it starts at the first 401 a client meets, which is now
+   * `tools/list` rather than `initialize`, and it carries the same `WWW-Authenticate` header
+   * pointing at the same discovery document.
+   */
   if (method === 'initialize') {
     const asked = String(
       (params as { protocolVersion?: unknown }).protocolVersion ?? ''
@@ -1003,7 +1043,7 @@ mcp.post('/', async (c) => {
       rpc(id ?? null, {
         protocolVersion: SPOKEN.has(asked) ? asked : NEWEST,
         capabilities: { tools: { listChanged: false } },
-        serverInfo: SERVER,
+        serverInfo: serverInfo(c),
         instructions: INSTRUCTIONS,
       })
     );
@@ -1011,6 +1051,12 @@ mcp.post('/', async (c) => {
 
   if (method === 'ping') {
     return c.json(rpc(id ?? null, {}));
+  }
+
+  const caller = await resolveCaller(c);
+
+  if (!caller) {
+    return unauthorised(c, 'Sign in to TransformPipe');
   }
 
   if (method === 'tools/list') {
