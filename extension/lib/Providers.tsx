@@ -10,6 +10,7 @@ import {
 import { I18nProvider } from '@/lib/i18n/context';
 import { LOCALES, type Locale } from '@/lib/i18n/locales';
 import { ThemeProvider } from '@/lib/theme';
+import { Toaster } from '@/ui/components/Toast';
 
 /**
  * The app's own providers, with the two things an extension has no version of replaced.
@@ -72,6 +73,11 @@ export function Providers({ children }: { children: ReactNode }) {
       <LocaleContext.Provider value={chosen}>
         <I18nProvider locale={locale} onNavigate={() => {}}>
           {children}
+          {/*
+            * The app's toasts, because the app's dialogs are here now: the share dialog reports a
+            * refused share by raising one, and without a Toaster it refuses in silence.
+            */}
+          <Toaster />
         </I18nProvider>
       </LocaleContext.Provider>
     </ThemeProvider>

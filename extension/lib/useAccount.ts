@@ -12,6 +12,8 @@ export function useAccount() {
   const [connected, setConnected] = useState(false);
   const [state, setState] = useState<'idle' | 'busy' | 'done' | 'failed'>('idle');
   const [link, setLink] = useState<string | null>(null);
+  /* The document's id on the account, once there is one: what the share dialog is opened on. */
+  const [id, setId] = useState<string | null>(null);
   /* What the server actually said. A failure nobody can read is a failure nobody can report. */
   const [error, setError] = useState<string | null>(null);
 
@@ -46,6 +48,7 @@ export function useAccount() {
       try {
         const saved = await saveDocument(name, markdown, share);
 
+        setId(saved.id);
         setLink(saved.share?.url ?? null);
         setState('done');
 
@@ -60,5 +63,17 @@ export function useAccount() {
     [connected]
   );
 
-  return { connected, state, link, error, save, refresh };
+  /*
+   * Forgotten when the document is. The panel follows somebody browsing, and "Saved" is a fact
+   * about the page that was on screen when they pressed it — left standing over the next page it
+   * says that page is on the account, which it is not.
+   */
+  const reset = useCallback(() => {
+    setState('idle');
+    setLink(null);
+    setId(null);
+    setError(null);
+  }, []);
+
+  return { connected, state, id, link, error, save, refresh, reset };
 }

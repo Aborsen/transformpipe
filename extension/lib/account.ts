@@ -21,7 +21,15 @@ export interface Saved {
   share: { mode: string; url: string | null };
 }
 
-async function call(
+/** What the share endpoint answers with: the audience as it now stands, and who was told. */
+export interface Shared {
+  mode: string;
+  url: string | null;
+  emails: string[];
+  notified: string[];
+}
+
+export async function call(
   token: string,
   path: string,
   init?: RequestInit
@@ -114,5 +122,14 @@ export async function saveDocument(
     );
   }
 
-  return (await response.json()) as Saved;
+  /*
+   * `{ document: … }`, not the document. Every `/api/v1` answer names what it is returning, and
+   * reading the body as the document itself is why Share copied nothing: `saved.share.url` was
+   * `undefined` on an object whose only key was `document`, so the save worked and the link never
+   * arrived.
+   */
+  const body = (await response.json()) as { document: Saved };
+
+  return body.document;
 }
+

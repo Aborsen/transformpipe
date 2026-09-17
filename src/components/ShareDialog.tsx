@@ -21,21 +21,49 @@ import { Spinner } from '@/ui/components/Spinner';
 import { toast } from '@/ui/components/Toast';
 import { Typography } from '@/ui/components/Typography';
 
+/**
+ * Where this dialog's four calls go, and how a token becomes an address.
+ *
+ * The app talks to `/api/documents/:id/share` with its session cookie; the extension talks to the
+ * public `/api/v1` with a bearer token, from a page whose origin is `chrome-extension://…`. Every
+ * other thing about the dialog — the three modes, the link row, the list of addresses and what each
+ * one means — is the same, so the transport is a parameter and there is one dialog rather than two
+ * that drift.
+ */
+export interface ShareClient {
+  get: (id: string) => Promise<ShareState>;
+  setMode: (id: string, mode: ShareMode) => Promise<ShareState>;
+  add: (id: string, email: string) => Promise<ShareState>;
+  remove: (id: string, email: string) => Promise<ShareState>;
+  /** The page a share token opens. The app is on the site; the extension is not. */
+  url: (token: string) => string;
+}
+
+/** The site's own: session cookie, same origin, links built from the address bar. */
+export const appShareClient: ShareClient = {
+  get: (id) => api.getShare(id),
+  setMode: (id, mode) => api.setShareMode(id, mode),
+  add: (id, email) => api.addShareRecipient(id, email),
+  remove: (id, email) => api.removeShareRecipient(id, email),
+  url: (token) => `${window.location.origin}/s/${token}`,
+};
+
 interface ShareDialogProps {
   /** The document's id in the account; sharing needs a server-side row. */
   documentId: string | null;
   name: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** Left out on the site, where it is the site's own. */
+  client?: ShareClient;
 }
-
-const shareUrl = (token: string) => `${window.location.origin}/s/${token}`;
 
 export function ShareDialog({
   documentId,
   name,
   open,
   onOpenChange,
+  client = appShareClient,
 }: ShareDialogProps) {
   const t = useT();
   const [state, setState] = useState<ShareState | null>(null);
@@ -49,12 +77,12 @@ export function ShareDialog({
     }
 
     setIsBusy(true);
-    api
-      .getShare(documentId)
+    client
+      .get(documentId)
       .then(setState)
       .catch((cause: Error) => toast.error(cause.message))
       .finally(() => setIsBusy(false));
-  }, [open, documentId]);
+  }, [open, documentId, client]);
 
   if (!documentId) {
     return null;
@@ -80,7 +108,7 @@ export function ShareDialog({
     }
 
     try {
-      await navigator.clipboard.writeText(shareUrl(state.token));
+      await navigator.clipboard.writeText(client.url(state.token));
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
     } catch {
@@ -92,9 +120,7 @@ export function ShareDialog({
     const address = email.trim();
 
     if (address) {
-      void run(api.addShareRecipient(documentId, address)).then(() =>
-        setEmail('')
-      );
+      void run(client.add(documentId, address)).then(() => setEmail(''));
     }
   };
 
@@ -117,7 +143,7 @@ export function ShareDialog({
               { value: 'people', label: t('dialog.share.mode.people') },
             ]}
             onValueChange={(value) =>
-              void run(api.setShareMode(documentId, value as ShareMode))
+              void run(client.setMode(documentId, value as ShareMode))
             }
           />
 
@@ -158,7 +184,7 @@ export function ShareDialog({
                   </InputGroupAddon>
                   <InputGroupInput
                     readOnly
-                    value={shareUrl(state.token)}
+                    value={client.url(state.token)}
                     aria-label={t('dialog.share.link.field')}
                     onFocus={(event) => event.currentTarget.select()}
                   />
@@ -249,9 +275,7 @@ export function ShareDialog({
                         })}
                         disabled={isBusy}
                         onClick={() =>
-                          void run(
-                            api.removeShareRecipient(documentId, address)
-                          )
+                          void run(client.remove(documentId, address))
                         }
                       >
                         <X />

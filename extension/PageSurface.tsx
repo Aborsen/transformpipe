@@ -19,6 +19,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { pageToMarkdown, type PageDocument } from '@shared/from-page';
 import { getDocStats } from '@shared/markdown';
 import { DocumentPreview } from '@/components/DocumentPreview';
+import { ShareDialog } from '@/components/ShareDialog';
 import { Logo } from '@/components/Logo';
 import { downloadDoc, saveBlob } from '@/lib/download';
 import { formatBytes } from '@/lib/format';
@@ -41,6 +42,7 @@ import { AccountMenu } from './lib/AccountMenu';
 import { chooseSurface } from './lib/surface';
 import { copyText, openInViewer, openViewerForFiles } from './lib/clipboard';
 import { type HtmlFlavour, pageHtmlFile } from './lib/page-file';
+import { extensionShareClient } from './lib/share';
 import { useAccount } from './lib/useAccount';
 
 
@@ -82,6 +84,9 @@ export function PageSurface({ live = false }: { live?: boolean }) {
   const [mayReadTabs, setMayReadTabs] = useState(!live);
   const [fromSelection, setFromSelection] = useState(false);
   const [copied, setCopied] = useState(false);
+  /* The share dialog, and whether the document is on its way to the account for it. */
+  const [sharing, setSharing] = useState(false);
+  const [preparing, setPreparing] = useState(false);
   const [generating, setGenerating] = useState(false);
   const account = useAccount();
 
@@ -184,6 +189,10 @@ export function PageSurface({ live = false }: { live?: boolean }) {
 
     const again = () => {
       setDocument(null);
+      /* A new page is not the page that was saved: the buttons go back to offering it. */
+      account.reset();
+      setCopied(false);
+      setSharing(false);
       void convertActiveTab(() => alive);
     };
 
@@ -205,7 +214,37 @@ export function PageSurface({ live = false }: { live?: boolean }) {
       chrome.tabs.onActivated.removeListener(again);
       chrome.tabs.onUpdated.removeListener(onUpdated);
     };
-  }, [convertActiveTab, live]);
+  }, [account.reset, convertActiveTab, live]);
+
+  /*
+   * Sharing needs a document on the account, so pressing Share puts one there first.
+   *
+   * Private, deliberately: the dialog is where somebody says who it is for, and a Share button
+   * that publishes a public link before the dialog opens has already made the decision for them.
+   * An id already in hand — Save was pressed, or this document has been shared once — is reused
+   * rather than saved a second time.
+   */
+  const openShare = useCallback(async () => {
+    if (!document_) {
+      return;
+    }
+
+    if (account.id) {
+      setSharing(true);
+
+      return;
+    }
+
+    setPreparing(true);
+
+    const saved = await account.save(document_.name, document_.markdown, false);
+
+    setPreparing(false);
+
+    if (saved) {
+      setSharing(true);
+    }
+  }, [account, document_]);
 
   /*
    * Nothing below the permission card makes sense until the permission is there: a title skeleton
@@ -426,7 +465,17 @@ export function PageSurface({ live = false }: { live?: boolean }) {
                 * heading; `zoom` shrinks the whole thing — headings, code, tables — in proportion,
                 * which is what "a small version of the page" means.
                 */
-              <div className="h-full max-h-[22rem] overflow-y-auto [zoom:0.8]">
+              <div
+                className={cn(
+                  /*
+                   * The cap belongs to the compact surface only. In the panel the box above is
+                   * already `flex-1` against the window, so a second limit here left the document
+                   * stopping at 352 pixels with the rest of the panel blank underneath it.
+                   */
+                  'h-full overflow-y-auto [zoom:0.8]',
+                  live ? undefined : 'max-h-[22rem]'
+                )}
+              >
                 <DocumentPreview
                   className="p-4"
                   html={markdownToHtml(document_.markdown)}
@@ -582,33 +631,39 @@ export function PageSurface({ live = false }: { live?: boolean }) {
                   : t('ext.save')}
               </Button>
 
+              {/*
+                * One button and a real dialog, because sharing is three decisions and not one:
+                * nobody, whoever holds the link, or the people you name. The first version of this
+                * published a link and copied it, which is the middle answer given silently — and
+                * gave no way at all to reach the other two.
+                */}
               <Button
                 variant="secondary"
                 size="sm"
                 className="flex-1"
                 disabled={!document_ || account.state === 'busy'}
-                leftSlot={<Link2 />}
-                onClick={async () => {
-                  if (!document_) {
-                    return;
-                  }
-
-                  const saved = await account.save(
-                    document_.name,
-                    document_.markdown,
-                    true
-                  );
-
-                  if (saved?.share?.url) {
-                    await copyText(saved.share.url);
-                  }
-                }}
+                leftSlot={
+                  preparing ? <Loader2 className="animate-spin" /> : <Link2 />
+                }
+                onClick={() => void openShare()}
               >
-                {account.link ? t('ext.shared') : t('ext.share')}
-            </Button>
+                {t('ext.share')}
+              </Button>
           </div>
 
-          {/* What happened, said out loud: a save that failed silently reads as a dead button. */}
+          {/*
+            * The app's own dialog, on the extension's transport. Same three modes, same link row,
+            * same list of addresses — see `ShareClient` in the component: what differs between the
+            * site and here is the credential and the origin, and nothing above them.
+            */}
+          <ShareDialog
+            documentId={account.id}
+            name={document_?.name ?? ''}
+            open={sharing}
+            onOpenChange={setSharing}
+            client={extensionShareClient}
+          />
+
           {account.state === 'failed' && (
             <Typography variant="p" textColor="destructive" className="text-xs">
               {t('ext.share.failed')}
