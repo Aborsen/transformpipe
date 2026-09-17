@@ -995,6 +995,27 @@ const LISTED = MCP_TOOL_NAMES.map((name) => ({
 /* ---------------------------------------------------------------- the endpoint */
 
 mcp.post('/', async (c) => {
+  /*
+   * Every message needs a token, `initialize` included.
+   *
+   * It was briefly otherwise, so that a directory could read the server's name and icon before
+   * anybody connected — and Claude's own "Add custom connector" dialog read the 200 as the answer
+   * to a different question. It probes with an unauthenticated `initialize`, and a server that
+   * answers one is a server with no sign-in: the dialog selected "No sign-in", warned that anyone
+   * with the URL could use the connector, and offered a header field for an API key we do not
+   * take. The 401 is not a formality here, it is how a client learns there is an account behind
+   * this at all — see `unauthorised`, which names the discovery document and the scopes.
+   *
+   * So the identity in `serverInfo` — the icon, the title, the sentence — is read after connecting
+   * rather than before, and that is the trade: a picture in a listing is worth less than a
+   * connector that knows it needs signing in to.
+   */
+  const caller = await resolveCaller(c);
+
+  if (!caller) {
+    return unauthorised(c, 'Sign in to TransformPipe');
+  }
+
   for (const [key, value] of Object.entries(CORS)) {
     c.header(key, value);
   }
@@ -1018,19 +1039,6 @@ mcp.post('/', async (c) => {
     return c.body(null, 202);
   }
 
-  /*
-   * `initialize` and `ping` answer without a token; everything else needs one.
-   *
-   * Not a relaxation of anything: what `initialize` returns is the server's name, its icon, its
-   * version and the sentence describing it — a page of a directory, and nothing about anybody's
-   * account. Gating it meant a client could not show a person what they were about to connect to
-   * until after they had connected, and a listing that has to sign in to learn what to draw draws
-   * nothing.
-   *
-   * The sign-in flow is unaffected: it starts at the first 401 a client meets, which is now
-   * `tools/list` rather than `initialize`, and it carries the same `WWW-Authenticate` header
-   * pointing at the same discovery document.
-   */
   if (method === 'initialize') {
     const asked = String(
       (params as { protocolVersion?: unknown }).protocolVersion ?? ''
@@ -1051,12 +1059,6 @@ mcp.post('/', async (c) => {
 
   if (method === 'ping') {
     return c.json(rpc(id ?? null, {}));
-  }
-
-  const caller = await resolveCaller(c);
-
-  if (!caller) {
-    return unauthorised(c, 'Sign in to TransformPipe');
   }
 
   if (method === 'tools/list') {

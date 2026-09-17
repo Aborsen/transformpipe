@@ -113,30 +113,17 @@ for (const path of [
   }
 }
 
-console.log('\n— what a stranger is told, and what they are not');
+console.log('\n— the 401 that starts a sign-in');
 
 /*
- * `initialize` answers without a token, because what it returns is the server's own name, icon and
- * description — a directory listing that has to sign in to learn what to draw draws nothing. The
- * 401 that starts a sign-in moved one message along, to the first one that touches an account.
+ * `initialize` included, and this check earns its place: a client decides what kind of server this
+ * is by sending one without a token. Claude's connector dialog reads a 200 as "no sign-in needed"
+ * and offers to add the connector with no credentials at all, which is the opposite of true here.
  */
-const unsigned = await call(null, 'initialize', { protocolVersion: '2025-11-25' });
-const info = unsigned.body?.result?.serverInfo ?? {};
-
-check('unauthenticated initialize is answered', unsigned.status === 200, `got ${unsigned.status}`);
-check('and it says who this is', info.name === 'TransformPipe' && Boolean(info.description));
-check(
-  'with an icon on the same origin',
-  Array.isArray(info.icons) &&
-    info.icons.length > 0 &&
-    info.icons.every((icon) => String(icon.src).startsWith(HOST)),
-  JSON.stringify(info.icons)
-);
-
-const bare = await call(null, 'tools/list');
+const bare = await call(null, 'initialize', {});
 const challenge = bare.headers.get('www-authenticate') ?? '';
 
-check('but the tools need a token', bare.status === 401, `got ${bare.status}`);
+check('unauthenticated POST is 401, not 200', bare.status === 401, `got ${bare.status}`);
 check('WWW-Authenticate names the metadata', challenge.includes('resource_metadata='), challenge);
 check('and the scopes', challenge.includes('documents:write'), challenge);
 
@@ -489,6 +476,18 @@ check(
   JSON.stringify(hello.body?.result?.protocolVersion)
 );
 check('a session id is minted', Boolean(hello.headers.get('mcp-session-id')));
+
+/* What a client puts on the screen once it is connected: a name, a sentence, and a picture. */
+const info = hello.body?.result?.serverInfo ?? {};
+
+check('serverInfo says who this is', info.name === 'TransformPipe' && Boolean(info.description));
+check(
+  'and carries an icon on this origin',
+  Array.isArray(info.icons) &&
+    info.icons.length > 0 &&
+    info.icons.every((icon) => String(icon.src).startsWith(HOST)),
+  JSON.stringify(info.icons)
+);
 check(
   'the instructions warn about publishing and deleting',
   /public web/.test(hello.body?.result?.instructions ?? '') &&
