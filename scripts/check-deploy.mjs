@@ -1,4 +1,4 @@
-/* Checks the two things that pass locally and fail on the platform.
+/* Checks the things that pass locally and fail on the platform.
  *
  *   npm run deploy:check
  *
@@ -14,6 +14,13 @@
  *   2. A `source` pattern in vercel.json that path-to-regexp refuses. An invalid one is rejected
  *      before a build starts, so the symptom is not a failing deploy: it is no deploy at all, and
  *      production quietly staying on the commit before.
+ *
+ *   3. A JSON import in that same graph. `import { version } from '../package.json'` type-checks,
+ *      builds, and runs in the dev server; the deployed bundle does not carry the file, so the
+ *      import throws at module load — which is every request, so the whole API answered 500.
+ *
+ *   4. `shared/version.ts` disagreeing with `package.json`. The version is a copy because a JSON
+ *      import is what item 3 is about, and a copy nobody checks is a copy that goes stale.
  *
  * Exits non-zero, and runs inside `npm run build`, so neither can reach a push again.
  */
@@ -92,6 +99,18 @@ while (queue.length > 0) {
   seen.add(file);
 
   for (const { specifier, typeOnly, line } of importsOf(file)) {
+    /*
+     * A .json in this graph is the failure above: the function's bundle carries modules, not the
+     * repository, so the file is simply not there at runtime. Whatever was wanted out of it belongs
+     * in a .ts module beside it.
+     */
+    if (!typeOnly && specifier.endsWith('.json')) {
+      problems.push(
+        `${file.replace(resolve('.'), '.')}:${line} imports "${specifier}" — the deployed function ` +
+          'does not carry JSON files, so this throws on every request. Put the value in a .ts module.'
+      );
+    }
+
     if (!typeOnly && !/\.(js|json|css)$/.test(specifier)) {
       problems.push(
         `${file.replace(resolve('.'), '.')}:${line} imports "${specifier}" with no extension — ` +
@@ -105,6 +124,20 @@ while (queue.length > 0) {
       queue.push(next);
     }
   }
+}
+
+/* ------------------------------------------------------------------ the one copied number */
+
+const declared = readFileSync(resolve('shared/version.ts'), 'utf8').match(
+  /VERSION\s*=\s*'([^']+)'/
+)?.[1];
+const packaged = JSON.parse(readFileSync(resolve('package.json'), 'utf8')).version;
+
+if (declared !== packaged) {
+  problems.push(
+    `shared/version.ts says ${declared} and package.json says ${packaged}. They are one number: ` +
+      'the extension manifest and the release tag read one, the connector reads the other.'
+  );
 }
 
 /* ------------------------------------------------------------------ 2. the platform's own config */
