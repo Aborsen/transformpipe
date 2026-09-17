@@ -247,7 +247,13 @@ export function PageSurface({ live = false }: { live?: boolean }) {
     <div
       className={
         live
-          ? 'flex min-h-screen w-full flex-col bg-surface-page'
+          ? /*
+             * The panel is exactly the window's height and does not grow past it: a long document
+             * used to push the buttons below the fold, so reading one meant scrolling back up to do
+             * anything with it. The document scrolls inside its own box instead, and everything you
+             * can press stays where it was.
+             */
+            'flex h-screen w-full flex-col overflow-hidden bg-surface-page'
           : 'flex w-[23rem] flex-col bg-surface-page'
       }
     >
