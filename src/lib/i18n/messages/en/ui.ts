@@ -162,6 +162,7 @@ export const ui: Content['ui'] = {
   'ext.copied': 'Copied',
   'ext.download': 'Download .md',
   'ext.download.html': 'Download .html',
+  'ext.generating': 'Generating HTML…',
   'ext.html.page': 'The page, as it looks',
   'ext.html.page.detail': 'Its own design, with images and styles in the file',
   'ext.html.text': 'Just the article',

@@ -73,6 +73,7 @@ function Viewer() {
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [generating, setGenerating] = useState(false);
   const account = useAccount();
   const picker = useRef<HTMLInputElement>(null);
 
@@ -175,20 +176,26 @@ function Viewer() {
 
   /* No tab to ask for the pictures here, so a page keeps its structure and its image addresses. */
   const saveHtml = async (flavour: HtmlFlavour) => {
-    if (!document_) {
+    if (!document_ || generating) {
       return;
     }
 
-    const file = await pageHtmlFile(
-      { ...document_, html: document_.html ?? '' },
-      flavour,
-      theme
-    );
+    setGenerating(true);
 
-    saveBlob(
-      document_.name.replace(/\.md$/, '.html'),
-      new Blob([file], { type: 'text/html;charset=utf-8' })
-    );
+    try {
+      const file = await pageHtmlFile(
+        { ...document_, html: document_.html ?? '' },
+        flavour,
+        theme
+      );
+
+      saveBlob(
+        document_.name.replace(/\.md$/, '.html'),
+        new Blob([file], { type: 'text/html;charset=utf-8' })
+      );
+    } finally {
+      setGenerating(false);
+    }
   };
 
   return (
@@ -255,10 +262,17 @@ function Viewer() {
                       <Button
                         variant="secondary"
                         size="sm"
-                        leftSlot={<FileCode2 />}
-                        rightSlot={<ChevronDown />}
+                        disabled={generating}
+                        leftSlot={
+                          generating ? (
+                            <Loader2 className="animate-spin" />
+                          ) : (
+                            <FileCode2 />
+                          )
+                        }
+                        rightSlot={generating ? undefined : <ChevronDown />}
                       >
-                        {t('ext.download.html')}
+                        {generating ? t('ext.generating') : t('ext.download.html')}
                       </Button>
                     </DropdownMenuTrigger>
 

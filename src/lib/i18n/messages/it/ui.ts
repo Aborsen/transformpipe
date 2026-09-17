@@ -150,6 +150,7 @@ export const ui: Content['ui'] = {
   'ext.copied': 'Copiato',
   'ext.download': 'Scarica .md',
   'ext.download.html': 'Scarica .html',
+  'ext.generating': 'Generazione dell’HTML…',
   'ext.html.page': 'La pagina, com’è',
   'ext.html.page.detail': 'Il suo design, con immagini e stili nel file',
   'ext.html.text': 'Solo l’articolo',

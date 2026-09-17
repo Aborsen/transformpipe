@@ -81,6 +81,7 @@ export function PageSurface({ live = false }: { live?: boolean }) {
   const [mayReadTabs, setMayReadTabs] = useState(!live);
   const [fromSelection, setFromSelection] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [generating, setGenerating] = useState(false);
   const account = useAccount();
 
   useEffect(() => {
@@ -216,17 +217,28 @@ export function PageSurface({ live = false }: { live?: boolean }) {
     ? getDocStats(document_.markdown, markdownToHtml(document_.markdown))
     : null;
 
+  /*
+   * Saving a page as it looks is not instant: every stylesheet is read and every picture is fetched
+   * and turned into a data URI, which on a heavy page is seconds. A button that does nothing
+   * visible for that long is a button somebody presses again, so it says what it is doing.
+   */
   const saveHtml = async (flavour: HtmlFlavour) => {
-    if (!document_) {
+    if (!document_ || generating) {
       return;
     }
 
-    const file = await pageHtmlFile(document_, flavour, theme, tabId);
+    setGenerating(true);
 
-    saveBlob(
-      document_.name.replace(/\.md$/, '.html'),
-      new Blob([file], { type: 'text/html;charset=utf-8' })
-    );
+    try {
+      const file = await pageHtmlFile(document_, flavour, theme, tabId);
+
+      saveBlob(
+        document_.name.replace(/\.md$/, '.html'),
+        new Blob([file], { type: 'text/html;charset=utf-8' })
+      );
+    } finally {
+      setGenerating(false);
+    }
   };
 
   return (
@@ -484,11 +496,17 @@ export function PageSurface({ live = false }: { live?: boolean }) {
                 <Button
                   variant="secondary"
                   className="flex-1"
-                  disabled={!document_}
-                  leftSlot={<FileCode2 />}
-                  rightSlot={<ChevronDown />}
+                  disabled={!document_ || generating}
+                  leftSlot={
+                    generating ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      <FileCode2 />
+                    )
+                  }
+                  rightSlot={generating ? undefined : <ChevronDown />}
                 >
-                  {t('ext.download.html')}
+                  {generating ? t('ext.generating') : t('ext.download.html')}
                 </Button>
               </DropdownMenuTrigger>
 
