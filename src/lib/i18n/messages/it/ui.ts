@@ -124,6 +124,10 @@ export const ui: Content['ui'] = {
     'Resta accanto alla pagina e ti segue di scheda in scheda, invece di chiudersi appena guardi altrove.',
   'ext.account': 'Account',
   'ext.signin': 'Accedi con TransformPipe',
+  'ext.signout': 'Esci',
+  'ext.settings': 'Impostazioni',
+  'ext.share.failed': 'Non è stato possibile salvare: accedi di nuovo',
+  'ext.shared.link': 'Link copiato negli appunti',
   'ext.signin.hint':
     'Accedi e questa estensione potrà salvare una pagina convertita nel tuo account e pubblicare un link. Chiede la stessa autorizzazione di un assistente, e puoi revocarla quando vuoi dalla pagina dell’account.',
   'ext.signin.refused': 'L’accesso non è stato completato.',

@@ -131,6 +131,10 @@ export const ui: Content['ui'] = {
     'Se queda junto a la página y te sigue de pestaña en pestaña, en vez de cerrarse en cuanto miras a otro lado.',
   'ext.account': 'Cuenta',
   'ext.signin': 'Iniciar sesión con TransformPipe',
+  'ext.signout': 'Cerrar sesión',
+  'ext.settings': 'Ajustes',
+  'ext.share.failed': 'No se pudo guardar: vuelve a iniciar sesión',
+  'ext.shared.link': 'Enlace copiado al portapapeles',
   'ext.signin.hint':
     'Inicia sesión y esta extensión podrá guardar una página convertida en tu cuenta y publicar un enlace. Pide la misma autorización que un asistente, y puedes retirarla cuando quieras desde tu cuenta.',
   'ext.signin.refused': 'No se completó el inicio de sesión.',

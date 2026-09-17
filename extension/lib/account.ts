@@ -74,7 +74,15 @@ export async function saveDocument(
       error?: string;
     } | null;
 
-    throw new Error(failure?.error ?? `HTTP ${response.status}`);
+    /*
+     * The status as well as the sentence: 401 is a grant that has gone, 403 is an account out of
+     * room, 413 is a document over the limit, and they are four different things to do next.
+     */
+    throw new Error(
+      failure?.error
+        ? `${failure.error} (${response.status})`
+        : `HTTP ${response.status}`
+    );
   }
 
   return (await response.json()) as Saved;

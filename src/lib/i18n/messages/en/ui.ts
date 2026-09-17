@@ -136,6 +136,10 @@ export const ui: Content['ui'] = {
     'It stays beside the page and follows you from tab to tab, instead of closing when you look away.',
   'ext.account': 'Account',
   'ext.signin': 'Sign in with TransformPipe',
+  'ext.signout': 'Sign out',
+  'ext.settings': 'Settings',
+  'ext.share.failed': 'Could not save it — try signing in again',
+  'ext.shared.link': 'Link copied to the clipboard',
   'ext.signin.hint':
     'Sign in and this extension can save a converted page to your account and publish a link. It asks for the same approval an assistant does, and you can withdraw it from your account page at any time.',
   'ext.signin.refused': 'Sign-in was not completed.',

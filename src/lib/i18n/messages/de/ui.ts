@@ -140,6 +140,10 @@ export const ui: Content['ui'] = {
     'Sie bleibt neben der Seite und folgt Ihnen von Tab zu Tab, statt sich zu schließen, sobald Sie wegsehen.',
   'ext.account': 'Konto',
   'ext.signin': 'Mit TransformPipe anmelden',
+  'ext.signout': 'Abmelden',
+  'ext.settings': 'Einstellungen',
+  'ext.share.failed': 'Konnte nicht gespeichert werden — melden Sie sich neu an',
+  'ext.shared.link': 'Link in die Zwischenablage kopiert',
   'ext.signin.hint':
     'Melden Sie sich an, dann kann diese Erweiterung eine umgewandelte Seite in Ihrem Konto speichern und einen Link veröffentlichen. Sie fragt um dieselbe Zustimmung wie ein Assistent, und Sie können sie jederzeit auf der Kontoseite zurücknehmen.',
   'ext.signin.refused': 'Die Anmeldung wurde nicht abgeschlossen.',

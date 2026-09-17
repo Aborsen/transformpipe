@@ -126,6 +126,10 @@ export const ui: Content['ui'] = {
     'Il reste à côté de la page et vous suit d’un onglet à l’autre, au lieu de se fermer dès que vous regardez ailleurs.',
   'ext.account': 'Compte',
   'ext.signin': 'Se connecter avec TransformPipe',
+  'ext.signout': 'Se déconnecter',
+  'ext.settings': 'Paramètres',
+  'ext.share.failed': 'Échec de l’enregistrement — reconnectez-vous',
+  'ext.shared.link': 'Lien copié dans le presse-papiers',
   'ext.signin.hint':
     'Connectez-vous et cette extension pourra enregistrer une page convertie dans votre compte et publier un lien. Elle demande la même autorisation qu’un assistant, et vous pouvez la retirer à tout moment depuis votre compte.',
   'ext.signin.refused': 'La connexion n’a pas abouti.',

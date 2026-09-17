@@ -12,11 +12,15 @@ export function useAccount() {
   const [connected, setConnected] = useState(false);
   const [state, setState] = useState<'idle' | 'busy' | 'done' | 'failed'>('idle');
   const [link, setLink] = useState<string | null>(null);
+  /* What the server actually said. A failure nobody can read is a failure nobody can report. */
+  const [error, setError] = useState<string | null>(null);
 
   /*
    * Asked again whenever the surface comes back into view. A panel is open while somebody signs in
    * on another tab, and it would otherwise go on offering to connect an account that is connected.
    */
+  const refresh = useCallback(() => void signedIn().then(setConnected), []);
+
   useEffect(() => {
     const check = () => void signedIn().then(setConnected);
 
@@ -37,6 +41,7 @@ export function useAccount() {
       }
 
       setState('busy');
+      setError(null);
 
       try {
         const saved = await saveDocument(name, markdown, share);
@@ -45,7 +50,8 @@ export function useAccount() {
         setState('done');
 
         return saved;
-      } catch {
+      } catch (failure) {
+        setError(failure instanceof Error ? failure.message : String(failure));
         setState('failed');
 
         return null;
@@ -54,5 +60,5 @@ export function useAccount() {
     [connected]
   );
 
-  return { connected, state, link, save };
+  return { connected, state, link, error, save, refresh };
 }

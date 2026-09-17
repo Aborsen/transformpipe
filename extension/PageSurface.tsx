@@ -35,7 +35,9 @@ import {
 } from '@/ui/components/DropdownMenu';
 import { Skeleton } from '@/ui/components/Skeleton';
 import { Typography } from '@/ui/components/Typography';
+import { cn } from '@/ui/lib/utils';
 import { extract } from './extract';
+import { AccountMenu } from './lib/AccountMenu';
 import { copyText, openInViewer, openViewerForFiles } from './lib/clipboard';
 import { type HtmlFlavour, pageHtmlFile } from './lib/page-file';
 import { useAccount } from './lib/useAccount';
@@ -324,7 +326,13 @@ export function PageSurface({ live = false }: { live?: boolean }) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-3 px-4 pb-4">
+      <div
+        className={cn(
+          'flex flex-col gap-3 px-4 pb-4',
+          /* A side panel is a whole page tall; the document should use it rather than perch. */
+          live && 'min-h-0 flex-1'
+        )}
+      >
         {blocked && (
           <div className="flex flex-col gap-3 rounded-xl border border-stroke bg-surface-card p-4">
             <Typography variant="p" textColor="secondary" className="text-sm">
@@ -396,7 +404,12 @@ export function PageSurface({ live = false }: { live?: boolean }) {
         )}
 
         {failed === 'none' && !blocked && (
-          <div className="relative max-h-52 overflow-hidden rounded-xl border border-stroke">
+          <div
+            className={cn(
+              'relative overflow-hidden rounded-xl border border-stroke',
+              live ? 'min-h-0 flex-1' : 'max-h-52'
+            )}
+          >
             {document_ ? (
               /*
                 * Scaled down rather than restyled. The document's stylesheet is the product's, and
@@ -404,11 +417,18 @@ export function PageSurface({ live = false }: { live?: boolean }) {
                 * heading; `zoom` shrinks the whole thing — headings, code, tables — in proportion,
                 * which is what "a small version of the page" means.
                 */
-              <div className="[zoom:0.7]">
+              <div
+                className={cn(
+                  '[zoom:0.8]',
+                  live && 'h-full overflow-y-auto'
+                )}
+              >
                 <DocumentPreview
                   className="p-4"
                   html={markdownToHtml(
-                    document_.markdown.slice(0, PREVIEW_CHARACTERS)
+                    live
+                      ? document_.markdown
+                      : document_.markdown.slice(0, PREVIEW_CHARACTERS)
                   )}
                 />
               </div>
@@ -422,8 +442,14 @@ export function PageSurface({ live = false }: { live?: boolean }) {
               </div>
             )}
 
-            {/* What says there is more of it, without a scrollbar inside a panel this size. */}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-surface-page to-transparent" />
+            {/*
+              * What says there is more of it, in the popup — which shows the first part of a
+              * document and sends you elsewhere for the rest. The panel is a page tall and scrolls,
+              * so there is nothing there to hint at.
+              */}
+            {!live && (
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-surface-page to-transparent" />
+            )}
           </div>
         )}
 
@@ -539,10 +565,9 @@ export function PageSurface({ live = false }: { live?: boolean }) {
         * cannot do in the page, so they are the two things a key buys — and with no key the row is
         * one quiet sentence rather than two disabled buttons nobody can explain.
         */}
-      {failed === 'none' && (
-        <div className="flex items-center gap-2 border-stroke border-t px-4 py-2">
-          {account.connected ? (
-            <>
+      {failed === 'none' && account.connected && (
+        <div className="flex flex-col gap-2 border-stroke border-t px-4 py-2">
+          <div className="flex items-center gap-2">
               <Button
                 variant="secondary"
                 size="sm"
@@ -588,42 +613,58 @@ export function PageSurface({ live = false }: { live?: boolean }) {
                 }}
               >
                 {account.link ? t('ext.shared') : t('ext.share')}
-              </Button>
-            </>
-          ) : (
-            <Button
-              variant="transparent"
-              size="sm"
-              leftSlot={<Settings />}
-              onClick={() => chrome.runtime.openOptionsPage()}
-            >
-              {t('ext.connect')}
             </Button>
+          </div>
+
+          {/* What happened, said out loud: a save that failed silently reads as a dead button. */}
+          {account.state === 'failed' && (
+            <Typography variant="p" textColor="destructive" className="text-xs">
+              {t('ext.share.failed')}
+              {account.error ? ` — ${account.error}` : ''}
+            </Typography>
+          )}
+
+          {account.state === 'done' && account.link && (
+            <Typography variant="p" textColor="secondary" className="text-xs">
+              {t('ext.shared.link')}
+            </Typography>
           )}
         </div>
       )}
 
-      {/* The two ways out of the popup, on their own ground so they read as a footer. */}
-      <div className="flex items-center gap-1 border-stroke border-t px-2 py-1.5">
-        <Button
-          variant="transparent"
-          size="sm"
-          disabled={!document_}
-          leftSlot={<Maximize2 />}
-          onClick={() => document_ && void openInViewer(document_)}
-        >
-          {t('ext.open')}
-        </Button>
+      {/*
+        * The bar along the bottom: who you are on the left, the two ways out on the right.
+        *
+        * They were two wide buttons with their words on them, which made a small panel look like a
+        * dialog from a decade ago and gave equal weight to the thing people do least. Icons with
+        * their names in the tooltip, quiet, at the edge — the work is above this line.
+        */}
+      <div className="mt-auto flex items-center gap-1 border-stroke border-t bg-surface-header/60 px-2 py-1.5">
+        <AccountMenu
+          connected={account.connected}
+          onChanged={() => account.refresh()}
+        />
 
-        <Button
-          variant="transparent"
-          size="sm"
-          className="ml-auto"
-          leftSlot={<FileInput />}
-          onClick={() => void openViewerForFiles()}
-        >
-          {t('ext.files')}
-        </Button>
+        <div className="ml-auto flex items-center gap-0.5">
+          <Button
+            variant="transparent"
+            size="sm"
+            disabled={!document_}
+            aria-label={t('ext.open')}
+            title={t('ext.open')}
+            leftSlot={<Maximize2 />}
+            onClick={() => document_ && void openInViewer(document_)}
+          />
+
+          <Button
+            variant="transparent"
+            size="sm"
+            aria-label={t('ext.files')}
+            title={t('ext.files')}
+            leftSlot={<FileInput />}
+            onClick={() => void openViewerForFiles()}
+          />
+        </div>
       </div>
     </div>
   );
