@@ -605,7 +605,22 @@ check(
     .filter((one) => one._meta?.ui?.resourceUri)
     .every((one) => one._meta['openai/outputTemplate'] === one._meta.ui.resourceUri)
 );
-check('ten tools or fewer, and none named after a document', names.length <= 10 && names.length >= 7, names.join(', '));
+/*
+ * The thing this actually guards is a tool per document — a list that grows with the account, so a
+ * person with forty files sends forty tool definitions with every message. Sixteen is a smoke
+ * alarm for that, not a budget to spend down: a real tool that earns its place should be added,
+ * not squeezed out to keep a round number.
+ *
+ * What it costs, measured rather than feared: the eleven descriptions are about 870 tokens and
+ * their schemas about 935, so roughly 1,800 tokens ride along with every message while the
+ * connector is connected. Worth knowing, and not worth merging two clear tools into one that
+ * returns two different shapes — that trades 5% of this for a model that picks wrong more often.
+ */
+check(
+  'no tool per document, and the list has not run away',
+  names.length <= 16 && names.length >= 7 && !names.some((name) => /\d|document-/.test(name)),
+  names.join(', ')
+);
 check('every tool has an inputSchema', (listed.body?.result?.tools ?? []).every((t) => t.inputSchema?.type === 'object'));
 
 /* `resources/list` used to be the unknown one; it is answered now, so this asks for a method that
