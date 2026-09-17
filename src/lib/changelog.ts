@@ -32,6 +32,15 @@ export interface ChangelogEntry {
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-18',
+    title: 'Install it, and it works without a network',
+    body:
+      'Chrome, Edge and Safari now offer to install TransformPipe as an app — its own window, its '
+      + 'own icon, no address bar. Opened with no connection it still starts and still converts: '
+      + 'every conversion runs in the browser anyway. Documents on the account need the network, '
+      + 'as they always did.',
+  },
+  {
+    date: '2026-09-18',
     title: 'A document in a chat looks like a document',
     body:
       'An assistant that saves or opens a document through the connector can now draw a card for '
