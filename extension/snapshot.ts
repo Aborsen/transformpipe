@@ -96,6 +96,106 @@ export async function snapshot(
   };
 
   /*
+   * Only the rules this page actually uses.
+   *
+   * A modern site ships one stylesheet for the whole application — utility frameworks emit tens of
+   * thousands of rules — and a page uses a few hundred of them. Carried whole, the saved file is
+   * megabytes of CSS with the document buried under it, which is what "the code is a mess" means
+   * when somebody opens it: the markup is there, it is just at line forty thousand.
+   *
+   * Dropping the rest is safe here in a way it is not in a live page: this file has no scripts, so
+   * no class will ever be added to it that is not in it now. What a rule is tested against is its
+   * selector with the state stripped off — `:hover` and `::before` describe a moment, not an
+   * element — and anything that cannot be parsed or tested is kept, because a file that renders
+   * wrong is worse than a file that is long.
+   */
+  const STATE =
+    /::?(hover|active|focus|focus-visible|focus-within|visited|target|checked|disabled|enabled|required|valid|invalid|placeholder-shown|autofill|read-only|read-write|default|indeterminate|optional|in-range|out-of-range|user-invalid|user-valid|before|after|first-line|first-letter|selection|placeholder|backdrop|marker|file-selector-button|-webkit-[a-z-]+)\b(\([^)]*\))?/g;
+
+  const used = (selector: string): boolean => {
+    for (const one of selector.split(',')) {
+      const clean = one.replace(STATE, '').replace(/\s+/g, ' ').trim();
+
+      if (!clean || /^(html|body|:root|\*)$/.test(clean)) {
+        return true;
+      }
+
+      try {
+        if (document.querySelector(clean)) {
+          return true;
+        }
+      } catch {
+        /* A selector this browser cannot parse is a rule we are not qualified to drop. */
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  const keepRules = (rules: CSSRuleList): string => {
+    const kept: string[] = [];
+
+    for (const rule of [...rules]) {
+      /* A style rule: the one kind there is any point in testing. */
+      if (rule instanceof CSSStyleRule) {
+        if (used(rule.selectorText)) {
+          kept.push(rule.cssText);
+        }
+
+        continue;
+      }
+
+      /* Media, supports, layer, container: keep the wrapper, test what is inside it. */
+      if (rule instanceof CSSGroupingRule) {
+        const inner = keepRules(rule.cssRules);
+
+        if (inner.trim()) {
+          const head = rule.cssText.slice(0, rule.cssText.indexOf('{') + 1);
+
+          kept.push(`${head}\n${inner}\n}`);
+        }
+
+        continue;
+      }
+
+      /* Font faces, keyframes, properties, page rules: small, and referenced by name. */
+      kept.push(rule.cssText);
+    }
+
+    return kept.join('\n');
+  };
+
+  /**
+   * The rules of a stylesheet this browser will not let us read directly.
+   *
+   * A cross-origin sheet refuses `cssRules`, so its text is fetched and parsed by handing it back
+   * to the browser: a `<style media="not all">` is parsed and never applied, which makes its
+   * `cssRules` readable without changing the page for the second it exists.
+   */
+  const keepFromText = (css: string): string => {
+    const holder = document.createElement('style');
+
+    holder.media = 'not all';
+    holder.textContent = css;
+    document.head.append(holder);
+
+    let kept = css;
+
+    try {
+      if (holder.sheet?.cssRules) {
+        kept = keepRules(holder.sheet.cssRules);
+      }
+    } catch {
+      /* Unparseable here too: the text goes in as it came. */
+    }
+
+    holder.remove();
+
+    return kept;
+  };
+
+  /*
    * Minified CSS, given its line breaks back.
    *
    * A snapshot is a file for a browser to open, not for a person to read — but it is still a file
@@ -176,11 +276,13 @@ export async function snapshot(
 
     let css: string | null = null;
 
-    const live = [...document.styleSheets].find((one) => one.href === absolute);
+    const sheetInPage = [...document.styleSheets].find(
+      (one) => one.href === absolute
+    );
 
     try {
-      if (live?.cssRules) {
-        css = [...live.cssRules].map((rule) => rule.cssText).join('\n');
+      if (sheetInPage?.cssRules) {
+        css = keepRules(sheetInPage.cssRules);
       }
     } catch {
       /* Cross-origin and not readable this way: fetched below instead. */
@@ -190,7 +292,7 @@ export async function snapshot(
       try {
         const response = await fetch(absolute, { credentials: 'include' });
 
-        css = response.ok ? await response.text() : null;
+        css = response.ok ? keepFromText(await response.text()) : null;
       } catch {
         css = null;
       }
@@ -207,13 +309,31 @@ export async function snapshot(
     sheet.replaceWith(style);
   }
 
-  /* Style elements the page wrote itself can still point at images. */
-  for (const style of copy.querySelectorAll('style')) {
-    if (style.textContent?.includes('url(')) {
-      style.textContent = await inlineCssUrls(style.textContent, document.baseURI);
+  /*
+   * The page's own `<style>` elements: same two passes, and the live one beside each is what has
+   * the parsed rules. A framework's styles arrive this way as often as they arrive as a file.
+   */
+  const liveStyles = [...document.querySelectorAll('style')];
+  const copiedStyles = [...copy.querySelectorAll('style')];
+
+  for (let index = 0; index < copiedStyles.length; index++) {
+    const style = copiedStyles[index];
+    const sheet = liveStyles[index]?.sheet;
+    let css = style.textContent ?? '';
+
+    try {
+      if (sheet?.cssRules) {
+        css = keepRules(sheet.cssRules);
+      }
+    } catch {
+      /* Keep what the element itself says. */
     }
 
-    style.textContent = readable(style.textContent ?? '');
+    if (css.includes('url(')) {
+      css = await inlineCssUrls(css, document.baseURI);
+    }
+
+    style.textContent = readable(css);
   }
 
   /* Pictures: the tag, the lazy attributes it may be hiding behind, and inline backgrounds. */
