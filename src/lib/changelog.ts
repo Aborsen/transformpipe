@@ -32,6 +32,32 @@ export interface ChangelogEntry {
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-18',
+    title: 'The blog reads in French',
+    body:
+      'Thirty more articles now exist in French alongside the English and German, and the rest are '
+      + 'on their way. They are written rather than machine-translated: the prose is rebuilt, and '
+      + 'the search terms are the ones a French reader actually types.',
+  },
+  {
+    date: '2026-09-18',
+    title: 'Publishing a public link waits for a confirmed address',
+    body:
+      'Sharing a document with named people works as it always has, whether or not the address on '
+      + 'the account has been confirmed. Publishing one to a link anybody can open now asks for '
+      + 'the confirmation first — on every route that can do it, which was the actual bug: two of '
+      + 'the three were not asking.',
+  },
+  {
+    date: '2026-09-18',
+    title: 'A daily limit on share notices, and a rate limit on the rest',
+    body:
+      'An account may send fifty share notices a day. Adding somebody to a document still works '
+      + 'past that — they simply get no email about it. The app\'s own endpoints are now rate '
+      + 'limited the way the public API has always been, so a script in a loop gets a 429 instead '
+      + 'of everything it asks for.',
+  },
+  {
+    date: '2026-09-18',
     title: 'Install it, and it works without a network',
     body:
       'Chrome, Edge and Safari now offer to install TransformPipe as an app — its own window, its '
