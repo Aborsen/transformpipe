@@ -464,6 +464,19 @@ export const ui: Content['ui'] = {
   'shared.cta.body': 'A web page, a Word file, a PDF or a spreadsheet, turned into a clean document — converted in your browser, so the file never leaves it. An account keeps your documents and shares them the way this one was shared with you.',
   'shared.cta.primary': 'Convert a file — free',
   'shared.cta.secondary': 'Create an account',
+
+  /* The support page's form. It fills in a GitHub issue; it does not send anything itself. */
+  'support.form.title': 'Report something',
+  'support.form.blurb':
+    'Two fields, and the issue opens on GitHub with both already written into it.',
+  'support.form.summary': 'What happened, in one line',
+  'support.form.summary.placeholder': 'Tables come out empty when I convert a .docx',
+  'support.form.details': 'What you expected, and what you got',
+  'support.form.details.placeholder':
+    'I converted a Word file with a three-column table. The headings arrived, the rows did not. Chrome 140 on macOS.',
+  'support.form.open': 'Open the issue on GitHub',
+  'support.form.note':
+    'Nothing leaves this page: it opens GitHub, where you press Submit. A GitHub account is needed.',
   'shared.signin.title': 'This document was shared with specific people',
   'shared.signin.detail': 'Sign in with the address it was shared with.',
   'shared.missing.title': 'This link does not open a document',

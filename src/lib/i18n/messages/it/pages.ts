@@ -48,35 +48,35 @@ export const pages: Content['pages'] = {
         'TransformPipe converte i documenti in Markdown e viceversa — dieci formati, nel browser, con API, CLI, GitHub Action e server MCP. Realizzato da Raudar Labs.',
     },
   },
-  contact: {
-    label: 'Contatti',
-    title: 'Contattaci',
-    lede: 'Un bug, un formato che ti serve, o qualcosa che non dovrebbe essere pubblicato.',
+  support: {
+    label: 'Assistenza',
+    title: 'Assistenza',
+    lede: 'Un bug, un formato che ti manca, o qualcosa che non dovrebbe essere pubblicato.',
     sections: [
       {
-        heading: 'Bug e richieste',
+        heading: 'Un file convertito male',
         body: [
-          'Apri una issue sul repository. Un file convertito male è la cosa più utile che si possa mandare: allegalo se puoi condividerlo, e di’ cosa ti aspettavi invece.',
-          'Un formato che ancora non convertiamo è una richiesta che vale la pena fare. Parecchi di quelli che ci sono sono nati così.',
+          'È la cosa più utile che puoi mandare. Allegalo alla segnalazione se puoi condividerlo, di’ che cosa ti aspettavi e indica il browser se altrove veniva giusto. Una conversione sbagliata su un file di solito è sbagliata su una forma, e il file è il modo per arrivare a quella forma.',
+          'Un formato che non convertiamo ancora è una richiesta che vale la pena fare. Diversi di quelli che ci sono sono nati così.',
         ],
       },
       {
         heading: 'Qualcosa di condiviso che non dovrebbe esserlo',
         body: [
-          'Ogni documento condiviso porta un link «Segnala questo documento» in fondo alla pagina che apre. Quel link è la via più rapida: identifica il documento senza che tu debba descriverlo.',
+          'Ogni documento condiviso porta in fondo alla pagina che apre un link «Report this document». È la strada più rapida: identifica il documento senza che tu debba descriverlo e non richiede un account.',
         ],
       },
       {
-        heading: 'Privacy e note legali',
+        heading: 'Privacy e questioni legali',
         body: [
-          'Le domande su cosa viene conservato, o la richiesta di eliminare un account e tutto quello che contiene, vanno allo stesso posto. Con l’accesso puoi anche eliminare da te qualsiasi documento: questo rimuove insieme la riga e il sorgente conservato.',
+          'Le domande su che cosa viene conservato, o la richiesta di cancellare un account e tutto quello che contiene, vanno alle stesse segnalazioni. Con l’accesso fatto puoi anche cancellare da solo qualsiasi documento: questo rimuove la riga e la sorgente salvata insieme.',
         ],
       },
     ],
     seo: {
-      title: 'Contattare TransformPipe',
+      title: 'Assistenza — TransformPipe',
       description:
-        'Segnala un bug, chiedi un formato, segnala un documento condiviso, o chiedi cosa viene conservato e fallo eliminare.',
+        'Segnala un bug, chiedi un formato, segnala un documento condiviso, o chiedi che cosa viene conservato e fallo cancellare. Una segnalazione in due campi.',
     },
   },
   extension: {
@@ -202,7 +202,7 @@ export const pages: Content['pages'] = {
         heading: 'Eliminare le cose',
         body: [
           'Eliminare un documento elimina insieme la riga e il Markdown conservato, subito, non secondo una pianificazione. Revocare una condivisione elimina il token, così un link già inviato smette di funzionare.',
-          'Per rimuovere un account e tutto quello che contiene, basta chiederlo — vedi la pagina dei contatti. Raggiungere un limite di spazio rifiuta la scrittura; non elimina mai qualcosa che hai scelto di conservare per fare spazio.',
+          'Per rimuovere un account e tutto quello che contiene, basta chiederlo — vedi la pagina di assistenza. Raggiungere un limite di spazio rifiuta la scrittura; non elimina mai qualcosa che hai scelto di conservare per fare spazio.',
         ],
       },
       {

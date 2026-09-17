@@ -462,6 +462,19 @@ export const ui: Content['ui'] = {
   'shared.cta.body': 'Une page web, un fichier Word, un PDF ou un tableur devient un document propre — la conversion a lieu dans votre navigateur, le fichier n’en sort pas. Un compte conserve vos documents et les partage comme celui-ci l’a été avec vous.',
   'shared.cta.primary': 'Convertir un fichier — gratuit',
   'shared.cta.secondary': 'Créer un compte',
+
+  /* Le formulaire de la page d’assistance. Il remplit un ticket GitHub ; il n’envoie rien lui-même. */
+  'support.form.title': 'Signaler quelque chose',
+  'support.form.blurb':
+    'Deux champs, et le ticket s’ouvre sur GitHub avec les deux déjà écrits dedans.',
+  'support.form.summary': 'Ce qui s’est passé, en une ligne',
+  'support.form.summary.placeholder': 'Les tableaux arrivent vides quand je convertis un .docx',
+  'support.form.details': 'Ce que vous attendiez, et ce que vous avez obtenu',
+  'support.form.details.placeholder':
+    'J’ai converti un fichier Word avec un tableau à trois colonnes. Les en-têtes sont arrivés, pas les lignes. Chrome 140 sur macOS.',
+  'support.form.open': 'Ouvrir le ticket sur GitHub',
+  'support.form.note':
+    'Rien ne quitte cette page : elle ouvre GitHub, où vous appuyez sur Envoyer. Un compte GitHub est nécessaire.',
   'shared.signin.title': 'Ce document est partagé avec des personnes précises',
   'shared.signin.detail':
     'Connectez-vous avec l’adresse à laquelle il a été partagé.',

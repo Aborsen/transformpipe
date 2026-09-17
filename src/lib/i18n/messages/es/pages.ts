@@ -53,35 +53,35 @@ export const pages: Content['pages'] = {
         'TransformPipe convierte documentos a Markdown y de vuelta — diez formatos, en tu navegador, con API, CLI, GitHub Action y servidor MCP. Hecho por Raudar Labs.',
     },
   },
-  contact: {
-    label: 'Contacto',
-    title: 'Contacto',
-    lede: 'Un fallo, un formato que necesitas o algo que no debería estar publicado.',
+  support: {
+    label: 'Soporte',
+    title: 'Soporte',
+    lede: 'Un fallo, un formato que te falta o algo que no debería estar publicado.',
     sections: [
       {
-        heading: 'Fallos y peticiones',
+        heading: 'Un archivo que se convirtió mal',
         body: [
-          'Abre una issue en el repositorio. Un archivo que se ha convertido mal es lo más útil que puedes enviar: adjúntalo si puedes compartirlo y di qué esperabas en su lugar.',
-          'Un formato que todavía no convertimos es una petición que vale la pena hacer. Varios de los que hay aquí empezaron así.',
+          'Es lo más útil que puedes enviar. Adjúntalo a la incidencia si puedes compartirlo, di qué esperabas en su lugar y nombra el navegador si en otro sitio salía bien. Una conversión que falla en un archivo suele fallar en una forma, y el archivo es como llegamos a esa forma.',
+          'Un formato que todavía no convertimos es una petición que merece la pena. Varios de los que hay aquí empezaron así.',
         ],
       },
       {
         heading: 'Algo compartido que no debería estarlo',
         body: [
-          'Cada documento compartido lleva un enlace «Denunciar este documento» al pie de la página que abre. Ese enlace es la vía más rápida: identifica el documento sin que tengas que describirlo.',
+          'Cada documento compartido lleva un enlace «Report this document» al pie de la página que abre. Es la vía más rápida: identifica el documento sin que tengas que describirlo y no necesita cuenta.',
         ],
       },
       {
-        heading: 'Privacidad y asuntos legales',
+        heading: 'Privacidad y cuestiones legales',
         body: [
-          'Las preguntas sobre qué se guarda, o la petición de eliminar una cuenta y todo lo que contiene, van al mismo sitio. Con la sesión iniciada también puedes eliminar tú cualquier documento — eso quita la fila y el original guardado a la vez.',
+          'Las preguntas sobre qué se guarda, o la petición de borrar una cuenta y todo lo que contiene, van a las mismas incidencias. Con la sesión iniciada también puedes borrar cualquier documento tú mismo: eso elimina la fila y la fuente guardada a la vez.',
         ],
       },
     ],
     seo: {
-      title: 'Contacto — TransformPipe',
+      title: 'Soporte — TransformPipe',
       description:
-        'Informa de un fallo, pide un formato, denuncia un documento compartido o pregunta qué se guarda y pide que se elimine.',
+        'Informa de un fallo, pide un formato, señala un documento compartido o pregunta qué se guarda y haz que se borre. Una incidencia en dos campos.',
     },
   },
   extension: {
@@ -207,7 +207,7 @@ export const pages: Content['pages'] = {
         heading: 'Eliminar cosas',
         body: [
           'Eliminar un documento elimina la fila y el Markdown guardado a la vez, en el momento y no según un calendario. Revocar una compartición descarta el token, así que un enlace ya enviado deja de funcionar.',
-          'Para eliminar una cuenta y todo lo que contiene, pídelo — mira la página de contacto. Llegar a un límite de almacenamiento rechaza la escritura; nunca elimina algo que decidiste conservar para hacer sitio.',
+          'Para eliminar una cuenta y todo lo que contiene, pídelo — mira la página de soporte. Llegar a un límite de almacenamiento rechaza la escritura; nunca elimina algo que decidiste conservar para hacer sitio.',
         ],
       },
       {

@@ -32,6 +32,15 @@ export interface ChangelogEntry {
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-18',
+    title: 'Contact is Support, and it opens on the form',
+    body:
+      '`/contact` is now `/support`, and the first thing on it is two fields: what happened, and '
+      + 'what you expected. The button opens a GitHub issue with both already written into it — '
+      + 'nothing is sent from the page, and the issue exists once you press Submit there. The old '
+      + 'address redirects, so a link to it still lands in the right place.',
+  },
+  {
+    date: '2026-09-18',
     title: 'Words that CSS held apart stay apart',
     body:
       'A row like `39 words · 1 heading · 1 table` is usually built as separate elements with the '

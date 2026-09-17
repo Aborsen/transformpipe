@@ -613,7 +613,7 @@ const PAGES = [
   ['how-to/open-zip', 'How to open an export .zip', 'How to', ACCENTS.Workflow],
   ['how-to/assistant', 'Share from an assistant', 'How to', ACCENTS.Automation],
   ['about', 'About TransformPipe', 'Company', ACCENTS.Workflow],
-  ['contact', 'Contact us', 'Company', ACCENTS.Workflow],
+  ['support', 'Support', 'Company', ACCENTS.Workflow],
   ['extension', 'The browser extension', 'Company', ACCENTS.Converting],
   ['privacy', 'Privacy', 'Legal', ACCENTS.Safety],
   ['terms', 'Terms of use', 'Legal', ACCENTS.Safety],

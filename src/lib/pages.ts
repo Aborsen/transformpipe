@@ -16,7 +16,7 @@
 
 export type StaticPageId =
   | 'about'
-  | 'contact'
+  | 'support'
   | 'extension'
   | 'privacy'
   | 'terms'
@@ -53,6 +53,8 @@ export interface StaticPage {
    * they were, rather than being pasted into another entry in five languages.
    */
   also?: StaticPageId;
+  /** Where those sections go. Before this page's own, unless this says otherwise. */
+  alsoAfter?: boolean;
   /**
    * The conversion this page is about, for the one button it ends on.
    *
@@ -106,7 +108,18 @@ const PRIVACY_UPDATED = '2026-09-17';
 export const STORE_URL: string | null = null;
 
 export const STATIC_PAGES: StaticPage[] = [
-  { id: 'contact', path: '/contact', group: 'company', also: 'about' },
+  {
+    id: 'support',
+    path: '/support',
+    group: 'company',
+    also: 'about',
+    /*
+     * About's sections used to open this page, from when it was Contact and the two answered the
+     * same question from different ends. On a support page they would push the thing somebody came
+     * for below the fold, so they run after it: what to do first, then who is doing it.
+     */
+    alsoAfter: true,
+  },
   {
     id: 'extension',
     path: '/extension',

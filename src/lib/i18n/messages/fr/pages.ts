@@ -49,35 +49,35 @@ export const pages: Content['pages'] = {
         'TransformPipe convertit vos documents en Markdown et inversement — dix formats, dans votre navigateur, avec une API, une CLI, une GitHub Action et un serveur MCP. Par Raudar Labs.',
     },
   },
-  contact: {
-    label: 'Nous contacter',
-    title: 'Nous contacter',
-    lede: 'Un bug, un format qui manque, ou quelque chose qui ne devrait pas être publié.',
+  support: {
+    label: 'Assistance',
+    title: 'Assistance',
+    lede: 'Un bug, un format qui vous manque, ou quelque chose qui ne devrait pas être publié.',
     sections: [
       {
-        heading: 'Bugs et demandes',
+        heading: 'Un fichier mal converti',
         body: [
-          'Ouvrez un ticket sur le dépôt. Un fichier mal converti est ce que vous pouvez envoyer de plus utile — joignez-le si vous pouvez le partager, et dites ce que vous attendiez à la place.',
-          'Un format que nous ne convertissons pas encore est une demande qui vaut la peine d’être faite. Plusieurs de ceux qui sont là ont commencé ainsi.',
+          'C’est la chose la plus utile que vous puissiez envoyer. Joignez-le au ticket si vous pouvez le partager, dites ce que vous attendiez, et nommez le navigateur si le résultat était correct ailleurs. Une conversion fausse sur un fichier l’est en général sur une forme, et le fichier est ce qui mène à cette forme.',
+          'Un format que nous ne convertissons pas encore est une demande qui vaut la peine. Plusieurs de ceux qui sont ici ont commencé ainsi.',
         ],
       },
       {
         heading: 'Un partage qui ne devrait pas exister',
         body: [
-          'Chaque document partagé porte un lien « Signaler ce document » au bas de la page qu’il ouvre. C’est la voie la plus rapide : il identifie le document sans que vous ayez à le décrire.',
+          'Chaque document partagé porte un lien « Report this document » au pied de la page qu’il ouvre. C’est la voie la plus rapide : il désigne le document sans que vous ayez à le décrire, et ne demande aucun compte.',
         ],
       },
       {
-        heading: 'Confidentialité et questions légales',
+        heading: 'Vie privée et questions légales',
         body: [
-          'Les questions sur ce qui est conservé, ou une demande de suppression d’un compte et de tout ce qu’il contient, vont au même endroit. Connecté, vous pouvez aussi supprimer vous-même n’importe quel document — cela retire la ligne et la source conservée ensemble.',
+          'Les questions sur ce qui est conservé, ou une demande de suppression d’un compte et de tout ce qu’il contient, vont aux mêmes tickets. Connecté, vous pouvez aussi supprimer n’importe quel document vous-même — cela retire la ligne et la source stockée ensemble.',
         ],
       },
     ],
     seo: {
-      title: 'Contacter TransformPipe',
+      title: 'Assistance — TransformPipe',
       description:
-        'Signaler un bug, demander un format, signaler un document partagé, ou demander ce qui est conservé et le faire supprimer.',
+        'Signaler un bug, demander un format, signaler un document partagé, ou demander ce qui est conservé et le faire supprimer. Un ticket en deux champs.',
     },
   },
   extension: {
@@ -203,7 +203,7 @@ export const pages: Content['pages'] = {
         heading: 'Supprimer des choses',
         body: [
           'Supprimer un document supprime la ligne et le Markdown conservé ensemble, tout de suite, pas selon un calendrier. Révoquer un partage abandonne le jeton, de sorte qu’un lien déjà envoyé cesse de fonctionner.',
-          'Pour retirer un compte et tout ce qu’il contient, demandez-le — voir la page de contact. Atteindre une limite de stockage refuse l’écriture ; cela ne supprime jamais quelque chose que vous avez choisi de garder pour faire de la place.',
+          'Pour retirer un compte et tout ce qu’il contient, demandez-le — voir la page d’assistance. Atteindre une limite de stockage refuse l’écriture ; cela ne supprime jamais quelque chose que vous avez choisi de garder pour faire de la place.',
         ],
       },
       {

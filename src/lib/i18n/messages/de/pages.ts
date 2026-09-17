@@ -57,35 +57,35 @@ export const pages: Content['pages'] = {
         'TransformPipe wandelt Dokumente in Markdown um und zurück — zehn Formate, im Browser, mit API, CLI, GitHub Action und MCP-Server. Gebaut von Raudar Labs.',
     },
   },
-  contact: {
-    label: 'Kontakt',
-    title: 'Kontakt',
-    lede: 'Ein Fehler, ein Format, das fehlt, oder etwas, das nicht veröffentlicht sein sollte.',
+  support: {
+    label: 'Support',
+    title: 'Support',
+    lede: 'Ein Fehler, ein Format, das Ihnen fehlt, oder etwas, das nicht veröffentlicht sein sollte.',
     sections: [
       {
-        heading: 'Fehler und Wünsche',
+        heading: 'Eine Datei, die falsch umgewandelt wurde',
         body: [
-          'Ein Issue im Repository eröffnen. Eine Datei, die falsch umgewandelt wurde, ist das Nützlichste, was man schicken kann — anhängen, wenn sie weitergegeben werden darf, und dazusagen, was stattdessen erwartet wurde.',
-          'Ein Format, das noch nicht umgewandelt wird, ist ein Wunsch, der sich lohnt. Mehrere der hier vorhandenen haben so angefangen.',
+          'Das ist das Nützlichste, was Sie schicken können. Hängen Sie sie an den Issue an, wenn Sie sie teilen dürfen, sagen Sie, was Sie stattdessen erwartet haben, und nennen Sie den Browser, falls es woanders richtig aussah. Eine Umwandlung, die bei einer Datei falsch ist, ist meist bei einer Form falsch — und die Datei ist der Weg zu dieser Form.',
+          'Ein Format, das wir noch nicht umwandeln, ist eine Bitte, die sich lohnt. Mehrere der hiesigen haben so angefangen.',
         ],
       },
       {
-        heading: 'Etwas Geteiltes, das es nicht sein sollte',
+        heading: 'Etwas Geteiltes, das nicht geteilt sein sollte',
         body: [
-          'Jedes geteilte Dokument trägt am Fuß der Seite, die es öffnet, einen Link „Dieses Dokument melden“. Dieser Link ist der schnellste Weg: er benennt das Dokument, ohne dass man es beschreiben muss.',
+          'Jedes geteilte Dokument trägt am Fuß der Seite, die es öffnet, einen Link „Report this document“. Das ist der schnellste Weg: Er benennt das Dokument, ohne dass Sie es beschreiben müssen, und braucht kein Konto.',
         ],
       },
       {
         heading: 'Datenschutz und Rechtliches',
         body: [
-          'Fragen dazu, was gespeichert wird, oder die Bitte, ein Konto samt allem darin zu löschen, gehen an dieselbe Stelle. Angemeldet lässt sich auch jedes Dokument selbst löschen — das entfernt die Zeile und die gespeicherte Quelle zusammen.',
+          'Fragen dazu, was gespeichert wird, oder die Bitte, ein Konto samt allem darin zu löschen, gehen an dieselben Issues. Angemeldet können Sie jedes Dokument auch selbst löschen — das entfernt den Eintrag und die gespeicherte Quelle zusammen.',
         ],
       },
     ],
     seo: {
-      title: 'TransformPipe kontaktieren',
+      title: 'Support — TransformPipe',
       description:
-        'Einen Fehler melden, ein Format wünschen, ein geteiltes Dokument melden oder fragen, was gespeichert wird — und es löschen lassen.',
+        'Einen Fehler melden, ein Format wünschen, ein geteiltes Dokument melden oder fragen, was gespeichert ist, und es löschen lassen. Ein Issue in zwei Feldern.',
     },
   },
   extension: {
@@ -211,7 +211,7 @@ export const pages: Content['pages'] = {
         heading: 'Dinge löschen',
         body: [
           'Ein Dokument zu löschen löscht die Zeile und das gespeicherte Markdown zusammen, sofort, nicht nach einem Zeitplan. Ein Widerruf einer Freigabe verwirft das Token, ein schon verschickter Link hört also auf zu funktionieren.',
-          'Um ein Konto samt allem darin zu entfernen, fragen Sie nach — siehe die Kontaktseite. Eine erreichte Speichergrenze weist den Schreibvorgang ab; sie löscht nie etwas, das Sie behalten wollten, um Platz zu machen.',
+          'Um ein Konto samt allem darin zu entfernen, fragen Sie nach — siehe die Support-Seite. Eine erreichte Speichergrenze weist den Schreibvorgang ab; sie löscht nie etwas, das Sie behalten wollten, um Platz zu machen.',
         ],
       },
       {

@@ -1,4 +1,5 @@
 import { AppBreadcrumbs } from '@/components/AppBreadcrumbs';
+import { IssueForm } from '@/components/IssueForm';
 import { ScrollToTop } from '@/components/ScrollToTop';
 import { crumbsForStaticPage } from '@/lib/breadcrumbs';
 import { useConsent } from '@/lib/consent';
@@ -56,10 +57,11 @@ export function StaticPage({ page, onGoToConverter }: StaticPageProps) {
   const { content, locale } = useI18n();
   const { setSettingsOpen } = useConsent();
   const words = content.pages[page.id];
-  /* A page can open with another's sections — see `also` in `src/lib/pages.ts`. */
-  const sections = page.also
-    ? [...content.pages[page.also].sections, ...words.sections]
-    : words.sections;
+  /* A page can open — or close — with another's sections; see `also` in `src/lib/pages.ts`. */
+  const borrowed = page.also ? content.pages[page.also].sections : [];
+  const sections = page.alsoAfter
+    ? [...words.sections, ...borrowed]
+    : [...borrowed, ...words.sections];
 
   return (
     <article className="mx-auto flex w-full max-w-3xl flex-col gap-8">
@@ -92,6 +94,15 @@ export function StaticPage({ page, onGoToConverter }: StaticPageProps) {
           </Typography>
         )}
       </header>
+
+      {/*
+        * The support page opens on the thing people came to do.
+        *
+        * It used to end on a sentence pointing at the repository's issues, below three sections of
+        * prose — which is the right link in the wrong place: somebody with a broken conversion
+        * scrolls past everything looking for it, and the ones who do not scroll leave.
+        */}
+      {page.id === 'support' && <IssueForm />}
 
       <div className="flex flex-col gap-8">
         {sections.map((section) => (

@@ -474,6 +474,19 @@ export const ui: Content['ui'] = {
   'shared.cta.body': 'Eine Webseite, eine Word-Datei, ein PDF oder eine Tabelle wird zu einem sauberen Dokument – umgewandelt in Ihrem Browser, die Datei verlässt ihn nicht. Ein Konto bewahrt Ihre Dokumente auf und teilt sie so, wie dieses mit Ihnen geteilt wurde.',
   'shared.cta.primary': 'Datei umwandeln – kostenlos',
   'shared.cta.secondary': 'Konto anlegen',
+
+  /* Das Formular der Support-Seite. Es füllt einen GitHub-Issue aus und sendet selbst nichts. */
+  'support.form.title': 'Etwas melden',
+  'support.form.blurb':
+    'Zwei Felder, und der Issue öffnet sich auf GitHub mit beidem schon darin.',
+  'support.form.summary': 'Was passiert ist, in einer Zeile',
+  'support.form.summary.placeholder': 'Tabellen kommen leer an, wenn ich eine .docx umwandle',
+  'support.form.details': 'Was Sie erwartet haben und was kam',
+  'support.form.details.placeholder':
+    'Ich habe eine Word-Datei mit einer dreispaltigen Tabelle umgewandelt. Die Überschriften kamen an, die Zeilen nicht. Chrome 140 unter macOS.',
+  'support.form.open': 'Issue auf GitHub öffnen',
+  'support.form.note':
+    'Von dieser Seite geht nichts weg: Sie öffnet GitHub, dort drücken Sie Absenden. Ein GitHub-Konto wird gebraucht.',
   'shared.signin.title': 'Dieses Dokument wurde für bestimmte Personen geteilt',
   'shared.signin.detail':
     'Melden Sie sich mit der Adresse an, für die es geteilt wurde.',

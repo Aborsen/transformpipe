@@ -453,6 +453,19 @@ export const ui: Content['ui'] = {
   'shared.cta.body': 'Una pagina web, un file Word, un PDF o un foglio di calcolo diventano un documento pulito: la conversione avviene nel tuo browser e il file non ne esce. Un account conserva i tuoi documenti e li condivide come questo è stato condiviso con te.',
   'shared.cta.primary': 'Converti un file — gratis',
   'shared.cta.secondary': 'Crea un account',
+
+  /* Il modulo della pagina di assistenza. Compila una segnalazione GitHub; da solo non invia nulla. */
+  'support.form.title': 'Segnala qualcosa',
+  'support.form.blurb':
+    'Due campi, e la segnalazione si apre su GitHub con entrambi già scritti dentro.',
+  'support.form.summary': 'Che cosa è successo, in una riga',
+  'support.form.summary.placeholder': 'Le tabelle arrivano vuote quando converto un .docx',
+  'support.form.details': 'Che cosa ti aspettavi e che cosa hai ottenuto',
+  'support.form.details.placeholder':
+    'Ho convertito un file Word con una tabella a tre colonne. Le intestazioni sono arrivate, le righe no. Chrome 140 su macOS.',
+  'support.form.open': 'Apri la segnalazione su GitHub',
+  'support.form.note':
+    'Da questa pagina non parte nulla: apre GitHub, dove premi Invia. Serve un account GitHub.',
   'shared.signin.title': 'Questo documento è stato condiviso con persone specifiche',
   'shared.signin.detail': 'Accedi con l’indirizzo con cui è stato condiviso.',
   'shared.missing.title': 'Questo link non apre nessun documento',

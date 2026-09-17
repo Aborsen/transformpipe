@@ -3,12 +3,22 @@
   "redirects": [
     {
       "source": "/about",
-      "destination": "/contact",
+      "destination": "/support",
       "permanent": true
     },
     {
       "source": "/:locale(de|fr|es|it)/about",
-      "destination": "/:locale/contact",
+      "destination": "/:locale/support",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "destination": "/support",
+      "permanent": true
+    },
+    {
+      "source": "/:locale(de|fr|es|it)/contact",
+      "destination": "/:locale/support",
       "permanent": true
     }
   ],
@@ -118,7 +128,7 @@
       "destination": "/index.html"
     },
     {
-      "source": "/contact",
+      "source": "/support",
       "destination": "/index.html"
     },
     {

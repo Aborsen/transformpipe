@@ -55,35 +55,35 @@ export const pages: Content['pages'] = {
         'TransformPipe converts documents to Markdown and back — ten formats, in your browser, with an API, a CLI, a GitHub Action and an MCP server. Built by Raudar Labs.',
     },
   },
-  contact: {
-    label: 'Contact us',
-    title: 'Contact us',
+  support: {
+    label: 'Support',
+    title: 'Support',
     lede: 'A bug, a format you need, or something that should not be published.',
     sections: [
       {
-        heading: 'Bugs and requests',
+        heading: 'A file that converted wrongly',
         body: [
-          'Open an issue on the repository. A file that converted wrongly is the most useful thing you can send — attach it if you can share it, and say what you expected instead.',
-          'A format we do not convert yet is a request worth making. Several of the ones here started that way.',
+          'It is the most useful thing you can send. Attach it to the issue if you can share it, say what you expected instead, and name the browser if it looked right somewhere else. A conversion that is wrong on one file is usually wrong on a shape, and the file is how we find the shape.',
+          'A format we do not convert yet is a request worth making. Several of the ones here started as one.',
         ],
       },
       {
         heading: 'Something shared that should not be',
         body: [
-          'Every shared document carries a “Report this document” link at the foot of the page it opens. That link is the fastest route: it identifies the document without you having to describe it.',
+          'Every shared document carries a “Report this document” link at the foot of the page it opens. That link is the fastest route: it identifies the document without you having to describe it, and it does not need an account.',
         ],
       },
       {
         heading: 'Privacy and legal',
         body: [
-          'Questions about what is stored, or a request to delete an account and everything in it, go to the same place. Signed in, you can also delete any document yourself — that removes the row and the stored source together.',
+          'Questions about what is stored, or a request to delete an account and everything in it, go to the same issues. Signed in, you can also delete any document yourself — that removes the row and the stored source together.',
         ],
       },
     ],
     seo: {
-      title: 'Contact TransformPipe',
+      title: 'Support — TransformPipe',
       description:
-        'Report a bug, ask for a format, flag a shared document, or ask what is stored and have it deleted.',
+        'Report a bug, ask for a format, flag a shared document, or ask what is stored and have it deleted. Open an issue in two fields.',
     },
   },
   extension: {
@@ -209,7 +209,7 @@ export const pages: Content['pages'] = {
         heading: 'Deleting things',
         body: [
           'Deleting a document deletes the row and the stored Markdown together, at once, not on a schedule. Revoking a share drops the token, so a link already sent stops working.',
-          'To remove an account and everything in it, ask — see the contact page. Reaching a storage limit refuses the write; it never deletes something you chose to keep to make room.',
+          'To remove an account and everything in it, ask — see the support page. Reaching a storage limit refuses the write; it never deletes something you chose to keep to make room.',
         ],
       },
       {

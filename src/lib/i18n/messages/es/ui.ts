@@ -464,6 +464,19 @@ export const ui: Content['ui'] = {
   'shared.cta.body': 'Una página web, un archivo de Word, un PDF o una hoja de cálculo se convierten en un documento limpio: la conversión ocurre en tu navegador y el archivo no sale de él. Una cuenta guarda tus documentos y los comparte como han compartido este contigo.',
   'shared.cta.primary': 'Convertir un archivo — gratis',
   'shared.cta.secondary': 'Crear una cuenta',
+
+  /* El formulario de la página de soporte. Rellena una incidencia de GitHub; no envía nada por sí mismo. */
+  'support.form.title': 'Informar de algo',
+  'support.form.blurb':
+    'Dos campos, y la incidencia se abre en GitHub con ambos ya escritos dentro.',
+  'support.form.summary': 'Qué pasó, en una línea',
+  'support.form.summary.placeholder': 'Las tablas salen vacías cuando convierto un .docx',
+  'support.form.details': 'Qué esperabas y qué obtuviste',
+  'support.form.details.placeholder':
+    'Convertí un archivo de Word con una tabla de tres columnas. Llegaron los encabezados, las filas no. Chrome 140 en macOS.',
+  'support.form.open': 'Abrir la incidencia en GitHub',
+  'support.form.note':
+    'De esta página no sale nada: abre GitHub, y allí pulsas Enviar. Hace falta una cuenta de GitHub.',
   'shared.signin.title': 'Este documento se compartió con personas concretas',
   'shared.signin.detail':
     'Inicia sesión con la dirección con la que se compartió.',
