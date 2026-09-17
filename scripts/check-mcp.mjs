@@ -592,6 +592,10 @@ check(
   tools.find((one) => one.name === 'tp_list_documents')?._meta?.ui?.resourceUri?.endsWith('/document-list') === true
 );
 check(
+  'and converting points at the document card',
+  tools.find((one) => one.name === 'tp_convert_to_markdown')?._meta?.ui?.resourceUri?.endsWith('/document-card') === true
+);
+check(
   'and deleting points at the confirmation',
   tools.find((one) => one.name === 'tp_delete_document')?._meta?.ui?.resourceUri?.endsWith('/delete-confirm') === true
 );

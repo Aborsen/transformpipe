@@ -176,6 +176,22 @@ const forCard = (
   excerpt: markdown.slice(0, 600),
 });
 
+/**
+ * A conversion that was not saved, as the card needs it.
+ *
+ * No id and no address, so the view draws no buttons — there is nothing to open yet. What it does
+ * have is the shape of the thing: a name, what it weighs, and the first of it, which is what
+ * somebody is checking when they ask for a conversion in a chat.
+ */
+const forConversion = (name: string, markdown: string) => ({
+  name,
+  size: new TextEncoder().encode(markdown).length,
+  words: markdown.split(/\s+/).filter(Boolean).length,
+  headings: (markdown.match(/^#{1,6} /gm) ?? []).length,
+  tables: (markdown.match(/^\|/gm) ?? []).length ? 1 : 0,
+  excerpt: markdown.slice(0, 600),
+});
+
 const card = (text: string, data: Record<string, unknown>) => ({
   content: [{ type: 'text', text }],
   structuredContent: data,
@@ -504,6 +520,7 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_convert_to_markdown: {
     description:
       'Convert HTML, CSV, TSV or JSON to Markdown and return it. `from` says which. Nothing is saved to the account; to keep the result, pass the same source and `from` to tp_save_document, which stores it and records what it was made from. A Word file cannot come through here — a .docx is a zip, not text — so it converts in the app, or by POSTing the file to /api/v1/documents?kind=word-to-markdown.',
+    ui: DOCUMENT_CARD_URI,
     annotations: { title: 'Convert to Markdown', readOnlyHint: true, openWorldHint: false },
     inputSchema: {
       type: 'object',
@@ -543,8 +560,13 @@ const TOOLS: Record<McpToolName, Tool> = {
        * conversion written twice is two conversions, and the second one is discovered by a person
        * whose table came out differently in a chat than on the site.
        */
+      /* What to call it in the card. The text answer is the document itself and needs no name. */
+      const named = `${String(args.name ?? 'document').replace(/\.[^.]+$/, '')}.md`;
+
       if (from === 'html') {
-        return say(clip(htmlToMarkdown(source)));
+        const markdown = htmlToMarkdown(source);
+
+        return card(clip(markdown), forConversion(named, markdown));
       }
 
       if (from === 'csv' || from === 'tsv') {
@@ -552,18 +574,18 @@ const TOOLS: Record<McpToolName, Tool> = {
           delimiter: from === 'tsv' ? '\t' : undefined,
         });
 
-        return table ? say(clip(table)) : say('That has no rows in it.', true);
+        return table
+          ? card(clip(table), forConversion(named, table))
+          : say('That has no rows in it.', true);
       }
 
       if (from === 'json') {
         try {
-          return say(
-            clip(
-              jsonToMarkdown(source, {
-                title: String(args.name ?? 'document').replace(/\.[^.]+$/, ''),
-              })
-            )
-          );
+          const markdown = jsonToMarkdown(source, {
+            title: String(args.name ?? 'document').replace(/\.[^.]+$/, ''),
+          });
+
+          return card(clip(markdown), forConversion(named, markdown));
         } catch (cause) {
           // The parser says where it stopped, and that is the whole of what anybody can act on.
           return say(
