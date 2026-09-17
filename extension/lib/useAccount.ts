@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { saveDocument, storedKey } from './account';
+import { saveDocument, signedIn } from './account';
 
 /*
  * Whether this browser has a key, and what to do with it.
@@ -9,24 +9,24 @@ import { saveDocument, storedKey } from './account';
  * read when a surface opens, which is the only moment either of them is on screen.
  */
 export function useAccount() {
-  const [key, setKey] = useState<string | null>(null);
+  const [connected, setConnected] = useState(false);
   const [state, setState] = useState<'idle' | 'busy' | 'done' | 'failed'>('idle');
   const [link, setLink] = useState<string | null>(null);
 
   useEffect(() => {
-    void storedKey().then(setKey);
+    void signedIn().then(setConnected);
   }, []);
 
   const save = useCallback(
     async (name: string, markdown: string, share: boolean) => {
-      if (!key) {
+      if (!connected) {
         return null;
       }
 
       setState('busy');
 
       try {
-        const saved = await saveDocument(key, name, markdown, share);
+        const saved = await saveDocument(name, markdown, share);
 
         setLink(saved.share?.url ?? null);
         setState('done');
@@ -38,8 +38,8 @@ export function useAccount() {
         return null;
       }
     },
-    [key]
+    [connected]
   );
 
-  return { connected: Boolean(key), state, link, save };
+  return { connected, state, link, save };
 }

@@ -127,9 +127,17 @@ export const ui: Content['ui'] = {
     'Delivery is best effort: one request, a five-second timeout, no retry and no queue. A receiver that is down misses that delivery, and the dialog says when the last one failed.',
   /* The browser extension — see extension/ and content/extension-plan.md. */
   'ext.panel': 'Open in the side panel',
+  'ext.refresh': 'Convert this page again',
+  'ext.panel.permission':
+    'The side panel stays open while you browse, so it needs permission to read the pages you open — the button under the toolbar never did, because pressing it is the permission.',
+  'ext.panel.allow': 'Allow reading pages',
   'ext.panel.detail':
     'It stays beside the page and follows you from tab to tab, instead of closing when you look away.',
   'ext.account': 'Account',
+  'ext.signin': 'Sign in with TransformPipe',
+  'ext.signin.hint':
+    'Sign in and this extension can save a converted page to your account and publish a link. It asks for the same approval an assistant does, and you can withdraw it from your account page at any time.',
+  'ext.signin.refused': 'Sign-in was not completed.',
   'ext.key.hint':
     'Paste an API key from your account and this extension can save a converted page to it, and publish a link. The key is kept in this browser only, and nothing is sent anywhere until you press Save.',
   'ext.key.placeholder': 'tp_live_…',

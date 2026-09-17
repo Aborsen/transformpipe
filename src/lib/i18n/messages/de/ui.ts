@@ -131,9 +131,17 @@ export const ui: Content['ui'] = {
     'Die Zustellung ist ein Versuch: eine Anfrage, fünf Sekunden Zeitlimit, kein erneuter Versuch und keine Warteschlange. Ein Empfänger, der gerade nicht läuft, verpasst diese Zustellung, und der Dialog nennt den Zeitpunkt des letzten Fehlschlags.',
   /* The browser extension — see extension/ and content/extension-plan.md. */
   'ext.panel': 'In der Seitenleiste öffnen',
+  'ext.refresh': 'Diese Seite erneut umwandeln',
+  'ext.panel.permission':
+    'Die Seitenleiste bleibt beim Surfen offen und braucht deshalb die Erlaubnis, die geöffneten Seiten zu lesen — die Schaltfläche in der Leiste brauchte das nie, denn sie zu drücken ist die Erlaubnis.',
+  'ext.panel.allow': 'Lesen erlauben',
   'ext.panel.detail':
     'Sie bleibt neben der Seite und folgt Ihnen von Tab zu Tab, statt sich zu schließen, sobald Sie wegsehen.',
   'ext.account': 'Konto',
+  'ext.signin': 'Mit TransformPipe anmelden',
+  'ext.signin.hint':
+    'Melden Sie sich an, dann kann diese Erweiterung eine umgewandelte Seite in Ihrem Konto speichern und einen Link veröffentlichen. Sie fragt um dieselbe Zustimmung wie ein Assistent, und Sie können sie jederzeit auf der Kontoseite zurücknehmen.',
+  'ext.signin.refused': 'Die Anmeldung wurde nicht abgeschlossen.',
   'ext.key.hint':
     'Fügen Sie einen API-Schlüssel aus Ihrem Konto ein, dann kann diese Erweiterung eine umgewandelte Seite dort speichern und einen Link veröffentlichen. Der Schlüssel bleibt nur in diesem Browser, und vor einem Klick auf Speichern wird nichts gesendet.',
   'ext.key.placeholder': 'tp_live_…',

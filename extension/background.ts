@@ -15,31 +15,7 @@ import { openInViewer } from './lib/clipboard';
 const MENU_PAGE = 'tp-convert-page';
 const MENU_SELECTION = 'tp-convert-selection';
 
-/*
- * Which surface the toolbar button opens, restored on every start.
- *
- * `chrome.action.setPopup` is not remembered across browser restarts, so the choice lives in
- * storage and is applied here — clearing the popup is what lets a click open the side panel
- * instead, because an action with a popup always shows the popup.
- */
-async function applySurface() {
-  const stored = await chrome.storage.local.get('tp.panel');
-  const asPanel = Boolean(stored['tp.panel']);
-
-  await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: asPanel });
-  await chrome.action.setPopup({ popup: asPanel ? '' : 'popup.html' });
-}
-
-chrome.runtime.onStartup.addListener(() => void applySurface());
-chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === 'local' && 'tp.panel' in changes) {
-    void applySurface();
-  }
-});
-
 chrome.runtime.onInstalled.addListener(() => {
-  void applySurface();
-
   chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create({
       id: MENU_PAGE,

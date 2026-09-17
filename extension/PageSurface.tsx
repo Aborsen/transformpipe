@@ -9,6 +9,8 @@ import {
   Loader2,
   Lock,
   Maximize2,
+  PanelRight,
+  RefreshCw,
   Save,
   Settings,
 } from 'lucide-react';
@@ -68,9 +70,27 @@ export function PageSurface({ live = false }: { live?: boolean }) {
   const [failed, setFailed] = useState<'none' | 'error' | 'restricted'>('none');
   const [host, setHost] = useState('');
   const [tabId, setTabId] = useState<number | undefined>(undefined);
+  /*
+   * A side panel outlives the click that opened it, and `activeTab` does not: the browser grants
+   * that for the tab whose button was pressed and for nothing else, so the first tab switch used to
+   * leave the panel saying the page could not be read. Reading any tab is a permission of its own,
+   * asked for here — in the panel, where it is needed — rather than at install, where it would be
+   * asked of somebody who only ever uses the popup.
+   */
+  const [mayReadTabs, setMayReadTabs] = useState(!live);
   const [fromSelection, setFromSelection] = useState(false);
   const [copied, setCopied] = useState(false);
   const account = useAccount();
+
+  useEffect(() => {
+    if (!live) {
+      return;
+    }
+
+    void chrome.permissions
+      .contains({ origins: ['<all_urls>'] })
+      .then(setMayReadTabs);
+  }, [live]);
 
   const convertActiveTab = useCallback(async (alive: () => boolean) => {
       try {
@@ -127,12 +147,21 @@ export function PageSurface({ live = false }: { live?: boolean }) {
           setDocument(converted);
         }
       } catch {
-        /* A tab that has not finished loading lands here, and so does anything unforeseen. */
+        /*
+         * A tab that has not finished loading lands here, and so does a panel that has not been
+         * given permission to read the tab in front of it. The second is answerable, so it is
+         * asked about rather than reported as a failure.
+         */
         if (alive()) {
-          setFailed('error');
+          const allowed = await chrome.permissions.contains({
+            origins: ['<all_urls>'],
+          });
+
+          setMayReadTabs(allowed || !live);
+          setFailed(allowed || !live ? 'error' : 'none');
         }
       }
-  }, []);
+  }, [live]);
 
   useEffect(() => {
     let alive = true;
@@ -209,15 +238,47 @@ export function PageSurface({ live = false }: { live?: boolean }) {
       <div className="flex items-center gap-2 px-4 pt-3 pb-2">
         <Logo className="h-5" />
 
-        {host && (
-          <Typography
-            variant="span"
-            textColor="light"
-            className="ml-auto min-w-0 truncate text-xs"
-          >
-            {host}
-          </Typography>
-        )}
+        <div className="ml-auto flex items-center gap-0.5">
+          <Button
+            variant="transparent"
+            size="xs"
+            aria-label={t('ext.refresh')}
+            title={t('ext.refresh')}
+            leftSlot={<RefreshCw />}
+            onClick={() => {
+              setDocument(null);
+              setFailed('none');
+              void convertActiveTab(() => true);
+            }}
+          />
+
+          {/*
+            * The side panel, opened from here rather than from a settings page: it is a way to look
+            * at this, not a preference about the product. Chrome only allows it during a gesture,
+            * which a click in this panel is — and the popup closes itself, since the two would
+            * otherwise sit on screen saying the same thing.
+            */}
+          {!live && (
+            <Button
+              variant="transparent"
+              size="xs"
+              aria-label={t('ext.panel')}
+              title={t('ext.panel')}
+              leftSlot={<PanelRight />}
+              onClick={async () => {
+                const [tab] = await chrome.tabs.query({
+                  active: true,
+                  currentWindow: true,
+                });
+
+                if (tab?.windowId !== undefined) {
+                  await chrome.sidePanel.open({ windowId: tab.windowId });
+                  window.close();
+                }
+              }}
+            />
+          )}
+        </div>
       </div>
 
       <div className="flex flex-col gap-3 px-4 pb-4">
@@ -266,7 +327,32 @@ export function PageSurface({ live = false }: { live?: boolean }) {
           </div>
         )}
 
-        {failed === 'none' && (
+        {live && !mayReadTabs && failed === 'none' && !document_ && (
+          <div className="flex flex-col gap-3 rounded-xl border border-stroke bg-surface-card p-4">
+            <Typography variant="p" textColor="secondary" className="text-sm">
+              {t('ext.panel.permission')}
+            </Typography>
+
+            <Button
+              className="w-fit"
+              onClick={async () => {
+                const granted = await chrome.permissions.request({
+                  origins: ['<all_urls>'],
+                });
+
+                setMayReadTabs(granted);
+
+                if (granted) {
+                  void convertActiveTab(() => true);
+                }
+              }}
+            >
+              {t('ext.panel.allow')}
+            </Button>
+          </div>
+        )}
+
+        {failed === 'none' && (live ? mayReadTabs : true) && (
           <div className="relative max-h-52 overflow-hidden rounded-xl border border-stroke">
             {document_ ? (
               /*

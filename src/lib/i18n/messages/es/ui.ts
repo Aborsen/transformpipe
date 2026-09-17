@@ -122,9 +122,17 @@ export const ui: Content['ui'] = {
     'La entrega es de mejor esfuerzo: una petición, cinco segundos de espera, sin reintentos ni cola. Un receptor caído pierde esa entrega, y el diálogo dice cuándo falló la última.',
   /* The browser extension — see extension/ and content/extension-plan.md. */
   'ext.panel': 'Abrir en el panel lateral',
+  'ext.refresh': 'Convertir esta página otra vez',
+  'ext.panel.permission':
+    'El panel lateral sigue abierto mientras navegas, así que necesita permiso para leer las páginas que abres; el botón de la barra nunca lo necesitó, porque pulsarlo es el permiso.',
+  'ext.panel.allow': 'Permitir la lectura',
   'ext.panel.detail':
     'Se queda junto a la página y te sigue de pestaña en pestaña, en vez de cerrarse en cuanto miras a otro lado.',
   'ext.account': 'Cuenta',
+  'ext.signin': 'Iniciar sesión con TransformPipe',
+  'ext.signin.hint':
+    'Inicia sesión y esta extensión podrá guardar una página convertida en tu cuenta y publicar un enlace. Pide la misma autorización que un asistente, y puedes retirarla cuando quieras desde tu cuenta.',
+  'ext.signin.refused': 'No se completó el inicio de sesión.',
   'ext.key.hint':
     'Pega una clave de API de tu cuenta y esta extensión podrá guardar en ella una página convertida y publicar un enlace. La clave se queda solo en este navegador y no se envía nada hasta que pulses Guardar.',
   'ext.key.placeholder': 'tp_live_…',

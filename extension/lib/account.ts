@@ -1,18 +1,18 @@
+import { accessToken } from './auth';
+
 /*
- * The account, from an extension: one key, one endpoint, and a permission asked for at the moment
- * it is needed.
+ * What the account is for, from here: saving a converted page, and publishing a link to it.
  *
- * The key is the same `tp_live_…` the command line uses and the same one the account page issues
- * and revokes, so nothing new was built on the server for this and nothing here can outlive a
- * revocation. It is kept in `chrome.storage.local` — the extension's own store, which is where the
- * CLI's `~/.config/tp/config.json` would be if an extension had a disk.
+ * Who you are is `auth.ts` — the site's own sign-in, through the OAuth server this product already
+ * runs for assistants. This file is only the two calls that spend the token, and it holds no
+ * credential of its own: `accessToken()` answers with a live one or with nothing, which is also
+ * what a revoked grant looks like from here.
  *
- * The permission to reach transformpipe.com is *optional* and requested when somebody connects an
- * account, not at install. An extension that asks on day one for access to a domain reads the same
- * in the browser's install dialog whether it uses it or not, and until a key exists this one has no
- * reason to talk to us at all — converting is done here, in the page.
+ * Reaching transformpipe.com is an optional permission, asked for at sign-in rather than at
+ * install: until somebody signs in, this extension has no reason to talk to us at all — the
+ * converting is done in the page — and an origin in the install dialog reads the same to a person
+ * whether it is ever used or not.
  */
-const KEY = 'tp.key';
 const ORIGIN = 'https://transformpipe.com';
 
 export interface Saved {
@@ -21,23 +21,8 @@ export interface Saved {
   share: { mode: string; url: string | null };
 }
 
-export async function storedKey(): Promise<string | null> {
-  const stored = await chrome.storage.local.get(KEY);
-
-  return (stored[KEY] as string | undefined) ?? null;
-}
-
-export async function forgetKey() {
-  await chrome.storage.local.remove(KEY);
-}
-
-/** Asks for the one origin this extension ever calls, and only when there is a reason to. */
-export async function grantOrigin(): Promise<boolean> {
-  return chrome.permissions.request({ origins: [`${ORIGIN}/*`] });
-}
-
 async function call(
-  key: string,
+  token: string,
   path: string,
   init?: RequestInit
 ): Promise<Response> {
@@ -45,26 +30,14 @@ async function call(
     ...init,
     headers: {
       ...(init?.headers ?? {}),
-      authorization: `Bearer ${key}`,
+      authorization: `Bearer ${token}`,
     },
   });
 }
 
-/**
- * Whether a key is a key, asked of the cheapest endpoint there is.
- *
- * `/usage` reads two numbers and writes nothing, so a mistyped key costs a rejection rather than a
- * document nobody wanted. It is also the only way to tell a typo from a revoked key before somebody
- * has a converted page in front of them and presses Save.
- */
-export async function checkKey(key: string): Promise<boolean> {
-  try {
-    const response = await call(key, '/usage');
-
-    return response.ok;
-  } catch {
-    return false;
-  }
+/** Whether there is a live grant behind this installation, without spending anything. */
+export async function signedIn(): Promise<boolean> {
+  return Boolean(await accessToken());
 }
 
 /**
@@ -74,18 +47,23 @@ export async function checkKey(key: string): Promise<boolean> {
  * extension needs no endpoint of its own and no second round trip to get a link back.
  */
 export async function saveDocument(
-  key: string,
   name: string,
   markdown: string,
   share: boolean
 ): Promise<Saved> {
+  const token = await accessToken();
+
+  if (!token) {
+    throw new Error('not signed in');
+  }
+
   const query = new URLSearchParams({ name });
 
   if (share) {
     query.set('share', 'link');
   }
 
-  const response = await call(key, `/documents?${query}`, {
+  const response = await call(token, `/documents?${query}`, {
     method: 'POST',
     headers: { 'content-type': 'text/markdown; charset=utf-8' },
     body: markdown,

@@ -78,7 +78,7 @@ function assets(): Plugin {
          * extension has no reason to talk to us at all, and an origin in the install dialog reads
          * the same whether it is used or not.
          */
-        optional_host_permissions: ['https://transformpipe.com/*'],
+        optional_host_permissions: ['https://transformpipe.com/*', '<all_urls>'],
         /*
          * Two permissions, and neither is a host permission: nothing runs in a page until somebody
          * presses the button on that page, and nothing is read from any other tab, ever.
@@ -89,11 +89,12 @@ function assets(): Plugin {
           'contextMenus',
           'storage',
           'sidePanel',
+          'identity',
         ],
         /*
-         * The same surface, kept open beside the page. Chrome opens the popup when the action has
-         * one, so switching to the panel is a runtime decision — `chrome.action.setPopup('')` —
-         * made on the settings page rather than by shipping two builds.
+         * The same surface, kept open beside the page. It is opened by the icon in the popup — a
+         * way to look at this rather than a setting — so the action keeps its popup and nothing is
+         * switched at runtime.
          */
         side_panel: { default_path: 'panel.html' },
         icons: {

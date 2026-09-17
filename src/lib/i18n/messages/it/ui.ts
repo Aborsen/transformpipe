@@ -115,9 +115,17 @@ export const ui: Content['ui'] = {
     'La consegna è al meglio possibile: una richiesta, cinque secondi di attesa, nessun nuovo tentativo e nessuna coda. Un ricevitore spento perde quella consegna, e la finestra dice quando l’ultima è fallita.',
   /* The browser extension — see extension/ and content/extension-plan.md. */
   'ext.panel': 'Apri nel pannello laterale',
+  'ext.refresh': 'Converti di nuovo questa pagina',
+  'ext.panel.permission':
+    'Il pannello laterale resta aperto mentre navighi, quindi gli serve il permesso di leggere le pagine che apri; il pulsante nella barra non ne ha mai avuto bisogno, perché premerlo è il permesso.',
+  'ext.panel.allow': 'Consenti la lettura',
   'ext.panel.detail':
     'Resta accanto alla pagina e ti segue di scheda in scheda, invece di chiudersi appena guardi altrove.',
   'ext.account': 'Account',
+  'ext.signin': 'Accedi con TransformPipe',
+  'ext.signin.hint':
+    'Accedi e questa estensione potrà salvare una pagina convertita nel tuo account e pubblicare un link. Chiede la stessa autorizzazione di un assistente, e puoi revocarla quando vuoi dalla pagina dell’account.',
+  'ext.signin.refused': 'L’accesso non è stato completato.',
   'ext.key.hint':
     'Incolla una chiave API del tuo account e questa estensione potrà salvarci una pagina convertita e pubblicare un link. La chiave resta solo in questo browser e nulla viene inviato finché non premi Salva.',
   'ext.key.placeholder': 'tp_live_…',

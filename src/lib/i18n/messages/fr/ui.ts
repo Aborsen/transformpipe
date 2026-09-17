@@ -117,9 +117,17 @@ export const ui: Content['ui'] = {
     'La livraison est au mieux : une requête, cinq secondes de délai, aucune reprise et aucune file d’attente. Un récepteur arrêté rate cette livraison, et la fenêtre indique quand la dernière a échoué.',
   /* The browser extension — see extension/ and content/extension-plan.md. */
   'ext.panel': 'Ouvrir dans le panneau latéral',
+  'ext.refresh': 'Reconvertir cette page',
+  'ext.panel.permission':
+    'Le panneau latéral reste ouvert pendant que vous naviguez : il lui faut donc l’autorisation de lire les pages que vous ouvrez — le bouton de la barre n’en a jamais eu besoin, car l’appuyer *est* l’autorisation.',
+  'ext.panel.allow': 'Autoriser la lecture',
   'ext.panel.detail':
     'Il reste à côté de la page et vous suit d’un onglet à l’autre, au lieu de se fermer dès que vous regardez ailleurs.',
   'ext.account': 'Compte',
+  'ext.signin': 'Se connecter avec TransformPipe',
+  'ext.signin.hint':
+    'Connectez-vous et cette extension pourra enregistrer une page convertie dans votre compte et publier un lien. Elle demande la même autorisation qu’un assistant, et vous pouvez la retirer à tout moment depuis votre compte.',
+  'ext.signin.refused': 'La connexion n’a pas abouti.',
   'ext.key.hint':
     'Collez une clé d’API de votre compte et cette extension pourra y enregistrer une page convertie et publier un lien. La clé reste dans ce navigateur, et rien n’est envoyé avant que vous appuyiez sur Enregistrer.',
   'ext.key.placeholder': 'tp_live_…',
