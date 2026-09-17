@@ -461,6 +461,11 @@ export const ui: Content['ui'] = {
    */
   'shared.loading': 'Abriendo el documento…',
   'shared.meta': 'compartido · convertido el {date}',
+  'shared.badge': 'Compartido contigo',
+  'shared.save': 'Guardar una copia',
+  'shared.saved': 'Guardado en tu cuenta',
+  'shared.save.done': 'Hay una copia en tu cuenta',
+  'shared.save.error': 'No se pudo guardar la copia',
   'shared.cta.title': 'Este documento se hizo con TransformPipe',
   'shared.cta.body': 'Una página web, un archivo de Word, un PDF o una hoja de cálculo se convierten en un documento limpio: la conversión ocurre en tu navegador y el archivo no sale de él. Una cuenta guarda tus documentos y los comparte como han compartido este contigo.',
   'shared.cta.primary': 'Convertir un archivo — gratis',

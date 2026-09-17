@@ -928,7 +928,7 @@ app.get('/s/:token', async (c) => {
   const { markdownToHtml } = await import('./render.js');
 
   const rows = (await sql()`
-    select id, user_id, name, markdown, blob_path, created_at, share_mode
+    select id, user_id, name, markdown, blob_path, created_at, share_mode, size, stats
     from m2h_document
     where share_token = ${token}
   `) as Array<{
@@ -939,6 +939,8 @@ app.get('/s/:token', async (c) => {
     blob_path: string | null;
     created_at: string;
     share_mode: 'private' | 'link' | 'people';
+    size: number;
+    stats: Record<string, number> | null;
   }>;
 
   const document = rows[0];
@@ -1015,6 +1017,13 @@ app.get('/s/:token', async (c) => {
       createdAt,
       downloadHref: `/s/${encodeURIComponent(token)}?download`,
       reportHref: `/report/${encodeURIComponent(token)}`,
+      /*
+       * The same document in the app, which is where a copy can be kept: this page runs no script
+       * and has nobody signed in, and /open/<token> knows how to ask.
+       */
+      openHref: `/open/${encodeURIComponent(token)}`,
+      size: document.size,
+      stats: document.stats ?? undefined,
     })
   );
 });

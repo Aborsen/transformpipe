@@ -471,6 +471,11 @@ export const ui: Content['ui'] = {
    */
   'shared.loading': 'Dokument wird geöffnet…',
   'shared.meta': 'geteilt · umgewandelt {date}',
+  'shared.badge': 'Mit Ihnen geteilt',
+  'shared.save': 'Kopie speichern',
+  'shared.saved': 'In Ihrem Konto gespeichert',
+  'shared.save.done': 'Eine Kopie liegt in Ihrem Konto',
+  'shared.save.error': 'Die Kopie konnte nicht gespeichert werden',
   'shared.cta.title': 'Dieses Dokument ist mit TransformPipe entstanden',
   'shared.cta.body': 'Eine Webseite, eine Word-Datei, ein PDF oder eine Tabelle wird zu einem sauberen Dokument – umgewandelt in Ihrem Browser, die Datei verlässt ihn nicht. Ein Konto bewahrt Ihre Dokumente auf und teilt sie so, wie dieses mit Ihnen geteilt wurde.',
   'shared.cta.primary': 'Datei umwandeln – kostenlos',

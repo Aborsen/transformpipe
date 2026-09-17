@@ -167,17 +167,79 @@ ${body}
 `;
 }
 
-/** The bar above a shared document: whose product this is, and how to keep the file. */
+/*
+ * The card above a shared document: what the document is, and the two things to do with it.
+ *
+ * It matches the one the app puts above a document it has just converted — the name, what it
+ * weighs, when it was made, what is in it, and the actions on the right — because it is the same
+ * object and a reader who has seen one should recognise the other. What it cannot match is the
+ * behaviour: this page runs no script, so the actions are links, and "save this to your account"
+ * is a link into the app, which knows how to ask somebody to sign in.
+ */
 const SHARED_CHROME_STYLE = `
 .md-bar {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 1rem;
+  box-sizing: border-box;
   max-width: 48rem;
   margin: 0 auto 1.25rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--md-stroke);
+  border-radius: 0.875rem;
+  background: var(--md-card);
   font-family: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 0.8125rem;
   color: var(--md-secondary);
+}
+
+.md-bar .doc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.md-bar .doc-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.md-bar .doc-name .name {
+  font-weight: 600;
+  color: var(--md-ink);
+  font-size: 0.9375rem;
+}
+
+.md-bar .badge {
+  flex: none;
+  padding: 0.05rem 0.5rem;
+  border: 1px solid var(--md-stroke);
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  white-space: nowrap;
+}
+
+.md-bar .doc-meta { font-size: 0.75rem; }
+
+.md-bar .doc-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.1rem 0.9rem;
+  font-size: 0.75rem;
+}
+
+.md-bar .doc-stats b { color: var(--md-ink); font-weight: 600; }
+
+.md-bar .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-left: auto;
 }
 
 /*
@@ -204,9 +266,9 @@ const SHARED_CHROME_STYLE = `
   white-space: nowrap;
 }
 
-.md-bar .keep {
-  margin-left: auto;
-  padding: 0.3rem 0.7rem;
+.md-bar .keep,
+.md-bar .save {
+  padding: 0.4rem 0.8rem;
   border: 1px solid var(--md-stroke);
   border-radius: 999px;
   color: var(--md-ink);
@@ -214,7 +276,17 @@ const SHARED_CHROME_STYLE = `
   white-space: nowrap;
 }
 
-.md-bar .keep:hover { border-color: var(--md-brand-3); color: var(--md-brand-3); }
+.md-bar .keep:hover,
+.md-bar .save:hover { border-color: var(--md-brand-3); color: var(--md-brand-3); }
+
+/* The one thing this page wants a stranger to do, so it is the one thing that is painted. */
+.md-bar .save {
+  border-color: transparent;
+  background: var(--md-brand);
+  color: #ffffff;
+}
+
+.md-bar .save:hover { background: var(--md-brand-2); border-color: transparent; color: #ffffff; }
 
 @media print { .md-bar { display: none; } }
 
@@ -349,6 +421,12 @@ interface SharedPageOptions {
   downloadHref?: string;
   /** Where a reader can say this document should not be here. */
   reportHref?: string;
+  /** The document in the app, where somebody signed in can keep a copy of it. */
+  openHref?: string;
+  /** Bytes of Markdown, as the app counts them. */
+  size?: number;
+  /** The counts the app shows under a document's name. Only the three that fit are used. */
+  stats?: { words?: number; headings?: number; tables?: number };
 }
 
 /**
@@ -373,14 +451,41 @@ function worthAScrollLink(body: string): boolean {
   return body.length > 1200 || (body.match(/<img\b/g)?.length ?? 0) >= 3;
 }
 
+/** `39 words`, `1 heading` — English, like the rest of this page, and skipped when it is zero. */
+const count = (n: number | undefined, noun: string): string =>
+  n && n > 0
+    ? `<span><b>${n.toLocaleString('en-GB')}</b> ${noun}${n === 1 ? '' : 's'}</span>`
+    : '';
+
+/** Bytes, in the same words the app uses for them. */
+const weigh = (bytes: number): string => {
+  if (bytes < 1024) {
+    return `${bytes} bytes`;
+  }
+
+  return bytes < 1024 * 1024
+    ? `${(bytes / 1024).toFixed(1)} kB`
+    : `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+};
+
 export function buildSharedPage({
   title,
   body,
   createdAt = Date.now(),
   downloadHref,
   reportHref,
+  openHref,
+  size,
+  stats,
 }: SharedPageOptions): string {
   const stamp = new Date(createdAt).toISOString().slice(0, 10);
+  const counts = [
+    count(stats?.words, 'word'),
+    count(stats?.headings, 'heading'),
+    count(stats?.tables, 'table'),
+  ]
+    .filter(Boolean)
+    .join('');
 
   return `<!doctype html>
 <html lang="en">
@@ -405,8 +510,18 @@ ${SHARED_CHROME_STYLE}
 <body id="md-top-of-page">
 <div class="md-bar">
   <a class="brand" href="/">T<span>&gt;</span>pipe</a>
-  <span class="name">${escapeHtml(title)}</span>
-  ${downloadHref ? `<a class="keep" href="${escapeHtml(downloadHref)}">Download .html</a>` : ''}
+  <div class="doc">
+    <div class="doc-name">
+      <span class="name">${escapeHtml(title)}</span>
+      <span class="badge">shared</span>
+    </div>
+    <div class="doc-meta">${size ? `${weigh(size)} · ` : ''}converted ${escapeHtml(stamp)}</div>
+    ${counts ? `<div class="doc-stats">${counts}</div>` : ''}
+  </div>
+  <div class="actions">
+    ${openHref ? `<a class="save" href="${escapeHtml(openHref)}">Save to your account</a>` : ''}
+    ${downloadHref ? `<a class="keep" href="${escapeHtml(downloadHref)}">Download .html</a>` : ''}
+  </div>
 </div>
 <article class="md-page md-doc">
 ${body}

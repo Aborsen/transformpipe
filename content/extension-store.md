@@ -67,10 +67,80 @@ which are localised with it.
 Everything in the extension serves that sentence. There is no second feature bolted on: the panel,
 the side panel, the context menu and the viewer are four ways into the same conversion.
 
+## The form, field by field
+
+The submission form takes one box per permission, each capped at 1,000 characters. These are the
+texts, written to be pasted as they stand — the prose underneath is the same argument at length,
+for us rather than for the reviewer.
+
+**Single purpose description**
+
+> TransformPipe converts the web page you are on, or a file on your computer, into Markdown, and
+> lets you save or share the result through your own TransformPipe account. Everything in the
+> extension serves that one purpose: the toolbar panel, the side panel and the right-click menu are
+> three ways into the same conversion, and the viewer tab is where a converted document is read and
+> where local files are picked. The conversion runs in the browser; signed out, the extension makes
+> no network request at all.
+
+**activeTab**
+
+> The conversion reads the page the user pressed the button on. activeTab grants that for exactly
+> that tab, at that moment, and for nothing else — no other tab is ever read. It is what lets the
+> extension work with no host permission at all: without it the toolbar button would have nothing
+> to convert.
+
+**scripting**
+
+> Reading the page means running one function inside it: it returns the current selection if there
+> is one, otherwise the document's HTML, plus the page's URL and title. It only reads and never
+> writes to the page, and it is injected only in response to the user pressing the toolbar button,
+> choosing a right-click menu item, or opening the side panel on that page.
+
+**contextMenus**
+
+> Two entries in the right-click menu: "Convert this page to Markdown" and "Convert selection to
+> Markdown". They run the same conversion as the toolbar button, reached the way people expect to
+> reach an action on a selection.
+
+**storage**
+
+> Three things, all of them the user's own: the OAuth token of whoever signed in, the chosen
+> interface language and which surface the toolbar button opens, and — in chrome.storage.session,
+> which is never written to disk — the converted document on its way from the popup to the tab that
+> displays it. No browsing history and no page content are stored.
+
+**sidePanel**
+
+> The side panel is one of the extension's two surfaces: the same conversion kept open beside the
+> page, so somebody working through a set of pages does not reopen a popup at each one. It converts
+> the tab the user is looking at, and only once they have granted the optional host permission it
+> asks for at the moment they turn it on.
+
+**identity**
+
+> Signing in to the user's own TransformPipe account. chrome.identity.launchWebAuthFlow opens our
+> OAuth approval page and returns a token, which is what Save and Share spend. The alternative was
+> asking people to copy an API key by hand, which is a worse experience and a worse credential. The
+> extension never sees or stores a password, and the grant is revocable from the account page.
+
+**Host permissions**
+
+> `<all_urls>` is optional and requested only when the user turns the side panel on. The panel stays
+> open while they browse and converts whatever tab they move to; activeTab is granted per click on
+> the toolbar button and does not survive a tab switch, so a panel that follows the user cannot be
+> built on it, and there is no narrower permission for "the tab in front of the open panel".
+> Refusing it costs the side panel and nothing else — the whole toolbar-button path keeps working.
+> `https://transformpipe.com/*` is optional too: it is where a document goes when the user presses
+> Save or Share, and it is asked for when an account is connected rather than at install.
+
+**Are you using remote code?** — **No.** Everything executable is in the package: no script is
+fetched from a CDN or any other origin, no module is imported over the network, and the two
+typefaces ship as .woff2 files. The extension's only network requests go to transformpipe.com,
+after sign-in, to save or share a document — and those carry data, not code.
+
 ## Permission justifications
 
-One per permission, as the form asks. Each answers "why does this extension need it", in the words
-a reviewer needs rather than ours.
+The same argument at length, and the reasoning behind each answer above.
 
 **`activeTab`** — The conversion reads the page the user pressed the button on. `activeTab` grants
 that for exactly that tab, at that moment, and for nothing else; it is why the extension can be
