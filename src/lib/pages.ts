@@ -17,6 +17,7 @@
 export type StaticPageId =
   | 'about'
   | 'contact'
+  | 'extension'
   | 'privacy'
   | 'terms'
   | 'cookies'
@@ -87,9 +88,32 @@ export const ISSUES_URL = `${REPO_URL}/issues`;
 
 const UPDATED = '2026-09-08';
 
+/*
+ * The privacy page moves on its own, because it is the one that says it will: "if this page changes
+ * in a way that affects what is collected, the date above changes with it". The browser extension
+ * reads pages and keeps a token, which is exactly such a change — and the terms and the cookies
+ * page did not change at all, so they keep the date they earned.
+ */
+const PRIVACY_UPDATED = '2026-09-17';
+
+/*
+ * Where the extension lives in the Chrome Web Store.
+ *
+ * `null` until it is published, and the page's button is hidden while it is: a store link written
+ * ahead of the review is a 404 on the one page whose whole job is to send somebody to the store.
+ * Flipping this to the address is the last step of the submission, not the first.
+ */
+export const STORE_URL: string | null = null;
+
 export const STATIC_PAGES: StaticPage[] = [
   { id: 'contact', path: '/contact', group: 'company', also: 'about' },
-  { id: 'privacy', path: '/privacy', group: 'legal', updated: UPDATED },
+  {
+    id: 'extension',
+    path: '/extension',
+    group: 'company',
+    ...(STORE_URL ? { action: STORE_URL } : {}),
+  },
+  { id: 'privacy', path: '/privacy', group: 'legal', updated: PRIVACY_UPDATED },
   { id: 'terms', path: '/terms', group: 'legal', updated: UPDATED },
   { id: 'cookies', path: '/cookies', group: 'legal', updated: UPDATED },
 

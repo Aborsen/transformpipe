@@ -86,6 +86,67 @@ export const pages: Content['pages'] = {
         'Report a bug, ask for a format, flag a shared document, or ask what is stored and have it deleted.',
     },
   },
+  extension: {
+    label: 'Browser extension',
+    title: 'The browser extension',
+    lede: 'The page you are on, as Markdown, without leaving it.',
+    sections: [
+      {
+        heading: 'One click, and the page is a document',
+        body: [
+          'Press the button in the toolbar and the extension reads the page you are looking at, picks the article out of the navigation and the cookie notices, makes every link and picture address absolute, and hands back Markdown. Copy it, download it, or save the page as a self-contained `.html` file — its own design, its pictures inside the file, no requests to anything.',
+        ],
+      },
+      {
+        heading: 'The pages that have no export',
+        body: [
+          'Documentation, a wiki, a ticket, a thread — anything that exists only rendered. It reads what your browser already has on screen, so a page only you can see converts without anybody handing over a password: Confluence, Jira and Notion need no administrator, no export and no API token.',
+        ],
+      },
+      {
+        heading: 'Two ways to keep it open',
+        body: [
+          'The toolbar button opens a compact panel over the page. The side panel is the same thing kept open beside it, following you from tab to tab and converting each page as you arrive — which is what you want when you are working through a set of them rather than converting one. The right-click menu converts a selection.',
+        ],
+      },
+      {
+        heading: 'Files too, without uploading them',
+        body: [
+          'The same ten conversions the site has — Word, PDF, spreadsheets, HTML, CSV, JSON, EPUB and the rest — run inside the extension. Nothing is uploaded and nothing needs a network connection, and several files picked at once become one document, in the order you picked them.',
+        ],
+      },
+      {
+        heading: 'What it does not do',
+        body: [
+          'The permissions it asks for are the smallest set that does the work, and the largest of them is optional:',
+        ],
+        items: [
+          'Signed out it never talks to us at all. The conversion happens in the page, on your machine.',
+          'There is no analytics in it, no telemetry, and no record of which pages you converted.',
+          'It reads a page only when you press its button or open the side panel on it, and it never writes to a page.',
+          'Reading the tab you are on is granted when you turn the side panel on, and refusing it costs you the panel and nothing else.',
+        ],
+      },
+      {
+        heading: 'With an account',
+        body: [
+          'Sign in — the same account as the site, one click, no key to paste — and Save puts the document where the rest of them are. Share publishes a link, or names the people who may read it; they are told by email and read it signed in as themselves.',
+        ],
+      },
+      {
+        heading: 'Installing it',
+        body: [
+          'Chrome takes it from the Chrome Web Store, and so do the browsers built on Chromium: Edge, Brave, Opera, Arc. It asks for no host permission at install — until you connect an account it has no reason to talk to us — and the side panel asks for what it needs at the moment you turn it on.',
+        ],
+      },
+    ],
+    action: 'Add it to Chrome',
+    seo: {
+      title: 'Browser extension — TransformPipe',
+      description:
+        'Convert the page you are on to Markdown in one click, or a file on your machine — in your browser, offline, and with no account needed.',
+    },
+  },
   privacy: {
     label: 'Privacy',
     title: 'Privacy',
@@ -108,6 +169,19 @@ export const pages: Content['pages'] = {
           'The Markdown itself, in a private blob store — private meaning it has no public URL and is read only through a request we authorise.',
           'API keys as hashes, never the key. A key is shown once, at creation, and cannot be recovered afterwards — not by you and not by us.',
           'Share settings: whether a document is private, open by link, or addressed to particular email addresses, and the token that a link carries.',
+        ],
+      },
+      {
+        heading: 'The browser extension',
+        body: [
+          'The extension converts the page you are on, in that page, on your own machine. It reads a page only after you press its button or open the side panel on it, it never writes to a page, and nothing from a page goes anywhere until you press Save or Share — signed out, it never talks to us at all.',
+        ],
+        items: [
+          'Nothing is collected from your browsing. There is no analytics in the extension, no telemetry, and no record anywhere of which pages you converted.',
+          'Signed in, an OAuth token is kept in the browser’s extension storage — the same grant listed on your account page and revocable there. It is the only credential the extension holds, and no password is in it.',
+          'A converted document passes from the panel to the tab that shows it through session storage, which the browser empties when it closes and never writes to disk.',
+          'Reading the tab you are on is asked for when you turn the side panel on, because a panel that follows you from tab to tab cannot ask again at every one. The toolbar button needs no such permission: it reads the single tab you pressed it on.',
+          'Save and Share send that one document to your account, exactly as the app does. Nothing else leaves the browser.',
         ],
       },
       {

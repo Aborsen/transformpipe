@@ -79,6 +79,67 @@ export const pages: Content['pages'] = {
         'Segnala un bug, chiedi un formato, segnala un documento condiviso, o chiedi cosa viene conservato e fallo eliminare.',
     },
   },
+  extension: {
+    label: 'Estensione per il browser',
+    title: 'L’estensione per il browser',
+    lede: 'La pagina su cui sei, in Markdown, senza lasciarla.',
+    sections: [
+      {
+        heading: 'Un clic e la pagina è un documento',
+        body: [
+          'Premi il pulsante nella barra degli strumenti: l’estensione legge la pagina che stai guardando, estrae l’articolo dalla navigazione e dagli avvisi sui cookie, rende assoluto ogni indirizzo di link e immagine e restituisce Markdown. Copialo, scaricalo, oppure salva la pagina come file `.html` autonomo, con il suo design e le sue immagini dentro il file e senza una sola richiesta.',
+        ],
+      },
+      {
+        heading: 'Le pagine che non hanno un export',
+        body: [
+          'Documentazione, un wiki, un ticket, un thread: tutto ciò che esiste solo renderizzato. Legge quello che il browser ha già a schermo, quindi anche una pagina che vedi solo tu si converte senza che nessuno consegni una password: Confluence, Jira e Notion non richiedono amministratore, export né token API.',
+        ],
+      },
+      {
+        heading: 'Due modi per tenerla aperta',
+        body: [
+          'Il pulsante apre un pannello compatto sopra la pagina. Il pannello laterale è la stessa cosa tenuta aperta di fianco: ti segue di scheda in scheda e converte ogni pagina appena arrivi — quello che serve quando ne stai attraversando una serie invece di convertirne una. Il menu contestuale converte una selezione.',
+        ],
+      },
+      {
+        heading: 'Anche i file, senza caricarli',
+        body: [
+          'Le stesse dieci conversioni del sito — Word, PDF, fogli di calcolo, HTML, CSV, JSON, EPUB e le altre — girano dentro l’estensione. Niente viene caricato e niente richiede una connessione, e più file scelti insieme diventano un solo documento, nell’ordine in cui li hai scelti.',
+        ],
+      },
+      {
+        heading: 'Quello che non fa',
+        body: [
+          'I permessi che chiede sono il gruppo più piccolo che basti al lavoro, e il più ampio fra loro è facoltativo:',
+        ],
+        items: [
+          'Senza accesso non parla affatto con noi. La conversione avviene nella pagina, sul tuo computer.',
+          'Non contiene analitica, né telemetria, né traccia delle pagine che hai convertito.',
+          'Legge una pagina solo quando premi il suo pulsante o apri il pannello laterale su di essa, e non scrive mai nella pagina.',
+          'Leggere la scheda attiva viene concesso quando attivi il pannello laterale; rifiutarlo costa il pannello e nient’altro.',
+        ],
+      },
+      {
+        heading: 'Con un account',
+        body: [
+          'Accedi — lo stesso account del sito, un clic, nessuna chiave da incollare — e Salva mette il documento dove stanno gli altri. Condividi pubblica un link, oppure nomina le persone che possono leggerlo; vengono avvisate per email e lo leggono con il proprio accesso.',
+        ],
+      },
+      {
+        heading: 'Installarla',
+        body: [
+          'Chrome la prende dal Chrome Web Store, e così i browser costruiti su Chromium: Edge, Brave, Opera, Arc. All’installazione non chiede alcun permesso sui siti — finché non colleghi un account non ha motivo di parlare con noi — e il pannello laterale chiede ciò che gli serve nel momento in cui lo attivi.',
+        ],
+      },
+    ],
+    action: 'Aggiungila a Chrome',
+    seo: {
+      title: 'Estensione per il browser — TransformPipe',
+      description:
+        'Converti in un clic in Markdown la pagina su cui sei, o un file del tuo computer: nel browser, offline e senza account.',
+    },
+  },
   privacy: {
     label: 'Privacy',
     title: 'Privacy',
@@ -101,6 +162,19 @@ export const pages: Content['pages'] = {
           'Il Markdown stesso, in un archivio blob privato — privato nel senso che non ha alcun URL pubblico e viene letto solo tramite una richiesta che autorizziamo noi.',
           'Le chiavi API come hash, mai la chiave. Una chiave viene mostrata una volta sola, alla creazione, e in seguito non è più recuperabile: né da te né da noi.',
           'Le impostazioni di condivisione: se un documento è privato, aperto per link o indirizzato a determinati indirizzi email, e il token che un link porta con sé.',
+        ],
+      },
+      {
+        heading: 'L’estensione per il browser',
+        body: [
+          'L’estensione converte la pagina su cui ti trovi, dentro quella pagina e sul tuo computer. Legge una pagina solo dopo che premi il suo pulsante o apri il pannello laterale su di essa, non scrive mai nella pagina, e nulla della pagina va da nessuna parte finché non premi Salva o Condividi: senza aver eseguito l’accesso non parla affatto con noi.',
+        ],
+        items: [
+          'Dalla tua navigazione non viene raccolto nulla. Nell’estensione non c’è analitica né telemetria, e da nessuna parte resta traccia delle pagine che hai convertito.',
+          'Con l’accesso fatto, un token OAuth resta nella memoria delle estensioni del browser: la stessa autorizzazione elencata nella pagina del tuo account e revocabile lì. È l’unica credenziale che l’estensione conserva e non contiene alcuna password.',
+          'Un documento convertito passa dal pannello alla scheda che lo mostra attraverso la memoria di sessione, che il browser svuota alla chiusura e non scrive mai su disco.',
+          'Leggere la scheda su cui ti trovi viene chiesto quando attivi il pannello laterale, perché un pannello che ti segue di scheda in scheda non può chiedere di nuovo a ognuna. Il pulsante nella barra degli strumenti non ne ha bisogno: legge la sola scheda su cui l’hai premuto.',
+          'Salva e Condividi inviano quel solo documento al tuo account, esattamente come fa l’app. Nient’altro lascia il browser.',
         ],
       },
       {

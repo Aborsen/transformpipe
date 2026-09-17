@@ -88,6 +88,67 @@ export const pages: Content['pages'] = {
         'Einen Fehler melden, ein Format wünschen, ein geteiltes Dokument melden oder fragen, was gespeichert wird — und es löschen lassen.',
     },
   },
+  extension: {
+    label: 'Browser-Erweiterung',
+    title: 'Die Browser-Erweiterung',
+    lede: 'Die Seite, auf der Sie sind, als Markdown — ohne sie zu verlassen.',
+    sections: [
+      {
+        heading: 'Ein Klick, und die Seite ist ein Dokument',
+        body: [
+          'Drücken Sie die Schaltfläche in der Symbolleiste: Die Erweiterung liest die Seite, die Sie ansehen, holt den Artikel aus Navigation und Cookie-Hinweisen heraus, macht jede Link- und Bildadresse absolut und gibt Markdown zurück. Kopieren, herunterladen — oder die Seite als eigenständige `.html`-Datei sichern, mit ihrem Design und ihren Bildern in der Datei und ohne einen einzigen Netzwerkaufruf.',
+        ],
+      },
+      {
+        heading: 'Die Seiten, die keinen Export haben',
+        body: [
+          'Dokumentation, ein Wiki, ein Ticket, ein Verlauf — alles, was nur gerendert existiert. Gelesen wird, was Ihr Browser ohnehin auf dem Schirm hat, also wird auch eine Seite umgewandelt, die nur Sie sehen, ohne dass jemand ein Passwort herausgibt: Confluence, Jira und Notion brauchen weder Administrator noch Export noch API-Token.',
+        ],
+      },
+      {
+        heading: 'Zwei Arten, sie offen zu halten',
+        body: [
+          'Die Schaltfläche öffnet ein kompaktes Panel über der Seite. Die Seitenleiste ist dasselbe, daneben offen gehalten: Sie folgt Ihnen von Tab zu Tab und wandelt jede Seite um, sobald Sie ankommen — was Sie wollen, wenn Sie eine ganze Reihe durcharbeiten statt eine einzelne umzuwandeln. Das Kontextmenü wandelt eine Auswahl um.',
+        ],
+      },
+      {
+        heading: 'Auch Dateien, ohne sie hochzuladen',
+        body: [
+          'Dieselben zehn Umwandlungen wie auf der Website — Word, PDF, Tabellen, HTML, CSV, JSON, EPUB und der Rest — laufen in der Erweiterung. Nichts wird hochgeladen, nichts braucht eine Verbindung, und mehrere auf einmal gewählte Dateien werden ein Dokument, in der Reihenfolge, in der Sie sie gewählt haben.',
+        ],
+      },
+      {
+        heading: 'Was sie nicht tut',
+        body: [
+          'Die Berechtigungen sind der kleinste Satz, der die Arbeit erledigt, und der größte davon ist optional:',
+        ],
+        items: [
+          'Abgemeldet spricht sie überhaupt nicht mit uns. Die Umwandlung passiert in der Seite, auf Ihrem Rechner.',
+          'Es steckt keine Analyse darin, keine Telemetrie und keine Aufzeichnung darüber, welche Seiten Sie umgewandelt haben.',
+          'Sie liest eine Seite nur, wenn Sie ihre Schaltfläche drücken oder die Seitenleiste darauf öffnen, und sie schreibt nie in eine Seite.',
+          'Den aktuellen Tab zu lesen wird beim Einschalten der Seitenleiste erteilt; wer es verweigert, verliert die Leiste und sonst nichts.',
+        ],
+      },
+      {
+        heading: 'Mit einem Konto',
+        body: [
+          'Melden Sie sich an — dasselbe Konto wie auf der Website, ein Klick, kein Schlüssel zum Einfügen — und Speichern legt das Dokument dorthin, wo die anderen liegen. Teilen veröffentlicht einen Link oder benennt die Personen, die lesen dürfen; sie werden per E-Mail benachrichtigt und lesen angemeldet als sie selbst.',
+        ],
+      },
+      {
+        heading: 'Installieren',
+        body: [
+          'Chrome holt sie aus dem Chrome Web Store, und die Chromium-Browser ebenso: Edge, Brave, Opera, Arc. Bei der Installation verlangt sie keine Host-Berechtigung — bis Sie ein Konto verbinden, hat sie keinen Grund, mit uns zu sprechen — und die Seitenleiste fragt in dem Moment nach, in dem Sie sie einschalten.',
+        ],
+      },
+    ],
+    action: 'Zu Chrome hinzufügen',
+    seo: {
+      title: 'Browser-Erweiterung — TransformPipe',
+      description:
+        'Wandeln Sie die geöffnete Seite mit einem Klick in Markdown um, oder eine Datei auf Ihrem Rechner — im Browser, offline und ohne Konto.',
+    },
+  },
   privacy: {
     label: 'Datenschutz',
     title: 'Datenschutz',
@@ -110,6 +171,19 @@ export const pages: Content['pages'] = {
           'Das Markdown selbst, in einem privaten Blob-Speicher — privat heißt: er hat keine öffentliche URL und wird nur über eine Anfrage gelesen, die wir autorisieren.',
           'API-Schlüssel als Hashes, nie den Schlüssel. Ein Schlüssel wird einmal gezeigt, bei der Erstellung, und ist danach nicht wiederherstellbar — nicht durch Sie und nicht durch uns.',
           'Freigabe-Einstellungen: ob ein Dokument privat, per Link offen oder an bestimmte E-Mail-Adressen gerichtet ist, und das Token, das ein Link trägt.',
+        ],
+      },
+      {
+        heading: 'Die Browser-Erweiterung',
+        body: [
+          'Die Erweiterung wandelt die Seite um, auf der Sie gerade sind – in dieser Seite, auf Ihrem eigenen Rechner. Sie liest eine Seite erst, wenn Sie ihre Schaltfläche drücken oder die Seitenleiste darauf öffnen, sie schreibt nie in eine Seite, und nichts aus einer Seite geht irgendwohin, bevor Sie Speichern oder Teilen drücken – abgemeldet spricht sie überhaupt nicht mit uns.',
+        ],
+        items: [
+          'Aus Ihrem Surfen wird nichts erhoben. In der Erweiterung steckt keine Analyse, keine Telemetrie und nirgends eine Aufzeichnung darüber, welche Seiten Sie umgewandelt haben.',
+          'Angemeldet liegt ein OAuth-Token im Erweiterungsspeicher des Browsers – dieselbe Freigabe, die auf Ihrer Kontoseite steht und dort widerrufbar ist. Es ist die einzige Anmeldeinformation der Erweiterung, ein Passwort steckt nicht darin.',
+          'Ein umgewandeltes Dokument geht über den Sitzungsspeicher von der Leiste in den Tab, der es zeigt; der Browser leert ihn beim Schließen und schreibt ihn nie auf die Festplatte.',
+          'Den Tab zu lesen, auf dem Sie sind, wird beim Einschalten der Seitenleiste erfragt, weil eine Leiste, die Ihnen von Tab zu Tab folgt, nicht bei jedem erneut fragen kann. Die Schaltfläche in der Symbolleiste braucht das nicht: Sie liest genau den einen Tab, auf dem Sie sie gedrückt haben.',
+          'Speichern und Teilen senden dieses eine Dokument an Ihr Konto, genau wie die App. Sonst verlässt nichts den Browser.',
         ],
       },
       {

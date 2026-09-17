@@ -46,13 +46,71 @@ function assets(): Plugin {
         );
       }
 
+      /*
+       * Every size Chrome asks for, each one drawn at that size rather than scaled down from the
+       * next one up: 16 in the toolbar, 32 on a retina screen, 48 on the extensions page, 128 in
+       * the store. `npm run icons` draws them all from `brand/mark.svg`.
+       */
       for (const [from, to] of [
+        ['favicon-16.png', 'icon-16.png'],
+        ['favicon-32.png', 'icon-32.png'],
+        ['icon-48.png', 'icon-48.png'],
         ['icon-192.png', 'icon-128.png'],
-        ['icon-192.png', 'icon-192.png'],
         ['icon-512.png', 'icon-512.png'],
-        ['favicon-96.png', 'icon-48.png'],
       ]) {
         copyFileSync(path.join(ROOT, 'public', from), path.join(OUT, 'icons', to));
+      }
+
+      /*
+       * The name and the description, in the five languages the extension already speaks.
+       *
+       * Chrome reads these from `_locales/<lang>/messages.json` and the manifest points at them
+       * with `__MSG_…__`, so the store listing and the browser's own menus are in the reader's
+       * language rather than in English for four of the five. They live here rather than in
+       * `src/lib/i18n/messages/*` because they are not interface text: nothing in the product says
+       * these sentences, and a store description is written for a shopfront, not for a panel.
+       */
+      const LISTING: Record<string, { name: string; description: string }> = {
+        en: {
+          name: 'TransformPipe — page and file to Markdown',
+          description:
+            'Convert the page you are on, or a file on your machine, to Markdown. In your browser, offline, no account needed.',
+        },
+        de: {
+          name: 'TransformPipe — Seite und Datei zu Markdown',
+          description:
+            'Wandeln Sie die geöffnete Seite oder eine Datei auf Ihrem Rechner in Markdown um. Im Browser, offline, ohne Konto.',
+        },
+        fr: {
+          name: 'TransformPipe — page et fichier en Markdown',
+          description:
+            'Convertissez la page où vous êtes, ou un fichier de votre machine, en Markdown. Dans votre navigateur, hors ligne, sans compte.',
+        },
+        es: {
+          name: 'TransformPipe — página y archivo a Markdown',
+          description:
+            'Convierte la página en la que estás, o un archivo de tu equipo, a Markdown. En tu navegador, sin conexión y sin cuenta.',
+        },
+        it: {
+          name: 'TransformPipe — pagina e file in Markdown',
+          description:
+            'Converti la pagina su cui ti trovi, o un file del tuo computer, in Markdown. Nel browser, offline, senza account.',
+        },
+      };
+
+      for (const [locale, words] of Object.entries(LISTING)) {
+        mkdirSync(path.join(OUT, '_locales', locale), { recursive: true });
+        writeFileSync(
+          path.join(OUT, '_locales', locale, 'messages.json'),
+          `${JSON.stringify(
+            {
+              appName: { message: words.name },
+              appDesc: { message: words.description },
+            },
+            null,
+            2
+          )}\n`
+        );
       }
 
       /*
@@ -62,11 +120,18 @@ function assets(): Plugin {
        */
       const manifest = {
         manifest_version: 3,
-        name: 'TransformPipe — page and file to Markdown',
+        name: '__MSG_appName__',
         short_name: 'TransformPipe',
-        description:
-          'Convert the page you are on, or a file on your machine, to Markdown. In your browser, offline, no account needed.',
+        description: '__MSG_appDesc__',
+        default_locale: 'en',
         version,
+        /*
+         * The side panel is Chrome 114. Without this line the extension installs on an older one
+         * and half of it is missing at runtime, which is a bug report rather than a message from
+         * the browser saying the version is too old.
+         */
+        minimum_chrome_version: '114',
+        homepage_url: 'https://transformpipe.com/extension',
         action: {
           default_title: 'TransformPipe',
           default_popup: 'popup.html',
@@ -98,6 +163,8 @@ function assets(): Plugin {
          */
         side_panel: { default_path: 'panel.html' },
         icons: {
+          '16': 'icons/icon-16.png',
+          '32': 'icons/icon-32.png',
           '48': 'icons/icon-48.png',
           '128': 'icons/icon-128.png',
           '512': 'icons/icon-512.png',

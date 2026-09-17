@@ -84,6 +84,67 @@ export const pages: Content['pages'] = {
         'Informa de un fallo, pide un formato, denuncia un documento compartido o pregunta qué se guarda y pide que se elimine.',
     },
   },
+  extension: {
+    label: 'Extensión del navegador',
+    title: 'La extensión del navegador',
+    lede: 'La página en la que estás, en Markdown, sin salir de ella.',
+    sections: [
+      {
+        heading: 'Un clic y la página es un documento',
+        body: [
+          'Pulsa el botón de la barra de herramientas: la extensión lee la página que estás viendo, saca el artículo de entre la navegación y los avisos de cookies, convierte en absoluta cada dirección de enlace e imagen y devuelve Markdown. Cópialo, descárgalo o guarda la página como un archivo `.html` autónomo, con su diseño y sus imágenes dentro del archivo y sin una sola petición.',
+        ],
+      },
+      {
+        heading: 'Las páginas que no tienen exportación',
+        body: [
+          'Documentación, un wiki, un ticket, un hilo: cualquier cosa que solo existe renderizada. Lee lo que tu navegador ya tiene en pantalla, así que una página que solo ves tú se convierte sin que nadie entregue una contraseña: Confluence, Jira y Notion no necesitan administrador, ni exportación, ni token de API.',
+        ],
+      },
+      {
+        heading: 'Dos maneras de tenerla abierta',
+        body: [
+          'El botón abre un panel compacto sobre la página. El panel lateral es lo mismo mantenido abierto al lado: te sigue de pestaña en pestaña y convierte cada página según llegas, que es lo que quieres cuando recorres un conjunto de ellas en lugar de convertir una. El menú contextual convierte una selección.',
+        ],
+      },
+      {
+        heading: 'También archivos, sin subirlos',
+        body: [
+          'Las mismas diez conversiones del sitio —Word, PDF, hojas de cálculo, HTML, CSV, JSON, EPUB y las demás— se ejecutan dentro de la extensión. Nada se sube y nada necesita conexión, y varios archivos elegidos a la vez se convierten en un solo documento, en el orden en que los elegiste.',
+        ],
+      },
+      {
+        heading: 'Lo que no hace',
+        body: [
+          'Los permisos que pide son el conjunto más pequeño que hace el trabajo, y el mayor de ellos es opcional:',
+        ],
+        items: [
+          'Sin sesión iniciada no habla con nosotros en absoluto. La conversión ocurre en la página, en tu equipo.',
+          'No lleva analítica, ni telemetría, ni registro de qué páginas has convertido.',
+          'Solo lee una página cuando pulsas su botón o abres el panel lateral sobre ella, y nunca escribe en la página.',
+          'Leer la pestaña actual se concede al activar el panel lateral; negarlo te cuesta el panel y nada más.',
+        ],
+      },
+      {
+        heading: 'Con una cuenta',
+        body: [
+          'Inicia sesión —la misma cuenta que el sitio, un clic, ninguna clave que pegar— y Guardar deja el documento donde están los demás. Compartir publica un enlace, o nombra a las personas que pueden leerlo; se les avisa por correo y lo leen con su propia sesión iniciada.',
+        ],
+      },
+      {
+        heading: 'Instalarla',
+        body: [
+          'Chrome la toma de la Chrome Web Store, y los navegadores construidos sobre Chromium también: Edge, Brave, Opera, Arc. Al instalarse no pide ningún permiso de sitio —hasta que conectas una cuenta no tiene motivo para hablar con nosotros— y el panel lateral pide lo que necesita en el momento en que lo activas.',
+        ],
+      },
+    ],
+    action: 'Añadirla a Chrome',
+    seo: {
+      title: 'Extensión del navegador — TransformPipe',
+      description:
+        'Convierte en un clic a Markdown la página en la que estás, o un archivo de tu equipo: en tu navegador, sin conexión y sin cuenta.',
+    },
+  },
   privacy: {
     label: 'Privacidad',
     title: 'Privacidad',
@@ -106,6 +167,19 @@ export const pages: Content['pages'] = {
           'El Markdown en sí, en un almacén de blobs privado — privado quiere decir que no tiene ninguna URL pública y solo se lee mediante una petición que autorizamos.',
           'Las claves API como hashes, nunca la clave. Una clave se muestra una vez, al crearla, y después no se puede recuperar — ni tú ni nosotros.',
           'Los ajustes de compartición: si un documento es privado, abierto por enlace o dirigido a direcciones de correo concretas, y el token que lleva un enlace.',
+        ],
+      },
+      {
+        heading: 'La extensión del navegador',
+        body: [
+          'La extensión convierte la página en la que estás, dentro de esa página y en tu propio equipo. Solo lee una página después de que pulses su botón o abras el panel lateral sobre ella, nunca escribe en la página, y nada de ella sale a ninguna parte hasta que pulsas Guardar o Compartir: sin sesión iniciada no habla con nosotros en absoluto.',
+        ],
+        items: [
+          'De tu navegación no se recoge nada. La extensión no lleva analítica ni telemetría, y en ningún sitio queda registro de qué páginas has convertido.',
+          'Con sesión iniciada, un token de OAuth queda en el almacenamiento de extensiones del navegador: la misma autorización que aparece en tu página de cuenta y que allí se revoca. Es la única credencial que guarda la extensión, y no contiene ninguna contraseña.',
+          'Un documento convertido pasa del panel a la pestaña que lo muestra a través del almacenamiento de sesión, que el navegador vacía al cerrarse y nunca escribe en disco.',
+          'Leer la pestaña en la que estás se pide cuando activas el panel lateral, porque un panel que te sigue de pestaña en pestaña no puede volver a preguntar en cada una. El botón de la barra de herramientas no lo necesita: lee la única pestaña en la que lo pulsaste.',
+          'Guardar y Compartir envían ese único documento a tu cuenta, igual que la aplicación. Nada más sale del navegador.',
         ],
       },
       {

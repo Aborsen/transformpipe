@@ -80,7 +80,14 @@ function mark({ radius, scale }) {
  * mask anybody ships.
  */
 const ICONS = [
+  /*
+   * 16 and 48 are the extension's sizes rather than the site's: Chrome draws the toolbar icon at
+   * 16 (32 on a retina screen) and the extensions page at 48, and left to scale a 96 down to 16 it
+   * loses the crossbar of the T. They are drawn here because this is where the mark is drawn.
+   */
+  { file: 'favicon-16.png', size: 16, radius: 3, scale: 1 },
   { file: 'favicon-32.png', size: 32, radius: 6, scale: 1 },
+  { file: 'icon-48.png', size: 48, radius: 6, scale: 1 },
   { file: 'favicon-96.png', size: 96, radius: 6, scale: 1 },
   { file: 'apple-touch-icon.png', size: 180, radius: 0, scale: 1 },
   { file: 'icon-192.png', size: 192, radius: 6, scale: 1 },

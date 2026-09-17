@@ -614,6 +614,7 @@ const PAGES = [
   ['how-to/assistant', 'Share from an assistant', 'How to', ACCENTS.Automation],
   ['about', 'About TransformPipe', 'Company', ACCENTS.Workflow],
   ['contact', 'Contact us', 'Company', ACCENTS.Workflow],
+  ['extension', 'The browser extension', 'Company', ACCENTS.Converting],
   ['privacy', 'Privacy', 'Legal', ACCENTS.Safety],
   ['terms', 'Terms of use', 'Legal', ACCENTS.Safety],
   ['cookies', 'Cookies', 'Legal', ACCENTS.Safety],

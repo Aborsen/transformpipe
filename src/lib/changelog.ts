@@ -32,6 +32,19 @@ export interface ChangelogEntry {
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-17',
+    title: 'A browser extension',
+    body:
+      'The page you are on, as Markdown, without leaving it: press the button in the toolbar and '
+      + 'the article comes back without the navigation, the sidebar or the cookie notice. Copy it, '
+      + 'download it, or save the page as a self-contained `.html` file with its pictures inside. '
+      + 'The side panel is the same thing kept open beside the page, converting each tab as you '
+      + 'arrive at it, and the ten conversions the site has run inside the extension too — nothing '
+      + 'is uploaded and none of it needs a network. Signed in, Save and Share put a document on '
+      + 'your account and publish a link or name the people who may read it. '
+      + '[What it is and what it never does](/extension).',
+  },
+  {
+    date: '2026-09-17',
     title: 'A shared document says where it came from',
     body:
       'Somebody who opens a link you shared now finds a line at the foot of it about what made the '

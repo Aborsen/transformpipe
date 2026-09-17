@@ -204,5 +204,21 @@ new code written against a guess.
    install dialog reads the same whether it is used or not.
 2. **Firefox**: same code, a different manifest key, packaged separately. The side panel is
    `sidebar_action` there rather than `side_panel`, which is the one part that is not the same file.
-3. **The store**: listing text, screenshots out of the viewer, the privacy answers — and the page on
-   this site that says the extension exists.
+   Still open, and the only thing on this list that is.
+3. ~~**The store**~~ — done, and it is `content/extension-store.md`: the listing text, the single
+   purpose, a justification per permission (the interesting one is `<all_urls>`, which the side
+   panel needs and nothing else does), the data answers, and what to tick on the form. Beside it:
+
+   - `npm run ext:art` draws the five 1280×800 screenshots and the 440×280 tile from the
+     extension's own interface — a stubbed `chrome` object, a sample page, and the real panel. A
+     change to the design is in the assets on the next run rather than in a file somebody has to
+     remember to redraw.
+   - `npm run ext:zip` builds and packs, refusing a package with a missing icon or a `default_locale`
+     with no catalogue behind it.
+   - `/extension` on this site says what it is and what it never does, in five languages, and the
+     button to the store appears when `STORE_URL` in `src/lib/pages.ts` stops being `null`.
+   - The privacy page has a section of its own about the extension — what is read, what is kept,
+     and the two storages it uses. Chrome requires it and it was the honest thing anyway.
+   - The manifest now carries `minimum_chrome_version` (114, for the side panel), `homepage_url`,
+     icons drawn at 16, 32, 48, 128 and 512, and `_locales` for the five languages, so the name and
+     the description in the store are not English for four of the five readers.

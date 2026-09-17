@@ -80,6 +80,67 @@ export const pages: Content['pages'] = {
         'Signaler un bug, demander un format, signaler un document partagé, ou demander ce qui est conservé et le faire supprimer.',
     },
   },
+  extension: {
+    label: 'Extension de navigateur',
+    title: 'L’extension de navigateur',
+    lede: 'La page où vous êtes, en Markdown, sans la quitter.',
+    sections: [
+      {
+        heading: 'Un clic, et la page devient un document',
+        body: [
+          'Appuyez sur le bouton de la barre d’outils : l’extension lit la page que vous regardez, extrait l’article de la navigation et des bandeaux de cookies, rend absolue chaque adresse de lien et d’image, et rend du Markdown. Copiez-le, téléchargez-le, ou enregistrez la page en un fichier `.html` autonome — son design, ses images dans le fichier, et aucune requête vers quoi que ce soit.',
+        ],
+      },
+      {
+        heading: 'Les pages qui n’ont pas d’export',
+        body: [
+          'Une documentation, un wiki, un ticket, un fil — tout ce qui n’existe que rendu. L’extension lit ce que votre navigateur affiche déjà, donc une page que vous seul pouvez voir se convertit sans que personne ne confie un mot de passe : Confluence, Jira et Notion n’ont besoin ni d’administrateur, ni d’export, ni de jeton d’API.',
+        ],
+      },
+      {
+        heading: 'Deux façons de la garder ouverte',
+        body: [
+          'Le bouton ouvre un panneau compact par-dessus la page. Le panneau latéral est la même chose gardée ouverte à côté : il vous suit d’un onglet à l’autre et convertit chaque page à votre arrivée — ce que vous voulez quand vous parcourez une série de pages plutôt que d’en convertir une. Le menu contextuel convertit une sélection.',
+        ],
+      },
+      {
+        heading: 'Des fichiers aussi, sans les téléverser',
+        body: [
+          'Les dix conversions du site — Word, PDF, tableurs, HTML, CSV, JSON, EPUB et le reste — tournent dans l’extension. Rien n’est téléversé, rien n’exige de connexion, et plusieurs fichiers choisis ensemble deviennent un seul document, dans l’ordre où vous les avez choisis.',
+        ],
+      },
+      {
+        heading: 'Ce qu’elle ne fait pas',
+        body: [
+          'Les autorisations demandées sont le plus petit ensemble qui fasse le travail, et la plus large d’entre elles est facultative :',
+        ],
+        items: [
+          'Déconnecté, elle ne nous parle pas du tout. La conversion a lieu dans la page, sur votre machine.',
+          'Elle ne contient ni analytique, ni télémétrie, ni trace des pages que vous avez converties.',
+          'Elle ne lit une page que lorsque vous pressez son bouton ou ouvrez le panneau latéral, et elle n’écrit jamais dans une page.',
+          'Lire l’onglet courant s’accorde au moment où vous activez le panneau latéral ; le refuser vous coûte le panneau et rien d’autre.',
+        ],
+      },
+      {
+        heading: 'Avec un compte',
+        body: [
+          'Connectez-vous — le même compte que le site, un clic, aucune clé à coller — et Enregistrer place le document là où sont les autres. Partager publie un lien, ou nomme les personnes autorisées à le lire ; elles sont prévenues par e-mail et le lisent connectées sous leur propre identité.',
+        ],
+      },
+      {
+        heading: 'L’installer',
+        body: [
+          'Chrome la prend sur le Chrome Web Store, et les navigateurs bâtis sur Chromium aussi : Edge, Brave, Opera, Arc. À l’installation elle ne demande aucune autorisation de site — tant que vous ne connectez pas de compte, elle n’a aucune raison de nous parler — et le panneau latéral demande ce qu’il lui faut au moment où vous l’activez.',
+        ],
+      },
+    ],
+    action: 'L’ajouter à Chrome',
+    seo: {
+      title: 'Extension de navigateur — TransformPipe',
+      description:
+        'Convertissez en un clic la page où vous êtes en Markdown, ou un fichier de votre machine — dans votre navigateur, hors ligne et sans compte.',
+    },
+  },
   privacy: {
     label: 'Confidentialité',
     title: 'Confidentialité',
@@ -102,6 +163,19 @@ export const pages: Content['pages'] = {
           'Le Markdown lui-même, dans un stockage d’objets privé — privé signifiant qu’il n’a pas d’URL publique et n’est lu qu’au travers d’une requête que nous autorisons.',
           'Les clés API sous forme de hachages, jamais la clé. Une clé n’est affichée qu’une fois, à sa création, et ne peut plus être retrouvée ensuite — ni par vous, ni par nous.',
           'Les réglages de partage : si un document est privé, ouvert par lien, ou adressé à des adresses e-mail précises, et le jeton que porte un lien.',
+        ],
+      },
+      {
+        heading: 'L’extension de navigateur',
+        body: [
+          'L’extension convertit la page où vous êtes, dans cette page et sur votre propre machine. Elle ne lit une page qu’après une pression sur son bouton ou l’ouverture du panneau latéral, elle n’écrit jamais dans une page, et rien d’une page ne part où que ce soit avant que vous n’appuyiez sur Enregistrer ou Partager — déconnecté, elle ne nous parle pas du tout.',
+        ],
+        items: [
+          'Rien n’est collecté de votre navigation. L’extension ne contient ni analytique, ni télémétrie, et nulle part la trace des pages que vous avez converties.',
+          'Connecté, un jeton OAuth reste dans le stockage d’extension du navigateur — la même autorisation qui figure sur votre page de compte et s’y révoque. C’est le seul identifiant que l’extension détient, et aucun mot de passe ne s’y trouve.',
+          'Un document converti passe du panneau à l’onglet qui l’affiche par le stockage de session, que le navigateur vide à la fermeture et n’écrit jamais sur le disque.',
+          'La lecture de l’onglet où vous êtes est demandée au moment où vous activez le panneau latéral, car un panneau qui vous suit d’un onglet à l’autre ne peut pas redemander à chacun. Le bouton de la barre d’outils n’en a pas besoin : il lit le seul onglet sur lequel vous l’avez pressé.',
+          'Enregistrer et Partager envoient ce seul document à votre compte, exactement comme l’application. Rien d’autre ne quitte le navigateur.',
         ],
       },
       {
