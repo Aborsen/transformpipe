@@ -108,6 +108,39 @@ export async function snapshot(
 
   const copy = document.documentElement.cloneNode(true) as HTMLElement;
 
+  /*
+   * Where a line break is safe, decided by the page itself.
+   *
+   * A saved page arrives as a few lines of half a million characters, which renders perfectly and
+   * cannot be read by a person. Breaking it anywhere is not an option: whitespace between two
+   * inline-block elements is a visible gap, so a formatter that does not know the CSS will move
+   * things on the page to make the file prettier.
+   *
+   * This runs inside the page, where the answer is knowable: `getComputedStyle` says what each
+   * element actually is, and a break before an element whose display is block, flex, grid or a
+   * table part changes nothing at all. The clone is walked in lockstep with the live tree, before
+   * anything is removed from it, so the two are still the same shape.
+   */
+  const INLINE = /^(inline|inline-block|inline-flex|inline-grid|contents|none)$/;
+  const breakBefore = new WeakSet<Element>();
+  const live = [document.documentElement, ...document.documentElement.querySelectorAll('*')];
+  const copies = [copy, ...copy.querySelectorAll('*')];
+
+  for (let index = 0; index < live.length && index < copies.length; index++) {
+    const element = live[index];
+
+    if (INLINE.test(getComputedStyle(element).display)) {
+      continue;
+    }
+
+    /* Inside these, whitespace is content: a line break would show up in the rendered text. */
+    if (element.closest('pre, textarea, code, samp, kbd')) {
+      continue;
+    }
+
+    breakBefore.add(copies[index]);
+  }
+
   /* Nothing that runs, and nothing that asks the network for more of the page. */
   for (const node of copy.querySelectorAll(
     'script, noscript, link[rel~="preload"], link[rel~="prefetch"], link[rel~="modulepreload"], iframe, object, embed'
@@ -254,21 +287,33 @@ export async function snapshot(
   head.prepend(note);
 
   /*
-   * A line break between the things a head and a body are made of. Whitespace between elements is
-   * whitespace the renderer collapses, so this changes nothing about how the page looks and a great
-   * deal about whether the file can be read at all.
+   * The breaks, put in last — after the removing and the inlining, so nothing walks over them.
+   * Two spaces per level of depth, capped: an app's markup is forty levels deep in places and an
+   * indent that deep is a horizontal scrollbar rather than a structure anybody can see.
    */
-  for (const parent of [head, copy.querySelector('body')]) {
-    if (!parent) {
+  for (const element of [copy, ...copy.querySelectorAll('*')]) {
+    if (!breakBefore.has(element) || !element.parentNode) {
       continue;
     }
 
-    for (const child of [...parent.children]) {
-      parent.insertBefore(document.createTextNode('\n'), child);
+    let depth = 0;
+
+    for (let up = element.parentElement; up; up = up.parentElement) {
+      depth++;
     }
 
-    parent.append(document.createTextNode('\n'));
+    element.parentNode.insertBefore(
+      document.createTextNode(`\n${'  '.repeat(Math.min(depth, 12))}`),
+      element
+    );
   }
+
+  /* The head is not laid out, so its children are a separate, equally safe case. */
+  for (const child of [...head.children]) {
+    head.insertBefore(document.createTextNode('\n'), child);
+  }
+
+  head.append(document.createTextNode('\n'));
 
   return {
     html: `<!doctype html>\n${copy.outerHTML}`,
