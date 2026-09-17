@@ -37,9 +37,14 @@ const MAX_TOTAL = 12 * 1024 * 1024;
 function fetchImages(urls: string[], maxImage: number, maxTotal: number) {
   const read = async (url: string): Promise<[string, string] | null> => {
     try {
-      const response = await fetch(url, { credentials: 'include' });
+      /* With the page's credentials, then without: a public CDN refuses a credentialed request. */
+      const first = await fetch(url, { credentials: 'include' }).catch(() => null);
+      const response =
+        first && first.ok
+          ? first
+          : await fetch(url, { credentials: 'omit' }).catch(() => null);
 
-      if (!response.ok) {
+      if (!response?.ok) {
         return null;
       }
 

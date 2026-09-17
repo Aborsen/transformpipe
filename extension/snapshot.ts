@@ -38,13 +38,25 @@ export async function snapshot(
     }
 
     try {
-      const response = await fetch(url, { credentials: 'include' });
+      /*
+       * Credentials first, because an image behind a login needs them — and then without, because
+       * a CDN that allows anonymous reads refuses a credentialed one outright: `Access-Control-
+       * Allow-Origin: *` and `include` cannot both be true. Six pictures came back as addresses in
+       * a saved GitHub page for exactly that reason.
+       */
+      const response = await fetch(url, { credentials: 'include' }).catch(
+        () => null
+      );
+      const answer =
+        response && response.ok
+          ? response
+          : await fetch(url, { credentials: 'omit' }).catch(() => null);
 
-      if (!response.ok) {
+      if (!answer?.ok) {
         return null;
       }
 
-      const blob = await response.blob();
+      const blob = await answer.blob();
 
       if (blob.size > maxAsset || spent + blob.size > maxTotal) {
         return null;
