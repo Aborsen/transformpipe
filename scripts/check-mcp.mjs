@@ -540,6 +540,10 @@ check(
   (resources.body?.result?.resources ?? []).some((one) => one.uri.endsWith('/document-list'))
 );
 check(
+  'and the delete confirmation',
+  (resources.body?.result?.resources ?? []).some((one) => one.uri.endsWith('/delete-confirm'))
+);
+check(
   'and calls it what the extension requires',
   cardResource?.mimeType === 'text/html;profile=mcp-app',
   cardResource?.mimeType
@@ -586,6 +590,16 @@ check(
 check(
   'and listing points at the list',
   tools.find((one) => one.name === 'tp_list_documents')?._meta?.ui?.resourceUri?.endsWith('/document-list') === true
+);
+check(
+  'and deleting points at the confirmation',
+  tools.find((one) => one.name === 'tp_delete_document')?._meta?.ui?.resourceUri?.endsWith('/delete-confirm') === true
+);
+check(
+  'every UI link is written both ways, for hosts that read the older one',
+  tools
+    .filter((one) => one._meta?.ui?.resourceUri)
+    .every((one) => one._meta['openai/outputTemplate'] === one._meta.ui.resourceUri)
 );
 check('ten tools or fewer, and none named after a document', names.length <= 10 && names.length >= 7, names.join(', '));
 check('every tool has an inputSchema', (listed.body?.result?.tools ?? []).every((t) => t.inputSchema?.type === 'object'));

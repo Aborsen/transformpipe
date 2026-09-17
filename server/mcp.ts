@@ -13,6 +13,8 @@ import { type Caller, mayWrite, resolveCaller } from './caller.js';
 import { countCall, QUOTA, RATE } from './limits.js';
 import { markdownToHtml } from './render.js';
 import {
+  DELETE_CONFIRM_HTML,
+  DELETE_CONFIRM_URI,
   DOCUMENT_CARD_HTML,
   DOCUMENT_CARD_URI,
   DOCUMENT_LIST_HTML,
@@ -55,7 +57,16 @@ const SAVE_KINDS: Record<string, string> = {
 /** Versions this server will speak if a client asks for one of them. */
 const SPOKEN = new Set(['2024-11-05', '2025-03-26', '2025-06-18', '2025-11-25']);
 const NEWEST = '2025-11-25';
-const SERVER = { name: 'TransformPipe', version: '1.0.0' };
+/*
+ * The version is the repository's, not a second one kept here.
+ *
+ * `package.json` is what the release tags and the extension manifest already agree on, and the one
+ * place a bump is not forgotten — it was '1.0.0' here while the repository was tagged v2.0.0, which
+ * is the drift this import removes. A JSON import needs no build step in this runtime.
+ */
+import { version } from '../package.json' with { type: 'json' };
+
+const SERVER = { name: 'TransformPipe', version };
 
 /**
  * Who this server says it is, in the words a client can put on a screen.
@@ -1074,6 +1085,7 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_delete_document: {
     description:
       'Permanently delete one document from this account, and its Markdown source with it. There is no undo and no trash. Pass confirm: true only when the person has named this document and asked for it to be deleted; ask them otherwise. Deletes exactly one — there is no tool that deletes several.',
+    ui: DELETE_CONFIRM_URI,
     annotations: {
       title: 'Delete a document',
       readOnlyHint: false,
@@ -1103,10 +1115,32 @@ const TOOLS: Record<McpToolName, Tool> = {
       }
 
       if (args.confirm !== true) {
-        return say(
-          'Not deleted. Ask the person to confirm which document should go, then call this again with confirm: true.',
-          true
-        );
+        /*
+         * The refusal now knows what it refused. It reads the document first so the answer — and
+         * the view attached to it — can name the thing rather than the id: "Q3-handbook.md, 119 kB"
+         * is something a person can agree to, and an id is something they can only guess at.
+         */
+        const found = await callApi(c, `/api/v1/documents/${segment(id)}`);
+
+        if (found.status !== 200) {
+          return say(
+            found.body?.error ?? `That document is not on this account (${found.status}).`,
+            true
+          );
+        }
+
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `Not deleted. ${found.body.document.name} is ${bytes(
+                found.body.document.size
+              )} and deleting it cannot be undone — ask the person, then call this again with confirm: true.`,
+            },
+          ],
+          structuredContent: forCard(c, found.body.document),
+          isError: true,
+        };
       }
 
       const gone = await callApi(c, `/api/v1/documents/${segment(id)}`, {
@@ -1131,8 +1165,19 @@ const LISTED = MCP_TOOL_NAMES.map((name) => ({
   description: TOOLS[name].description,
   inputSchema: TOOLS[name].inputSchema,
   annotations: TOOLS[name].annotations,
+  /*
+   * Two spellings of one link. `ui.resourceUri` is what the extension specifies and what a host
+   * reading the current spec looks for; `openai/outputTemplate` is the older flat key that ChatGPT
+   * and anything built against the Apps SDK still read. They point at the same resource, so a host
+   * that honours either draws the same view.
+   */
   ...(TOOLS[name].ui
-    ? { _meta: { ui: { resourceUri: TOOLS[name].ui } } }
+    ? {
+        _meta: {
+          ui: { resourceUri: TOOLS[name].ui },
+          'openai/outputTemplate': TOOLS[name].ui,
+        },
+      }
     : {}),
 }));
 
@@ -1155,6 +1200,13 @@ const VIEWS = [
     name: 'Document list',
     description: 'What is on the account, as a list whose rows open the document.',
     html: DOCUMENT_LIST_HTML,
+  },
+  {
+    uri: DELETE_CONFIRM_URI,
+    name: 'Delete confirmation',
+    description:
+      'The document a delete would remove, by name, with the button that removes it.',
+    html: DELETE_CONFIRM_HTML,
   },
 ];
 

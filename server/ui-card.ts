@@ -18,6 +18,7 @@
  */
 export const DOCUMENT_CARD_URI = 'ui://transformpipe/document-card';
 export const DOCUMENT_LIST_URI = 'ui://transformpipe/document-list';
+export const DELETE_CONFIRM_URI = 'ui://transformpipe/delete-confirm';
 
 export const DOCUMENT_CARD_HTML = `<!doctype html>
 <html lang="en">
@@ -423,6 +424,207 @@ button.row:focus-visible { outline: 2px solid var(--brand); outline-offset: -2px
     })
     .catch(() => {
       /* The text answer stands on its own; a host that cannot draw this loses nothing. */
+    });
+})();
+</script>
+</body>
+</html>
+`;
+
+/*
+ * The third view, and the only one that does something rather than showing something.
+ *
+ * Deleting is the one call here that cannot be taken back, and the protocol's answer to that has
+ * always been a sentence: the tool refuses without `confirm: true` and asks the model to ask the
+ * person. That works and it puts the model in the middle of an irreversible decision, which is the
+ * wrong place for it — "yes" in a conversation is a guess about which document was meant.
+ *
+ * So the refusal now carries this: the document itself, by name, and a button. Pressing it calls
+ * `tp_delete_document` again with the confirmation, straight from the view — `tools/call` over the
+ * same bridge, which is what the host's `serverTools` capability is for. The person confirms the
+ * thing they are looking at rather than a name they said out loud.
+ *
+ * Where the host does not offer that capability, the button is not drawn at all and the sentence
+ * the model already has is the whole answer.
+ */
+export const DELETE_CONFIRM_HTML = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root {
+  --ink: #0f172a;
+  --body: #334155;
+  --muted: #5a6a80;
+  --danger: #b3261e;
+  --card: #ffffff;
+  --page: #f8fafc;
+  --stroke: #e2e8f0;
+}
+:root[data-theme="dark"] {
+  --ink: #f9fafb;
+  --body: #f4f4f5;
+  --muted: #b9bfcb;
+  --danger: #e0685f;
+  --card: #17171e;
+  --page: #0f0e14;
+  --stroke: #2a2834;
+}
+* { box-sizing: border-box; margin: 0; }
+body {
+  padding: 14px;
+  background: var(--page);
+  color: var(--body);
+  font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+.card {
+  border: 1px solid var(--stroke);
+  border-left: 3px solid var(--danger);
+  border-radius: 12px;
+  background: var(--card);
+  padding: 14px 16px;
+}
+h1 { font-size: 15px; font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.meta { margin-top: 2px; font-size: 12px; color: var(--muted); }
+.warning { margin-top: 10px; font-size: 13px; color: var(--body); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+button {
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--danger);
+  color: #fff;
+  cursor: pointer;
+}
+button.quiet { background: transparent; border-color: var(--stroke); color: var(--ink); }
+button[disabled] { opacity: 0.6; cursor: default; }
+.done { margin-top: 10px; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="card" id="card"><p class="done">Waiting…</p></div>
+<script>
+(() => {
+  const pending = new Map();
+  let next = 1;
+  let canCallTools = false;
+
+  const send = (message) => window.parent.postMessage(message, '*');
+  const request = (method, params) =>
+    new Promise((resolve, reject) => {
+      const id = next++;
+      pending.set(id, { resolve, reject });
+      send({ jsonrpc: '2.0', id, method, params });
+    });
+  const notify = (method, params) => send({ jsonrpc: '2.0', method, params });
+
+  const el = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  };
+
+  const weigh = (bytes) =>
+    !bytes ? '' : bytes < 1024 ? bytes + ' bytes' : bytes < 1048576
+      ? (bytes / 1024).toFixed(1) + ' kB'
+      : (bytes / 1048576).toFixed(1) + ' MB';
+
+  function draw(document_) {
+    const card = document.getElementById('card');
+
+    card.textContent = '';
+    card.append(el('h1', null, document_.name || 'This document'));
+
+    const meta = [
+      weigh(document_.size),
+      document_.words ? document_.words.toLocaleString('en-GB') + ' words' : '',
+      document_.created ? String(document_.created).slice(0, 10) : '',
+    ].filter(Boolean).join(' · ');
+
+    if (meta) card.append(el('div', 'meta', meta));
+
+    card.append(el('p', 'warning',
+      document_.share && document_.share !== 'private'
+        ? 'Deleting removes the document, its source and the shared page. There is no undo.'
+        : 'Deleting removes the document and its source. There is no undo.'));
+
+    if (!canCallTools) {
+      card.append(el('p', 'done', 'Tell the assistant to confirm, and it will delete this one.'));
+      return;
+    }
+
+    const actions = el('div', 'actions');
+    const remove = el('button', null, 'Delete permanently');
+
+    remove.addEventListener('click', async () => {
+      remove.disabled = true;
+      remove.textContent = 'Deleting…';
+
+      try {
+        await request('tools/call', {
+          name: 'tp_delete_document',
+          arguments: { id: document_.id, confirm: true },
+        });
+
+        card.textContent = '';
+        card.append(el('h1', null, document_.name || 'Document'));
+        card.append(el('p', 'done', 'Deleted. It and its source are gone.'));
+      } catch (failure) {
+        remove.disabled = false;
+        remove.textContent = 'Delete permanently';
+        card.append(el('p', 'done', 'It was not deleted: ' + (failure && failure.message ? failure.message : 'the call was refused')));
+      }
+    });
+
+    actions.append(remove);
+
+    const keep = el('button', 'quiet', 'Keep it');
+
+    keep.addEventListener('click', () => {
+      card.textContent = '';
+      card.append(el('h1', null, document_.name || 'Document'));
+      card.append(el('p', 'done', 'Kept. Nothing was deleted.'));
+    });
+
+    actions.append(keep);
+    card.append(actions);
+  }
+
+  window.addEventListener('message', (event) => {
+    const message = event.data;
+    if (!message || message.jsonrpc !== '2.0') return;
+
+    if (message.id !== undefined && pending.has(message.id)) {
+      const { resolve, reject } = pending.get(message.id);
+      pending.delete(message.id);
+      message.error ? reject(message.error) : resolve(message.result);
+      return;
+    }
+
+    if (message.method === 'ui/notifications/tool-result') {
+      const data = message.params && message.params.structuredContent;
+      if (data) draw(data);
+    }
+  });
+
+  request('ui/initialize', {
+    capabilities: {},
+    clientInfo: { name: 'TransformPipe delete confirmation', version: '1.0.0' },
+    protocolVersion: '2026-01-26',
+  })
+    .then((result) => {
+      const theme = result && result.hostContext && result.hostContext.theme;
+      if (theme) document.documentElement.dataset.theme = theme;
+      canCallTools = Boolean(result && result.hostCapabilities && result.hostCapabilities.serverTools);
+      notify('ui/notifications/initialized');
+    })
+    .catch(() => {
+      /* The refusal the model was given says the same thing in words. */
     });
 })();
 </script>

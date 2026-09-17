@@ -16,8 +16,10 @@
  *     deploy points at files that no longer exist — the white screen every hand-rolled worker
  *     eventually ships. The cache is the fallback, not the source.
  *
- * What it does cache: `/assets/**`, which is content-hashed and therefore safe forever, and the
- * fonts and icons, which change about twice a year and are fine slightly stale.
+ * What it does cache: `/assets/**`, which is content-hashed and therefore safe forever, the fonts
+ * and icons, which change about twice a year and are fine slightly stale, and every page that has
+ * actually been visited — under its own address, so a deep link opened offline comes back as that
+ * page rather than as the home page wearing its URL.
  *
  * Every cache name carries VERSION. Bump it and the old one is deleted on the next activation,
  * which is the manual kill switch as well: a worker shipped with a bug is replaced by bumping this
@@ -121,11 +123,22 @@ self.addEventListener('fetch', (event) => {
         if (response.ok) {
           const cache = await caches.open(SHELL);
 
-          void cache.put(START, response.clone());
+          /*
+           * Under its own address, and under the start URL as well when that is what it is. The
+           * first version put every page at the start URL, so an offline visit to the home page
+           * could answer with whatever had been read last — the right document in the wrong place.
+           */
+          void cache.put(event.request, response.clone());
+
+          if (url.pathname === START) {
+            void cache.put(START, response.clone());
+          }
         }
 
         return response;
       } catch (offline) {
+        /* This page, then any page: the shell boots the app either way and the address decides
+         * what it draws, so the start URL is a usable answer for a page never visited. */
         const cached =
           (await caches.match(event.request)) ?? (await caches.match(START));
 

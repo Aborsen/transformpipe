@@ -180,6 +180,8 @@ export const docsPage = {
     'Il n’y a aucune clé à coller. Le premier appel revient non autorisé, votre assistant suit cela jusqu’à une page ici, et vous vous connectez avec le compte que vous utilisez déjà et approuvez un client nommé — c’est pourquoi la page vous dit au nom de quelle adresse il s’apprête à agir. Ce qu’il obtient est un jeton de notre part, valable pour vos documents et rien d’autre : pas votre compte, pas votre connexion, et pas vos clés API. Déconnectez-le depuis le menu du compte, sous Connecteur MCP, et il cesse de fonctionner au prochain appel.',
   'docs.assistant.tools':
     'Les outils sont le même code que l’API ci-dessus, appelé dans le processus, de sorte qu’une conversation et un script obtiennent la même réponse. Deux d’entre eux sont taillés pour les dégâts qu’ils peuvent faire : le partage publie une page sur le web public, et la suppression exige une confirmation explicite et retire exactement un document.',
+  'docs.assistant.cards':
+    'Un assistant qui sait les dessiner reçoit des cartes plutôt que des paragraphes : un document enregistré ou ouvert arrive en carte, avec ses chiffres, ses premières lignes et un bouton qui l’ouvre ici, et la question « qu’y a-t-il sur le compte » dessine une liste dont les lignes ouvrent un document. La réponse en texte reste la même dessous : un client qui ne dessine rien ne perd rien.',
 
   /* Le tableau des limites : chaque terme et le chiffre à côté. */
   'docs.embed.intro':

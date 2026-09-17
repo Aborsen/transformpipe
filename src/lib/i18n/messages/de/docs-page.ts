@@ -196,6 +196,8 @@ export const docsPage = {
     'Es gibt keinen Schlüssel zum Einfügen. Der erste Aufruf kommt unautorisiert zurück, Ihr Assistent folgt dem auf eine Seite hier, und Sie melden sich mit demselben Konto an, das Sie ohnehin nutzen, und genehmigen einen benannten Client — deshalb nennt die Seite die Adresse, als die er handeln will. Was er bekommt, ist ein Token von uns, gut für Ihre Dokumente und für nichts sonst: nicht für Ihr Konto, nicht für Ihre Anmeldung und nicht für Ihre API-Schlüssel. Im Kontomenü, unter MCP-Konnektor, wieder trennen, und beim nächsten Aufruf ist Schluss.',
   'docs.assistant.tools':
     'Die Werkzeuge sind derselbe Code wie die API oben, im Prozess aufgerufen, sodass ein Gespräch und ein Skript dieselbe Antwort bekommen. Zwei davon sind nach dem Schaden geformt, den sie anrichten können: Teilen veröffentlicht eine Seite im offenen Netz, und Löschen verlangt eine ausdrückliche Bestätigung und entfernt genau ein Dokument.',
+  'docs.assistant.cards':
+    'Ein Assistent, der sie zeichnet, bekommt Karten statt Absätze: Ein gespeichertes oder geöffnetes Dokument kommt als Karte mit seinen Zahlen, seinen ersten Zeilen und einer Schaltfläche, die es hier öffnet, und die Frage nach dem Konto zeichnet eine Liste, deren Zeilen ein Dokument öffnen. Die Textantwort darunter bleibt dieselbe — ein Client, der nichts zeichnet, verliert nichts.',
 
   /* Die Tabelle der Grenzen: jeder Begriff und die Zahl daneben. */
   'docs.embed.intro':

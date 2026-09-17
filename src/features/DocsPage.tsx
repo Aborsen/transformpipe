@@ -650,6 +650,10 @@ node cli/tp.mjs usage                     # 65.8 kB of 100.0 MB · 3 of 500 docu
           />
 
           <p>{t('docs.assistant.tools')}</p>
+
+          {/* MCP Apps, in one sentence: the connector ships views, and a host that draws them
+            * shows a document rather than describing one. See `server/ui-card.ts`. */}
+          <p>{t('docs.assistant.cards')}</p>
         </Section>
 
         <Section id="embed" title={titles.embed.title}>

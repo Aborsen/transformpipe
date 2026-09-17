@@ -27,5 +27,21 @@
       "type": "image/png",
       "purpose": "maskable"
     }
+  ],
+  "screenshots": [
+    {
+      "src": "/docs/converter-dark.png",
+      "sizes": "2560x1600",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Drop a file and it is converted in the browser"
+    },
+    {
+      "src": "/docs/preview-dark.png",
+      "sizes": "2560x1600",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "The preview, with the counts the document actually has"
+    }
   ]
 }
