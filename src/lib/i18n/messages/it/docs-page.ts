@@ -61,6 +61,20 @@ export const docsPage = {
   'docs.converting.reading':
     'Per leggere, e non per controllare, l’anteprima va a schermo intero e mantiene una larghezza leggibile; Esc torna indietro. Un documento lungo fa comparire un pulsante per tornare in cima, in entrambe le viste.',
 
+  /* The browser extension: the page you are on, converted where it already is. */
+  /** `{html}` is the file extension the page can be saved as. */
+  'docs.extension.intro':
+    'Premi il pulsante nella barra degli strumenti: l’estensione legge la pagina che stai guardando, estrae l’articolo dalla navigazione e dagli avvisi sui cookie, rende assoluto ogni indirizzo di link e immagine e restituisce Markdown. Copialo, scaricalo, oppure salva la pagina come file {html} autonomo, con il suo design e le sue immagini dentro il file e senza una sola richiesta.',
+  'docs.extension.surfaces':
+    'Due superfici e una voce di menu. Il pulsante apre un pannello compatto sopra la pagina; il pannello laterale è la stessa cosa tenuta aperta di fianco, ti segue di scheda in scheda e converte ogni pagina appena arrivi; il menu contestuale converte una selezione. Anche le dieci conversioni di questo sito girano dentro l’estensione, quindi un file del tuo computer si converte senza caricarlo.',
+  'docs.extension.account':
+    'Con l’accesso fatto — lo stesso account di questo sito, con lo stesso accesso — Salva mette un documento dove stanno gli altri, e Condividi pubblica un link oppure nomina le persone che possono leggerlo.',
+  'docs.extension.private':
+    'Senza accesso non parla affatto con noi: la conversione avviene nella pagina, sul tuo computer. Legge una pagina solo quando premi il suo pulsante o apri il pannello laterale su di essa, e il permesso di leggere la scheda attiva viene chiesto quando attivi quel pannello: rifiutarlo costa il pannello e nient’altro.',
+  /** `{page}` is a link to the extension's own page. */
+  'docs.extension.where':
+    'Che cos’è e che cosa non fa mai: {page}.',
+
   'docs.history.intro':
     'Ogni conversione finisce nella cronologia: nel tuo account con l’accesso, in questo browser senza. La ricerca lavora sui nomi dei file, le colonne si ordinano e una riga apre il documento.',
   'docs.history.shot.history.alt':

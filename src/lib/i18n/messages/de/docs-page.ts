@@ -81,6 +81,20 @@ export const docsPage = {
   'docs.converting.reading':
     'Zum Lesen statt zum Prüfen geht die Vorschau ins Vollbild und behält eine lesbare Zeilenbreite; Escape kommt zurück. Ein langes Dokument bekommt in beiden Ansichten eine Schaltfläche nach oben.',
 
+  /* The browser extension: the page you are on, converted where it already is. */
+  /** `{html}` is the file extension the page can be saved as. */
+  'docs.extension.intro':
+    'Drücken Sie die Schaltfläche in der Symbolleiste: Die Erweiterung liest die Seite, die Sie ansehen, holt den Artikel aus Navigation und Cookie-Hinweisen heraus, macht jede Link- und Bildadresse absolut und gibt Markdown zurück. Kopieren, herunterladen — oder die Seite als eigenständige {html}-Datei sichern, mit ihrem Design und ihren Bildern in der Datei und ohne einen einzigen Netzwerkaufruf.',
+  'docs.extension.surfaces':
+    'Zwei Oberflächen und ein Menüeintrag. Die Schaltfläche öffnet ein kompaktes Panel über der Seite; die Seitenleiste ist dasselbe, daneben offen gehalten, folgt Ihnen von Tab zu Tab und wandelt jede Seite um, sobald Sie ankommen; das Kontextmenü wandelt eine Auswahl um. Auch die zehn Umwandlungen dieser Website laufen in der Erweiterung, eine Datei auf Ihrem Rechner wird also ohne Hochladen umgewandelt.',
+  'docs.extension.account':
+    'Angemeldet — dasselbe Konto wie auf dieser Website, über dieselbe Anmeldung — legt Speichern ein Dokument dorthin, wo die anderen liegen, und Teilen veröffentlicht einen Link oder benennt die Personen, die lesen dürfen.',
+  'docs.extension.private':
+    'Abgemeldet spricht sie überhaupt nicht mit uns: Die Umwandlung passiert in der Seite, auf Ihrem eigenen Rechner. Sie liest eine Seite nur, wenn Sie ihre Schaltfläche drücken oder die Seitenleiste darauf öffnen, und die Erlaubnis, den aktuellen Tab zu lesen, wird beim Einschalten dieser Leiste erfragt — wer sie verweigert, verliert die Leiste und sonst nichts.',
+  /** `{page}` is a link to the extension's own page. */
+  'docs.extension.where':
+    'Was sie ist und was sie nie tut: {page}.',
+
   'docs.history.intro':
     'Jede Umwandlung landet im Verlauf — angemeldet im Konto, sonst in diesem Browser. Die Suche läuft über Dateinamen, die Spalten sortieren, und eine Zeile öffnet das Dokument.',
   'docs.history.shot.history.alt':

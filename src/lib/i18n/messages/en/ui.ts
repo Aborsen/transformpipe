@@ -144,15 +144,9 @@ export const ui: Content['ui'] = {
   'ext.signin.hint':
     'Sign in and this extension can save a converted page to your account and publish a link. It asks for the same approval an assistant does, and you can withdraw it from your account page at any time.',
   'ext.signin.refused': 'Sign-in was not completed.',
-  'ext.key.hint':
-    'Paste an API key from your account and this extension can save a converted page to it, and publish a link. The key is kept in this browser only, and nothing is sent anywhere until you press Save.',
-  'ext.key.placeholder': 'tp_live_…',
   'ext.key.connect': 'Connect',
   'ext.key.connected': 'Connected',
   'ext.key.disconnect': 'Disconnect',
-  'ext.key.where': 'Where do I get a key?',
-  'ext.key.refused':
-    'That key was refused, or access to transformpipe.com was not granted.',
   'ext.save': 'Save',
   'ext.saved': 'Saved',
   'ext.share': 'Share',

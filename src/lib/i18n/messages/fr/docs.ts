@@ -21,6 +21,11 @@ export const docs: Content['docs'] = {
     summary:
       'Les dix conversions — Markdown vers HTML, et HTML, Word, Excel, CSV, JSON, texte brut et les exports Notion, Confluence ou Obsidian vers Markdown — ce que chacune accepte, l’enchaînement de plusieurs fichiers en un seul document, l’onglet source, et les formats qu’un téléchargement peut livrer : Markdown, HTML, texte brut ou un PDF imprimé.',
   },
+  extension: {
+    title: 'Extension de navigateur',
+    summary:
+      'La page où vous êtes, en Markdown, en un clic — et les dix mêmes conversions, dans le navigateur.',
+  },
   history: {
     title: 'Historique',
     summary:

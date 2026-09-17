@@ -25,6 +25,7 @@ export interface DocsSection {
 export const DOCS_SECTION_IDS = [
   'start',
   'converting',
+  'extension',
   'history',
   'sharing',
   'account',

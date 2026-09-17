@@ -68,6 +68,20 @@ export const docsPage = {
   'docs.converting.reading':
     'Para leer, más que para revisar, la vista previa pasa a pantalla completa y mantiene un ancho de lectura cómodo; Escape vuelve atrás. Un documento largo gana un botón para volver arriba, en las dos vistas.',
 
+  /* The browser extension: the page you are on, converted where it already is. */
+  /** `{html}` is the file extension the page can be saved as. */
+  'docs.extension.intro':
+    'Pulsa el botón de la barra de herramientas: la extensión lee la página que estás viendo, saca el artículo de entre la navegación y los avisos de cookies, convierte en absoluta cada dirección de enlace e imagen y devuelve Markdown. Cópialo, descárgalo o guarda la página como un archivo {html} autónomo, con su diseño y sus imágenes dentro del archivo y sin una sola petición.',
+  'docs.extension.surfaces':
+    'Dos superficies y una entrada de menú. El botón abre un panel compacto sobre la página; el panel lateral es lo mismo mantenido abierto al lado, te sigue de pestaña en pestaña y convierte cada página según llegas; el menú contextual convierte una selección. Las diez conversiones de este sitio también se ejecutan dentro de la extensión, así que un archivo de tu equipo se convierte sin subirlo.',
+  'docs.extension.account':
+    'Con la sesión iniciada —la misma cuenta que este sitio, por el mismo acceso— Guardar deja un documento donde están los demás, y Compartir publica un enlace o nombra a quienes pueden leerlo.',
+  'docs.extension.private':
+    'Sin sesión iniciada no habla con nosotros en absoluto: la conversión ocurre en la página, en tu propio equipo. Solo lee una página cuando pulsas su botón o abres el panel lateral sobre ella, y el permiso para leer la pestaña actual se pide al activar ese panel; negarlo te cuesta el panel y nada más.',
+  /** `{page}` is a link to the extension's own page. */
+  'docs.extension.where':
+    'Qué es y qué no hace nunca: {page}.',
+
   'docs.history.intro':
     'Cada conversión aterriza en el historial — en tu cuenta con la sesión iniciada, en este navegador si no. La búsqueda recorre los nombres de archivo, las columnas se ordenan y una fila abre el documento.',
   'docs.history.shot.history.alt':

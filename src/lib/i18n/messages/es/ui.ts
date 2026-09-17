@@ -139,15 +139,9 @@ export const ui: Content['ui'] = {
   'ext.signin.hint':
     'Inicia sesión y esta extensión podrá guardar una página convertida en tu cuenta y publicar un enlace. Pide la misma autorización que un asistente, y puedes retirarla cuando quieras desde tu cuenta.',
   'ext.signin.refused': 'No se completó el inicio de sesión.',
-  'ext.key.hint':
-    'Pega una clave de API de tu cuenta y esta extensión podrá guardar en ella una página convertida y publicar un enlace. La clave se queda solo en este navegador y no se envía nada hasta que pulses Guardar.',
-  'ext.key.placeholder': 'tp_live_…',
   'ext.key.connect': 'Conectar',
   'ext.key.connected': 'Conectado',
   'ext.key.disconnect': 'Desconectar',
-  'ext.key.where': '¿De dónde saco una clave?',
-  'ext.key.refused':
-    'Esa clave fue rechazada, o no se concedió el acceso a transformpipe.com.',
   'ext.save': 'Guardar',
   'ext.saved': 'Guardado',
   'ext.share': 'Compartir',

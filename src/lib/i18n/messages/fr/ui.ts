@@ -134,14 +134,9 @@ export const ui: Content['ui'] = {
   'ext.signin.hint':
     'Connectez-vous et cette extension pourra enregistrer une page convertie dans votre compte et publier un lien. Elle demande la même autorisation qu’un assistant, et vous pouvez la retirer à tout moment depuis votre compte.',
   'ext.signin.refused': 'La connexion n’a pas abouti.',
-  'ext.key.hint':
-    'Collez une clé d’API de votre compte et cette extension pourra y enregistrer une page convertie et publier un lien. La clé reste dans ce navigateur, et rien n’est envoyé avant que vous appuyiez sur Enregistrer.',
-  'ext.key.placeholder': 'tp_live_…',
   'ext.key.connect': 'Connecter',
   'ext.key.connected': 'Connecté',
   'ext.key.disconnect': 'Déconnecter',
-  'ext.key.where': 'Où trouver une clé ?',
-  'ext.key.refused': 'Clé refusée, ou accès à transformpipe.com non accordé.',
   'ext.save': 'Enregistrer',
   'ext.saved': 'Enregistré',
   'ext.share': 'Partager',

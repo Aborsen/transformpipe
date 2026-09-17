@@ -79,6 +79,20 @@ export const docsPage = {
   'docs.converting.reading':
     'For reading rather than checking, the preview goes fullscreen and keeps a readable measure; Escape comes back. A long document grows a back-to-top button, in both views.',
 
+  /* The browser extension: the page you are on, converted where it already is. */
+  /** `{html}` is the file extension the page can be saved as. */
+  'docs.extension.intro':
+    'Press the button in the toolbar and the extension reads the page you are looking at, picks the article out of the navigation and the cookie notices, makes every link and picture address absolute, and hands back Markdown. Copy it, download it, or save the page as a self-contained {html} file — its own design, its pictures inside the file, and no requests to anything.',
+  'docs.extension.surfaces':
+    'Two surfaces and a menu entry. The toolbar button opens a compact panel over the page; the side panel is the same thing kept open beside it, following you from tab to tab and converting each page as you arrive; the right-click menu converts a selection. The ten conversions of this site run inside the extension too, so a file on your machine converts without being uploaded.',
+  'docs.extension.account':
+    'Signed in — the same account as this site, through the same sign-in — Save puts a document where the rest of them are, and Share publishes a link or names the people who may read it.',
+  'docs.extension.private':
+    'Signed out it never talks to us at all: the conversion happens in the page, on your own machine. It reads a page only when you press its button or open the side panel on it, and permission to read the tab you are on is asked for when you turn that panel on — refusing it costs the panel and nothing else.',
+  /** `{page}` is a link to the extension's own page. */
+  'docs.extension.where':
+    'What it is, and what it never does: {page}.',
+
   'docs.history.intro':
     'Every conversion lands in the history — in your account when signed in, in this browser when not. Search runs over file names, the columns sort, and a row opens the document.',
   'docs.history.shot.history.alt':

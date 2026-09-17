@@ -67,6 +67,20 @@ export const docsPage = {
   'docs.converting.reading':
     'Pour lire plutôt que pour vérifier, l’aperçu passe en plein écran et garde une largeur lisible ; Échap revient en arrière. Un long document se dote d’un bouton de retour en haut, dans les deux vues.',
 
+  /* The browser extension: the page you are on, converted where it already is. */
+  /** `{html}` is the file extension the page can be saved as. */
+  'docs.extension.intro':
+    'Appuyez sur le bouton de la barre d’outils : l’extension lit la page que vous regardez, extrait l’article de la navigation et des bandeaux de cookies, rend absolue chaque adresse de lien et d’image, et rend du Markdown. Copiez-le, téléchargez-le, ou enregistrez la page en un fichier {html} autonome — son design, ses images dans le fichier, et aucune requête vers quoi que ce soit.',
+  'docs.extension.surfaces':
+    'Deux surfaces et une entrée de menu. Le bouton ouvre un panneau compact par-dessus la page ; le panneau latéral est la même chose gardée ouverte à côté, il vous suit d’un onglet à l’autre et convertit chaque page à votre arrivée ; le menu contextuel convertit une sélection. Les dix conversions de ce site tournent aussi dans l’extension : un fichier de votre machine se convertit sans être téléversé.',
+  'docs.extension.account':
+    'Connecté — le même compte que ce site, par la même connexion — Enregistrer place un document là où sont les autres, et Partager publie un lien ou nomme les personnes autorisées à le lire.',
+  'docs.extension.private':
+    'Déconnecté, elle ne nous parle pas du tout : la conversion a lieu dans la page, sur votre propre machine. Elle ne lit une page que lorsque vous pressez son bouton ou ouvrez le panneau latéral, et l’autorisation de lire l’onglet courant est demandée au moment où vous activez ce panneau — la refuser vous coûte le panneau et rien d’autre.',
+  /** `{page}` is a link to the extension's own page. */
+  'docs.extension.where':
+    'Ce qu’elle est et ce qu’elle ne fait jamais : {page}.',
+
   'docs.history.intro':
     'Chaque conversion atterrit dans l’historique — dans votre compte quand vous êtes connecté, dans ce navigateur sinon. La recherche porte sur les noms de fichiers, les colonnes se trient, et une ligne ouvre le document.',
   'docs.history.shot.history.alt':

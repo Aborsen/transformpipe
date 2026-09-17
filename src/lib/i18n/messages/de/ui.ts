@@ -148,15 +148,9 @@ export const ui: Content['ui'] = {
   'ext.signin.hint':
     'Melden Sie sich an, dann kann diese Erweiterung eine umgewandelte Seite in Ihrem Konto speichern und einen Link veröffentlichen. Sie fragt um dieselbe Zustimmung wie ein Assistent, und Sie können sie jederzeit auf der Kontoseite zurücknehmen.',
   'ext.signin.refused': 'Die Anmeldung wurde nicht abgeschlossen.',
-  'ext.key.hint':
-    'Fügen Sie einen API-Schlüssel aus Ihrem Konto ein, dann kann diese Erweiterung eine umgewandelte Seite dort speichern und einen Link veröffentlichen. Der Schlüssel bleibt nur in diesem Browser, und vor einem Klick auf Speichern wird nichts gesendet.',
-  'ext.key.placeholder': 'tp_live_…',
   'ext.key.connect': 'Verbinden',
   'ext.key.connected': 'Verbunden',
   'ext.key.disconnect': 'Trennen',
-  'ext.key.where': 'Woher bekomme ich einen Schlüssel?',
-  'ext.key.refused':
-    'Der Schlüssel wurde abgelehnt, oder der Zugriff auf transformpipe.com wurde nicht erteilt.',
   'ext.save': 'Speichern',
   'ext.saved': 'Gespeichert',
   'ext.share': 'Teilen',

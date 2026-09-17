@@ -132,15 +132,9 @@ export const ui: Content['ui'] = {
   'ext.signin.hint':
     'Accedi e questa estensione potrà salvare una pagina convertita nel tuo account e pubblicare un link. Chiede la stessa autorizzazione di un assistente, e puoi revocarla quando vuoi dalla pagina dell’account.',
   'ext.signin.refused': 'L’accesso non è stato completato.',
-  'ext.key.hint':
-    'Incolla una chiave API del tuo account e questa estensione potrà salvarci una pagina convertita e pubblicare un link. La chiave resta solo in questo browser e nulla viene inviato finché non premi Salva.',
-  'ext.key.placeholder': 'tp_live_…',
   'ext.key.connect': 'Collega',
   'ext.key.connected': 'Collegato',
   'ext.key.disconnect': 'Scollega',
-  'ext.key.where': 'Dove trovo una chiave?',
-  'ext.key.refused':
-    'Chiave rifiutata, o accesso a transformpipe.com non concesso.',
   'ext.save': 'Salva',
   'ext.saved': 'Salvato',
   'ext.share': 'Condividi',

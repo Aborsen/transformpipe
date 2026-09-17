@@ -18,6 +18,7 @@ import { docsCrumbs } from '@/lib/breadcrumbs';
 import { CONVERSIONS } from '@shared/conversions';
 import { DOCS_SECTION_IDS } from '@/lib/docs-sections';
 import { useI18n, useT } from '@/lib/i18n/context';
+import { localePath } from '@/lib/i18n/locales';
 import { MCP_PATH, MCP_TOOL_NAMES, MCP_TOOLS } from '@/lib/mcp-facts';
 import { FAQ_FLAGS } from '@/lib/faq';
 import { useTheme } from '@/lib/theme';
@@ -289,6 +290,39 @@ export function DocsPage({ onGoToConverter }: { onGoToConverter: () => void }) {
             caption={t('docs.converting.shot.source.caption')}
           />
           <p>{t('docs.converting.reading')}</p>
+        </Section>
+
+        {/*
+          * The way in that has to be installed, met right after the one that does not.
+          *
+          * It is a section rather than a line in "Converting" because it answers a different
+          * question — where the file is, rather than what it is — and because the answer includes
+          * a permission somebody has to agree to.
+          */}
+        <Section id="extension" title={titles.extension.title}>
+          <p>
+            <Rich
+              text={t('docs.extension.intro')}
+              parts={{ html: <InlineCode>.html</InlineCode> }}
+            />
+          </p>
+
+          <p>{t('docs.extension.surfaces')}</p>
+          <p>{t('docs.extension.account')}</p>
+          <p>{t('docs.extension.private')}</p>
+
+          <p>
+            <Rich
+              text={t('docs.extension.where')}
+              parts={{
+                page: (
+                  <a href={localePath(locale, '/extension')}>
+                    {content.pages.extension.label}
+                  </a>
+                ),
+              }}
+            />
+          </p>
         </Section>
 
         <Section id="history" title={titles.history.title}>
