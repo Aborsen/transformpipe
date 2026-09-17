@@ -161,7 +161,7 @@ ${MD_DOC_STYLE}
 <article class="md-page md-doc">
 ${body}
 </article>
-<p class="md-footer">${escapeHtml(title)} · converted ${escapeHtml(stamp)}</p>
+<p class="md-footer">${escapeHtml(title)} · converted ${escapeHtml(stamp)} · <a href="https://transformpipe.com/?from=file">made with TransformPipe</a></p>
 </body>
 </html>
 `;
@@ -255,6 +255,90 @@ const SHARED_CHROME_STYLE = `
 }
 
 @media print { .md-top { display: none; } }
+
+/*
+ * The one thing this page is for, after the document: telling the person reading it what made it.
+ *
+ * A shared link is the only page of this product a stranger reliably sees, and until this block
+ * existed it ended at a footer — somebody read a colleague's document, liked it enough to wonder,
+ * and had a wordmark in the corner to go on. No script, like the rest of the page: two links.
+ */
+.md-cta {
+  box-sizing: border-box;
+  max-width: 48rem;
+  margin: 2.5rem auto 3rem;
+  padding: 1.5rem;
+  border: 1px solid var(--md-stroke);
+  border-radius: 0.875rem;
+  background: var(--md-card-2);
+  font-family: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--md-secondary);
+}
+
+.md-cta h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--md-ink);
+}
+
+.md-cta p {
+  margin: 0;
+  max-width: 54ch;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.md-cta ul {
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+.md-cta li::before {
+  content: "✓";
+  margin-right: 0.4rem;
+  color: var(--md-brand-3);
+}
+
+.md-cta .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.md-cta .go,
+.md-cta .also {
+  display: inline-block;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.md-cta .go {
+  background: var(--md-brand);
+  color: #ffffff;
+}
+
+.md-cta .go:hover { background: var(--md-brand-2); }
+
+.md-cta .also {
+  border: 1px solid var(--md-stroke);
+  color: var(--md-ink);
+}
+
+.md-cta .also:hover { border-color: var(--md-brand-3); color: var(--md-brand-3); }
+
+.md-cta a:focus-visible { outline: 2px solid var(--md-brand-3); outline-offset: 2px; }
+
+@media print { .md-cta { display: none; } }
 `;
 
 interface SharedPageOptions {
@@ -332,6 +416,21 @@ ${body}
       ? ` · <a href="${escapeHtml(reportHref)}">Report this document</a>`
       : ''
   }</p>
+<section class="md-cta">
+  <h2>This page was made with TransformPipe</h2>
+  <p>A web page, a Word file, a PDF, a spreadsheet or Markdown, turned into a clean document you can
+  read, download or share as a link like this one. The conversion runs in your browser — the file
+  never leaves it.</p>
+  <ul>
+    <li>Ten formats, no upload</li>
+    <li>Free, and no account to try it</li>
+    <li>An account keeps and shares them</li>
+  </ul>
+  <p class="actions">
+    <a class="go" href="/?from=shared">Convert a file — free</a>
+    <a class="also" href="/history?from=shared">Keep your documents in an account</a>
+  </p>
+</section>
 ${
     worthAScrollLink(body)
       ? '<a class="md-top" href="#md-top-of-page" aria-label="Back to the top" title="Back to the top">↑</a>'

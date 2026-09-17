@@ -32,6 +32,14 @@ export interface ChangelogEntry {
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-17',
+    title: 'A shared document says where it came from',
+    body:
+      'Somebody who opens a link you shared now finds a line at the foot of it about what made the '
+      + 'page, and a way to convert something of their own. The downloaded `.html` carries the same '
+      + 'line, quietly, in its footer. Nothing about the document itself changed.',
+  },
+  {
+    date: '2026-09-17',
     title: 'Your documents, two letters away',
     body:
       '`⌘K` now opens on the five documents you converted last, and typing searches them by name '

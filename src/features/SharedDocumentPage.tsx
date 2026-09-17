@@ -1,4 +1,4 @@
-import { Download, FileText, LogIn } from 'lucide-react';
+import { Download, FileText, LogIn, UserPlus, Wand2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { DocumentPreview } from '@/components/DocumentPreview';
 import { Logo } from '@/components/Logo';
@@ -201,6 +201,63 @@ export function SharedDocumentPage({ token }: { token: string }) {
 
               <ScrollToTop />
             </div>
+
+            {/*
+              * What this page is for, after the document.
+              *
+              * Somebody arrives here because a colleague sent them a link, reads a document that
+              * plainly came out of something, and until now had a wordmark in the corner to go on.
+              * Shown only to a reader who is not signed in: an account holder reading a document
+              * shared with them does not need to be sold the account they already have.
+              */}
+            {!user && (
+              <section className="flex flex-col gap-4 rounded-xl border border-stroke bg-surface-card p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+                <div className="flex flex-col gap-1">
+                  <Typography
+                    variant="h2"
+                    weight="semibold"
+                    textColor="primary"
+                    className="text-base"
+                  >
+                    {t('shared.cta.title')}
+                  </Typography>
+
+                  <Typography
+                    variant="p"
+                    textColor="secondary"
+                    className="max-w-prose text-sm"
+                  >
+                    {t('shared.cta.body')}
+                  </Typography>
+                </div>
+
+                <div className="flex shrink-0 flex-wrap gap-2">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    rounded="full"
+                    leftSlot={<Wand2 />}
+                    onClick={() => {
+                      window.location.href = '/?from=shared';
+                    }}
+                  >
+                    {t('shared.cta.primary')}
+                  </Button>
+
+                  {/* The same dialog the header offers, for the same reason the sign-in button
+                    * above uses it: whoever was sent this link may not have a Google account. */}
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    rounded="full"
+                    leftSlot={<UserPlus />}
+                    onClick={() => setIsAuthOpen(true)}
+                  >
+                    {t('shared.cta.secondary')}
+                  </Button>
+                </div>
+              </section>
+            )}
           </div>
         )}
       </main>

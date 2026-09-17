@@ -461,6 +461,10 @@ export const ui: Content['ui'] = {
    */
   'shared.loading': 'Abriendo el documento…',
   'shared.meta': 'compartido · convertido el {date}',
+  'shared.cta.title': 'Este documento se hizo con TransformPipe',
+  'shared.cta.body': 'Una página web, un archivo de Word, un PDF o una hoja de cálculo se convierten en un documento limpio: la conversión ocurre en tu navegador y el archivo no sale de él. Una cuenta guarda tus documentos y los comparte como han compartido este contigo.',
+  'shared.cta.primary': 'Convertir un archivo — gratis',
+  'shared.cta.secondary': 'Crear una cuenta',
   'shared.signin.title': 'Este documento se compartió con personas concretas',
   'shared.signin.detail':
     'Inicia sesión con la dirección con la que se compartió.',

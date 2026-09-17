@@ -282,6 +282,16 @@ body {
   text-align: right;
 }
 
+/* The line under a document is the one place it says where it came from; a default blue there
+ * would be the loudest thing on the page. */
+.md-footer a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.md-footer a:hover { color: var(--md-brand-3); }
+
 @media (max-width: 640px) {
   body { padding: 1rem 0.75rem 2rem; }
   .md-page { padding: 1.5rem 1.25rem 2rem; }
