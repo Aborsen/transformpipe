@@ -536,6 +536,10 @@ const cardResource = (resources.body?.result?.resources ?? []).find((one) =>
 
 check('resources/list offers the card', Boolean(cardResource), JSON.stringify(resources.body?.result));
 check(
+  'and the list view beside it',
+  (resources.body?.result?.resources ?? []).some((one) => one.uri.endsWith('/document-list'))
+);
+check(
   'and calls it what the extension requires',
   cardResource?.mimeType === 'text/html;profile=mcp-app',
   cardResource?.mimeType
@@ -578,6 +582,10 @@ check(
   ['tp_save_document', 'tp_get_document'].every(
     (name) => tools.find((one) => one.name === name)?._meta?.ui?.resourceUri === cardResource?.uri
   )
+);
+check(
+  'and listing points at the list',
+  tools.find((one) => one.name === 'tp_list_documents')?._meta?.ui?.resourceUri?.endsWith('/document-list') === true
 );
 check('ten tools or fewer, and none named after a document', names.length <= 10 && names.length >= 7, names.join(', '));
 check('every tool has an inputSchema', (listed.body?.result?.tools ?? []).every((t) => t.inputSchema?.type === 'object'));

@@ -17,6 +17,7 @@
  * cannot navigate the tab itself, and should not be able to.
  */
 export const DOCUMENT_CARD_URI = 'ui://transformpipe/document-card';
+export const DOCUMENT_LIST_URI = 'ui://transformpipe/document-list';
 
 export const DOCUMENT_CARD_HTML = `<!doctype html>
 <html lang="en">
@@ -221,6 +222,207 @@ button:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
     .catch(() => {
       /* A host that does not speak this leaves the sentence the model was given, which says it all
        * anyway. Nothing here is the only copy of anything. */
+    });
+})();
+</script>
+</body>
+</html>
+`;
+
+/*
+ * The other card: what is on the account, as a list rather than as a wall of lines.
+ *
+ * `tp_list_documents` prints a name, an id, a size and a date per row, which is the right answer
+ * for a model and the wrong shape for a person — the id is the longest thing on every line and the
+ * one nobody reads. Here the name carries the row, the numbers sit under it, and the id is not
+ * shown at all: a row opens the document rather than telling somebody how to ask for it.
+ */
+export const DOCUMENT_LIST_HTML = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root {
+  --ink: #0f172a;
+  --body: #334155;
+  --muted: #5a6a80;
+  --brand: #07807e;
+  --card: #ffffff;
+  --page: #f8fafc;
+  --stroke: #e2e8f0;
+}
+:root[data-theme="dark"] {
+  --ink: #f9fafb;
+  --body: #f4f4f5;
+  --muted: #b9bfcb;
+  --brand: #14a8af;
+  --card: #17171e;
+  --page: #0f0e14;
+  --stroke: #2a2834;
+}
+* { box-sizing: border-box; margin: 0; }
+body {
+  padding: 14px;
+  background: var(--page);
+  color: var(--body);
+  font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+.card {
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+  background: var(--card);
+  overflow: hidden;
+}
+header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--stroke);
+}
+h1 { font-size: 14px; font-weight: 600; color: var(--ink); }
+header span { font-size: 12px; color: var(--muted); }
+ul { list-style: none; padding: 0; margin: 0; max-height: 340px; overflow-y: auto; }
+li + li { border-top: 1px solid var(--stroke); }
+button.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+button.row:hover { background: var(--page); }
+button.row:focus-visible { outline: 2px solid var(--brand); outline-offset: -2px; }
+.name { font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.meta { font-size: 12px; color: var(--muted); }
+.grow { flex: 1; min-width: 0; }
+.pill {
+  flex: none;
+  padding: 1px 7px;
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.empty { padding: 14px; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="card" id="card"><p class="empty">Waiting for the list…</p></div>
+<script>
+(() => {
+  const pending = new Map();
+  let next = 1;
+
+  const send = (message) => window.parent.postMessage(message, '*');
+  const request = (method, params) =>
+    new Promise((resolve, reject) => {
+      const id = next++;
+      pending.set(id, { resolve, reject });
+      send({ jsonrpc: '2.0', id, method, params });
+    });
+  const notify = (method, params) => send({ jsonrpc: '2.0', method, params });
+
+  const el = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  };
+
+  const weigh = (bytes) =>
+    !bytes ? '' : bytes < 1024 ? bytes + ' bytes' : bytes < 1048576
+      ? (bytes / 1024).toFixed(1) + ' kB'
+      : (bytes / 1048576).toFixed(1) + ' MB';
+
+  function draw(data) {
+    const card = document.getElementById('card');
+    const documents = data.documents || [];
+
+    card.textContent = '';
+
+    const head = el('header');
+    head.append(el('h1', null, 'Documents'));
+    head.append(el('span', null, data.total > documents.length
+      ? documents.length + ' of ' + data.total
+      : documents.length + (documents.length === 1 ? ' document' : ' documents')));
+    card.append(head);
+
+    if (!documents.length) {
+      card.append(el('p', 'empty', 'Nothing on this account yet.'));
+      return;
+    }
+
+    const list = el('ul');
+
+    for (const one of documents) {
+      const row = el('button', 'row');
+      const words = el('div', 'grow');
+
+      words.append(el('div', 'name', one.name));
+      words.append(el('div', 'meta', [
+        weigh(one.size),
+        one.words ? one.words.toLocaleString('en-GB') + ' words' : '',
+        one.created ? String(one.created).slice(0, 10) : '',
+      ].filter(Boolean).join(' · ')));
+
+      row.append(words);
+
+      if (one.share && one.share !== 'private') {
+        row.append(el('span', 'pill', one.share === 'people' ? 'shared' : 'link'));
+      }
+
+      row.addEventListener('click', () => request('ui/open-link', { url: one.url }));
+
+      /* append() answers with nothing — no backticks in here, the whole page is a template
+       * literal — so the row goes in the item and the item in the list. Chaining the two was a
+       * TypeError that left a header with no rows under it. */
+      const item = el('li');
+
+      item.append(row);
+      list.append(item);
+    }
+
+    card.append(list);
+  }
+
+  window.addEventListener('message', (event) => {
+    const message = event.data;
+    if (!message || message.jsonrpc !== '2.0') return;
+
+    if (message.id !== undefined && pending.has(message.id)) {
+      const { resolve, reject } = pending.get(message.id);
+      pending.delete(message.id);
+      message.error ? reject(message.error) : resolve(message.result);
+      return;
+    }
+
+    if (message.method === 'ui/notifications/tool-result') {
+      const data = message.params && message.params.structuredContent;
+      if (data) draw(data);
+    }
+  });
+
+  request('ui/initialize', {
+    capabilities: {},
+    clientInfo: { name: 'TransformPipe document list', version: '1.0.0' },
+    protocolVersion: '2026-01-26',
+  })
+    .then((result) => {
+      const theme = result && result.hostContext && result.hostContext.theme;
+      if (theme) document.documentElement.dataset.theme = theme;
+      notify('ui/notifications/initialized');
+    })
+    .catch(() => {
+      /* The text answer stands on its own; a host that cannot draw this loses nothing. */
     });
 })();
 </script>

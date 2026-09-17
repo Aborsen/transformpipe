@@ -12,7 +12,12 @@ import { selfOrigin } from './auth.js';
 import { type Caller, mayWrite, resolveCaller } from './caller.js';
 import { countCall, QUOTA, RATE } from './limits.js';
 import { markdownToHtml } from './render.js';
-import { DOCUMENT_CARD_HTML, DOCUMENT_CARD_URI } from './ui-card.js';
+import {
+  DOCUMENT_CARD_HTML,
+  DOCUMENT_CARD_URI,
+  DOCUMENT_LIST_HTML,
+  DOCUMENT_LIST_URI,
+} from './ui-card.js';
 import v1 from './v1.js';
 
 /*
@@ -346,6 +351,8 @@ const bytes = (n: number) =>
 const describe = (document: {
   id: string;
   name: string;
+  /* Which conversion made it: the row's address on the site is that conversion's page. */
+  kind: string;
   size: number;
   words?: number;
   created_at: string;
@@ -713,6 +720,7 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_list_documents: {
     description:
       'What is on this TransformPipe account: documents with their names, sizes, dates and whether each is shared. Start here when the question is "what have I got". `query` matches a document by its name or by what is written inside it. Prints the id of each, which is what the other tools take.',
+    ui: DOCUMENT_LIST_URI,
     annotations: { title: 'List documents', readOnlyHint: true, openWorldHint: false },
     inputSchema: {
       type: 'object',
@@ -780,14 +788,26 @@ const TOOLS: Record<McpToolName, Tool> = {
       const limit = Math.min(Math.max(Number(args.limit ?? 50) || 50, 1), 200);
       const shown = matching.slice(0, limit);
 
-      return say(
+      return card(
         clip(
           [
             `${shown.length} of ${matching.length} shown, newest first.`,
             '',
             ...shown.map(describe),
           ].join('\n')
-        )
+        ),
+        {
+          total: matching.length,
+          documents: shown.map((document) => ({
+            id: document.id,
+            name: document.name,
+            size: document.size,
+            words: document.words ?? 0,
+            created: document.created_at ?? '',
+            share: document.share?.mode ?? 'private',
+            url: `${selfOrigin(c)}${conversion(document.kind).path}?doc=${document.id}`,
+          })),
+        }
       );
     },
   },
@@ -1116,6 +1136,28 @@ const LISTED = MCP_TOOL_NAMES.map((name) => ({
     : {}),
 }));
 
+/*
+ * The views this server ships, which is the whole of its MCP Apps surface.
+ *
+ * Two, and each is a shape the text answer could not be: a document, and what is on the account.
+ * Listed here rather than in each place that mentions one, so `resources/list` and `resources/read`
+ * cannot come to disagree about what exists.
+ */
+const VIEWS = [
+  {
+    uri: DOCUMENT_CARD_URI,
+    name: 'Document card',
+    description: 'The card drawn beside a document this connector saved or read.',
+    html: DOCUMENT_CARD_HTML,
+  },
+  {
+    uri: DOCUMENT_LIST_URI,
+    name: 'Document list',
+    description: 'What is on the account, as a list whose rows open the document.',
+    html: DOCUMENT_LIST_HTML,
+  },
+];
+
 /* ---------------------------------------------------------------- the endpoint */
 
 mcp.post('/', async (c) => {
@@ -1205,23 +1247,21 @@ mcp.post('/', async (c) => {
   if (method === 'resources/list') {
     return c.json(
       rpc(id ?? null, {
-        resources: [
-          {
-            uri: DOCUMENT_CARD_URI,
-            name: 'Document card',
-            description:
-              'The card drawn beside a document this connector saved or read.',
-            mimeType: 'text/html;profile=mcp-app',
-          },
-        ],
+        resources: VIEWS.map(({ uri, name, description }) => ({
+          uri,
+          name,
+          description,
+          mimeType: 'text/html;profile=mcp-app',
+        })),
       })
     );
   }
 
   if (method === 'resources/read') {
     const uri = String((params as { uri?: unknown }).uri ?? '');
+    const view = VIEWS.find((one) => one.uri === uri);
 
-    if (uri !== DOCUMENT_CARD_URI) {
+    if (!view) {
       return c.json(rpcError(id ?? null, -32602, `No resource at ${uri}`), 200);
     }
 
@@ -1229,10 +1269,10 @@ mcp.post('/', async (c) => {
       rpc(id ?? null, {
         contents: [
           {
-            uri: DOCUMENT_CARD_URI,
+            uri: view.uri,
             mimeType: 'text/html;profile=mcp-app',
-            text: DOCUMENT_CARD_HTML,
-            /* No domains declared: the card fetches nothing, so the host's strictest policy fits. */
+            text: view.html,
+            /* No domains declared: these fetch nothing, so the host's strictest policy fits. */
             _meta: { ui: { prefersBorder: false } },
           },
         ],

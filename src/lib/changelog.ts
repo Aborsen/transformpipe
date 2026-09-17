@@ -45,8 +45,9 @@ const ENTRIES: ChangelogEntry[] = [
     body:
       'An assistant that saves or opens a document through the connector can now draw a card for '
       + 'it — the name, what it weighs, the counts, the first lines, and a button that opens it '
-      + 'here — instead of a paragraph of text. Hosts that do not draw cards yet get the same '
-      + 'sentence they always did.',
+      + 'here — instead of a paragraph of text. Asking what is on the account draws a list whose '
+      + 'rows open the document rather than printing an id per line. Hosts that do not draw cards '
+      + 'yet get the same sentences they always did.',
   },
   {
     date: '2026-09-18',
