@@ -58,15 +58,18 @@ const SAVE_KINDS: Record<string, string> = {
 const SPOKEN = new Set(['2024-11-05', '2025-03-26', '2025-06-18', '2025-11-25']);
 const NEWEST = '2025-11-25';
 /*
- * The version is the repository's, not a second one kept here.
+ * The version, from the file every other part of the release reads.
  *
- * `package.json` is what the release tags and the extension manifest already agree on, and the one
- * place a bump is not forgotten — it was '1.0.0' here while the repository was tagged v2.0.0, which
- * is the drift this import removes. A JSON import needs no build step in this runtime.
+ * It was a literal here and said '1.0.0' while the repository was tagged v2.0.0. The fix that
+ * looked obvious — importing `package.json` with a JSON attribute — took the whole API down on
+ * Vercel with FUNCTION_INVOCATION_FAILED: the function bundle does not carry that file, and the
+ * import throws at module load, which is every request. So the number lives in `shared/version.ts`,
+ * a module like any other, and `npm run deploy:check` fails the build if it and `package.json`
+ * disagree.
  */
-import { version } from '../package.json' with { type: 'json' };
+import { VERSION } from '../shared/version.js';
 
-const SERVER = { name: 'TransformPipe', version };
+const SERVER = { name: 'TransformPipe', version: VERSION };
 
 /**
  * Who this server says it is, in the words a client can put on a screen.
