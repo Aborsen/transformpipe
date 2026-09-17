@@ -313,7 +313,7 @@ export function ConverterPage({
               {t('converter.howto')}{' '}
               <a
                 href={guide.path}
-                className="text-brand-tertiary underline-offset-2 hover:underline"
+                className="text-brand-tertiary underline underline-offset-2"
               >
                 {content.pages[guide.id].label}
               </a>

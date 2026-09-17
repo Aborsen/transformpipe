@@ -30,7 +30,9 @@ const LIGHT: ThemeVars = {
   '--md-secondary': '#5a6a80',
   '--md-brand': '#07807e',
   '--md-brand-2': '#066867',
-  '--md-brand-3': '#0d8e97',
+  // Links in a rendered document, and the light value is the one that has to carry text: #0d8e97
+  // measures 3.8:1 on this page's own background, which is under the 4.5 a body link needs.
+  '--md-brand-3': '#0d717a',
   '--md-card': '#ffffff',
   '--md-page': '#f8fafc',
   '--md-card-2': '#f1f5f9',

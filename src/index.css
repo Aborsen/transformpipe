@@ -107,6 +107,7 @@
     --slate-400: 215 20% 65%; /* #94A3B8 */
     --slate-450: 215 17% 56%; /* #7C8CA2 */
     --slate-500: 215.4 16.3% 46.9%; /* #64748B */
+    --slate-525: 214.7 17.4% 45%; /* #5F7087 */
     --slate-550: 214.7 17.4% 42.7%; /* #5A6A80 */
     --slate-600: 215.3 19.3% 34.5%; /* #475569 */
     --slate-700: 215.3 25% 26.7%; /* #334155 */
@@ -153,13 +154,13 @@
     --tbl-header-bg: var(--slate-150); /* #EAEFF5 */
     --brand-primary: var(--brand-600); /* #07807E */
     --brand-secondary: var(--brand-700); /* #066867 */
-    --brand-tertiary: var(--tertiary-600); /* #0D8E97 */
+    --brand-tertiary: var(--tertiary-700); /* #0D717A */
     --brand-hover: var(--brand-500); /* #148F8D — Brand/Primary_Hover */
     --ink-primary: var(--slate-900); /* #0F172A */
     --ink-body: var(--slate-700); /* #334155 */
     --ink-secondary: var(--slate-550); /* #5A6A80 */
-    --ink-inactive: var(--slate-450); /* #7C8CA2 */
-    --ink-highlight: var(--brand-primary); /* #07807E */
+    --ink-inactive: var(--slate-525); /* #5F7087 */
+    --ink-highlight: var(--brand-secondary); /* #066867 */
     --surface-card: var(--white); /* #FFFFFF */
     --surface-card2: var(--slate-100); /* #F1F5F9 */
     --surface-chips: var(--slate-50); /* #F8FAFC */

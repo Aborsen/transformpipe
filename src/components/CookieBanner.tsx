@@ -64,7 +64,7 @@ export function CookieBanner() {
               {t('cookies.banner.body')}{' '}
               <a
                 href={staticPage('cookies').path}
-                className="text-brand-tertiary underline-offset-2 hover:underline"
+                className="text-brand-tertiary underline underline-offset-2"
               >
                 {t('cookies.banner.more')}
               </a>

@@ -189,7 +189,7 @@ export function StaticPage({ page, onGoToConverter }: StaticPageProps) {
             href={ISSUES_URL}
             target="_blank"
             rel="noreferrer noopener"
-            className="text-brand-tertiary underline-offset-2 hover:underline"
+            className="text-brand-tertiary underline underline-offset-2"
           >
             {t('page.questions.link')}
           </a>

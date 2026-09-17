@@ -39,7 +39,7 @@ const typographyVariants = cva(null, {
       secondary: 'text-ink-secondary',
       light: 'text-ink-inactive',
       body: 'text-ink-body',
-      accent: 'text-brand-primary',
+      accent: 'text-ink-highlight',
       success: 'text-fb-green',
       destructive: 'text-fb-red-text',
       warning: 'text-fb-attention',
