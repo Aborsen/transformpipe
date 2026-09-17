@@ -132,10 +132,23 @@ What the form's checkboxes should say, and what backs each answer:
 The three certifications the form ends with are all true: the data is not sold, it is not used for
 anything unrelated to the single purpose above, and it is not used to determine creditworthiness.
 
-## Screenshots
+## The pictures
 
-Five, 1280×800, drawn by `npm run ext:art` from the extension's own interface — not mock-ups. The
-captions are part of the picture:
+All of them are `npm run ext:art`, drawn from the extension's own interface rather than mocked up,
+and all of them come out at the exact size and without an alpha channel, which is what the form
+measures. What goes in each box:
+
+| The form asks for | The file |
+| --- | --- |
+| Store icon, 128×128 | `store-icon-128.png` |
+| Screenshots, 1280×800 | `1-…` to `5-…`, in that order |
+| Small promo tile, 440×280 | `tile-440x280.png` |
+| Marquee promo tile, 1400×560 | `marquee-1400x560.png` |
+
+Leave the promo video empty; there is no video, and a box left blank is better than a link to
+something made to fill it.
+
+The screenshots' captions are part of the picture:
 
 1. **The page you are on, as Markdown** — the panel over a documentation page.
 2. **Read it beside the page** — the side panel, following a tab.
@@ -143,7 +156,9 @@ captions are part of the picture:
 4. **Ten formats, converted in your browser** — the viewer with a `.docx` open.
 5. **Share a link, or name the people** — the share dialog.
 
-Plus the small promotional tile, 440×280, from the same script.
+Both tiles carry the same sentence as the front page. The marquee has the panel itself beside it,
+because it is the one asset with room for a picture — the store shows it only when it features an
+extension, which is not something to plan for but is cheap to have ready.
 
 ## Firefox
 

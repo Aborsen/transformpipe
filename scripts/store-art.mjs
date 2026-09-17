@@ -2,7 +2,14 @@
  *
  *   npm run ext:art        after npm run ext — reads dist-extension/
  *
- * Five screenshots at 1280×800 and the small promotional tile at 440×280, into brand/store/.
+ * Five screenshots at 1280×800, both promotional tiles — 440×280 and the 1400×560 marquee — and
+ * the 128×128 store icon, into brand/store/: every picture the submission form asks for, in one
+ * folder.
+ *
+ * The form is strict about two things and both are load-bearing here: the sizes are exact, and the
+ * files must carry no alpha channel. A screenshot is drawn at twice the size and photographed at
+ * `deviceScaleFactor: 2` so it is sharp; the tile is drawn at its own size, because 880×280 is not
+ * 440×280 and the form measures rather than scales.
  *
  * Not mock-ups. The panel in these pictures is `dist-extension/popup.html` and the side panel is
  * `panel.html`, rendered by the build that is about to be uploaded — so a screenshot that looks
@@ -14,7 +21,7 @@
  * the signed-in state can be photographed without a real token in the repository. Everything above
  * that line — the conversion, the preview, the words, the theme — is the product's own code.
  */
-import { existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -43,6 +50,8 @@ mkdirSync(OUT, { recursive: true });
  * one that survives the store's own scaling. */
 const SHOT = { width: 1280, height: 800 };
 const TILE = { width: 440, height: 280 };
+/* Shown when the store features an extension, and the only asset with room for a picture in it. */
+const MARQUEE = { width: 1400, height: 560 };
 
 const BRAND = '#14a8af';
 const INK = '#f9fafb';
@@ -420,6 +429,9 @@ const browser = await puppeteer.launch({
   args: ['--hide-scrollbars', '--force-device-scale-factor=1'],
 });
 
+/* The first surface, kept: the marquee is the same panel beside a sentence rather than under one. */
+let hero = '';
+
 for (const one of SHOTS) {
   const page = await browser.newPage();
 
@@ -460,6 +472,10 @@ for (const one of SHOTS) {
 
   const surface = await page.screenshot({ encoding: 'base64', type: 'png' });
 
+  if (!hero) {
+    hero = `data:image/png;base64,${surface}`;
+  }
+
   await page.close();
 
   const frame = await browser.newPage();
@@ -483,7 +499,8 @@ for (const one of SHOTS) {
 /* The small tile: the mark, the name and the sentence, at the size the store shows it. */
 const tile = await browser.newPage();
 
-await tile.setViewport({ ...TILE, deviceScaleFactor: 2 });
+/* One, not two: the form takes 440×280 and nothing else, and rejects the same picture at 880×560. */
+await tile.setViewport({ ...TILE, deviceScaleFactor: 1 });
 await tile.setContent(
   `<!doctype html><html><head><meta charset="utf-8"><style>
 @font-face { font-family: 'DM Sans'; src: url('${fontUrl}') format('woff2'); font-weight: 100 1000; }
@@ -518,5 +535,67 @@ await tile.close();
 
 console.log('tile-440x280.png');
 
+/* The marquee: the same words as the tile, with the thing itself beside them. */
+const marquee = await browser.newPage();
+
+await marquee.setViewport({ ...MARQUEE, deviceScaleFactor: 1 });
+await marquee.setContent(
+  `<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face { font-family: 'DM Sans'; src: url('${fontUrl}') format('woff2'); font-weight: 100 1000; }
+* { box-sizing: border-box; margin: 0; }
+body {
+  width: ${MARQUEE.width}px;
+  height: ${MARQUEE.height}px;
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  padding: 0 5rem;
+  overflow: hidden;
+  background:
+    radial-gradient(90% 120% at 85% 0%, rgba(20, 168, 175, 0.32), transparent 60%),
+    ${PAGE};
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: ${INK};
+}
+.words { flex: 1; display: flex; flex-direction: column; gap: 0.9rem; }
+.mark { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1.5rem; font-weight: 600; }
+.mark span { color: ${BRAND}; }
+h1 { font-size: 2.75rem; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; }
+p { max-width: 34ch; font-size: 1.125rem; line-height: 1.5; color: #b9bfcb; }
+.shot {
+  width: 340px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+  /* Cropped at the top rather than scaled: what a marquee shows is the panel, not all of it. */
+  overflow: hidden;
+  max-height: ${MARQUEE.height - 80}px;
+}
+.shot img { display: block; width: 100%; }
+</style></head><body>
+<div class="words">
+  <div class="mark">T<span>&gt;</span>pipe</div>
+  <h1>Any page, any file,<br>clean Markdown</h1>
+  <p>Convert the page you are on in one click, or a file on your machine. In your browser, offline,
+  no account needed.</p>
+</div>
+<div class="shot"><img src="${hero}"></div>
+</body></html>`,
+  { waitUntil: 'networkidle0' }
+);
+await marquee.screenshot({ path: join(OUT, 'marquee-1400x560.png'), type: 'png' });
+await marquee.close();
+
+console.log('marquee-1400x560.png');
+
 await browser.close();
 server.close();
+
+/*
+ * The store icon is the product's own mark at 128, drawn by `npm run icons` from `brand/mark.svg`.
+ * Copied here rather than redrawn, and copied at all so that everything the form asks for is in
+ * one folder on the day somebody is filling it in.
+ */
+copyFileSync(join(ROOT, 'public', 'icon-128.png'), join(OUT, 'store-icon-128.png'));
+
+console.log('store-icon-128.png');
