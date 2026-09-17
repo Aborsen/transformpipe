@@ -42,6 +42,13 @@
       "type": "image/png",
       "form_factor": "wide",
       "label": "The preview, with the counts the document actually has"
+    },
+    {
+      "src": "/docs/pwa-narrow.png",
+      "sizes": "780x1688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "The converter on a phone"
     }
   ]
 }

@@ -117,6 +117,49 @@ async function shoot(page, name, theme, until) {
   console.log(`  ${name}-${theme}.png`);
 }
 
+/*
+ * The one shot that is not for the documentation: a phone-shaped picture of the converter, for the
+ * install dialog.
+ *
+ * A manifest with only wide screenshots gets a line of text on Android instead of a picture, and
+ * the app is installable now. It is taken here rather than by a script of its own because this is
+ * where a browser is already driving the real app, and a second script would be a second thing to
+ * remember to run.
+ */
+async function pwaShot(browser) {
+  console.log('pwa:');
+
+  const page = await browser.newPage();
+
+  await page.setViewport({
+    width: 390,
+    height: 844,
+    deviceScaleFactor: 2,
+    isMobile: true,
+    hasTouch: true,
+  });
+  await page.goto(HOST, { waitUntil: 'networkidle2' });
+  await page.evaluate(() => {
+    localStorage.setItem('m2h.theme', 'dark');
+    /* Answered, so the banner is not the picture. Only necessary — the honest answer for a
+     * screenshot, and the one that turns analytics off. */
+    localStorage.setItem(
+      'm2h.consent',
+      JSON.stringify({ version: 1, analytics: false, at: Date.now() })
+    );
+  });
+  await page.reload({ waitUntil: 'networkidle2' });
+  await settle(page, 700);
+  await hushToasts(page);
+
+  const file = join(OUT, 'pwa-narrow.png');
+
+  await page.screenshot({ path: file });
+  await page.close();
+
+  console.log('  pwa-narrow.png');
+}
+
 async function capture(browser, theme) {
   console.log(`${theme}:`);
 
@@ -177,10 +220,18 @@ const browser = await puppeteer.launch({
   args: ['--force-color-profile=srgb', '--hide-scrollbars'],
 });
 
+/* `--only pwa` takes the one the manifest needs and skips the documentation's five, which need the
+ * app signed in with a history behind it. */
+const only = flag('only', '');
+
 try {
-  for (const theme of ['dark', 'light']) {
-    await capture(browser, theme);
+  if (only !== 'pwa') {
+    for (const theme of ['dark', 'light']) {
+      await capture(browser, theme);
+    }
   }
+
+  await pwaShot(browser);
 } finally {
   await browser.close();
 }

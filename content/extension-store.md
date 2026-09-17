@@ -269,3 +269,20 @@ bundled converters rather than in code of ours:
 The manifest's version is `package.json`'s, so a resubmission is a release: bump, tag, changelog
 entry, `npm run ext:zip`, upload. A review takes days that nobody controls, so the week that
 submits is never the week that has nothing else in it.
+
+### What has been submitted, and what the numbers mean
+
+**1.0.0 went to the Chrome Web Store and is in review.** Nothing about that package needs changing
+while it waits: a store version has to increase, and it does not have to be the first number anybody
+would guess.
+
+The repository is 2.0.0 — `package.json`, which the manifest reads — because the site's own tags
+had reached v2.0.0 while that file still said 1.0.0, so every extension release would have shipped
+as 1.0.0 forever. One number for the whole product is the trade: the extension's first update will
+jump from 1.0.0 to 2.0.0, which looks like more than it is and costs nothing, and the alternative is
+two numbering schemes and a conversation about which one a bug report means.
+
+**What is in 2.0.0 that 1.0.0 does not have**, from the extension's side, is one fix: a row like
+`39 words · 1 heading` used to arrive as `39words1heading`, because the space between those elements
+comes from the layout and not from the markup. It is worth shipping and not worth hurrying — bundle
+it with the next real change rather than replacing a package under review.
