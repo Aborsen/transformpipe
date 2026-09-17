@@ -9,7 +9,7 @@ import { DOCS_SECTIONS } from '../src/lib/docs-sections.js';
 import { FAQ_ENTRIES } from '../src/lib/faq.js';
 import { MCP_TOOL_NAMES, type McpToolName } from '../src/lib/mcp-facts.js';
 import { selfOrigin } from './auth.js';
-import { type Caller, mayWrite, resolveCaller } from './caller.js';
+import { type Caller, cameFromUs, mayWrite, resolveCaller } from './caller.js';
 import { countCall, QUOTA, RATE } from './limits.js';
 import { markdownToHtml } from './render.js';
 import {
@@ -1256,6 +1256,18 @@ mcp.post('/', async (c) => {
   const caller = await resolveCaller(c);
 
   if (!caller) {
+    return unauthorised(c, 'Sign in to TransformPipe');
+  }
+
+  /*
+   * A cookie-authenticated call has to have come from us — see `cameFromUs`.
+   *
+   * This endpoint takes JSON-RPC and never looks at the content type, which means a form on
+   * somebody else's page is a well-formed message to it, and the browser attaches the session
+   * cookie. Nothing changes for the connectors: they present a bearer token, which is not a
+   * credential a page can be made to send on the account holder's behalf.
+   */
+  if (caller.via === 'session' && !cameFromUs(c)) {
     return unauthorised(c, 'Sign in to TransformPipe');
   }
 

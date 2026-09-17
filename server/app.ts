@@ -7,9 +7,10 @@ import {
   buildSharedPage,
   buildStandaloneHtml,
 } from '../shared/markdown.js';
+import { clientAddress, publicHost } from './address.js';
 import { authProxy, currentUser, selfOrigin, type SessionUser } from './auth.js';
 import { sendShareNotice, sendWelcome } from './mail.js';
-import { sql, type DocumentRow } from './db.js';
+import { looksLikeId, sql, type DocumentRow } from './db.js';
 import { createKey, forgetKey, listKeys, revokeKey } from './keys.js';
 import {
   CONVERSIONS,
@@ -19,8 +20,13 @@ import {
   AI_SUMMARY,
   checkQuota,
   claimWelcome,
+  countCall,
+  countShareMail,
   countSummaryCall,
+  mayPublishPublicly,
+  PUBLISH_UNVERIFIED,
   QUOTA,
+  RATE,
   releaseWelcome,
   usageOf,
 } from './limits.js';
@@ -132,12 +138,74 @@ const requireUser = createMiddleware<Env>(async (c, next) => {
   return next();
 });
 
+/**
+ * The counter /api/v1 already uses, on the app's own endpoints.
+ *
+ * They were left out of it on the grounds that only our own pages call them. That is true of the
+ * pages and false of the endpoints: a session cookie is a credential like any other, and these
+ * routes write to the database, send mail and make outbound requests.
+ *
+ * Counted by account where there is one, so one runaway script cannot spend somebody else's
+ * allowance — which means this has to run after `requireUser`, and does, because `api.use` applies
+ * middleware in the order it was registered. The address is the fallback for the routes that
+ * answer before a session is established.
+ *
+ * A counter that cannot be reached must not lock the app out: a failure counts as room to spare.
+ */
+const throttle = createMiddleware<Env>(async (c, next) => {
+  const user = c.get('user') as SessionUser | undefined;
+  const from = user?.id ?? clientAddress(c);
+  const verdict = await countCall(`app:${from}`).catch(() => ({
+    ok: true,
+    retryAfter: 60,
+  }));
+
+  if (!verdict.ok) {
+    c.header('retry-after', String(verdict.retryAfter));
+
+    return c.json(
+      { error: `Too many requests — the limit is ${RATE.perMinute} a minute.` },
+      429
+    );
+  }
+
+  return next();
+});
+
+/*
+ * Where the Content-Security-Policy in report-only mode sends what it would have blocked.
+ *
+ * The policy on the app ships as `Content-Security-Policy-Report-Only` first, because the app
+ * loads Google Tag Manager and a container can be made to load almost anything — turning the
+ * policy on blind would break the site in a way nobody sees until a page is white. Reports land
+ * here, in the platform's log, and when a week of them says nothing new the header changes name.
+ *
+ * Unauthenticated, because a violation happens to whoever is reading the page, and counted by
+ * address for the same reason the report form is: a POST anybody can make is a POST somebody will
+ * make in a loop. Nothing is stored — a log line is enough to answer the only question being asked.
+ */
+api.post('/csp-report', async (c) => {
+  if (!(await countCall(`csp:${clientAddress(c)}`).catch(() => ({ ok: true }))).ok) {
+    return c.body(null, 204);
+  }
+
+  const report = (await c.req.text().catch(() => '')).slice(0, 2000);
+
+  if (report) {
+    console.warn('csp report: %s', report);
+  }
+
+  return c.body(null, 204);
+});
+
 /*
  * Key management is session-only, deliberately: a leaked key must not be able to mint its
  * replacement or revoke the owner's other keys.
  */
 api.use('/keys', requireUser);
 api.use('/keys/*', requireUser);
+api.use('/keys', throttle);
+api.use('/keys/*', throttle);
 
 api.get('/keys', async (c) => c.json({ keys: await listKeys(c.get('user').id) }));
 
@@ -184,6 +252,8 @@ api.delete('/keys/:id', async (c) => {
  */
 api.use('/webhooks', requireUser);
 api.use('/webhooks/*', requireUser);
+api.use('/webhooks', throttle);
+api.use('/webhooks/*', throttle);
 
 api.get('/webhooks', async (c) =>
   c.json({ webhooks: await listWebhooks(c.get('user').id) })
@@ -194,9 +264,34 @@ api.post('/webhooks', async (c) => {
     .json<{ url?: string }>()
     .catch(() => ({}) as { url?: string });
   const url = (body.url ?? '').trim();
+  let target: URL;
 
-  if (!/^https:\/\//.test(url)) {
+  try {
+    target = new URL(url);
+  } catch {
     return c.json({ error: 'url must be an https:// address' }, 400);
+  }
+
+  if (target.protocol !== 'https:') {
+    return c.json({ error: 'url must be an https:// address' }, 400);
+  }
+
+  /*
+   * Where the name actually points, refused if that is inside.
+   *
+   * A webhook is a URL a person gives us and this server then posts to, which is a server-side
+   * request forgery unless somebody checks the address — the same check `cimd.ts` makes before
+   * fetching a client's metadata document, and now out of the same module. Checked again at
+   * delivery in `webhooks.ts`, because DNS is free to answer differently an hour later.
+   */
+  if (!(await publicHost(target.hostname))) {
+    return c.json(
+      {
+        error:
+          'That address is not a public one. A webhook has to point somewhere reachable from the internet.',
+      },
+      400
+    );
   }
 
   const created = await createWebhook(c.get('user').id, url);
@@ -229,6 +324,9 @@ api.get('/usage', async (c) => c.json(await usageOf(c.get('user').id)));
 api.use('/documents', requireUser);
 api.use('/documents/*', requireUser);
 api.use('/shared-with-me', requireUser);
+api.use('/documents', throttle);
+api.use('/documents/*', throttle);
+api.use('/shared-with-me', throttle);
 
 /**
  * Documents other people shared with this address.
@@ -338,8 +436,22 @@ api.post('/documents', async (c) => {
 
   const body = await c.req.json<CreateBody>().catch(() => ({}) as CreateBody);
 
-  if (!body.name || typeof body.markdown !== 'string') {
+  /*
+   * The same shape the API insists on, on the endpoint the app's own pages call.
+   *
+   * `!body.name` passed anything truthy, of any type, of any length — a number, an object, a
+   * novel — because the check was about presence and the column is about text. And an id that is
+   * not an id reached a uuid column, where the driver turns it into a 500: the request was wrong,
+   * and only one of those two numbers says so.
+   */
+  const name = typeof body.name === 'string' ? body.name.trim().slice(0, 200) : '';
+
+  if (!name || typeof body.markdown !== 'string') {
     return c.json({ error: 'name and markdown are required' }, 400);
+  }
+
+  if (body.replaces !== undefined && !looksLikeId(String(body.replaces))) {
+    return c.json({ error: 'replaces must be a document id' }, 400);
   }
 
   if (body.replaces) {
@@ -368,7 +480,7 @@ api.post('/documents', async (c) => {
     insert into m2h_document (user_id, name, kind, size, markdown, stats, search, replaces)
     values (
       ${userId},
-      ${body.name},
+      ${name},
       ${KINDS.has(body.kind ?? '') ? body.kind : DEFAULT_CONVERSION},
       ${body.size ?? body.markdown.length},
       null,
@@ -718,6 +830,16 @@ api.put('/documents/:id/share', async (c) => {
     return c.json({ error: 'mode must be private, link or people' }, 400);
   }
 
+  /*
+   * The same rule the API applies, and this is the endpoint the app's own dialog calls.
+   *
+   * It is internal, which was the reason it was never given the check — and the reason is wrong:
+   * internal describes who we expect to call it, not who can. See mayPublishPublicly.
+   */
+  if (body.mode === 'link' && !(await mayPublishPublicly(userId))) {
+    return c.json({ error: PUBLISH_UNVERIFIED }, 403);
+  }
+
   if (body.mode === 'private') {
     // Revoking drops the token as well: a link that was sent must stop working.
     await sql()`
@@ -789,27 +911,39 @@ api.post('/documents/:id/share/people', async (c) => {
    */
   let notified = false;
 
+  /*
+   * The send is rationed; the share is not.
+   *
+   * An account that has written to fifty addresses today has stopped sharing documents and started
+   * mailing people — see SHARE_MAIL. What that costs is the sending domain, which every account
+   * needs in order to sign in at all, so it is worth a limit well above ordinary use. The address
+   * is still added and the access still exists: only `notified` comes back false.
+   */
   if (state?.mode === 'people' && state.token && inserted) {
     const owner = c.get('user').email;
     const document = (await sql()`
       select name from m2h_document where id = ${id} and user_id = ${userId}
     `) as Array<{ name: string }>;
 
-    /*
-     * Awaited, not fired off. See the note at the top of mail.ts: a send started after the
-     * response may never leave a serverless function. The mailer caps the wait itself.
-     */
-    const sent = await sendShareNotice({
-      to: email,
-      from: owner ?? 'Somebody',
-      documentName: document[0]?.name ?? 'a document',
-      url: `${selfOrigin(c)}/s/${state.token}`,
-    });
+    if ((await countShareMail(userId).catch(() => ({ ok: true }))).ok) {
+      /*
+       * Awaited, not fired off. See the note at the top of mail.ts: a send started after the
+       * response may never leave a serverless function. The mailer caps the wait itself.
+       */
+      const sent = await sendShareNotice({
+        to: email,
+        from: owner ?? 'Somebody',
+        documentName: document[0]?.name ?? 'a document',
+        url: `${selfOrigin(c)}/s/${state.token}`,
+      });
 
-    notified = sent.ok;
+      notified = sent.ok;
 
-    if (!sent.ok) {
-      console.error(`share notice to ${email} not sent: ${sent.reason}`);
+      if (!sent.ok) {
+        console.error(`share notice to ${email} not sent: ${sent.reason}`);
+      }
+    } else {
+      console.error(`share notice to ${email} not sent: past today's mail limit`);
     }
 
     await deliver(userId, 'document.shared', {
@@ -1044,6 +1178,20 @@ app.get('/report/:token', (c) => {
 });
 
 app.post('/report/:token', async (c) => {
+  /*
+   * By address, and stricter than anything else here, because this is the one endpoint that writes
+   * to the database with nobody signed in. Two kilobytes a row, no ceiling, and a database with a
+   * few hundred megabytes in it: a form anybody can post is a form somebody will post in a loop.
+   */
+  if (!(await countCall(`report:${clientAddress(c)}`).catch(() => ({ ok: true }))).ok) {
+    return c.html(
+      buildReportPage(
+        c.req.param('token'),
+        'Too many reports from here. Try again in a minute.'
+      )
+    );
+  }
+
   const body = await c.req.parseBody();
   const reason = String(body.reason ?? '').slice(0, 2000);
   const reporter = String(body.reporter ?? '').slice(0, 200) || null;
@@ -1056,6 +1204,17 @@ app.post('/report/:token', async (c) => {
     insert into m2h_report (share_token, reason, reporter)
     values (${c.req.param('token')}, ${reason}, ${reporter})
   `;
+
+  /*
+   * Handled reports do not need keeping for ever, and this table is the one thing here that grows
+   * with no account behind it. Swept on the way past, like the OAuth tables in oauth.ts.
+   */
+  if (Math.random() < 0.02) {
+    await sql()`
+      delete from m2h_report
+      where handled_at is not null and created_at < now() - interval '90 days'
+    `.catch(() => undefined);
+  }
 
   return c.html(
     buildNoticePage(
@@ -1074,6 +1233,35 @@ app.post('/report/:token', async (c) => {
 app.get('/.well-known/oauth-protected-resource', protectedResource);
 app.get('/.well-known/oauth-protected-resource/api/mcp', protectedResource);
 app.get('/.well-known/oauth-authorization-server', authorizationServer);
+
+/*
+ * Where to send a security report, for whoever looks for it here first (RFC 9116).
+ *
+ * Served from code rather than from `public/`, because `vercel.json` rewrites this whole prefix to
+ * the function: a file sitting in `public/.well-known/` would be two sources of truth and only one
+ * of them would answer. The address is a GitHub advisory rather than a mailbox — private reporting
+ * on the repository is the first channel this product has, with a mailbox behind it for anyone who
+ * would rather not open a GitHub account to report a bug.
+ *
+ * `Expires` is a year out. It is meant to be renewed; a stale one says the policy is unmaintained.
+ */
+app.get('/.well-known/security.txt', (c) =>
+  c.text(
+    [
+      // Two, in order of preference: the advisory keeps the report structured and private, the
+      // mailbox is for whoever would rather write an email than open a GitHub account.
+      'Contact: https://github.com/raudarlabs/transformpipe/security/advisories/new',
+      'Contact: mailto:raudar.aborsen@gmail.com',
+      'Expires: 2027-09-18T00:00:00.000Z',
+      'Preferred-Languages: en, uk, ru',
+      'Canonical: https://transformpipe.com/.well-known/security.txt',
+      'Policy: https://github.com/raudarlabs/transformpipe/blob/main/SECURITY.md',
+      '',
+    ].join('\n'),
+    200,
+    { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=86400' }
+  )
+);
 
 app.route('/', mcp);
 app.route('/', oauth);

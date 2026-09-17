@@ -133,6 +133,8 @@ export async function signIn(): Promise<boolean> {
 
   const client = await clientId();
   const secret = verifier();
+  /* One request, one value, checked on the way back — the answer has to be to the question asked. */
+  const state = verifier();
   const redirect = chrome.identity.getRedirectURL();
 
   const url = new URL(AUTHORIZE);
@@ -141,6 +143,7 @@ export async function signIn(): Promise<boolean> {
   url.searchParams.set('client_id', client);
   url.searchParams.set('redirect_uri', redirect);
   url.searchParams.set('scope', SCOPE);
+  url.searchParams.set('state', state);
   url.searchParams.set('code_challenge', await challenge(secret));
   url.searchParams.set('code_challenge_method', 'S256');
 
@@ -153,7 +156,19 @@ export async function signIn(): Promise<boolean> {
     return false;
   }
 
-  const code = new URL(answer).searchParams.get('code');
+  const back = new URL(answer);
+
+  /*
+   * PKCE already means a code intercepted here cannot be exchanged by anyone else, and the window
+   * is one the browser opened and controls — so this is the belt to that pair of braces. It costs
+   * a parameter, the server round-trips it, and without it nothing distinguishes the redirect this
+   * flow asked for from a redirect that simply arrived.
+   */
+  if (back.searchParams.get('state') !== state) {
+    return false;
+  }
+
+  const code = back.searchParams.get('code');
 
   if (!code) {
     return false;

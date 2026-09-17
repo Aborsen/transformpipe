@@ -70,6 +70,8 @@ function asText(markdown: string): string {
       url.replace(/^https?:\/\//, '') === label ? url : `${label}: ${url}`
     )
     .replace(/^(\s*)[*-]\s+/gm, '$1- ')
+    // A code span is a fence for the HTML part; in plain text the fence itself is noise.
+    .replace(/(`+)\s?([^`]*?)\s?\1/g, '$2')
     .replace(/\*\*([^*]+)\*\*/g, '$1')
     .trim();
 }
@@ -173,6 +175,36 @@ async function send(message: {
 }
 
 /**
+ * A piece of somebody's text, on its way into a Markdown body.
+ *
+ * A document's name is typed by a person and lands in a message signed by our domain — so a
+ * document called `[Confirm your account](https://elsewhere.example)` would arrive as a real,
+ * clickable link in an email carrying our SPF and DKIM. That is phishing with our return address,
+ * and the document costs nothing to create.
+ *
+ * A code span rather than escaped punctuation, which was the first attempt and was not enough:
+ * backslashes stop the link syntax, and the renderer then autolinks the bare URL that is left
+ * behind. Inside a code span nothing is parsed at all — no emphasis, no link, no autolink, no raw
+ * HTML — so this is a fence rather than a list of syntaxes to remember. A file name set in
+ * monospace also happens to be the right way to print a file name.
+ *
+ * The fence is one backtick longer than the longest run inside the text, which is how CommonMark
+ * says a code span containing backticks is written; a value that starts or ends with one is padded
+ * with the space the spec then strips back off.
+ */
+const asCode = (text: string) => {
+  const longest = Math.max(
+    0,
+    ...[...text.matchAll(/`+/g)].map((run) => run[0].length)
+  );
+  const fence = '`'.repeat(longest + 1);
+  const padded =
+    text.startsWith('`') || text.endsWith('`') ? ` ${text} ` : text;
+
+  return `${fence}${padded}${fence}`;
+};
+
+/**
  * Tells somebody a document has been shared with their address.
  *
  * Two parts, text and HTML, generated from the one set of words — see `asHtml`. No images and no
@@ -191,6 +223,8 @@ export async function sendShareNotice(options: {
   url: string;
 }): Promise<Sent> {
   const { to, from, documentName, url } = options;
+  const safeName = asCode(documentName.slice(0, 200));
+  const safeFrom = asCode(from.slice(0, 200));
 
   return send({
     to,
@@ -202,11 +236,11 @@ export async function sendShareNotice(options: {
      * which puts a raw email address and a quoted filename in the subject line, and that pair is a
      * shape spam filters know well. Who shared it is the first line of the body, where it belongs.
      */
-    subject: `${documentName} was shared with you`,
+    subject: `${documentName.replace(/[\r\n]+/g, ' ').slice(0, 120)} was shared with you`,
     markdown: [
-      `${from} shared a document with you on TransformPipe.`,
+      `${safeFrom} shared a document with you on TransformPipe.`,
       '',
-      `**${documentName}** — [open it](${url})`,
+      `**${safeName}** — [open it](${url})`,
       '',
       `It was shared with ${to} specifically rather than published, so opening it means signing in`,
       'with that address. Nobody else can open the link.',

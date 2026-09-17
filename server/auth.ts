@@ -281,6 +281,18 @@ export async function authProxy(c: Context): Promise<Response> {
     return c.json({ error: 'no auth path given' }, 404);
   }
 
+  /*
+   * What may be appended to the auth service's base URL, and nothing else.
+   *
+   * The host is fixed, so this was never an SSRF — but a `..` that the platform happens not to
+   * normalise walks out of the auth service's own path and into whatever else answers on that
+   * host, with this app's forwarded headers attached. An allowlist of characters is a cheaper
+   * thing to be sure about than every proxy between here and there.
+   */
+  if (!/^[A-Za-z0-9._~\-/]{1,200}$/.test(subpath) || subpath.includes('..')) {
+    return c.json({ error: 'no such auth path' }, 404);
+  }
+
   if (subpath === 'finish') {
     return finishSignIn(c);
   }

@@ -137,6 +137,29 @@ export async function isVerified(userId: string): Promise<boolean> {
   return rows[0]?.verified === true;
 }
 
+/** What a caller is told when they try to publish before confirming their address. */
+export const PUBLISH_UNVERIFIED =
+  'Confirm your email address before publishing a document to a public link. Sharing with named addresses works either way.';
+
+/**
+ * Whether this account may put a page on the open web.
+ *
+ * `link` sharing puts a page at /s/<token> that anybody holding the URL can read, on our domain,
+ * with somebody else's content on it — the one thing an account made with an address nobody has
+ * proved should not be able to do. `people` is not held back: it names addresses and asks each
+ * reader to sign in, so it publishes nothing.
+ *
+ * One function because there are three doors to this — `PUT /api/v1/documents/:id/share`,
+ * `POST /api/v1/documents?share=link` and the app's own `PUT /api/documents/:id/share` — and for a
+ * while only the first of them asked. A rule with three copies is a rule with two holes in it.
+ *
+ * Asked at the request rather than carried on the session, so confirming takes effect on the next
+ * request instead of the next sign-in.
+ */
+export async function mayPublishPublicly(userId: string): Promise<boolean> {
+  return isVerified(userId);
+}
+
 export async function checkQuota(
   userId: string,
   incomingBytes: number
@@ -224,6 +247,46 @@ export async function countSummaryCall(caller: string): Promise<SummaryQuotaVerd
   }
 
   return { ok: calls <= AI_SUMMARY.perDay, calls };
+}
+
+/**
+ * Per account per day. A share notice goes from our domain to an address the sender chose.
+ *
+ * Fifty is far above what sharing a document looks like and far below what a mailing looks like.
+ * The thing being protected is not the cost of the send — it is the domain: a burst of unwanted
+ * mail signed by our SPF and DKIM ends with the sending domain disabled, and the first thing that
+ * stops working after that is the confirmation email somebody needs to sign in.
+ */
+export const SHARE_MAIL = {
+  perDay: 50,
+};
+
+/**
+ * Counts one share notice against today's budget and says whether it fit.
+ *
+ * Its own table for the reason the summary counter has its own: these count different things at
+ * different rates, and sharing a dozen documents should not eat into a budget meant for something
+ * else. A send that does not fit is simply not sent — the share itself still happens, because
+ * access and notification were always separate here.
+ */
+export async function countShareMail(userId: string): Promise<{ ok: boolean }> {
+  const rows = (await sql()`
+    insert into m2h_mail_call (caller, day, calls)
+    values (${userId}, current_date, 1)
+    on conflict (caller, day) do update set calls = m2h_mail_call.calls + 1
+    returning calls
+  `) as Array<{ calls: number }>;
+
+  const calls = rows[0]?.calls ?? 1;
+
+  // Swept the way the summary counter is: occasionally, on the way past.
+  if (calls === 1 && Math.random() < 0.02) {
+    await sql()`
+      delete from m2h_mail_call where day < current_date - interval '7 days'
+    `.catch(() => undefined);
+  }
+
+  return { ok: calls <= SHARE_MAIL.perDay };
 }
 
 export interface RateVerdict {

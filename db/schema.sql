@@ -278,6 +278,16 @@ create table if not exists m2h_ai_summary_call (
   primary key (caller, day)
 );
 
+-- One row per account per day. Same shape as m2h_ai_summary_call, counting something else: mail
+-- leaving our domain for an address the sender chose. See SHARE_MAIL in server/limits.ts for why
+-- the thing being rationed is the domain's reputation rather than the cost of a send.
+create table if not exists m2h_mail_call (
+  caller text not null,
+  day    date not null,
+  calls  integer not null default 0,
+  primary key (caller, day)
+);
+
 -- Full-text search over a document's content.
 --
 -- Not a generated column: the source is not always in the row by the time this is read back — it

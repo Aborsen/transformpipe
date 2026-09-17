@@ -30,3 +30,14 @@ export interface DocumentRow {
   summary_created_at?: string | null;
   replaces?: string | null;
 }
+
+/**
+ * Whether a string is shaped like one of our document ids.
+ *
+ * Here rather than in one of the two routers because both need it: a value that is not a uuid
+ * reaches a uuid column as a driver error, and the request that was wrong gets answered 500. The
+ * API asked this question and the app's own endpoints did not, which is how the same bad id got
+ * two different answers.
+ */
+export const looksLikeId = (id: string) =>
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);

@@ -19,6 +19,42 @@ export interface ZipPage {
   text: string;
 }
 
+/**
+ * What all the entries of one archive may weigh unpacked.
+ *
+ * The size that was checked before this — four megabytes — is the size of the *compressed* file,
+ * and compression is exactly what the check is blind to: a few megabytes of zeroes unpacks into
+ * gigabytes, and `unzipSync` builds all of it in memory at once. Sixty-four megabytes is far above
+ * any real export of a wiki and far below what takes a function down.
+ */
+const MAX_UNPACKED = 64 * 1024 * 1024;
+
+/**
+ * Refuses an archive that unpacks to more than `MAX_UNPACKED`, without unpacking any of it.
+ *
+ * For the archives this app does not open itself: a `.docx` is read by `mammoth` and an `.xlsx` by
+ * `read-excel-file`, and both unpack the whole thing before anyone can object. The central
+ * directory carries every entry's original size, so the question can be answered from the header
+ * alone — which is what the filter below does, returning false for everything so that nothing is
+ * decompressed on the way.
+ */
+export async function refuseIfItUnpacksTooFar(bytes: Uint8Array): Promise<void> {
+  const { unzipSync } = await import('fflate');
+  let unpacked = 0;
+
+  unzipSync(bytes, {
+    filter: (file) => {
+      unpacked += file.originalSize ?? 0;
+
+      if (unpacked > MAX_UNPACKED) {
+        throw new Error('it unpacks to more than this app will read at once');
+      }
+
+      return false;
+    },
+  });
+}
+
 /** Every entry in the archive matching `extension`, as text — skips directories and empty files. */
 export async function readZipTextFiles(
   bytes: Uint8Array,
@@ -27,9 +63,26 @@ export async function readZipTextFiles(
   const { unzipSync, strFromU8 } = await import('fflate');
 
   let files: Record<string, Uint8Array>;
+  let unpacked = 0;
 
   try {
-    files = unzipSync(bytes);
+    /*
+     * The filter reads the central directory's own `originalSize` before anything is decompressed,
+     * which is what makes this a check rather than a post-mortem. It also skips unpacking every
+     * entry that is thrown away two lines below — the extension match was already happening, just
+     * after the work instead of before it.
+     */
+    files = unzipSync(bytes, {
+      filter: (file) => {
+        unpacked += file.originalSize ?? 0;
+
+        if (unpacked > MAX_UNPACKED) {
+          throw new Error('it unpacks to more than this app will read at once');
+        }
+
+        return file.name.toLowerCase().endsWith(extension) && file.size > 0;
+      },
+    });
   } catch (cause) {
     throw new Error(
       `That is not a readable .zip: ${cause instanceof Error ? cause.message : 'it could not be opened'}`

@@ -1,5 +1,5 @@
 import type { Context } from 'hono';
-import { currentUser } from './auth.js';
+import { currentUser, selfOrigin } from './auth.js';
 import { ownerOfKey } from './keys.js';
 import { ownerOfAccessToken } from './oauth.js';
 
@@ -22,6 +22,33 @@ export interface Caller {
   via: Via;
   /** OAuth callers carry what they were granted; the other two can do everything the owner can. */
   scope: string | null;
+}
+
+/**
+ * Whether a call that was authenticated by cookie actually came from us.
+ *
+ * A bearer token is presented deliberately: something had to go and fetch it. A cookie is sent by
+ * the browser whether or not the page meant to send it, so a cookie-authenticated request from
+ * somewhere else is a request nobody made — `tp_delete_document`, driven by a page the account
+ * holder happened to open.
+ *
+ * The same check `/api/oauth/approve` makes, and its comment says the rest: without it the defence
+ * is the session cookie's SameSite attribute, which is somebody else's default to change. Today
+ * SameSite=Lax does hold this shut, which is why this is a second lock rather than a fix.
+ *
+ * Absent headers pass. A browser sends Origin on every cross-site POST and Sec-Fetch-Site on every
+ * request it makes; a caller that sends neither is not a browser, and a caller that is not a
+ * browser has no cookie of ours to be driven with.
+ */
+export function cameFromUs(c: Context): boolean {
+  const origin = c.req.header('origin');
+  const site = c.req.header('sec-fetch-site');
+
+  if (origin && origin !== 'null' && origin !== selfOrigin(c)) {
+    return false;
+  }
+
+  return !site || site === 'same-origin' || site === 'none';
 }
 
 const KEY_PREFIX = 'tp_live_';

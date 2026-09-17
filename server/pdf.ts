@@ -230,10 +230,14 @@ export async function markdownToPdf(markdown: string, title: string): Promise<Bu
   parserModule = parser;
 
   PdfPrinter.setFonts(FONTS);
-  // No document ever references an external image or a local path of its own, so both policies
-  // are a formality — but pdfmake warns loudly on every PDF built without one.
+  /*
+   * Both refused. No document reaches here with an image in it — `blockContent` does not carry an
+   * `<img>` into pdfmake at all — so today these decide nothing, which is exactly why they should
+   * both say no: the day somebody adds picture support, the policy that was a formality becomes
+   * the policy, and "read any local file this function can see" is not one to inherit by accident.
+   */
   PdfPrinter.setUrlAccessPolicy(() => false);
-  PdfPrinter.setLocalAccessPolicy(() => true);
+  PdfPrinter.setLocalAccessPolicy(() => false);
 
   const root = parser.parse(markdownToHtml(markdown));
 

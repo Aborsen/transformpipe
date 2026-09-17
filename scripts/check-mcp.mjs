@@ -1110,6 +1110,30 @@ const notLoopback = await fetch(
 check('but a public one is matched exactly, port and all', notLoopback.status === 400, `got ${notLoopback.status}`);
 
 /* A forged forwarding header must not choose what the discovery documents say. */
+/*
+ * A connector is not a browser, and the Origin check added for cookie calls must not touch it.
+ *
+ * `cameFromUs` refuses a session-authenticated call that arrives with somebody else's Origin. A
+ * bearer token is a different thing entirely — presented deliberately, by something that had to go
+ * and fetch it — and an assistant calling from its own origin is the normal case, not an attack.
+ * If this ever fails, the check has been written too wide.
+ */
+const fromElsewhere = await post(
+  '/api/mcp',
+  { jsonrpc: '2.0', id: 1, method: 'tools/list', params: {} },
+  {
+    authorization: `Bearer ${stillGood}`,
+    origin: 'https://claude.ai',
+    'sec-fetch-site': 'cross-site',
+  }
+);
+const fromElsewhereBody = await fromElsewhere.json().catch(() => null);
+check(
+  'a bearer call from another origin still works',
+  fromElsewhere.status === 200 && Array.isArray(fromElsewhereBody?.result?.tools),
+  `got ${fromElsewhere.status}`
+);
+
 const forged = await fetch(`${HOST}/.well-known/oauth-authorization-server`, {
   headers: { 'x-forwarded-host': 'evil.test', 'x-forwarded-proto': 'https' },
 });

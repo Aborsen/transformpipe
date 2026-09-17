@@ -4,6 +4,7 @@ import type { Context } from 'hono';
 import { currentUser, selfOrigin } from './auth.js';
 import { clientDocument, isDocumentId } from './cimd.js';
 import { sql } from './db.js';
+import { clientAddress } from './address.js';
 import { countCall } from './limits.js';
 
 /*
@@ -621,10 +622,7 @@ oauth.post('/register', async (c) => {
    * to authenticate with — so the only thing standing between this and a table full of junk is a
    * count. Keyed by address: one caller registering thirty clients a minute is not a client.
    */
-  const from =
-    c.req.header('x-forwarded-for')?.split(',')[0].trim() ||
-    c.req.header('x-real-ip') ||
-    'unknown';
+  const from = clientAddress(c);
   const verdict = await countCall(`register:${from}`).catch(() => ({ ok: true }));
 
   if (!verdict.ok) {

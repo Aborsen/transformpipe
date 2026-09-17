@@ -3,15 +3,17 @@ import { Hono, type Context } from 'hono';
 import { createMiddleware } from 'hono/factory';
 import { buildStandaloneHtml, getDocStats } from '../shared/markdown.js';
 import { selfOrigin } from './auth.js';
-import { type Caller, mayWrite, resolveCaller } from './caller.js';
+import { type Caller, cameFromUs, mayWrite, resolveCaller } from './caller.js';
 import { sendShareNotice } from './mail.js';
-import { sql } from './db.js';
+import { looksLikeId, sql } from './db.js';
 import {
   AI_SUMMARY,
   checkQuota,
   countCall,
+  countShareMail,
   countSummaryCall,
-  isVerified,
+  mayPublishPublicly,
+  PUBLISH_UNVERIFIED,
   mb,
   QUOTA,
   RATE,
@@ -28,6 +30,7 @@ import {
 import { htmlToMarkdown } from '../shared/from-html.js';
 import { jsonToMarkdown } from '../shared/from-json.js';
 import { delimitedToMarkdown } from '../shared/from-table.js';
+import { refuseIfItUnpacksTooFar } from '../shared/zip-import.js';
 import { markdownToHtml } from './render.js';
 import { deleteSources, putSource, readSource } from './source.js';
 
@@ -63,6 +66,22 @@ const requireCaller = createMiddleware<Env>(async (c, next) => {
           : 'Send an API key as `Authorization: Bearer tp_live_…`',
       },
       401
+    );
+  }
+
+  /*
+   * A cookie-authenticated write has to have come from us — see `cameFromUs`. Reads are left
+   * alone: the response is not readable cross-origin anyway (the CORS headers here carry no
+   * credentials), so the thing worth stopping is the write that happens before anybody reads.
+   */
+  if (
+    caller.via === 'session' &&
+    !READ_ONLY_METHODS.has(c.req.method) &&
+    !cameFromUs(c)
+  ) {
+    return c.json(
+      { error: 'A call authenticated by cookie has to come from TransformPipe itself.' },
+      403
     );
   }
 
@@ -339,6 +358,13 @@ v1.post('/documents', async (c) => {
     let messages: Array<{ message: string }> = [];
 
     try {
+      /*
+       * A .docx is a zip, and mammoth unpacks all of it before returning: four megabytes of
+       * compressed XML is gigabytes of uncompressed XML, and the size check on the way in only
+       * ever saw the four. Asked before the library is handed the bytes — see zip-import.ts.
+       */
+      await refuseIfItUnpacksTooFar(new Uint8Array(docx));
+
       ({ value, messages } = await mammoth.convertToHtml({
         buffer: Buffer.from(docx),
       }));
@@ -447,6 +473,9 @@ v1.post('/documents', async (c) => {
 
   if (docx && kind === 'excel-to-markdown') {
     try {
+      // An .xlsx is a zip too, and read-excel-file unpacks it whole. Same guard, same reason.
+      await refuseIfItUnpacksTooFar(new Uint8Array(docx));
+
       const { excelToMarkdown } = await import('../shared/from-excel.js');
 
       markdown = await excelToMarkdown(docx, (name || 'document').replace(/\.[^.]+$/, ''));
@@ -472,6 +501,17 @@ v1.post('/documents', async (c) => {
 
   if (share !== undefined && share !== 'link' && share !== 'people') {
     return c.json({ error: 'share must be `link` or `people`' }, 400);
+  }
+
+  /*
+   * The same rule as PUT /documents/:id/share, and this is the door that did not ask.
+   *
+   * A document could be created already published — `?share=link` writes `share_mode` and the token
+   * straight into the insert — which reached the open web without passing the check the other door
+   * makes. See mayPublishPublicly.
+   */
+  if (share === 'link' && !(await mayPublishPublicly(userId))) {
+    return c.json({ error: PUBLISH_UNVERIFIED }, 403);
   }
 
   /*
@@ -555,9 +595,6 @@ v1.post('/documents', async (c) => {
 });
 
 /** Postgres rejects a malformed uuid with an error, which reaches the caller as a 500. */
-const looksLikeId = (id: string) =>
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-
 async function findDocument(userId: string, id: string) {
   if (!looksLikeId(id)) {
     return null;
@@ -885,25 +922,9 @@ v1.put('/documents/:id/share', async (c) => {
     return c.json({ error: 'Not found' }, 404);
   }
 
-  /*
-   * Publishing to the open web waits for a confirmed address.
-   *
-   * `link` puts a page at /s/<token> that anybody holding the URL can read, on our domain, with
-   * somebody else's content on it — which is the one thing an account made with an address nobody
-   * has proved should not be able to do. `people` is not held back: it names addresses and asks
-   * each reader to sign in, so it publishes nothing.
-   *
-   * Checked here rather than on the caller, because confirming should take effect on the next
-   * request and not on the next sign-in.
-   */
-  if (body.mode === 'link' && !(await isVerified(userId))) {
-    return c.json(
-      {
-        error:
-          'Confirm your email address before publishing a document to a public link. Sharing with named addresses works either way.',
-      },
-      403
-    );
+  /* Publishing to the open web waits for a confirmed address — see mayPublishPublicly. */
+  if (body.mode === 'link' && !(await mayPublishPublicly(userId))) {
+    return c.json({ error: PUBLISH_UNVERIFIED }, 403);
   }
 
   if (body.mode === 'private') {
@@ -985,6 +1006,11 @@ v1.put('/documents/:id/share', async (c) => {
     /* Awaited, in parallel: see mail.ts on why a send after the response may never leave. */
     await Promise.all(
       added.map(async (to) => {
+        /* Rationed per account per day — see SHARE_MAIL. The access is written either way. */
+        if (!(await countShareMail(userId).catch(() => ({ ok: true }))).ok) {
+          return;
+        }
+
         const sent = await sendShareNotice({
           to,
           from: sender ?? 'Somebody',

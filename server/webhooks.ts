@@ -1,4 +1,5 @@
 import { createHmac, randomBytes } from 'node:crypto';
+import { publicHost } from './address.js';
 import { sql } from './db.js';
 
 /*
@@ -106,6 +107,24 @@ export async function deliver(
 
   await Promise.all(
     targets.map(async (hook) => {
+      /*
+       * The address again, at the moment of posting.
+       *
+       * It was checked when the webhook was created, and a name resolves to whatever its owner
+       * wants it to an hour later. This is the check that matters, because this is the line that
+       * makes the request.
+       */
+      if (!(await publicHost(new URL(hook.url).hostname).catch(() => false))) {
+        await sql()`
+          update m2h_webhook
+          set last_attempted_at = now(), last_status = null,
+              last_error = 'that address is not a public one'
+          where id = ${hook.id}
+        `.catch(() => undefined);
+
+        return;
+      }
+
       const signature = createHmac('sha256', hook.secret)
         .update(`${timestamp}.${body}`)
         .digest('hex');
@@ -113,6 +132,8 @@ export async function deliver(
       try {
         const response = await fetch(hook.url, {
           method: 'POST',
+          // A redirect is how a public address becomes an internal one after the check above.
+          redirect: 'manual',
           headers: {
             'content-type': 'application/json',
             'x-transformpipe-signature': `t=${timestamp},v1=${signature}`,

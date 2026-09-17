@@ -11,7 +11,7 @@
  * No dependencies on purpose: a tool people run in CI should not drag a tree of packages behind
  * it, and everything here is one fetch and some printing.
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { chmodSync, readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { basename, join } from 'node:path';
 
@@ -328,8 +328,18 @@ function login() {
     fail('Pass the key: `tp login tp_live_…`');
   }
 
-  mkdirSync(CONFIG_DIR, { recursive: true });
+  /*
+   * The key is a credential, so the file holding it is the owner's business and nobody else's.
+   *
+   * `mode` on writeFileSync only applies when the file is created: a config.json already sitting
+   * there with 0644 keeps 0644 and the new key inherits the old permissions. Hence the chmod after
+   * the write, which says what is meant whether the file is new or not. The directory is created
+   * 0700 for the same reason — a key nobody can read in a directory anybody can list is halfway
+   * to the point.
+   */
+  mkdirSync(CONFIG_DIR, { recursive: true, mode: 0o700 });
   writeFileSync(CONFIG, JSON.stringify({ key: token }, null, 2), { mode: 0o600 });
+  chmodSync(CONFIG, 0o600);
   console.log(`Saved to ${CONFIG}`);
 }
 
@@ -351,6 +361,8 @@ if (!command || command === '--help' || command === '-h') {
       '  tp usage                          how much room is left',
       '',
       'Options: --key, --name, --share link|people, --merge, --replaces, --force, --json',
+      '',
+      '`tp login` leaves the key in your shell history. TP_API_KEY in the environment does not.',
       `Host:    ${HOST}  (TP_HOST to point elsewhere)`,
     ].join('\n')
   );
