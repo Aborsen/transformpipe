@@ -95,6 +95,17 @@ export async function snapshot(
     );
   };
 
+  /*
+   * Minified CSS, given its line breaks back.
+   *
+   * A snapshot is a file for a browser to open, not for a person to read — but it is still a file
+   * somebody will open in an editor one day, and a site's stylesheets arrive as one line each, so
+   * the whole thing lands as four unreadable lines. One rule per line costs nothing at render time
+   * and is the difference between a file you can look through and a wall.
+   */
+  const readable = (css: string) =>
+    css.includes('\n') ? css : css.replace(/}\s*/g, '}\n');
+
   const copy = document.documentElement.cloneNode(true) as HTMLElement;
 
   /* Nothing that runs, and nothing that asks the network for more of the page. */
@@ -159,7 +170,7 @@ export async function snapshot(
 
     const style = document.createElement('style');
 
-    style.textContent = await inlineCssUrls(css, absolute);
+    style.textContent = readable(await inlineCssUrls(css, absolute));
     sheet.replaceWith(style);
   }
 
@@ -168,6 +179,8 @@ export async function snapshot(
     if (style.textContent?.includes('url(')) {
       style.textContent = await inlineCssUrls(style.textContent, document.baseURI);
     }
+
+    style.textContent = readable(style.textContent ?? '');
   }
 
   /* Pictures: the tag, the lazy attributes it may be hiding behind, and inline backgrounds. */
@@ -239,6 +252,23 @@ export async function snapshot(
   );
 
   head.prepend(note);
+
+  /*
+   * A line break between the things a head and a body are made of. Whitespace between elements is
+   * whitespace the renderer collapses, so this changes nothing about how the page looks and a great
+   * deal about whether the file can be read at all.
+   */
+  for (const parent of [head, copy.querySelector('body')]) {
+    if (!parent) {
+      continue;
+    }
+
+    for (const child of [...parent.children]) {
+      parent.insertBefore(document.createTextNode('\n'), child);
+    }
+
+    parent.append(document.createTextNode('\n'));
+  }
 
   return {
     html: `<!doctype html>\n${copy.outerHTML}`,
