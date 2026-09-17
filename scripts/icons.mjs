@@ -88,6 +88,7 @@ const ICONS = [
   { file: 'favicon-16.png', size: 16, radius: 3, scale: 1 },
   { file: 'favicon-32.png', size: 32, radius: 6, scale: 1 },
   { file: 'icon-48.png', size: 48, radius: 6, scale: 1 },
+  { file: 'icon-128.png', size: 128, radius: 6, scale: 1 },
   { file: 'favicon-96.png', size: 96, radius: 6, scale: 1 },
   { file: 'apple-touch-icon.png', size: 180, radius: 0, scale: 1 },
   { file: 'icon-192.png', size: 192, radius: 6, scale: 1 },

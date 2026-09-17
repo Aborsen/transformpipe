@@ -145,6 +145,40 @@ captions are part of the picture:
 
 Plus the small promotional tile, 440×280, from the same script.
 
+## Firefox
+
+The same source tree, built again: `npm run ext:firefox` into `dist-extension-firefox/`, packed by
+`npm run ext:zip:firefox`. Three keys of the manifest differ and one file behind them —
+`extension/lib/panel.ts`, where Chrome's side panel and Firefox's sidebar become the same two verbs:
+
+| | Chrome | Firefox |
+| --- | --- | --- |
+| The panel | `side_panel`, and a `sidePanel` permission | `sidebar_action`, no permission |
+| Opening it | `chrome.sidePanel.open()` | `browser.sidebarAction.open()`, from a click |
+| The toolbar button | a behaviour flag decides popup or panel | an empty popup, and `action.onClicked` opens the sidebar |
+| The worker | a service worker | the same file as an event page |
+| The floor | `minimum_chrome_version` 114 | `strict_min_version` 140 |
+
+140 rather than the release the sidebar arrived in, because AMO requires
+`data_collection_permissions` of a new add-on and that key is 140 (142 on Android). What it
+declares is what the privacy page says: nothing required — signed out the extension sends nothing
+anywhere — and three optional, which sign-in makes possible: the account's address, the token
+behind it, and the document you press Save on.
+
+`npx web-ext lint` on the package: **no errors**, and fourteen warnings in two families, both in the
+bundled converters rather than in code of ours:
+
+- **`DANGEROUS_EVAL`, nine of them** — the `Function` constructor, in the chunk that reads Word
+  documents: `mammoth` depends on `bluebird`, which builds functions from strings when it is
+  allowed to and falls back when it is not. Worth saying out loud to a reviewer, because Chrome's
+  Manifest V3 bans exactly that on an extension page: a `.docx` was converted in the built viewer
+  served under `script-src 'self'; object-src 'self'` — the headings, the table and the list all
+  came out right — so the fallback is the path that actually runs.
+- **`UNSAFE_VAR_ASSIGNMENT`, five** — assignments to `innerHTML`. This is a converter: rendering a
+  preview of the Markdown it just produced is the product. Everything rendered goes through
+  `DOMPurify` first (`shared/from-html.ts`, `src/lib/markdown.ts`), and the pages are served under
+  the CSP above, so a script that survived the sanitiser still could not run.
+
 ## When a version is submitted
 
 The manifest's version is `package.json`'s, so a resubmission is a release: bump, tag, changelog

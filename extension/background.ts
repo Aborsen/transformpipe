@@ -1,5 +1,6 @@
 import { extract } from './extract';
 import { openInViewer } from './lib/clipboard';
+import { closePanelForTab, opensPanelByClick, openPanel } from './lib/panel';
 import { applySurface, storedSurface, SURFACE_KEY } from './lib/surface';
 
 /*
@@ -28,6 +29,16 @@ const MENU_SELECTION = 'tp-convert-selection';
 const restoreSurface = async () => applySurface(await storedSurface());
 
 chrome.runtime.onStartup.addListener(() => void restoreSurface());
+
+/*
+ * Where the browser has no "open the panel instead of the popup" setting, an empty popup sends the
+ * click here instead — and a click is the gesture opening a sidebar requires. In Chrome this
+ * listener is never registered: the behaviour flag handles it and the click never arrives.
+ */
+if (opensPanelByClick) {
+  chrome.action.onClicked.addListener((tab) => void openPanel(tab.windowId));
+}
+
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && SURFACE_KEY in changes) {
     void restoreSurface();
@@ -43,12 +54,7 @@ chrome.runtime.onMessage.addListener((message, _sender, respond) => {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
     if (tab?.id !== undefined) {
-      await chrome.sidePanel.setOptions({ tabId: tab.id, enabled: false });
-      await chrome.sidePanel.setOptions({
-        tabId: tab.id,
-        path: 'panel.html',
-        enabled: true,
-      });
+      await closePanelForTab(tab.id);
     }
 
     /*

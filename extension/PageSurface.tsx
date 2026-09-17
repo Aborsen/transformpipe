@@ -39,6 +39,7 @@ import { Typography } from '@/ui/components/Typography';
 import { cn } from '@/ui/lib/utils';
 import { extract } from './extract';
 import { AccountMenu } from './lib/AccountMenu';
+import { closePanel, openPanel } from './lib/panel';
 import { chooseSurface } from './lib/surface';
 import { copyText, openInViewer, openViewerForFiles } from './lib/clipboard';
 import { type HtmlFlavour, pageHtmlFile } from './lib/page-file';
@@ -339,14 +340,10 @@ export function PageSurface({ live = false }: { live?: boolean }) {
               onClick={async () => {
                 /*
                  * The choice is remembered before the panel goes: from here on the button opens the
-                 * compact one. Then both ways of closing, because neither is reliable alone — a
-                 * side panel document may close itself and sometimes does nothing, and the worker's
-                 * way, disabling the panel for this tab and enabling it again, always works.
+                 * compact one. How a panel is actually closed differs by browser and is `panel.ts`.
                  */
                 await chooseSurface('popup');
-                void chrome.runtime.sendMessage({ type: 'tp-close-panel' });
-
-                window.close();
+                await closePanel();
               }}
             />
           ) : (
@@ -365,7 +362,7 @@ export function PageSurface({ live = false }: { live?: boolean }) {
                 if (tab?.windowId !== undefined) {
                   /* Remembered, so the next press of the button opens this one directly. */
                   await chooseSurface('panel');
-                  await chrome.sidePanel.open({ windowId: tab.windowId });
+                  await openPanel(tab.windowId);
                   window.close();
                 }
               }}

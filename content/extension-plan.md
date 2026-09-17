@@ -202,9 +202,15 @@ new code written against a guess.
    transformpipe.com is an *optional* host permission requested at the moment somebody connects:
    until a key exists this extension has no reason to talk to us at all, and an origin in the
    install dialog reads the same whether it is used or not.
-2. **Firefox**: same code, a different manifest key, packaged separately. The side panel is
-   `sidebar_action` there rather than `side_panel`, which is the one part that is not the same file.
-   Still open, and the only thing on this list that is.
+2. ~~**Firefox**~~ — done, and it cost less than the estimate here feared. `npm run ext:firefox`
+   builds the same source tree into `dist-extension-firefox/` (`--mode firefox`, a flag Vite
+   already has), and the differences are three manifest keys and `extension/lib/panel.ts`, where
+   Chrome's `sidePanel` and Firefox's `sidebarAction` become the same two verbs. `web-ext lint`
+   passes with no errors; the warnings and what they are is in `content/extension-store.md`.
+
+   One thing the estimate did not know: AMO now requires `data_collection_permissions`, which
+   raises the floor to Firefox 140 — so the manifest declares nothing required and three optional,
+   which is the same sentence the privacy page makes.
 3. ~~**The store**~~ — done, and it is `content/extension-store.md`: the listing text, the single
    purpose, a justification per permission (the interesting one is `<all_urls>`, which the side
    panel needs and nothing else does), the data answers, and what to tick on the form. Beside it:

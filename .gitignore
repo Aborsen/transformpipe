@@ -21,6 +21,7 @@ _*.mjs
 
 # The built extension, loaded unpacked or zipped for a store — never committed.
 dist-extension
+dist-extension-firefox
 
 # The upload itself is built by `npm run ext:zip`; the pictures beside it are kept.
 brand/store/*.zip
