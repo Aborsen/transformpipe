@@ -517,6 +517,41 @@ const names = (listed.body?.result?.tools ?? []).map((t) => t.name);
 check('tools/list answers', listed.status === 200);
 
 /*
+ * MCP Apps (SEP-1865): the card a host draws beside a document. Declared in three places that have
+ * to agree — the capability, the resource, and the tools that point at it — so all three are read
+ * back here rather than trusted.
+ */
+const ui = hello.body?.result?.capabilities?.extensions?.['io.modelcontextprotocol/ui'];
+
+check(
+  'the UI extension is declared with its mime type',
+  Array.isArray(ui?.mimeTypes) && ui.mimeTypes.includes('text/html;profile=mcp-app'),
+  JSON.stringify(ui)
+);
+
+const resources = await call(tokens.access_token, 'resources/list');
+const cardResource = (resources.body?.result?.resources ?? []).find((one) =>
+  String(one.uri).startsWith('ui://')
+);
+
+check('resources/list offers the card', Boolean(cardResource), JSON.stringify(resources.body?.result));
+check(
+  'and calls it what the extension requires',
+  cardResource?.mimeType === 'text/html;profile=mcp-app',
+  cardResource?.mimeType
+);
+
+const read = await call(tokens.access_token, 'resources/read', { uri: cardResource?.uri });
+const contents = read.body?.result?.contents?.[0];
+
+check('resources/read returns the page itself', typeof contents?.text === 'string' && contents.text.startsWith('<!doctype html>'));
+check(
+  'and it fetches nothing',
+  !/\b(src|href)=["']https?:/.test(contents?.text ?? 'src="https://'),
+  'the card must be self-contained'
+);
+
+/*
  * Every tool says what it is and whether it changes anything. The directory's review asks for it,
  * and it is the difference between a person approving "tp_delete_document" and approving "Delete a
  * document · changes data · cannot be undone".
@@ -537,10 +572,19 @@ check(
   'and saving a document does not',
   tools.find((one) => one.name === 'tp_save_document')?.annotations?.destructiveHint === false
 );
+
+check(
+  'the two document tools point at the card',
+  ['tp_save_document', 'tp_get_document'].every(
+    (name) => tools.find((one) => one.name === name)?._meta?.ui?.resourceUri === cardResource?.uri
+  )
+);
 check('ten tools or fewer, and none named after a document', names.length <= 10 && names.length >= 7, names.join(', '));
 check('every tool has an inputSchema', (listed.body?.result?.tools ?? []).every((t) => t.inputSchema?.type === 'object'));
 
-const unknown = await call(tokens.access_token, 'resources/list');
+/* `resources/list` used to be the unknown one; it is answered now, so this asks for a method that
+ * genuinely is not here. */
+const unknown = await call(tokens.access_token, 'prompts/list');
 check(
   'an unknown method is a JSON-RPC -32601, not an HTTP error',
   unknown.status === 200 && unknown.body?.error?.code === -32601,

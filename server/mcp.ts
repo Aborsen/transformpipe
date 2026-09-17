@@ -3,6 +3,7 @@ import type { Context } from 'hono';
 import { htmlToMarkdown } from '../shared/from-html.js';
 import { jsonToMarkdown } from '../shared/from-json.js';
 import { delimitedToMarkdown } from '../shared/from-table.js';
+import { conversion } from '../shared/conversions.js';
 import { buildStandaloneHtml } from '../shared/markdown.js';
 import { DOCS_SECTIONS } from '../src/lib/docs-sections.js';
 import { FAQ_ENTRIES } from '../src/lib/faq.js';
@@ -11,6 +12,7 @@ import { selfOrigin } from './auth.js';
 import { type Caller, mayWrite, resolveCaller } from './caller.js';
 import { countCall, QUOTA, RATE } from './limits.js';
 import { markdownToHtml } from './render.js';
+import { DOCUMENT_CARD_HTML, DOCUMENT_CARD_URI } from './ui-card.js';
 import v1 from './v1.js';
 
 /*
@@ -113,6 +115,52 @@ const rpcError = (id: Id, code: number, message: string) => ({
 const say = (text: string, isError = false) => ({
   content: [{ type: 'text', text }],
   isError,
+});
+
+/**
+ * The same answer, with the data a card is drawn from beside it.
+ *
+ * `structuredContent` is for the view and is not added to the model's context, which is the point:
+ * the sentence stays short and the card gets the fields — see `ui-card.ts` for what it reads.
+ */
+/**
+ * A document as the card needs it: what it is, where it opens, and the first of what is in it.
+ *
+ * The address is the app's own — a conversion's page with `?doc=`, which is how a document is
+ * opened everywhere else — built from the request rather than written down, so a preview
+ * deployment's card opens that deployment.
+ */
+const forCard = (
+  c: Context,
+  document: {
+    id: string;
+    name: string;
+    kind: string;
+    size: number;
+    words?: number;
+    created_at?: string;
+    share?: { mode?: string; url?: string | null };
+  },
+  markdown = ''
+) => ({
+  id: document.id,
+  name: document.name,
+  size: document.size,
+  words: document.words ?? 0,
+  headings: (markdown.match(/^#{1,6} /gm) ?? []).length,
+  tables: (markdown.match(/^\|/gm) ?? []).length ? 1 : 0,
+  created: document.created_at ?? '',
+  share: document.share?.mode ?? 'private',
+  shareUrl: document.share?.url ?? '',
+  url: `${selfOrigin(c)}${conversion(document.kind).path}?doc=${document.id}`,
+  /* A glance, not the document: the card fades it out and the model already has the whole thing. */
+  excerpt: markdown.slice(0, 600),
+});
+
+const card = (text: string, data: Record<string, unknown>) => ({
+  content: [{ type: 'text', text }],
+  structuredContent: data,
+  isError: false,
 });
 
 /** Says what it dropped. Silent truncation reads as completeness, which is worse than a gap. */
@@ -229,6 +277,13 @@ interface Tool {
   description: string;
   inputSchema: Record<string, unknown>;
   annotations: ToolAnnotations;
+  /**
+   * The `ui://` resource a host may draw beside this tool's answer — MCP Apps, SEP-1865.
+   *
+   * Only on the tools that hand back a document, and only ever as an addition: the `content` a
+   * model reads is the same with or without it, so a host that draws nothing loses nothing.
+   */
+  ui?: string;
   /** Set on anything that writes, so a read-only grant is refused before it runs. */
   writes?: boolean;
   run: (
@@ -504,6 +559,7 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_save_document: {
     description:
       'Save a document to this TransformPipe account, and optionally publish it in the same call. Markdown by default; pass `from` to send HTML, CSV, TSV or JSON instead, which is converted on the way in and recorded as what it was made from. Returns the id, the size and — when shared — the URL. `share: "link"` is anyone holding the URL, `"people"` narrows it to the addresses in `emails`, `"private"` is nobody but the owner. Publishing makes a page on the public web: share a document the person actually asked to share. `replaces` links this save to an earlier document as a new version of it — only when asked for; a save with nothing said about it is always a new, unrelated document.',
+    ui: DOCUMENT_CARD_URI,
     annotations: {
       title: 'Save a document',
       readOnlyHint: false,
@@ -636,7 +692,7 @@ const TOOLS: Record<McpToolName, Tool> = {
         );
       }
 
-      return say(
+      return card(
         [
           `Saved ${document.name} — id ${document.id}, ${bytes(document.size)}, ${document.words} words.`,
           /*
@@ -648,7 +704,8 @@ const TOOLS: Record<McpToolName, Tool> = {
             : document.share.mode === 'people' && document.share.url
               ? `Only the addresses on it can read it: ${document.share.url}`
               : 'It is private. Share it with tp_share_document when asked.',
-        ].join('\n')
+        ].join('\n'),
+        forCard(c, document, markdown)
       );
     },
   },
@@ -738,6 +795,7 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_get_document: {
     description:
       'One document from this account, by the id tp_list_documents printed: its Markdown source, or the rendered HTML.',
+    ui: DOCUMENT_CARD_URI,
     annotations: { title: 'Read a document', readOnlyHint: true, openWorldHint: false },
     inputSchema: {
       type: 'object',
@@ -787,10 +845,11 @@ const TOOLS: Record<McpToolName, Tool> = {
 
       const document = got.body.document;
 
-      return say(
+      return card(
         clip(
           `${document.name} — ${bytes(document.size)}\n\n${document.markdown ?? ''}`
-        )
+        ),
+        forCard(c, document, document.markdown ?? '')
       );
     },
   },
@@ -1052,6 +1111,9 @@ const LISTED = MCP_TOOL_NAMES.map((name) => ({
   description: TOOLS[name].description,
   inputSchema: TOOLS[name].inputSchema,
   annotations: TOOLS[name].annotations,
+  ...(TOOLS[name].ui
+    ? { _meta: { ui: { resourceUri: TOOLS[name].ui } } }
+    : {}),
 }));
 
 /* ---------------------------------------------------------------- the endpoint */
@@ -1112,7 +1174,19 @@ mcp.post('/', async (c) => {
     return c.json(
       rpc(id ?? null, {
         protocolVersion: SPOKEN.has(asked) ? asked : NEWEST,
-        capabilities: { tools: { listChanged: false } },
+        capabilities: {
+          tools: { listChanged: false },
+          resources: { listChanged: false },
+          /*
+           * MCP Apps, declared the way the extension asks for: the one mime type we serve. A
+           * client that has never heard of it ignores the key and reads the text answers.
+           */
+          extensions: {
+            'io.modelcontextprotocol/ui': {
+              mimeTypes: ['text/html;profile=mcp-app'],
+            },
+          },
+        },
         serverInfo: serverInfo(c),
         instructions: INSTRUCTIONS,
       })
@@ -1121,6 +1195,49 @@ mcp.post('/', async (c) => {
 
   if (method === 'ping') {
     return c.json(rpc(id ?? null, {}));
+  }
+
+  /*
+   * One resource, and it is a user interface rather than anybody's data: the card a host draws
+   * beside a document. Kept behind the same token as everything else — it says nothing about an
+   * account, but a server with two auth rules is a server somebody gets wrong later.
+   */
+  if (method === 'resources/list') {
+    return c.json(
+      rpc(id ?? null, {
+        resources: [
+          {
+            uri: DOCUMENT_CARD_URI,
+            name: 'Document card',
+            description:
+              'The card drawn beside a document this connector saved or read.',
+            mimeType: 'text/html;profile=mcp-app',
+          },
+        ],
+      })
+    );
+  }
+
+  if (method === 'resources/read') {
+    const uri = String((params as { uri?: unknown }).uri ?? '');
+
+    if (uri !== DOCUMENT_CARD_URI) {
+      return c.json(rpcError(id ?? null, -32602, `No resource at ${uri}`), 200);
+    }
+
+    return c.json(
+      rpc(id ?? null, {
+        contents: [
+          {
+            uri: DOCUMENT_CARD_URI,
+            mimeType: 'text/html;profile=mcp-app',
+            text: DOCUMENT_CARD_HTML,
+            /* No domains declared: the card fetches nothing, so the host's strictest policy fits. */
+            _meta: { ui: { prefersBorder: false } },
+          },
+        ],
+      })
+    );
   }
 
   if (method === 'tools/list') {
