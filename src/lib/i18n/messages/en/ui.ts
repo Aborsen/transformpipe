@@ -131,6 +131,7 @@ export const ui: Content['ui'] = {
   'ext.panel.permission':
     'The side panel stays open while you browse, so it needs permission to read the pages you open — the button under the toolbar never did, because pressing it is the permission.',
   'ext.panel.allow': 'Allow reading pages',
+  'ext.panel.close': 'Close the side panel',
   'ext.panel.detail':
     'It stays beside the page and follows you from tab to tab, instead of closing when you look away.',
   'ext.account': 'Account',

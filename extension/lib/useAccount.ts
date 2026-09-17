@@ -13,8 +13,21 @@ export function useAccount() {
   const [state, setState] = useState<'idle' | 'busy' | 'done' | 'failed'>('idle');
   const [link, setLink] = useState<string | null>(null);
 
+  /*
+   * Asked again whenever the surface comes back into view. A panel is open while somebody signs in
+   * on another tab, and it would otherwise go on offering to connect an account that is connected.
+   */
   useEffect(() => {
-    void signedIn().then(setConnected);
+    const check = () => void signedIn().then(setConnected);
+
+    check();
+    document.addEventListener('visibilitychange', check);
+    window.addEventListener('focus', check);
+
+    return () => {
+      document.removeEventListener('visibilitychange', check);
+      window.removeEventListener('focus', check);
+    };
   }, []);
 
   const save = useCallback(

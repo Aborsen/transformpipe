@@ -126,6 +126,7 @@ export const ui: Content['ui'] = {
   'ext.panel.permission':
     'El panel lateral sigue abierto mientras navegas, así que necesita permiso para leer las páginas que abres; el botón de la barra nunca lo necesitó, porque pulsarlo es el permiso.',
   'ext.panel.allow': 'Permitir la lectura',
+  'ext.panel.close': 'Cerrar el panel lateral',
   'ext.panel.detail':
     'Se queda junto a la página y te sigue de pestaña en pestaña, en vez de cerrarse en cuanto miras a otro lado.',
   'ext.account': 'Cuenta',

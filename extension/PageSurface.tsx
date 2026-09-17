@@ -10,6 +10,7 @@ import {
   Lock,
   Maximize2,
   PanelRight,
+  PanelRightClose,
   RefreshCw,
   Save,
   Settings,
@@ -204,6 +205,13 @@ export function PageSurface({ live = false }: { live?: boolean }) {
     };
   }, [convertActiveTab, live]);
 
+  /*
+   * Nothing below the permission card makes sense until the permission is there: a title skeleton
+   * that will never fill in and four disabled buttons read as a panel that has hung, which is what
+   * the first version of this looked like.
+   */
+  const blocked = live && !mayReadTabs && !document_;
+
   const stats = document_
     ? getDocStats(document_.markdown, markdownToHtml(document_.markdown))
     : null;
@@ -258,7 +266,16 @@ export function PageSurface({ live = false }: { live?: boolean }) {
             * which a click in this panel is — and the popup closes itself, since the two would
             * otherwise sit on screen saying the same thing.
             */}
-          {!live && (
+          {live ? (
+            <Button
+              variant="transparent"
+              size="xs"
+              aria-label={t('ext.panel.close')}
+              title={t('ext.panel.close')}
+              leftSlot={<PanelRightClose />}
+              onClick={() => window.close()}
+            />
+          ) : (
             <Button
               variant="transparent"
               size="xs"
@@ -282,7 +299,32 @@ export function PageSurface({ live = false }: { live?: boolean }) {
       </div>
 
       <div className="flex flex-col gap-3 px-4 pb-4">
-        {failed === 'none' ? (
+        {blocked && (
+          <div className="flex flex-col gap-3 rounded-xl border border-stroke bg-surface-card p-4">
+            <Typography variant="p" textColor="secondary" className="text-sm">
+              {t('ext.panel.permission')}
+            </Typography>
+
+            <Button
+              className="w-fit"
+              onClick={async () => {
+                const granted = await chrome.permissions.request({
+                  origins: ['<all_urls>'],
+                });
+
+                setMayReadTabs(granted);
+
+                if (granted) {
+                  void convertActiveTab(() => true);
+                }
+              }}
+            >
+              {t('ext.panel.allow')}
+            </Button>
+          </div>
+        )}
+
+        {!blocked && failed === 'none' ? (
           <div className="flex min-w-0 flex-col gap-1">
             {document_ ? (
               <>
@@ -318,7 +360,7 @@ export function PageSurface({ live = false }: { live?: boolean }) {
               </>
             )}
           </div>
-        ) : (
+        ) : blocked ? null : (
           <div className="flex items-start gap-3 rounded-xl border border-stroke bg-surface-card p-3">
             <Lock className="mt-0.5 size-4 shrink-0 text-ink-inactive" />
             <Typography variant="p" textColor="secondary" className="text-sm">
@@ -327,32 +369,7 @@ export function PageSurface({ live = false }: { live?: boolean }) {
           </div>
         )}
 
-        {live && !mayReadTabs && failed === 'none' && !document_ && (
-          <div className="flex flex-col gap-3 rounded-xl border border-stroke bg-surface-card p-4">
-            <Typography variant="p" textColor="secondary" className="text-sm">
-              {t('ext.panel.permission')}
-            </Typography>
-
-            <Button
-              className="w-fit"
-              onClick={async () => {
-                const granted = await chrome.permissions.request({
-                  origins: ['<all_urls>'],
-                });
-
-                setMayReadTabs(granted);
-
-                if (granted) {
-                  void convertActiveTab(() => true);
-                }
-              }}
-            >
-              {t('ext.panel.allow')}
-            </Button>
-          </div>
-        )}
-
-        {failed === 'none' && (live ? mayReadTabs : true) && (
+        {failed === 'none' && !blocked && (
           <div className="relative max-h-52 overflow-hidden rounded-xl border border-stroke">
             {document_ ? (
               /*
@@ -384,7 +401,7 @@ export function PageSurface({ live = false }: { live?: boolean }) {
           </div>
         )}
 
-        <div className="flex flex-col gap-2">
+        <div className={blocked ? 'hidden' : 'flex flex-col gap-2'}>
           <Button
             disabled={!document_}
             leftSlot={copied ? <Check /> : <Copy />}

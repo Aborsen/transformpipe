@@ -119,6 +119,7 @@ export const ui: Content['ui'] = {
   'ext.panel.permission':
     'Il pannello laterale resta aperto mentre navighi, quindi gli serve il permesso di leggere le pagine che apri; il pulsante nella barra non ne ha mai avuto bisogno, perché premerlo è il permesso.',
   'ext.panel.allow': 'Consenti la lettura',
+  'ext.panel.close': 'Chiudi il pannello laterale',
   'ext.panel.detail':
     'Resta accanto alla pagina e ti segue di scheda in scheda, invece di chiudersi appena guardi altrove.',
   'ext.account': 'Account',

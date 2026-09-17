@@ -135,6 +135,7 @@ export const ui: Content['ui'] = {
   'ext.panel.permission':
     'Die Seitenleiste bleibt beim Surfen offen und braucht deshalb die Erlaubnis, die geöffneten Seiten zu lesen — die Schaltfläche in der Leiste brauchte das nie, denn sie zu drücken ist die Erlaubnis.',
   'ext.panel.allow': 'Lesen erlauben',
+  'ext.panel.close': 'Seitenleiste schließen',
   'ext.panel.detail':
     'Sie bleibt neben der Seite und folgt Ihnen von Tab zu Tab, statt sich zu schließen, sobald Sie wegsehen.',
   'ext.account': 'Konto',
