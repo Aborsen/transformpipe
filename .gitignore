@@ -25,3 +25,6 @@ dist-extension-firefox
 
 # The upload itself is built by `npm run ext:zip`; the pictures beside it are kept.
 brand/store/*.zip
+
+# macOS leaves these in every folder it has been looked at in.
+.DS_Store

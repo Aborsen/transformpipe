@@ -110,6 +110,12 @@ export function AppFooter({
           href: '/changelog',
           onNavigate: () => onViewChange('changelog'),
         },
+        /*
+         * The extension, which was reachable from the changelog and the sitemap and nowhere a
+         * person would look. This column is where the other ways in live — the documentation, the
+         * blog, the live preview — and it is the way in that has to be installed.
+         */
+        page('extension'),
         page('contact'),
       ],
     },
