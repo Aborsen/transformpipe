@@ -32,6 +32,16 @@ export interface ChangelogEntry {
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-18',
+    title: 'Words that CSS held apart stay apart',
+    body:
+      'A row like `39 words · 1 heading · 1 table` is usually built as separate elements with the '
+      + 'space between them coming from the layout rather than from the markup — so it converted as '
+      + '`39words1heading1table`. The extension now reads the page with its layout in hand and puts '
+      + 'those spaces back before converting. Stat rows, tag lists and breadcrumbs come out as '
+      + 'sentences again.',
+  },
+  {
+    date: '2026-09-18',
     title: 'A document somebody shared with you is a document',
     body:
       'The page a share link opens now carries the same card every other screen puts above a '

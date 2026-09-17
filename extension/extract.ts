@@ -21,6 +21,48 @@ export interface Extracted {
 }
 
 export function extract(): Extracted {
+  /**
+   * Puts back the spaces that CSS was providing.
+   *
+   * `<span>39</span><span>words</span>` inside a flex or grid container reads as "39 words" on the
+   * screen and serialises as `39words`: the gap between them is a layout property and there is no
+   * whitespace in the markup at all. Every converter downstream of this — ours included — sees the
+   * string, not the page, so the words arrive glued together. It is not a rare shape either; it is
+   * what a row of stats, a tag list or a breadcrumb trail looks like in any current framework.
+   *
+   * The one place that can tell is here, inside the page, where `getComputedStyle` still exists. So
+   * the document is cloned first and the clone is walked beside the living one: where the real
+   * element lays its children out as flex or grid items, the copy gets a space after each of them.
+   *
+   * The walkers stay in step because only text nodes are inserted and the walkers see elements, so
+   * the sequence one is reading does not change under it.
+   *
+   * Declared in here rather than beside `extract`, and that is not style: `executeScript` takes
+   * this one function, stringifies it and evaluates the string in the page. A helper in the module
+   * around it exists in the extension's world and nowhere the page can reach — it would be a
+   * ReferenceError at the top of every conversion.
+   */
+  function withLayoutSpacing(root: HTMLElement): HTMLElement {
+    const copy = root.cloneNode(true) as HTMLElement;
+    const living = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
+    const twin = document.createTreeWalker(copy, NodeFilter.SHOW_ELEMENT);
+
+    while (living.nextNode() && twin.nextNode()) {
+      const element = living.currentNode as Element;
+      const display = getComputedStyle(element).display;
+
+      if (!display.includes('flex') && !display.includes('grid')) {
+        continue;
+      }
+
+      for (const child of [...(twin.currentNode as Element).children]) {
+        child.after(document.createTextNode(' '));
+      }
+    }
+
+    return copy;
+  }
+
   const selection = window.getSelection();
   const hasSelection =
     selection !== null && !selection.isCollapsed && selection.rangeCount > 0;
@@ -41,7 +83,7 @@ export function extract(): Extracted {
   }
 
   return {
-    html: document.documentElement.outerHTML,
+    html: withLayoutSpacing(document.documentElement).outerHTML,
     url: document.location.href,
     title: document.title,
     selection: false,
