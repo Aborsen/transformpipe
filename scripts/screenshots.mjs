@@ -57,15 +57,36 @@ async function clickText(page, selector, text) {
   const handles = await page.$$(selector);
 
   for (const handle of handles) {
-    const label = await handle.evaluate((node) => node.textContent?.trim());
+    /*
+     * Any of the three names a control can have, not the first one that is non-empty.
+     *
+     * The header's navigation became icons with `aria-label` when the search box took the room its
+     * words were using, so this script — which looked at `textContent` — had been failing at the
+     * History step ever since, and the pictures on /docs are older than the screens they show. The
+     * first fix was still wrong: History carries a badge with the number of documents, so its text
+     * is "3" and a fallback chain never reaches the label.
+     */
+    const names = await handle.evaluate((node) => [
+      node.textContent?.trim() ?? '',
+      node.getAttribute('aria-label') ?? '',
+      node.getAttribute('title') ?? '',
+    ]);
 
-    if (label?.includes(text)) {
+    if (names.some((name) => name.includes(text))) {
       await handle.click();
       return true;
     }
   }
 
-  throw new Error(`No ${selector} reading "${text}"`);
+  const seen = await page
+    .$$eval(selector, (nodes) =>
+      nodes.map((n) => n.getAttribute('aria-label') || n.textContent?.trim() || '?')
+    )
+    .catch(() => []);
+
+  /* What it did see, because "not found" on its own sends somebody to read the app rather than
+   * the one line of markup that changed. */
+  throw new Error(`No ${selector} reading "${text}" — saw: ${seen.join(' | ')}`);
 }
 
 /*
@@ -172,6 +193,11 @@ async function capture(browser, theme) {
   await page.evaluate((value) => {
     localStorage.setItem('m2h.theme', value);
     localStorage.removeItem('md2html.history.v1');
+    /* Answered, so the cookie banner is not in ten screenshots of a converter. */
+    localStorage.setItem(
+      'm2h.consent',
+      JSON.stringify({ version: 1, analytics: false, at: Date.now() })
+    );
   }, theme);
   await page.reload({ waitUntil: 'networkidle2' });
   await settle(page);
