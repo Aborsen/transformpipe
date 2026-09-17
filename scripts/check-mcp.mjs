@@ -515,6 +515,28 @@ const listed = await call(tokens.access_token, 'tools/list');
 const names = (listed.body?.result?.tools ?? []).map((t) => t.name);
 
 check('tools/list answers', listed.status === 200);
+
+/*
+ * Every tool says what it is and whether it changes anything. The directory's review asks for it,
+ * and it is the difference between a person approving "tp_delete_document" and approving "Delete a
+ * document · changes data · cannot be undone".
+ */
+const tools = listed.body?.result?.tools ?? [];
+const annotated = tools.filter((one) => one.annotations?.title && typeof one.annotations.readOnlyHint === 'boolean');
+
+check(
+  'every tool carries a title and a readOnlyHint',
+  annotated.length === tools.length,
+  tools.filter((one) => !one.annotations?.title).map((one) => one.name).join(', ')
+);
+check(
+  'the one that cannot be undone says so',
+  tools.find((one) => one.name === 'tp_delete_document')?.annotations?.destructiveHint === true
+);
+check(
+  'and saving a document does not',
+  tools.find((one) => one.name === 'tp_save_document')?.annotations?.destructiveHint === false
+);
 check('ten tools or fewer, and none named after a document', names.length <= 10 && names.length >= 7, names.join(', '));
 check('every tool has an inputSchema', (listed.body?.result?.tools ?? []).every((t) => t.inputSchema?.type === 'object'));
 

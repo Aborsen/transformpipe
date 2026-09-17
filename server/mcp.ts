@@ -205,9 +205,30 @@ mcp.delete('/', notPost);
 
 /* ---------------------------------------------------------------- the tools */
 
+/**
+ * What a client may say about a tool before it runs one.
+ *
+ * `title` is the name a person reads in a list of permissions; the hints are the protocol's own
+ * three questions — does it change anything, does it destroy anything, does it reach outside this
+ * account. A client uses them to decide what to confirm, and the directory's review asks for them,
+ * which is fair: "tp_delete_document" and "tp_usage" look identical to a reader who has only the
+ * names.
+ *
+ * `destructiveHint` defaults to true for anything not read-only, so the tools that create or
+ * update say `false` explicitly — otherwise saving a document reads as dangerous as deleting one.
+ */
+interface ToolAnnotations {
+  title: string;
+  readOnlyHint: boolean;
+  destructiveHint?: boolean;
+  idempotentHint?: boolean;
+  openWorldHint?: boolean;
+}
+
 interface Tool {
   description: string;
   inputSchema: Record<string, unknown>;
+  annotations: ToolAnnotations;
   /** Set on anything that writes, so a read-only grant is refused before it runs. */
   writes?: boolean;
   run: (
@@ -295,6 +316,7 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_help: {
     description:
       'The TransformPipe documentation itself: what Markdown it understands, what happens to a file, what is stored and what is not, how sharing works, the limits, and the HTTP API. Use this to answer any question about how TransformPipe works INSTEAD of answering from memory. Ask a question to get the sections that answer it, or call it with nothing for all of them.',
+    annotations: { title: 'TransformPipe documentation', readOnlyHint: true, openWorldHint: false },
     inputSchema: {
       type: 'object',
       additionalProperties: false,
@@ -347,6 +369,7 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_convert_markdown: {
     description:
       'Convert Markdown to sanitised HTML and return it. GitHub Flavored Markdown; raw HTML in the source goes through a sanitiser, so a script tag in a file someone sent cannot survive. `standalone: true` returns a complete self-contained document with its styles inlined — the same file the app downloads. Nothing is saved to the account. For anything long, prefer tp_save_document and share the link: what this returns has to travel back through the conversation.',
+    annotations: { title: 'Markdown to HTML', readOnlyHint: true, openWorldHint: false },
     inputSchema: {
       type: 'object',
       additionalProperties: false,
@@ -405,6 +428,7 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_convert_to_markdown: {
     description:
       'Convert HTML, CSV, TSV or JSON to Markdown and return it. `from` says which. Nothing is saved to the account; to keep the result, pass the same source and `from` to tp_save_document, which stores it and records what it was made from. A Word file cannot come through here — a .docx is a zip, not text — so it converts in the app, or by POSTing the file to /api/v1/documents?kind=word-to-markdown.',
+    annotations: { title: 'Convert to Markdown', readOnlyHint: true, openWorldHint: false },
     inputSchema: {
       type: 'object',
       additionalProperties: false,
@@ -480,6 +504,13 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_save_document: {
     description:
       'Save a document to this TransformPipe account, and optionally publish it in the same call. Markdown by default; pass `from` to send HTML, CSV, TSV or JSON instead, which is converted on the way in and recorded as what it was made from. Returns the id, the size and — when shared — the URL. `share: "link"` is anyone holding the URL, `"people"` narrows it to the addresses in `emails`, `"private"` is nobody but the owner. Publishing makes a page on the public web: share a document the person actually asked to share. `replaces` links this save to an earlier document as a new version of it — only when asked for; a save with nothing said about it is always a new, unrelated document.',
+    annotations: {
+      title: 'Save a document',
+      readOnlyHint: false,
+      destructiveHint: false,
+      idempotentHint: false,
+      openWorldHint: false,
+    },
     writes: true,
     inputSchema: {
       type: 'object',
@@ -625,6 +656,7 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_list_documents: {
     description:
       'What is on this TransformPipe account: documents with their names, sizes, dates and whether each is shared. Start here when the question is "what have I got". `query` matches a document by its name or by what is written inside it. Prints the id of each, which is what the other tools take.',
+    annotations: { title: 'List documents', readOnlyHint: true, openWorldHint: false },
     inputSchema: {
       type: 'object',
       additionalProperties: false,
@@ -706,6 +738,7 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_get_document: {
     description:
       'One document from this account, by the id tp_list_documents printed: its Markdown source, or the rendered HTML.',
+    annotations: { title: 'Read a document', readOnlyHint: true, openWorldHint: false },
     inputSchema: {
       type: 'object',
       additionalProperties: false,
@@ -765,6 +798,13 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_summarize_document: {
     description:
       'A three-to-five sentence summary of one document, generated by a model and cached on the account so asking again is free. Pass `force: true` to regenerate. Summaries are metered separately from ordinary calls, at a per-day limit per account.',
+    annotations: {
+      title: 'Summarise a document',
+      readOnlyHint: false,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
     writes: true,
     inputSchema: {
       type: 'object',
@@ -806,6 +846,7 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_document_versions: {
     description:
       'Every document linked to this one as a version of the same thing, oldest first — the chain built by tp_save_document\'s `replaces`. Empty unless somebody deliberately linked documents together; nothing links them on its own.',
+    annotations: { title: 'Document versions', readOnlyHint: true, openWorldHint: false },
     inputSchema: {
       type: 'object',
       additionalProperties: false,
@@ -856,6 +897,16 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_share_document: {
     description:
       'Change who may open a document. "link" is anyone holding the URL, "people" is only the addresses given, "private" revokes the link entirely — a URL already sent stops working. `emails` REPLACES the list rather than adding to it. Returns the mode, the URL and the addresses as they now stand.',
+    annotations: {
+      title: 'Share a document',
+      readOnlyHint: false,
+      /* It publishes a page anyone holding the link can read, which is not destruction but is not
+       * nothing either — hence the sentence in the description and `idempotentHint`, because
+       * setting the same audience twice is the same share. */
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
     writes: true,
     inputSchema: {
       type: 'object',
@@ -919,6 +970,7 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_usage: {
     description:
       'What this account is using against its limits: bytes stored, documents held, and the ceiling on each. Ask this when a save was refused.',
+    annotations: { title: 'Account usage', readOnlyHint: true, openWorldHint: false },
     inputSchema: { type: 'object', additionalProperties: false, properties: {} },
     run: async (c) => {
       const usage = await callApi(c, '/api/v1/usage');
@@ -943,6 +995,14 @@ const TOOLS: Record<McpToolName, Tool> = {
   tp_delete_document: {
     description:
       'Permanently delete one document from this account, and its Markdown source with it. There is no undo and no trash. Pass confirm: true only when the person has named this document and asked for it to be deleted; ask them otherwise. Deletes exactly one — there is no tool that deletes several.',
+    annotations: {
+      title: 'Delete a document',
+      readOnlyHint: false,
+      /* The one that cannot be taken back: no undo, no trash. */
+      destructiveHint: true,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
     writes: true,
     inputSchema: {
       type: 'object',
@@ -988,8 +1048,10 @@ const TOOLS: Record<McpToolName, Tool> = {
 
 const LISTED = MCP_TOOL_NAMES.map((name) => ({
   name,
+  title: TOOLS[name].annotations.title,
   description: TOOLS[name].description,
   inputSchema: TOOLS[name].inputSchema,
+  annotations: TOOLS[name].annotations,
 }));
 
 /* ---------------------------------------------------------------- the endpoint */
