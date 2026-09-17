@@ -63,8 +63,6 @@ import { useAccount } from './lib/useAccount';
  * you already trust the conversion. Anything worth actually reading goes to the viewer, which has
  * a page's worth of room; this is a glance, so it fades out rather than scrolls.
  */
-const PREVIEW_CHARACTERS = 1800;
-
 export function PageSurface({ live = false }: { live?: boolean }) {
   const t = useT();
   const { locale } = useI18n();
@@ -254,7 +252,12 @@ export function PageSurface({ live = false }: { live?: boolean }) {
              * can press stays where it was.
              */
             'flex h-screen w-full flex-col overflow-hidden bg-surface-page'
-          : 'flex w-[23rem] flex-col bg-surface-page'
+          : /*
+             * 460 by whatever it needs, against Chrome's ceiling of 800 by 600. The first version
+             * was 368 wide, which is a phone's column for a document that is usually a page — the
+             * preview wrapped every second word and the buttons sat two to a row.
+             */
+            'flex w-[28.75rem] flex-col bg-surface-page'
       }
     >
       {/* The same two pixels of brand the site's own bar carries, for the same reason. */}
@@ -413,7 +416,7 @@ export function PageSurface({ live = false }: { live?: boolean }) {
           <div
             className={cn(
               'relative overflow-hidden rounded-xl border border-stroke',
-              live ? 'min-h-0 flex-1' : 'max-h-52'
+              live ? 'min-h-0 flex-1' : 'max-h-[22rem]'
             )}
           >
             {document_ ? (
@@ -423,19 +426,10 @@ export function PageSurface({ live = false }: { live?: boolean }) {
                 * heading; `zoom` shrinks the whole thing — headings, code, tables — in proportion,
                 * which is what "a small version of the page" means.
                 */
-              <div
-                className={cn(
-                  '[zoom:0.8]',
-                  live && 'h-full overflow-y-auto'
-                )}
-              >
+              <div className="h-full max-h-[22rem] overflow-y-auto [zoom:0.8]">
                 <DocumentPreview
                   className="p-4"
-                  html={markdownToHtml(
-                    live
-                      ? document_.markdown
-                      : document_.markdown.slice(0, PREVIEW_CHARACTERS)
-                  )}
+                  html={markdownToHtml(document_.markdown)}
                 />
               </div>
             ) : (
@@ -448,14 +442,6 @@ export function PageSurface({ live = false }: { live?: boolean }) {
               </div>
             )}
 
-            {/*
-              * What says there is more of it, in the popup — which shows the first part of a
-              * document and sends you elsewhere for the rest. The panel is a page tall and scrolls,
-              * so there is nothing there to hint at.
-              */}
-            {!live && (
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-surface-page to-transparent" />
-            )}
           </div>
         )}
 
