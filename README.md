@@ -1,4 +1,28 @@
-# TransformPipe — document converter
+<div align="center">
+
+<img src="brand/mark.svg" alt="" width="88" height="88">
+
+# TransformPipe
+
+**Ten document conversions that run in your browser.** Word, Excel, PDF, HTML, CSV, JSON or a whole
+Notion, Confluence or Obsidian export in — a clean document out, as Markdown, HTML, plain text or
+print. Signed out, nothing is uploaded and nothing needs a network.
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-14a8af.svg)](LICENSE)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Ftransformpipe.com&label=transformpipe.com&color=14a8af)](https://transformpipe.com)
+[![Conversions](https://img.shields.io/badge/conversions-10-14a8af.svg)](https://transformpipe.com/docs#converting)
+[![MCP connector](https://img.shields.io/badge/MCP-connector-14a8af.svg)](https://transformpipe.com/docs#assistant)
+[![Browser extension](https://img.shields.io/badge/extension-Chrome%20%C2%B7%20Firefox-14a8af.svg)](https://transformpipe.com/extension)
+
+[**Open it**](https://transformpipe.com) ·
+[Documentation](https://transformpipe.com/docs) ·
+[Browser extension](https://transformpipe.com/extension) ·
+[What has shipped](https://transformpipe.com/changelog) ·
+[Support](https://transformpipe.com/support)
+
+</div>
+
+---
 
 Live at **[transformpipe.com](https://transformpipe.com)**. The old `md-2-html.vercel.app` still
 answers, so links already shared keep working; the canonical URLs, the sitemap and every default in
@@ -451,3 +475,8 @@ src/
   lib/                  conversion, doc styles, auth, api client, history
   ui/                   design system (vendored)
 ```
+
+## Licence
+
+MIT — see [LICENSE](LICENSE). The brand is not part of it: `brand/mark.svg`, `brand/logo.svg` and
+the name are Raudar Labs's, so fork the code freely and put your own mark on it.
