@@ -273,7 +273,21 @@ export function PageSurface({ live = false }: { live?: boolean }) {
               aria-label={t('ext.panel.close')}
               title={t('ext.panel.close')}
               leftSlot={<PanelRightClose />}
-              onClick={() => window.close()}
+              onClick={() => {
+                /*
+                 * Both ways, because neither is reliable alone: a side panel document is allowed to
+                 * close itself and sometimes does nothing, and the worker's way — disable the panel
+                 * for this tab, enable it again — always works but cannot open the compact panel
+                 * from inside the page. So the worker is asked to do both, and `window.close()`
+                 * follows as the fast path when it does work.
+                 */
+                void chrome.runtime.sendMessage({
+                  type: 'tp-close-panel',
+                  thenPopup: true,
+                });
+
+                window.close();
+              }}
             />
           ) : (
             <Button
