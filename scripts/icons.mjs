@@ -6,11 +6,11 @@
  * the only file to edit — everything in `public/` that has an icon in its name comes out of this
  * script, so the set cannot drift the way a folder of hand-exported PNGs does.
  *
- * Why there is more than the SVG. Every current browser takes `favicon.svg` and that would be the
- * end of it, except for the two places that still want pixels: iOS, which has never read an SVG
- * for a home-screen icon, and Android's launcher, which wants a version it is allowed to crop.
- * Those two, plus one small PNG for whatever is left, is the whole list — there is no `.ico` here
- * on purpose, and no 70-file set from an icon generator either.
+ * Why there is more than the SVG. Every current browser takes `favicon.svg`; what wants pixels is
+ * everything else — iOS, which has never read an SVG for a home-screen icon, Android's launcher,
+ * which wants a version it may crop, and whatever asks for `/favicon.ico` without looking at the
+ * page first: a connector list, a link unfurl, a feed reader. That last one is why the `.ico` is
+ * here at all, and why its absence showed as a stale mark in places nobody thinks to check.
  *
  * Rendered in the same headless Chrome as the covers, for the same reason: it is the renderer the
  * icon will actually be seen in.
@@ -80,6 +80,7 @@ function mark({ radius, scale }) {
  * mask anybody ships.
  */
 const ICONS = [
+  { file: 'favicon-32.png', size: 32, radius: 6, scale: 1 },
   { file: 'favicon-96.png', size: 96, radius: 6, scale: 1 },
   { file: 'apple-touch-icon.png', size: 180, radius: 0, scale: 1 },
   { file: 'icon-192.png', size: 192, radius: 6, scale: 1 },
@@ -104,5 +105,34 @@ for (const icon of ICONS) {
   writeFileSync(join(OUT, icon.file), await page.screenshot({ type: 'png' }));
   console.log(icon.file);
 }
+
+/*
+ * `/favicon.ico`, which is not for browsers.
+ *
+ * Every browser here takes the SVG. What still asks for the classic path is everything else that
+ * wants to show a site's mark beside its name — a connector list, a link unfurl, a feed reader —
+ * and a 404 there is why one of them went on showing the mark from before the rebrand.
+ *
+ * An ICO is a six-byte header, one sixteen-byte directory entry and a payload, and the payload is
+ * allowed to be a PNG. So it is the 32px PNG already rendered above, in an envelope.
+ */
+const png = readFileSync(join(OUT, 'favicon-32.png'));
+const ico = Buffer.alloc(22 + png.length);
+
+ico.writeUInt16LE(0, 0); // reserved
+ico.writeUInt16LE(1, 2); // an icon, not a cursor
+ico.writeUInt16LE(1, 4); // one image in it
+ico.writeUInt8(32, 6); // width
+ico.writeUInt8(32, 7); // height
+ico.writeUInt8(0, 8); // not a palette
+ico.writeUInt8(0, 9); // reserved
+ico.writeUInt16LE(1, 10); // colour planes
+ico.writeUInt16LE(32, 12); // bits per pixel
+ico.writeUInt32LE(png.length, 14);
+ico.writeUInt32LE(22, 18); // where the payload starts
+png.copy(ico, 22);
+
+writeFileSync(join(OUT, 'favicon.ico'), ico);
+console.log('favicon.ico');
 
 await browser.close();

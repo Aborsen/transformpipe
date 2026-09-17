@@ -263,10 +263,10 @@ function Viewer() {
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent align="end" className="w-60">
-                      <DropdownMenuItem onSelect={() => void saveHtml('page')}>
+                      <DropdownMenuItem onSelect={() => void saveHtml('snapshot')}>
                         {t('ext.html.page')}
                       </DropdownMenuItem>
-                      <DropdownMenuItem onSelect={() => void saveHtml('text')}>
+                      <DropdownMenuItem onSelect={() => void saveHtml('article')}>
                         {t('ext.html.text')}
                       </DropdownMenuItem>
                     </DropdownMenuContent>

@@ -402,19 +402,56 @@ export function PageSurface({ live = false }: { live?: boolean }) {
         )}
 
         <div className={blocked ? 'hidden' : 'flex flex-col gap-2'}>
-          <Button
-            disabled={!document_}
-            leftSlot={copied ? <Check /> : <Copy />}
-            onClick={async () => {
-              if (!document_) {
-                return;
-              }
+          {/*
+            * Markdown has two things you can do with it and they belong on one control, the way
+            * the HTML already does: the clipboard is what nearly everyone wants — the document is
+            * going into something else — and the file is the same thing for people who want it on
+            * disk. Two full-width buttons for that made the panel a list of exits.
+            */}
+          <div className="flex">
+            <Button
+              className="flex-1 rounded-r-none"
+              disabled={!document_}
+              leftSlot={copied ? <Check /> : <Copy />}
+              onClick={async () => {
+                if (!document_) {
+                  return;
+                }
 
-              setCopied(await copyText(document_.markdown));
-            }}
-          >
-            {copied ? t('ext.copied') : t('ext.copy')}
-          </Button>
+                setCopied(await copyText(document_.markdown));
+              }}
+            >
+              {copied ? t('ext.copied') : t('ext.copy')}
+            </Button>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  className="rounded-l-none border-l border-l-black/20 px-2"
+                  disabled={!document_}
+                  aria-label={t('ext.download')}
+                  leftSlot={<ChevronDown />}
+                />
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem
+                  onSelect={() =>
+                    document_ &&
+                    downloadDoc(
+                      document_.name,
+                      document_.markdown,
+                      Date.now(),
+                      theme,
+                      'md'
+                    )
+                  }
+                >
+                  {t('ext.download')}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
 
           {/*
             * Two downloads, because the app has two: the Markdown, and the self-contained page
@@ -422,25 +459,6 @@ export function PageSurface({ live = false }: { live?: boolean }) {
             * kind. That second file is the one people send to somebody who does not read Markdown.
             */}
           <div className="flex gap-2">
-            <Button
-              variant="secondary"
-              className="flex-1"
-              disabled={!document_}
-              leftSlot={<Download />}
-              onClick={() =>
-                document_ &&
-                downloadDoc(
-                  document_.name,
-                  document_.markdown,
-                  Date.now(),
-                  theme,
-                  'md'
-                )
-              }
-            >
-              .md
-            </Button>
-
             {/*
               * Two ways to mean "save the HTML", and the menu is where the difference is said out
               * loud rather than guessed at. The page, with its own structure and its pictures
@@ -456,12 +474,12 @@ export function PageSurface({ live = false }: { live?: boolean }) {
                   leftSlot={<FileCode2 />}
                   rightSlot={<ChevronDown />}
                 >
-                  .html
+                  {t('ext.download.html')}
                 </Button>
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="end" className="w-60">
-                <DropdownMenuItem onSelect={() => void saveHtml('page')}>
+                <DropdownMenuItem onSelect={() => void saveHtml('snapshot')}>
                   <span className="flex flex-col">
                     <span>{t('ext.html.page')}</span>
                     <span className="text-ink-secondary text-xs">
@@ -470,7 +488,7 @@ export function PageSurface({ live = false }: { live?: boolean }) {
                   </span>
                 </DropdownMenuItem>
 
-                <DropdownMenuItem onSelect={() => void saveHtml('text')}>
+                <DropdownMenuItem onSelect={() => void saveHtml('article')}>
                   <span className="flex flex-col">
                     <span>{t('ext.html.text')}</span>
                     <span className="text-ink-secondary text-xs">

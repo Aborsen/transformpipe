@@ -1,23 +1,23 @@
 import type { PageDocument } from '@shared/from-page';
 import { buildStandaloneHtml } from '@shared/markdown';
 import { markdownToHtml } from '@/lib/markdown';
+import { snapshot } from '../snapshot';
 
 /*
  * Saving a page as HTML, the two ways somebody can mean it.
  *
- * **Text** is what the rest of this product does: the page converted to Markdown and rendered back
- * as a clean document. Headings, lists, tables and code survive; a figure becomes an image and a
- * caption, a two-level table header becomes one row, and everything the syntax has no word for is
- * flattened. It is the version somebody is going to edit.
+ * **As it looks** is a snapshot: the live document with its stylesheets, images and fonts carried
+ * inside the file. It is what a browser's own "save page" would produce if it wrote one file, and
+ * it is the answer for anything that is not an article — a landing page has no prose to extract, so
+ * converting it gives you its words in a column with none of its design. See `snapshot.ts`.
  *
- * **The page** keeps the article's own markup — figures with their captions, nested tables, the
- * structure as it was written — and embeds the pictures in the file itself, so what is saved still
- * has its illustrations next year, on a machine with no network, after the site has reorganised its
- * media folder. That last part is the whole point: a saved page whose images are still addresses on
- * somebody else's server is a saved page that quietly empties out.
+ * **The article** is what the rest of this product does: find the prose, convert it, render it in
+ * the document stylesheet the site and the exported file both use. Headings, lists, tables and code
+ * survive; the page's own layout does not, which is the point — it is the version somebody is going
+ * to read or edit rather than archive.
  *
- * Both go through `buildStandaloneHtml`, so both are one file with its styles inline and no
- * requests of any kind — the same promise the download on the site makes.
+ * The second goes through `buildStandaloneHtml`, so it is one file with its styles inline and no
+ * requests of any kind. The first is already one file, for the same reason.
  */
 
 /** How much of a page is worth carrying inside it. */
@@ -91,7 +91,11 @@ function fetchImages(urls: string[], maxImage: number, maxTotal: number) {
  * An image that cannot be fetched keeps its address — a file with one remote picture is better than
  * a file with a hole in it, and the addresses are absolute by the time they get here.
  */
-async function withImages(html: string, tabId: number): Promise<string> {
+async function withImages(html: string, tabId?: number): Promise<string> {
+  if (tabId === undefined) {
+    return html;
+  }
+
   const parsed = new DOMParser().parseFromString(html, 'text/html');
   const images = [...parsed.querySelectorAll('img[src]')];
   const urls = [
@@ -129,7 +133,11 @@ async function withImages(html: string, tabId: number): Promise<string> {
   return parsed.body.innerHTML;
 }
 
-export type HtmlFlavour = 'page' | 'text';
+export type HtmlFlavour = 'snapshot' | 'article';
+
+/** What a snapshot may weigh before it stops carrying things. */
+const MAX_ASSET = 4 * 1024 * 1024;
+const MAX_SNAPSHOT = 24 * 1024 * 1024;
 
 /**
  * The file itself. `tabId` is what makes pictures possible, so the viewer — which has no tab to ask
@@ -141,12 +149,28 @@ export async function pageHtmlFile(
   theme: 'dark' | 'light',
   tabId?: number
 ): Promise<string> {
-  const body =
-    flavour === 'text' || !document_.html
-      ? markdownToHtml(document_.markdown)
-      : tabId
-        ? await withImages(document_.html, tabId)
-        : document_.html;
+  /*
+   * A snapshot has to be taken from the tab; there is nothing in a converted document to rebuild it
+   * from. Asked for without one — in the viewer, where the page is long gone — the article is the
+   * honest answer rather than an error about a tab nobody mentioned.
+   */
+  if (flavour === 'snapshot' && tabId !== undefined) {
+    const [result] = await chrome.scripting.executeScript({
+      target: { tabId },
+      func: snapshot,
+      args: [MAX_ASSET, MAX_SNAPSHOT],
+    });
+
+    const taken = result?.result as { html: string } | undefined;
+
+    if (taken?.html) {
+      return taken.html;
+    }
+  }
+
+  const body = document_.html
+    ? await withImages(document_.html, tabId)
+    : markdownToHtml(document_.markdown);
 
   return buildStandaloneHtml({ title: document_.title, body, theme });
 }
