@@ -28,3 +28,6 @@ brand/store/*.zip
 
 # macOS leaves these in every folder it has been looked at in.
 .DS_Store
+
+# The security audit, while its findings are unfixed. The repository is public.
+SECURITY-AUDIT.md
