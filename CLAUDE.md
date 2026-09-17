@@ -42,6 +42,36 @@ dates and month names, which `Intl` renders in the reader's language. Five trans
 is a cost that gets skipped after the second release, and a changelog with three languages missing
 is worse than one that is honestly English.
 
+### An entry can have a page of its own
+
+Most should not. A `slug` gives the entry an address — `/changelog/<slug>`, prerendered in five
+languages and listed in the sitemap — and it is for the entries somebody would search for: a
+format this now converts, a thing it now does. Not for a fix.
+
+```ts
+{
+  date: '2026-09-11',
+  title: 'Download a saved document as Word',
+  body: 'The card. The summary a search result shows and the list prints.',
+  slug: 'markdown-to-word',       // kebab-case, unique, permanent from the day it deploys
+  detail: {
+    en: {
+      description: '100-165 characters, like a blog article\'s',
+      keywords: 'four phrases or more, comma separated',
+      body: `Markdown, at most 3000 characters, no H1 — the page supplies it.`,
+    },
+  },
+}
+```
+
+`changelogProblems()` enforces all of that and the prerenderer throws on it, so a bad entry fails
+the build rather than shipping an empty page.
+
+**Detail pages may be translated, and entries themselves still may not.** The reason the rule
+exists — five translations per entry, per release, forever — does not apply to a handful of pages
+written on purpose: add `de`, `fr`, `es` or `it` beside `en` in `detail` and that language gets it,
+with English as the fallback where nobody has written one.
+
 ### After the entry
 
 - `npm run check-types && npm run build` — the prerenderer reads the same list, and a broken

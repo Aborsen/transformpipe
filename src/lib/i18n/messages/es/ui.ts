@@ -611,6 +611,11 @@ export const ui: Content['ui'] = {
   'changelog.seo.title': 'Registro de cambios',
   'changelog.seo.description':
     'Cada versión de TransformPipe y los cambios que trae, la más reciente primero.',
+  'changelog.more': 'Leer el detalle',
+  'changelog.back': 'Todo el historial de cambios',
+  'changelog.entry.eyebrow': 'Nota de versión',
+  'changelog.entry.missing.title': 'Esa nota de versión no existe',
+  'changelog.entry.missing.body': 'No se ha publicado nada en esta dirección. El historial recoge todo lo que sí se ha publicado.',
   'footer.changelog': 'Registro de cambios',
 
   /*

@@ -49,6 +49,28 @@ export function changelogCrumbs(content: Content, locale: Locale): CrumbSpec[] {
   return [home(content, locale), { label: content.ui['changelog.title'] }];
 }
 
+/**
+ * One entry's own page, under the list it came from.
+ *
+ * The list is linked, unlike the blog's trail: a changelog exists at `/de/changelog` in every
+ * language, so the crumb above a German reader points at the German list rather than the English
+ * one. Only the entry's own words stay English.
+ */
+export function changelogEntryCrumbs(
+  title: string,
+  content: Content,
+  locale: Locale
+): CrumbSpec[] {
+  return [
+    home(content, locale),
+    {
+      label: content.ui['changelog.title'],
+      path: localePath(locale, '/changelog'),
+    },
+    { label: title },
+  ];
+}
+
 export function historyCrumbs(content: Content, locale: Locale): CrumbSpec[] {
   return [home(content, locale), { label: content.ui['header.nav.history'] }];
 }

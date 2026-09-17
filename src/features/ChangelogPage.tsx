@@ -4,6 +4,7 @@ import { DocumentPreview } from '@/components/DocumentPreview';
 import { ScrollToTop } from '@/components/ScrollToTop';
 import { changelogCrumbs } from '@/lib/breadcrumbs';
 import { changelogByYear } from '@/lib/changelog';
+import { changelogEntryPath } from '@/lib/route';
 import { formatDate, formatMonth } from '@/lib/format';
 import { useI18n, useT } from '@/lib/i18n/context';
 import { INTL_LOCALES } from '@/lib/i18n/locales';
@@ -25,8 +26,10 @@ import { Typography } from '@/ui/components/Typography';
  */
 export function ChangelogPage({
   onGoToConverter,
+  onOpenEntry,
 }: {
   onGoToConverter: () => void;
+  onOpenEntry: (slug: string) => void;
 }) {
   const t = useT();
   const { content, locale } = useI18n();
@@ -206,6 +209,34 @@ export function ChangelogPage({
                          * exactly right inside a card that already carries a background.
                          */}
                         <DocumentPreview html={entry.html} className="md-article" />
+
+                        {/*
+                         * Only where there is a page to open. Most entries are a card and nothing
+                         * else — a link that leads to a restatement of the card above it is worse
+                         * than no link, so this appears exactly when somebody wrote the longer
+                         * version. An anchor, not a button: it is an address.
+                         */}
+                        {entry.slug && (
+                          <a
+                            href={changelogEntryPath(locale, entry.slug)}
+                            onClick={(event) => {
+                              if (
+                                event.metaKey ||
+                                event.ctrlKey ||
+                                event.shiftKey ||
+                                event.button !== 0
+                              ) {
+                                return;
+                              }
+
+                              event.preventDefault();
+                              onOpenEntry(entry.slug as string);
+                            }}
+                            className="text-sm font-medium text-brand-tertiary underline underline-offset-2"
+                          >
+                            {t('changelog.more')}
+                          </a>
+                        )}
                       </li>
                     ))}
                   </ol>

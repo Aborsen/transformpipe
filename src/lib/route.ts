@@ -30,6 +30,7 @@ export type AppView =
   | 'page'
   | 'embed'
   | 'changelog'
+  | 'changelogEntry'
   | 'livePreview'
   | 'notFound';
 
@@ -40,7 +41,7 @@ export type AppView =
  * and `goTo('notFound')` would have to invent a path for a page that has none — which is how this
  * type came to exist: the compiler asked what to push.
  */
-export type Destination = Exclude<AppView, 'notFound'>;
+export type Destination = Exclude<AppView, 'notFound' | 'changelogEntry'>;
 
 export interface Route {
   view: AppView;
@@ -69,6 +70,8 @@ export interface Route {
   sharedToken: string | null;
   /** Set when the address is one article rather than the blog's index. */
   articleSlug: string | null;
+  /** Set when the address is one changelog entry's own page rather than the list. */
+  changelogSlug: string | null;
   /** Which page of words the address is, when it is one of those. */
   pageId: StaticPageId | null;
 }
@@ -84,6 +87,7 @@ export function readRoute(): Route {
   const { locale, rest: path } = splitLocale(window.location.pathname);
   const shared = path.match(/^\/(?:open|s)\/([^/]+)\/?$/);
   const article = path.match(/^\/blog\/([^/]+)\/?$/);
+  const release = path.match(/^\/changelog\/([^/]+)\/?$/);
   const page = staticPageForPath(path);
 
   return {
@@ -94,6 +98,7 @@ export function readRoute(): Route {
     docId: new URLSearchParams(window.location.search).get('doc'),
     sharedToken: shared ? decodeURIComponent(shared[1]) : null,
     articleSlug: article ? decodeURIComponent(article[1]) : null,
+    changelogSlug: release ? decodeURIComponent(release[1]) : null,
     pageId: page?.id ?? null,
   };
 }
@@ -127,6 +132,15 @@ function viewFor(path: string, hasPage: boolean, isShared: boolean): AppView {
     return 'changelog';
   }
 
+  /*
+   * One entry's own page. An address with no entry behind it included — the page says so with the
+   * list a click away, the same answer an article that does not exist gets, and for the same
+   * reason: a generic 404 tells a reader nothing about where they nearly were.
+   */
+  if (/^\/changelog\/[^/]+\/?$/.test(path)) {
+    return 'changelogEntry';
+  }
+
   if (/^\/markdown-live-preview\/?$/.test(path)) {
     return 'livePreview';
   }
@@ -155,6 +169,10 @@ function viewFor(path: string, hasPage: boolean, isShared: boolean): AppView {
   return 'notFound';
 }
 
+/*
+ * `changelogEntry` is not among these and is not a Destination: it needs a slug, so there is no one
+ * path to push. A link carries the address instead — see `changelogEntryPath`.
+ */
 const PATHS: Record<Exclude<Destination, 'converter' | 'page'>, string> = {
   history: '/history',
   docs: '/docs',
@@ -279,6 +297,24 @@ export function goToArticle(slug: string) {
   const { locale } = splitLocale(window.location.pathname);
 
   move(pathInLocale(locale, `/blog/${slug}`));
+}
+
+/**
+ * Moves to one changelog entry's own page, in the language being read.
+ *
+ * Unlike an article, an entry exists in every language the moment it exists at all: the prose is
+ * English by the rule in CLAUDE.md, and the page around it is translated. So there is nothing to
+ * check before adding the prefix.
+ */
+export function goToChangelogEntry(slug: string) {
+  const { locale } = splitLocale(window.location.pathname);
+
+  move(localePath(locale, `/changelog/${slug}`));
+}
+
+/** Where one entry's page lives, for an href that has to exist before anybody clicks it. */
+export function changelogEntryPath(locale: Locale, slug: string): string {
+  return localePath(locale, `/changelog/${slug}`);
 }
 
 /** Moves to an address worked out elsewhere — the language switcher's way in. */

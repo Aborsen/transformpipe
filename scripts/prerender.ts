@@ -29,6 +29,9 @@ import { formatDate, formatMonth } from '../src/lib/format.js';
 import {
   CHANGELOG_UPDATED,
   changelogByYear,
+  CHANGELOG_PAGES,
+  changelogProblems,
+  detailIn,
 } from '../src/lib/changelog.js';
 import {
   CONVERSIONS,
@@ -55,6 +58,7 @@ import {
 import {
   blogCrumbs,
   changelogCrumbs,
+  changelogEntryCrumbs,
   crumbsForArticle,
   livePreviewCrumbs,
   crumbsForConversion,
@@ -799,6 +803,71 @@ for (const locale of LOCALES) {
       )
       .join('')}<p>${escapeHtml(catalogue.ui['changelog.scope'])}</p>`,
   });
+}
+
+/*
+ * ------------------------------------------------- a changelog entry's own page
+ *
+ * Only the entries that carry a slug, which is most of them never. The list answers "what
+ * changed"; these answer "what is this, and does it help me" — the question somebody arrives with
+ * from a search, which is why they exist at all and why there are not a hundred of them.
+ *
+ * The prose is English in all five, like the entries; the chrome, the date and the trail are not.
+ * A page per language rather than one English address, because `/de/changelog` exists and a crumb
+ * pointing out of the reader's language mid-trail is worse than a duplicate a canonical resolves.
+ */
+const changelogFaults = changelogProblems();
+
+if (changelogFaults.length > 0) {
+  throw new Error(
+    `The changelog has ${changelogFaults.length} problem(s):\n  ${changelogFaults.join('\n  ')}`
+  );
+}
+
+for (const entry of CHANGELOG_PAGES) {
+  for (const locale of LOCALES) {
+    const catalogue = CATALOGUES[locale];
+    const dates = INTL_LOCALES[locale];
+    const path = localePath(locale, `/changelog/${entry.slug}`);
+    const piece = detailIn(entry.detail!, locale);
+
+    pages.push({
+      locale,
+      path,
+      title: `${entry.title} — TransformPipe`,
+      description: piece.description,
+      listed: true,
+      lastmod: entry.date,
+      head: [
+        `<meta name="keywords" content="${escapeHtml(piece.keywords)}" />`,
+        `<meta property="article:published_time" content="${entry.date}" />`,
+        breadcrumbs(changelogEntryCrumbs(entry.title, catalogue, locale)),
+        jsonLd({
+          '@context': 'https://schema.org',
+          '@type': 'TechArticle',
+          headline: entry.title,
+          description: piece.description,
+          datePublished: entry.date,
+          dateModified: entry.date,
+          keywords: piece.keywords,
+          ...(entry.version ? { version: entry.version } : {}),
+          inLanguage: locale,
+          mainEntityOfPage: `${SITE}${path}`,
+          publisher: { '@type': 'Organization', name: 'TransformPipe', url: SITE },
+          author: { '@type': 'Organization', name: 'TransformPipe', url: SITE },
+        }),
+        DOC_STYLE,
+      ].join('\n    '),
+      body: `<article class="md-doc"><p><time datetime="${entry.date}">${escapeHtml(
+        formatDate(entry.date, dates)
+      )}</time>${
+        entry.version ? ` — ${escapeHtml(entry.version)}` : ''
+      }</p><h1>${escapeHtml(entry.title)}</h1>${localiseLinks(
+        markdownToHtml(entry.body),
+        locale
+      )}${localiseLinks(markdownToHtml(piece.body), locale)}</article>`,
+    });
+  }
 }
 
 for (const page of pages) {

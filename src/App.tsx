@@ -17,6 +17,7 @@ import { BlogPage } from './features/BlogPage';
 import { DocsPage } from './features/DocsPage';
 import { EmbedPage } from './features/EmbedPage';
 import { HistoryPage } from './features/HistoryPage';
+import { ChangelogEntryPage } from './features/ChangelogEntryPage';
 import { ChangelogPage } from './features/ChangelogPage';
 import { LivePreviewPage } from './features/LivePreviewPage';
 import { NotFoundPage } from './features/NotFoundPage';
@@ -43,6 +44,7 @@ import {
   type Destination,
   goTo,
   goToArticle,
+  goToChangelogEntry,
   goToConversion,
   goToPage,
   goToPath,
@@ -94,6 +96,9 @@ function Shell() {
   );
   const [pageId, setPageId] = useState<StaticPageId | null>(
     () => readRoute().pageId
+  );
+  const [changelogSlug, setChangelogSlug] = useState<string | null>(
+    () => readRoute().changelogSlug
   );
 
   /*
@@ -178,6 +183,14 @@ function Shell() {
     window.scrollTo({ top: 0 });
   }, []);
 
+  const openChangelogEntry = useCallback((slug: string) => {
+    setViewState('changelogEntry');
+    setChangelogSlug(slug);
+    setPageId(null);
+    goToChangelogEntry(slug);
+    window.scrollTo({ top: 0 });
+  }, []);
+
   const openPage = useCallback((id: StaticPageId) => {
     setViewState('page');
     setPageId(id);
@@ -193,6 +206,7 @@ function Shell() {
       setViewState(route.view);
       setConversionId(route.conversionId);
       setArticleSlug(route.articleSlug);
+      setChangelogSlug(route.changelogSlug);
       setPageId(route.pageId);
     };
 
@@ -654,7 +668,16 @@ function Shell() {
             onGoToConverter={startOver}
           />
         ) : view === 'changelog' ? (
-          <ChangelogPage onGoToConverter={startOver} />
+          <ChangelogPage
+            onGoToConverter={startOver}
+            onOpenEntry={openChangelogEntry}
+          />
+        ) : view === 'changelogEntry' ? (
+          <ChangelogEntryPage
+            slug={changelogSlug ?? ''}
+            onBack={() => setView('changelog')}
+            onGoToConverter={startOver}
+          />
         ) : view === 'notFound' ? (
           <NotFoundPage
             onGoToConverter={startOver}
