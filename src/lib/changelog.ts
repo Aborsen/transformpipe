@@ -31,6 +31,24 @@ export interface ChangelogEntry {
 
 const ENTRIES: ChangelogEntry[] = [
   {
+    date: '2026-09-18',
+    title: 'A document somebody shared with you is a document',
+    body:
+      'The page a share link opens now carries the same card every other screen puts above a '
+      + 'document — the name, what it weighs, when it was made, and the counts — instead of a line '
+      + 'of small print. **Save a copy** puts it on your own account, **Share** publishes that copy, '
+      + 'and **Copy Markdown** takes the text. Signed out, those buttons open the sign-in dialog '
+      + 'rather than sitting there disabled.',
+  },
+  {
+    date: '2026-09-18',
+    title: 'The connector says who it is',
+    body:
+      'An assistant adding TransformPipe as a connector now sees its icon, its name and a sentence '
+      + 'about what it does before connecting, rather than after. Nothing about an account is '
+      + 'readable without signing in — that has not changed.',
+  },
+  {
     date: '2026-09-17',
     title: 'A browser extension',
     body:
