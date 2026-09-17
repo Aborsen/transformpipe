@@ -116,6 +116,9 @@ export const ui: Content['ui'] = {
   'docs.webhooks.delivery':
     'La livraison est au mieux : une requête, cinq secondes de délai, aucune reprise et aucune file d’attente. Un récepteur arrêté rate cette livraison, et la fenêtre indique quand la dernière a échoué.',
   /* The browser extension — see extension/ and content/extension-plan.md. */
+  'ext.panel': 'Ouvrir dans le panneau latéral',
+  'ext.panel.detail':
+    'Il reste à côté de la page et vous suit d’un onglet à l’autre, au lieu de se fermer dès que vous regardez ailleurs.',
   'ext.account': 'Compte',
   'ext.key.hint':
     'Collez une clé d’API de votre compte et cette extension pourra y enregistrer une page convertie et publier un lien. La clé reste dans ce navigateur, et rien n’est envoyé avant que vous appuyiez sur Enregistrer.',
@@ -139,6 +142,10 @@ export const ui: Content['ui'] = {
   'ext.copied': 'Copié',
   'ext.download': 'Télécharger le .md',
   'ext.download.html': 'Télécharger le .html',
+  'ext.html.page': 'La page, avec les images',
+  'ext.html.page.detail': 'Sa structure, images incluses dans le fichier',
+  'ext.html.text': 'Texte seul',
+  'ext.html.text.detail': 'Le document converti, comme sur le site',
   'ext.open': 'Ouvrir dans un onglet',
   'ext.files': 'Ouvrir des fichiers…',
   'ext.viewer.empty': 'Choisissez des fichiers à convertir — dix formats, le tout dans ce navigateur',

@@ -1,5 +1,7 @@
 import { Readability } from '@mozilla/readability';
+import DOMPurify from 'dompurify';
 import { htmlToMarkdown } from './from-html.js';
+import { ALLOWED_ATTR, ALLOWED_TAGS } from './markdown.js';
 
 /*
  * A rendered page, as Markdown.
@@ -53,6 +55,16 @@ export interface PageDocument {
   /** A file name for that title, extension included. */
   name: string;
   markdown: string;
+  /**
+   * The article as HTML, sanitised, with its own structure kept.
+   *
+   * Markdown is a smaller language than a web page: a figure with a caption becomes an image and a
+   * paragraph, a two-level table header becomes one row, and anything the syntax has no word for is
+   * flattened into text. That is the right trade for a document somebody is going to edit, and the
+   * wrong one for "save this page" — so both come back, and the person choosing which to save is
+   * the person who knows which they meant.
+   */
+  html: string;
 }
 
 /** `Docs — Install & setup` becomes `docs-install-setup.md`. */
@@ -99,6 +111,76 @@ function absolutise(root: Document | Element, base: string) {
 }
 
 /*
+ * Images that are not loaded yet, made real before anything else looks at them.
+ *
+ * Most of the web lazy-loads: `src` holds a one-pixel placeholder or a blurred thumbnail and the
+ * address of the actual image sits in `data-src`, `data-original` or the largest candidate of a
+ * `srcset`. Converted as found, that is a document whose every illustration is a grey dot — which
+ * is exactly what "it saved the text and none of the pictures" looks like from the outside.
+ */
+function unlazy(root: Document) {
+  for (const image of root.querySelectorAll('img')) {
+    const source =
+      image.getAttribute('data-src') ??
+      image.getAttribute('data-original') ??
+      image.getAttribute('data-lazy-src') ??
+      widest(
+        image.getAttribute('srcset') ?? image.getAttribute('data-srcset') ?? ''
+      );
+
+    const current = image.getAttribute('src') ?? '';
+    const placeholder =
+      !current || current.startsWith('data:') || /\bblank\.|1x1|spacer/.test(current);
+
+    if (source && placeholder) {
+      image.setAttribute('src', source);
+    }
+
+    /* A picture element's own candidates are resolved the same way, then it is just an image. */
+    const picture = image.closest('picture');
+
+    if (picture) {
+      const best = widest(
+        [...picture.querySelectorAll('source')]
+          .map((one) => one.getAttribute('srcset') ?? '')
+          .join(', ')
+      );
+
+      if (best && !image.getAttribute('src')) {
+        image.setAttribute('src', best);
+      }
+    }
+
+    image.removeAttribute('loading');
+    image.removeAttribute('srcset');
+    image.removeAttribute('sizes');
+  }
+}
+
+/** The biggest candidate in a `srcset`, by the width each one declares. */
+function widest(srcset: string): string {
+  let best = '';
+  let bestWidth = -1;
+
+  for (const candidate of srcset.split(',')) {
+    const [url, size] = candidate.trim().split(/\s+/);
+
+    if (!url) {
+      continue;
+    }
+
+    const width = size?.endsWith('w') ? Number.parseInt(size, 10) : 0;
+
+    if (width >= bestWidth) {
+      best = url;
+      bestWidth = width;
+    }
+  }
+
+  return best;
+}
+
+/*
  * What is never part of the document, whatever a scoring heuristic thinks of it. Readability drops
  * most of this already; a selection and the fallback path do not, and these are the tags whose text
  * is always furniture rather than prose.
@@ -127,6 +209,8 @@ export function pageToMarkdown({
     node.remove();
   }
 
+  unlazy(parsed);
+
   const pageTitle = parsed.title || title || '';
 
   /*
@@ -140,16 +224,20 @@ export function pageToMarkdown({
         charThreshold: 200,
       }).parse();
 
-  const body = article?.content ?? parsed.body.innerHTML;
   const finalTitle = (article?.title || pageTitle || title || 'Page').trim();
 
+  /*
+   * Readability resolves addresses itself; the other two paths — a selection, and a page it could
+   * not read — do not, so they are resolved here before anything reads the markup. Both halves of
+   * the answer come off the same string for that reason: the Markdown and the HTML cannot disagree
+   * about where an image lives.
+   */
   if (!article) {
     absolutise(parsed, url);
   }
 
-  const converted = htmlToMarkdown(
-    article ? body : parsed.body.innerHTML
-  ).trim();
+  const body = article?.content ?? parsed.body.innerHTML;
+  const converted = htmlToMarkdown(body).trim();
 
   /*
    * The title as a heading, unless the article already starts with one.
@@ -162,9 +250,20 @@ export function pageToMarkdown({
       ? converted
       : `# ${finalTitle}\n\n${converted}`;
 
+  /*
+   * The HTML half, sanitised with the same allow-list the rest of the product uses plus the four
+   * tags a page has and a converted document does not. It is foreign HTML from somebody else's
+   * site; it is never inserted into a page of ours without going through this.
+   */
+  const sanitised = DOMPurify.sanitize(body, {
+    ALLOWED_TAGS: [...ALLOWED_TAGS, 'figure', 'figcaption', 'picture', 'source'],
+    ALLOWED_ATTR: [...ALLOWED_ATTR, 'srcset', 'width', 'height', 'loading'],
+  });
+
   return {
     title: finalTitle,
     name: fileName(finalTitle),
     markdown,
+    html: sanitised,
   };
 }

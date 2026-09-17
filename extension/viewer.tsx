@@ -1,4 +1,5 @@
 import {
+  ChevronDown,
   Copy,
   Download,
   FileCode2,
@@ -17,7 +18,7 @@ import { DocumentPreview } from '@/components/DocumentPreview';
 import { Logo } from '@/components/Logo';
 import { CONVERSIONS, DEFAULT_CONVERSION } from '@shared/conversions';
 import { conversionForFiles, convertFile } from '@/lib/convert';
-import { downloadDoc } from '@/lib/download';
+import { downloadDoc, saveBlob } from '@/lib/download';
 import { formatBytes } from '@/lib/format';
 import { useI18n, useT } from '@/lib/i18n/context';
 import { INTL_LOCALES } from '@/lib/i18n/locales';
@@ -26,6 +27,12 @@ import { mergedName, mergeMarkdown } from '@/lib/merge';
 import { useTheme } from '@/lib/theme';
 import { Button } from '@/ui/components/Button';
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/ui/components/DropdownMenu';
+import {
   Tabs,
   TabsContent,
   TabsList,
@@ -33,6 +40,7 @@ import {
 } from '@/ui/components/Tabs';
 import { Typography } from '@/ui/components/Typography';
 import { copyText, takeHandoff } from './lib/clipboard';
+import { type HtmlFlavour, pageHtmlFile } from './lib/page-file';
 import { useAccount } from './lib/useAccount';
 import { Providers } from './lib/Providers';
 import '@/index.css';
@@ -53,6 +61,8 @@ interface Loaded {
   title: string;
   name: string;
   markdown: string;
+  /** Present when this came from a page rather than a file — see `shared/from-page.ts`. */
+  html?: string;
 }
 
 function Viewer() {
@@ -96,6 +106,7 @@ function Viewer() {
           title: found.title ?? found.name ?? 'page.md',
           name: found.name ?? 'page.md',
           markdown: found.markdown,
+          html: found.html,
         });
       }
 
@@ -162,6 +173,24 @@ function Viewer() {
     ? getDocStats(document_.markdown, markdownToHtml(document_.markdown))
     : null;
 
+  /* No tab to ask for the pictures here, so a page keeps its structure and its image addresses. */
+  const saveHtml = async (flavour: HtmlFlavour) => {
+    if (!document_) {
+      return;
+    }
+
+    const file = await pageHtmlFile(
+      { ...document_, html: document_.html ?? '' },
+      flavour,
+      theme
+    );
+
+    saveBlob(
+      document_.name.replace(/\.md$/, '.html'),
+      new Blob([file], { type: 'text/html;charset=utf-8' })
+    );
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-surface-page">
       <header className="sticky top-0 z-10 bg-surface-header/90 backdrop-blur">
@@ -215,22 +244,51 @@ function Viewer() {
                   {copied ? t('ext.copied') : t('ext.copy')}
                 </Button>
 
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  leftSlot={<FileCode2 />}
-                  onClick={() =>
-                    downloadDoc(
-                      document_.name,
-                      document_.markdown,
-                      Date.now(),
-                      theme,
-                      'html'
-                    )
-                  }
-                >
-                  {t('ext.download.html')}
-                </Button>
+                {/*
+                  * A file has no structure to keep beyond what the conversion produced, so it gets
+                  * the one HTML the site has always written. A page kept both halves, and the
+                  * choice between them belongs to whoever is saving it.
+                  */}
+                {document_.html ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        leftSlot={<FileCode2 />}
+                        rightSlot={<ChevronDown />}
+                      >
+                        {t('ext.download.html')}
+                      </Button>
+                    </DropdownMenuTrigger>
+
+                    <DropdownMenuContent align="end" className="w-60">
+                      <DropdownMenuItem onSelect={() => void saveHtml('page')}>
+                        {t('ext.html.page')}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onSelect={() => void saveHtml('text')}>
+                        {t('ext.html.text')}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    leftSlot={<FileCode2 />}
+                    onClick={() =>
+                      downloadDoc(
+                        document_.name,
+                        document_.markdown,
+                        Date.now(),
+                        theme,
+                        'html'
+                      )
+                    }
+                  >
+                    {t('ext.download.html')}
+                  </Button>
+                )}
 
                 {account.connected ? (
                   <>

@@ -130,6 +130,9 @@ export const ui: Content['ui'] = {
   'docs.webhooks.delivery':
     'Die Zustellung ist ein Versuch: eine Anfrage, fünf Sekunden Zeitlimit, kein erneuter Versuch und keine Warteschlange. Ein Empfänger, der gerade nicht läuft, verpasst diese Zustellung, und der Dialog nennt den Zeitpunkt des letzten Fehlschlags.',
   /* The browser extension — see extension/ and content/extension-plan.md. */
+  'ext.panel': 'In der Seitenleiste öffnen',
+  'ext.panel.detail':
+    'Sie bleibt neben der Seite und folgt Ihnen von Tab zu Tab, statt sich zu schließen, sobald Sie wegsehen.',
   'ext.account': 'Konto',
   'ext.key.hint':
     'Fügen Sie einen API-Schlüssel aus Ihrem Konto ein, dann kann diese Erweiterung eine umgewandelte Seite dort speichern und einen Link veröffentlichen. Der Schlüssel bleibt nur in diesem Browser, und vor einem Klick auf Speichern wird nichts gesendet.',
@@ -154,6 +157,10 @@ export const ui: Content['ui'] = {
   'ext.copied': 'Kopiert',
   'ext.download': '.md herunterladen',
   'ext.download.html': '.html herunterladen',
+  'ext.html.page': 'Seite, mit Bildern',
+  'ext.html.page.detail': 'Eigene Struktur, Bilder in der Datei',
+  'ext.html.text': 'Nur Text',
+  'ext.html.text.detail': 'Das umgewandelte Dokument, wie es die Website herunterlädt',
   'ext.open': 'In einem Tab öffnen',
   'ext.files': 'Dateien öffnen…',
   'ext.viewer.empty': 'Dateien zum Umwandeln wählen — zehn Formate, alles in diesem Browser',

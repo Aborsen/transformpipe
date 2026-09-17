@@ -121,6 +121,9 @@ export const ui: Content['ui'] = {
   'docs.webhooks.delivery':
     'La entrega es de mejor esfuerzo: una petición, cinco segundos de espera, sin reintentos ni cola. Un receptor caído pierde esa entrega, y el diálogo dice cuándo falló la última.',
   /* The browser extension — see extension/ and content/extension-plan.md. */
+  'ext.panel': 'Abrir en el panel lateral',
+  'ext.panel.detail':
+    'Se queda junto a la página y te sigue de pestaña en pestaña, en vez de cerrarse en cuanto miras a otro lado.',
   'ext.account': 'Cuenta',
   'ext.key.hint':
     'Pega una clave de API de tu cuenta y esta extensión podrá guardar en ella una página convertida y publicar un enlace. La clave se queda solo en este navegador y no se envía nada hasta que pulses Guardar.',
@@ -145,6 +148,10 @@ export const ui: Content['ui'] = {
   'ext.copied': 'Copiado',
   'ext.download': 'Descargar .md',
   'ext.download.html': 'Descargar .html',
+  'ext.html.page': 'La página, con imágenes',
+  'ext.html.page.detail': 'Su estructura, con las imágenes dentro del archivo',
+  'ext.html.text': 'Solo texto',
+  'ext.html.text.detail': 'El documento convertido, como lo descarga el sitio',
   'ext.open': 'Abrir en una pestaña',
   'ext.files': 'Abrir archivos…',
   'ext.viewer.empty': 'Elige archivos para convertir: diez formatos, todo en este navegador',

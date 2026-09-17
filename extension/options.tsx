@@ -1,10 +1,11 @@
-import { Check, KeyRound, Loader2 } from 'lucide-react';
+import { Check, KeyRound, Loader2, PanelRight } from 'lucide-react';
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Logo } from '@/components/Logo';
 import { useT } from '@/lib/i18n/context';
 import { Button } from '@/ui/components/Button';
 import { Input } from '@/ui/components/Input';
+import { Switch } from '@/ui/components/Switch';
 import { Typography } from '@/ui/components/Typography';
 import {
   checkKey,
@@ -32,9 +33,13 @@ function Options() {
   const [connected, setConnected] = useState<boolean | null>(null);
   const [busy, setBusy] = useState(false);
   const [refused, setRefused] = useState(false);
+  const [asPanel, setAsPanel] = useState(false);
 
   useEffect(() => {
     void storedKey().then((found) => setConnected(Boolean(found)));
+    void chrome.storage.local
+      .get('tp.panel')
+      .then((stored) => setAsPanel(Boolean(stored['tp.panel'])));
   }, []);
 
   const connect = async () => {
@@ -75,6 +80,35 @@ function Options() {
         <Typography variant="p" textColor="secondary" className="text-sm">
           {t('ext.key.hint')}
         </Typography>
+      </div>
+
+      {/*
+        * Where the button opens things. The side panel stays beside the page and follows it from
+        * tab to tab, which suits reading; the popup is a glance and disappears. Chrome shows the
+        * popup whenever the action has one, so choosing the panel is `setPopup('')` — done by the
+        * worker, which also restores it after a restart, since that setting is not remembered.
+        */}
+      <div className="flex items-start gap-3 rounded-xl border border-stroke bg-surface-card p-4">
+        <PanelRight className="mt-0.5 size-4 shrink-0 text-ink-inactive" />
+
+        <span className="flex min-w-0 flex-col gap-1">
+          <Typography variant="span" weight="medium" className="text-sm">
+            {t('ext.panel')}
+          </Typography>
+          <Typography variant="span" textColor="secondary" className="text-xs">
+            {t('ext.panel.detail')}
+          </Typography>
+        </span>
+
+        <Switch
+          checked={asPanel}
+          aria-label={t('ext.panel')}
+          className="ml-auto"
+          onCheckedChange={(next) => {
+            setAsPanel(next);
+            void chrome.storage.local.set({ 'tp.panel': next });
+          }}
+        />
       </div>
 
       {connected ? (

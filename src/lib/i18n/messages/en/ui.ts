@@ -126,6 +126,9 @@ export const ui: Content['ui'] = {
   'docs.webhooks.delivery':
     'Delivery is best effort: one request, a five-second timeout, no retry and no queue. A receiver that is down misses that delivery, and the dialog says when the last one failed.',
   /* The browser extension — see extension/ and content/extension-plan.md. */
+  'ext.panel': 'Open in the side panel',
+  'ext.panel.detail':
+    'It stays beside the page and follows you from tab to tab, instead of closing when you look away.',
   'ext.account': 'Account',
   'ext.key.hint':
     'Paste an API key from your account and this extension can save a converted page to it, and publish a link. The key is kept in this browser only, and nothing is sent anywhere until you press Save.',
@@ -150,6 +153,10 @@ export const ui: Content['ui'] = {
   'ext.copied': 'Copied',
   'ext.download': 'Download .md',
   'ext.download.html': 'Download .html',
+  'ext.html.page': 'Page, with pictures',
+  'ext.html.page.detail': 'Its own structure, images inside the file',
+  'ext.html.text': 'Text only',
+  'ext.html.text.detail': 'The converted document, as the site downloads it',
   'ext.open': 'Open in a tab',
   'ext.files': 'Open files…',
   'ext.viewer.empty': 'Choose files to convert — ten formats, all of it in this browser',

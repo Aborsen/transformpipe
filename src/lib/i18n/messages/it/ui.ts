@@ -114,6 +114,9 @@ export const ui: Content['ui'] = {
   'docs.webhooks.delivery':
     'La consegna è al meglio possibile: una richiesta, cinque secondi di attesa, nessun nuovo tentativo e nessuna coda. Un ricevitore spento perde quella consegna, e la finestra dice quando l’ultima è fallita.',
   /* The browser extension — see extension/ and content/extension-plan.md. */
+  'ext.panel': 'Apri nel pannello laterale',
+  'ext.panel.detail':
+    'Resta accanto alla pagina e ti segue di scheda in scheda, invece di chiudersi appena guardi altrove.',
   'ext.account': 'Account',
   'ext.key.hint':
     'Incolla una chiave API del tuo account e questa estensione potrà salvarci una pagina convertita e pubblicare un link. La chiave resta solo in questo browser e nulla viene inviato finché non premi Salva.',
@@ -138,6 +141,10 @@ export const ui: Content['ui'] = {
   'ext.copied': 'Copiato',
   'ext.download': 'Scarica .md',
   'ext.download.html': 'Scarica .html',
+  'ext.html.page': 'La pagina, con le immagini',
+  'ext.html.page.detail': 'La sua struttura, immagini dentro il file',
+  'ext.html.text': 'Solo testo',
+  'ext.html.text.detail': 'Il documento convertito, come lo scarica il sito',
   'ext.open': 'Apri in una scheda',
   'ext.files': 'Apri file…',
   'ext.viewer.empty': 'Scegli i file da convertire — dieci formati, tutto in questo browser',

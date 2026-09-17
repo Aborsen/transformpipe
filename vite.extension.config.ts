@@ -83,7 +83,19 @@ function assets(): Plugin {
          * Two permissions, and neither is a host permission: nothing runs in a page until somebody
          * presses the button on that page, and nothing is read from any other tab, ever.
          */
-        permissions: ['activeTab', 'scripting', 'contextMenus', 'storage'],
+        permissions: [
+          'activeTab',
+          'scripting',
+          'contextMenus',
+          'storage',
+          'sidePanel',
+        ],
+        /*
+         * The same surface, kept open beside the page. Chrome opens the popup when the action has
+         * one, so switching to the panel is a runtime decision — `chrome.action.setPopup('')` —
+         * made on the settings page rather than by shipping two builds.
+         */
+        side_panel: { default_path: 'panel.html' },
         icons: {
           '48': 'icons/icon-48.png',
           '128': 'icons/icon-128.png',
@@ -125,6 +137,7 @@ export default defineConfig({
         popup: path.join(ROOT, 'extension', 'popup.html'),
         viewer: path.join(ROOT, 'extension', 'viewer.html'),
         options: path.join(ROOT, 'extension', 'options.html'),
+        panel: path.join(ROOT, 'extension', 'panel.html'),
         background: path.join(ROOT, 'extension', 'background.ts'),
       },
       output: {

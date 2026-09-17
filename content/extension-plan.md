@@ -182,6 +182,11 @@ Each of these is a real idea and each would double the surface:
   cannot read `chrome://extensions`, and saying so is better than "this page cannot be read" on the
   first page anybody sees after installing.
 
+**Also done:** the side panel — the same surface, kept open beside the page, subscribed to the
+tabs so it follows somebody browsing; the settings page switches which one the toolbar button
+opens. And saving HTML now asks which HTML was meant: the page with its own structure and its
+pictures carried inside the file, or the converted text as the site writes it.
+
 **Done since:** both surfaces offer the self-contained `.html` as well as the `.md` — the same
 `downloadDoc` the site uses, styles inline and no requests — and the icons sit beside their labels
 again. That last one was not a stylesheet problem at all: `Button` takes its icon as `leftSlot` and
@@ -197,6 +202,7 @@ new code written against a guess.
    transformpipe.com is an *optional* host permission requested at the moment somebody connects:
    until a key exists this extension has no reason to talk to us at all, and an origin in the
    install dialog reads the same whether it is used or not.
-3. **Firefox**: same code, a different manifest key, packaged separately.
-4. **The store**: listing text, screenshots out of the viewer, the privacy answers — and the page on
+2. **Firefox**: same code, a different manifest key, packaged separately. The side panel is
+   `sidebar_action` there rather than `side_panel`, which is the one part that is not the same file.
+3. **The store**: listing text, screenshots out of the viewer, the privacy answers — and the page on
    this site that says the extension exists.
