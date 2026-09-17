@@ -1,4 +1,5 @@
 import { Check, LogIn, LogOut, Settings, UserRound } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useT } from '@/lib/i18n/context';
 import { LOCALE_NAMES, LOCALES } from '@/lib/i18n/locales';
 import { LocaleFlag } from '@/components/LocaleFlag';
@@ -10,7 +11,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/components/DropdownMenu';
+import { Typography } from '@/ui/components/Typography';
 import { cn } from '@/ui/lib/utils';
+import { whoAmI } from './account';
 import { signIn, signOut } from './auth';
 import { useChosenLocale } from './Providers';
 
@@ -35,6 +38,17 @@ export function AccountMenu({
 }) {
   const t = useT();
   const { locale, setLocale } = useChosenLocale();
+  const [who, setWho] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!connected) {
+      setWho(null);
+
+      return;
+    }
+
+    void whoAmI().then(setWho);
+  }, [connected]);
 
   return (
     <DropdownMenu>
@@ -59,7 +73,20 @@ export function AccountMenu({
         />
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="start" side="top" className="w-56">
+      <DropdownMenuContent align="start" side="top" className="w-60">
+        {/* Whose account, before what can be done with it. */}
+        <div className="px-2 py-1.5">
+          <Typography
+            variant="span"
+            textColor={connected ? 'primary' : 'secondary'}
+            className="block truncate text-xs"
+          >
+            {connected ? (who ?? t('ext.key.connected')) : t('ext.signedout')}
+          </Typography>
+        </div>
+
+        <DropdownMenuSeparator />
+
         {connected ? (
           <DropdownMenuItem
             onSelect={async () => {

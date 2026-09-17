@@ -125,6 +125,7 @@ export const ui: Content['ui'] = {
   'ext.account': 'Account',
   'ext.signin': 'Accedi con TransformPipe',
   'ext.signout': 'Esci',
+  'ext.signedout': 'Non connesso',
   'ext.settings': 'Impostazioni',
   'ext.share.failed': 'Non è stato possibile salvare: accedi di nuovo',
   'ext.shared.link': 'Link copiato negli appunti',

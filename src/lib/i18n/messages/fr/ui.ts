@@ -127,6 +127,7 @@ export const ui: Content['ui'] = {
   'ext.account': 'Compte',
   'ext.signin': 'Se connecter avec TransformPipe',
   'ext.signout': 'Se déconnecter',
+  'ext.signedout': 'Non connecté',
   'ext.settings': 'Paramètres',
   'ext.share.failed': 'Échec de l’enregistrement — reconnectez-vous',
   'ext.shared.link': 'Lien copié dans le presse-papiers',

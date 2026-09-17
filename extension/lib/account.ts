@@ -41,6 +41,35 @@ export async function signedIn(): Promise<boolean> {
 }
 
 /**
+ * Whose account this is, from the cheapest endpoint there is.
+ *
+ * "Signed in" with no name beside it is indistinguishable from signed in as somebody else, which
+ * matters most for the person with a work account and a personal one. `/usage` reads two numbers
+ * and writes nothing, and now answers with the caller's own address as well.
+ */
+export async function whoAmI(): Promise<string | null> {
+  const token = await accessToken();
+
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const response = await call(token, '/usage');
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const usage = (await response.json()) as { email?: string | null };
+
+    return usage.email ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Saves a document, publishing it in the same call when asked.
  *
  * One request either way: `?share=link` is how the API has always done it, which is why the

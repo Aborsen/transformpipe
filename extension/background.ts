@@ -1,5 +1,6 @@
 import { extract } from './extract';
 import { openInViewer } from './lib/clipboard';
+import { applySurface, storedSurface, SURFACE_KEY } from './lib/surface';
 
 /*
  * The service worker: two entries in a right-click menu, and nothing else.
@@ -23,6 +24,16 @@ const MENU_SELECTION = 'tp-convert-selection';
  * next press of the icon opens it. Then the compact panel is opened in its place, which is what
  * somebody leaving the side panel is asking for; `openPopup` is recent enough to be worth guarding.
  */
+/* The remembered surface, put back after every restart and whenever it changes. */
+const restoreSurface = async () => applySurface(await storedSurface());
+
+chrome.runtime.onStartup.addListener(() => void restoreSurface());
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === 'local' && SURFACE_KEY in changes) {
+    void restoreSurface();
+  }
+});
+
 chrome.runtime.onMessage.addListener((message, _sender, respond) => {
   if (message?.type !== 'tp-close-panel') {
     return;
@@ -40,13 +51,12 @@ chrome.runtime.onMessage.addListener((message, _sender, respond) => {
       });
     }
 
-    if (message.thenPopup) {
-      try {
-        await chrome.action.openPopup();
-      } catch {
-        /* Older Chrome: the panel is closed, and the toolbar button is one click away. */
-      }
-    }
+    /*
+     * No attempt to open the compact panel from here. `chrome.action.openPopup` wants a gesture
+     * the worker does not have and refuses about half the time, which is exactly the "sometimes it
+     * works" this replaced: the choice is stored instead, so the next press of the button — and
+     * every press after it — opens the one that was asked for.
+     */
 
     respond?.({ closed: true });
   })();
@@ -55,6 +65,8 @@ chrome.runtime.onMessage.addListener((message, _sender, respond) => {
 });
 
 chrome.runtime.onInstalled.addListener(() => {
+  void restoreSurface();
+
   chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create({
       id: MENU_PAGE,

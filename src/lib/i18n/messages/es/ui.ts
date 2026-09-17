@@ -132,6 +132,7 @@ export const ui: Content['ui'] = {
   'ext.account': 'Cuenta',
   'ext.signin': 'Iniciar sesión con TransformPipe',
   'ext.signout': 'Cerrar sesión',
+  'ext.signedout': 'Sin sesión iniciada',
   'ext.settings': 'Ajustes',
   'ext.share.failed': 'No se pudo guardar: vuelve a iniciar sesión',
   'ext.shared.link': 'Enlace copiado al portapapeles',

@@ -127,7 +127,19 @@ v1.use('*', async (c, next) => {
   return next();
 });
 
-v1.get('/usage', async (c) => c.json(await usageOf(c.get('caller').id)));
+/*
+ * What an account is using, and whose account it is.
+ *
+ * The email is additive and is here because every client that holds a credential needs to be able
+ * to say who it is holding one for: the extension shows it in its account menu, and "signed in" with
+ * no name beside it is indistinguishable from signed in as somebody else. It is the caller's own
+ * address and nobody else's, which is what `resolveCaller` already answered.
+ */
+v1.get('/usage', async (c) => {
+  const caller = c.get('caller');
+
+  return c.json({ ...(await usageOf(caller.id)), email: caller.email });
+});
 
 interface DocumentRow {
   id: string;

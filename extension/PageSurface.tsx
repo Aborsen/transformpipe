@@ -38,6 +38,7 @@ import { Typography } from '@/ui/components/Typography';
 import { cn } from '@/ui/lib/utils';
 import { extract } from './extract';
 import { AccountMenu } from './lib/AccountMenu';
+import { chooseSurface } from './lib/surface';
 import { copyText, openInViewer, openViewerForFiles } from './lib/clipboard';
 import { type HtmlFlavour, pageHtmlFile } from './lib/page-file';
 import { useAccount } from './lib/useAccount';
@@ -296,18 +297,15 @@ export function PageSurface({ live = false }: { live?: boolean }) {
               aria-label={t('ext.panel.close')}
               title={t('ext.panel.close')}
               leftSlot={<PanelRightClose />}
-              onClick={() => {
+              onClick={async () => {
                 /*
-                 * Both ways, because neither is reliable alone: a side panel document is allowed to
-                 * close itself and sometimes does nothing, and the worker's way — disable the panel
-                 * for this tab, enable it again — always works but cannot open the compact panel
-                 * from inside the page. So the worker is asked to do both, and `window.close()`
-                 * follows as the fast path when it does work.
+                 * The choice is remembered before the panel goes: from here on the button opens the
+                 * compact one. Then both ways of closing, because neither is reliable alone — a
+                 * side panel document may close itself and sometimes does nothing, and the worker's
+                 * way, disabling the panel for this tab and enabling it again, always works.
                  */
-                void chrome.runtime.sendMessage({
-                  type: 'tp-close-panel',
-                  thenPopup: true,
-                });
+                await chooseSurface('popup');
+                void chrome.runtime.sendMessage({ type: 'tp-close-panel' });
 
                 window.close();
               }}
@@ -326,6 +324,8 @@ export function PageSurface({ live = false }: { live?: boolean }) {
                 });
 
                 if (tab?.windowId !== undefined) {
+                  /* Remembered, so the next press of the button opens this one directly. */
+                  await chooseSurface('panel');
                   await chrome.sidePanel.open({ windowId: tab.windowId });
                   window.close();
                 }
