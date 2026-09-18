@@ -114,7 +114,7 @@ export const conversions: Content['conversions'] = {
     },
   },
   'text-to-markdown': {
-    label: 'Testo semplice → Markdown',
+    label: 'Solo testo → Markdown',
     short: 'TXT → MD',
     title: 'Da testo semplice a Markdown',
     blurb:

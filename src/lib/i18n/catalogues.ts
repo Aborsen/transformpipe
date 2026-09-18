@@ -117,6 +117,34 @@ export function assertCatalogueShapes(): void {
     walk('content', en, CATALOGUES[locale], locale);
   }
 
+  /*
+   * A conversion's label has to fit the picker's card on one line.
+   *
+   * The cards sit in a grid, and a grid row is as tall as its tallest cell — so one label that
+   * wraps does not make one card taller, it makes that whole row of five taller than the row under
+   * it. Italian did exactly this: `Testo semplice → Markdown`, at twenty-five characters, was the
+   * only label in five languages that wrapped, and the front page had one tall row and one short
+   * one.
+   *
+   * Twenty-four is measured rather than guessed: at 1512px `Excel → tabella Markdown` (24) fits on
+   * one line and the Italian one (25) does not. Narrower windows wrap sooner, which is what the
+   * layout is for; this is about the width where the grid is five across.
+   *
+   * Checked for English too, because the same card renders it.
+   */
+  const LABEL_LIMIT = 24;
+
+  for (const locale of LOCALES) {
+    for (const [id, conversion] of Object.entries(CATALOGUES[locale].conversions)) {
+      if (conversion.label.length > LABEL_LIMIT) {
+        problems.push(
+          `${locale}: conversions.${id}.label is ${conversion.label.length} characters ` +
+            `("${conversion.label}"); ${LABEL_LIMIT} is what fits the picker's card on one line`
+        );
+      }
+    }
+  }
+
   if (problems.length > 0) {
     throw new Error(
       `The translations do not line up with English:\n  ${problems.join('\n  ')}`
