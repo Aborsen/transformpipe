@@ -1,6 +1,6 @@
 ---
 title: "Cómo convertir DOCX a Markdown: las rutas del navegador, Pandoc y mammoth"
-description: "Convierte un .docx a Markdown de tres formas, entiende por qué el archivo comprimido decide qué sobrevive, y consigue la lista para encontrar lo que la conversión descartó en silencio"
+description: "Convierte un .docx a Markdown de tres formas, entiende qué decide lo que sobrevive, y encuentra lo que la conversión descartó en silencio"
 date: 2026-09-04
 tag: Conversión
 keywords: docx a markdown, convertir docx a markdown, docx a md, pandoc docx a markdown, mammoth docx a markdown, docx a markdown línea de comandos, docx a markdown sin subir archivo, docx a markdown numeración
