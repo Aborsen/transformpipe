@@ -198,7 +198,7 @@ Lo que no cambia: la fecha en que se escribió el texto, cada destino de enlace,
 
 ### La dirección no cambia
 
-\`/fr/blog/markdown-escaping\` es el texto francés de \`/blog/markdown-escaping\`. El idioma va en el prefijo y el slug que viene detrás es el mismo en todos los idiomas, así que una remisión de un artículo a otro no depende del idioma en que usted esté leyendo. Un enlace dentro del texto apunta a la página francesa cuando existe y a la inglesa cuando no, y por eso un idioma a medio hacer no tiene callejones sin salida.
+\`/fr/blog/markdown-escaping\` es el texto francés de \`/blog/markdown-escaping\`. El idioma va en el prefijo y el slug que viene detrás es el mismo en todos los idiomas, así que una remisión de un artículo a otro no depende del idioma en el que se esté leyendo. Un enlace dentro del texto apunta a la página francesa cuando existe y a la inglesa cuando no, y por eso un idioma a medio hacer no tiene callejones sin salida.
 
 Las etiquetas se traducen palabra por palabra, y con la misma palabra siempre: Conversion, Syntaxe, Publication, Sécurité, Automatisation, Code, Workflow. Los filtros del índice se construyen con lo que dicen los artículos, de modo que dos grafías darían dos filtros.
 
@@ -343,7 +343,7 @@ Autres lectures : [partager un document sous forme de lien](/blog/share-a-markdo
           'Publicar un documento de TransformPipe en un enlace que cualquiera puede abrir exige ya una dirección confirmada, por las tres vías. Compartir por nombre, no.',
         keywords:
           'confirmar el correo antes de compartir, verificación del enlace público, por qué no puedo publicar un enlace, confirmación de correo para compartir un documento, compartir un documento sin verificar el correo',
-        body: `Detrás de un mismo diálogo viven dos maneras de compartir, y no son el mismo acto. Nombrar direcciones no publica nada: cada lector tiene que entrar con la dirección que usted nombró, así que el documento se entrega a personas elegidas. Un enlace, en cambio, deja en \`/s/<token>\` una página de nuestro dominio que puede leer cualquiera que tenga la URL: una página en la internet abierta con el contenido de otra persona encima.
+        body: `Detrás de un mismo diálogo viven dos maneras de compartir, y no son el mismo acto. Nombrar direcciones no publica nada: cada lector tiene que entrar con la dirección que nombraste, así que el documento se entrega a personas elegidas. Un enlace, en cambio, deja en \`/s/<token>\` una página de nuestro dominio que puede leer cualquiera que tenga la URL: una página en la internet abierta con el contenido de otra persona encima.
 
 ### Por qué se retiene la segunda
 
@@ -355,7 +355,7 @@ Dos cosas esperan, por tanto, a una confirmación, y ninguna más: publicar un e
 
 Un código de seis cifras desde el menú de la cuenta, válido diez minutos. Quien entra con Google nunca tuvo nada que confirmar: el proveedor da fe de la dirección, y esas cuentas siempre pudieron publicar.
 
-La comprobación se lee en el momento de la petición y no viaja en su sesión, de modo que confirmar surte efecto en la petición siguiente y no en el siguiente inicio de sesión, que es lo que cualquiera espera después de teclear un código.
+La comprobación se lee en el momento de la petición y no viaja en tu sesión, de modo que confirmar surte efecto en la petición siguiente y no en el siguiente inicio de sesión, que es lo que cualquiera espera después de teclear un código.
 
 ### Tres puertas, y dos estaban abiertas
 
@@ -514,7 +514,7 @@ Se cuentan por cuenta cuando la hay y por dirección cuando no, de modo que un s
 
 ### Lo que no hace
 
-No pone nada en cola. Una petición por encima del límite se rechaza, con los segundos que hay que esperar, y reintentar corre de su cuenta. Tampoco es un limitador exacto: una fila por llamante y minuto en Postgres significa que dos llamadas que llegan juntas pueden leer la misma cifra, lo cual a este tamaño es el cambio correcto frente a mantener un segundo sistema al lado de la base de datos.
+No pone nada en cola. Una petición por encima del límite se rechaza, con los segundos que hay que esperar, y reintentar corre de tu cuenta. Tampoco es un limitador exacto: una fila por llamante y minuto en Postgres significa que dos llamadas que llegan juntas pueden leer la misma cifra, lo cual a este tamaño es el cambio correcto frente a mantener un segundo sistema al lado de la base de datos.
 
 Y un contador al que no se llega cuenta como margen de sobra. Un limitador que deja a todo el mundo fuera cuando falta su propia tabla es peor que aquello de lo que protegía.
 
@@ -641,7 +641,7 @@ Le site reste le même site. L’installation est une option que le navigateur p
 Autres lectures : [à quoi sert un convertisseur Markdown vers HTML](/blog/markdown-to-html-converter) et [si un convertisseur en ligne est sûr](/blog/is-an-online-converter-safe).`,
       },
       es: {
-        title: 'Instálelo y funciona sin red',
+        title: 'Instálalo y funciona sin red',
         summary: `Chrome, Edge y Safari ofrecen ya instalar TransformPipe como aplicación: ventana propia, icono propio, sin barra de direcciones. Abierto sin conexión arranca igualmente y convierte igualmente, porque cada conversión corre de todos modos en el navegador. Los documentos de la cuenta necesitan la red, como siempre.`,
         description:
           'TransformPipe se instala como aplicación en Chrome, Edge y Safari, se abre en su propia ventana y convierte documentos sin conexión de ninguna clase.',
@@ -651,13 +651,13 @@ Autres lectures : [à quoi sert un convertisseur Markdown vers HTML](/blog/markd
 
 ### Por qué funciona sin conexión
 
-Cada conversión de aquí ha corrido siempre en el navegador: el analizador de Markdown, el lector de HTML, los lectores de \`.docx\` y de \`.xlsx\`, el lector de zip para una exportación de Notion o de Obsidian. Ninguno necesitó jamás un servidor, que es la misma razón por la que nada de lo que usted convierte se sube. Instalar solo quita lo último que pedía red: cargar la propia página.
+Cada conversión de aquí ha corrido siempre en el navegador: el analizador de Markdown, el lector de HTML, los lectores de \`.docx\` y de \`.xlsx\`, el lector de zip para una exportación de Notion o de Obsidian. Ninguno necesitó jamás un servidor, que es la misma razón por la que nada de lo que conviertes se sube. Instalar solo quita lo último que pedía red: cargar la propia página.
 
-Una copia instalada y abierta en un avión, en un tren o en una máquina cerrada arranca, acepta un archivo, lo convierte y descarga el resultado. Una página que usted visitó antes queda en caché en su propia dirección, así que la documentación y los artículos que ha leído también están ahí.
+Una copia instalada y abierta en un avión, en un tren o en una máquina cerrada arranca, acepta un archivo, lo convierte y descarga el resultado. Una página que visitaste antes queda en caché en su propia dirección, así que la documentación y los artículos que has leído también están ahí.
 
 ### Qué sigue necesitando red
 
-Todo lo que toca a la cuenta: la lista de documentos guardados, guardar, compartir, el resumen por IA y el inicio de sesión. Esas cosas se piden en el momento en que usted las usa, y dicen con claridad que no hay conexión en lugar de quedarse colgadas.
+Todo lo que toca a la cuenta: la lista de documentos guardados, guardar, compartir, el resumen por IA y el inicio de sesión. Esas cosas se piden en el momento en que las usas, y dicen con claridad que no hay conexión en lugar de quedarse colgadas.
 
 Nada de los datos de la cuenta se guarda en caché: \`/api\` no se almacena nunca, y un documento compartido en \`/s/\` tampoco. Una caché que retuviera los documentos de alguien en una máquina compartida sería peor trato que una página más lenta.
 
@@ -806,7 +806,7 @@ El conector siempre devolvió los datos; los devolvía como frases, que es lo qu
 
 - Guardar o convertir un documento dibuja el documento.
 - Preguntar qué hay en la cuenta dibuja una lista cuyas filas se abren, en lugar de imprimir un identificador por línea.
-- Un borrado aún sin confirmar dibuja el documento que va a quitar, por su nombre, con el botón que lo quita, que es el único sitio donde «¿está seguro?» debería enseñarle la cosa y no su identificador.
+- Un borrado aún sin confirmar dibuja el documento que va a quitar, por su nombre, con el botón que lo quita, que es el único sitio donde «¿está seguro?» debería enseñar la cosa y no el identificador.
 
 ### Degrada a lo que era
 
@@ -816,7 +816,7 @@ Un asistente que todavía no dibuja estas tarjetas recibe exactamente las frases
 
 Convertir en los dos sentidos, guardar, listar, buscar, resumir, compartir —en privado, por enlace o con direcciones nombradas—, leer el historial de versiones de un documento e informar de lo que la cuenta consume. Una conexión de solo lectura es de verdad de solo lectura: no puede guardar, compartir ni borrar, y eso se impone sobre la credencial y no sobre las herramientas.
 
-Conéctelo en \`https://transformpipe.com/api/mcp\`. Entra con su cuenta; nada se comparte con quien opera el asistente.
+Conéctalo en \`https://transformpipe.com/api/mcp\`. Entra con tu cuenta; nada se comparte con quien opera el asistente.
 
 Relacionado: [convertir documentos desde un asistente](/blog/converting-documents-from-an-assistant) y [lo mismo con una API](/blog/converting-documents-with-an-api).`,
       },
@@ -950,28 +950,28 @@ Autres lectures : [des tableaux Markdown qui survivent à une conversion](/blog/
       },
       es: {
         title: 'Contacto es Soporte, y abre por el formulario',
-        summary: `\`/contact\` se llama ahora \`/support\`, y lo primero que hay en la página son dos campos: qué ocurrió y qué esperaba usted. El botón abre una incidencia de GitHub con ambas cosas ya escritas dentro; desde la página no se envía nada, y la incidencia existe cuando usted pulsa Enviar allí. La dirección antigua redirige, así que un enlace hacia ella sigue cayendo en el sitio correcto.`,
+        summary: `\`/contact\` se llama ahora \`/support\`, y lo primero que hay en la página son dos campos: qué ocurrió y qué esperabas. El botón abre una incidencia de GitHub con ambas cosas ya escritas dentro; desde la página no se envía nada, y la incidencia existe cuando pulsas Enviar allí. La dirección antigua redirige, así que un enlace hacia ella sigue cayendo en el sitio correcto.`,
         description:
-          'El soporte de TransformPipe son dos campos que redactan una incidencia de GitHub por usted. De la página no sale nada y /contact redirige hasta aquí.',
+          'El soporte de TransformPipe son dos campos que redactan una incidencia de GitHub por ti. De la página no sale nada y /contact redirige hasta aquí.',
         keywords:
           'soporte de transformpipe, informar de un fallo de conversión, pedir un formato de archivo, ayuda con el conversor de markdown, denunciar un documento compartido',
         body: `Una página «Nueva incidencia» en blanco es donde va a morir un informe de error. Le pide a alguien que acaba de ver salir las tablas vacías que se invente una forma de contarlo —un título, una estructura, una idea de qué merece mencionarse— y la mayoría cierra la pestaña en su lugar. Por eso las dos preguntas que de verdad importan se hacen aquí, en \`/support\`, por encima de todo lo demás de la página.
 
 ### Qué hace el botón
 
-Abre la página de nueva incidencia de GitHub con el título y el cuerpo ya redactados a partir de lo que usted escribió. Desde esta página no se envía nada: ni una petición, ni una copia, ni una cola. La incidencia existe solo cuando usted pulsa Enviar en GitHub, donde antes puede leer exactamente lo que va a ser público, lo cual significa también que para ese último paso hace falta una cuenta de GitHub.
+Abre la página de nueva incidencia de GitHub con el título y el cuerpo ya redactados a partir de lo que escribiste. Desde esta página no se envía nada: ni una petición, ni una copia, ni una cola. La incidencia existe solo cuando pulsas Enviar en GitHub, donde antes puedes leer exactamente lo que va a ser público, lo cual significa también que para ese último paso hace falta una cuenta de GitHub.
 
 Empotrar el propio formulario de GitHub fue la primera idea y no es posible. \`github.com\` responde con \`x-frame-options: deny\`, que es la respuesta correcta a un sitio que pide meter la sesión de alguien en un iframe.
 
 ### Por qué una incidencia y no un buzón
 
-Porque ahí es donde están las respuestas. Una incidencia pública la encuentra la siguiente persona con el mismo problema, una corrección enlaza de vuelta al informe que la provocó, y nada se pierde en la bandeja de una sola persona. El precio es que un informe es público; el formulario existe para que usted vea qué va a serlo antes de que lo sea.
+Porque ahí es donde están las respuestas. Una incidencia pública la encuentra la siguiente persona con el mismo problema, una corrección enlaza de vuelta al informe que la provocó, y nada se pierde en la bandeja de una sola persona. El precio es que un informe es público; el formulario existe para que veas qué va a serlo antes de que lo sea.
 
 ### Qué mandar aquí y qué mandar a otro sitio
 
-Un archivo que se convirtió mal es lo más útil que hay: adjúntelo si puede compartirlo, diga qué esperaba en su lugar y nombre el navegador si en otro se veía bien. Una conversión que falla en un archivo suele fallar en una forma, y el archivo es el camino hasta esa forma. Un formato que todavía no convertimos es una petición que merece la pena: varios de los que hay empezaron así.
+Un archivo que se convirtió mal es lo más útil que hay: adjúntalo si puedes compartirlo, di qué esperabas en su lugar y nombra el navegador si en otro se veía bien. Una conversión que falla en un archivo suele fallar en una forma, y el archivo es el camino hasta esa forma. Un formato que todavía no convertimos es una petición que merece la pena: varios de los que hay empezaron así.
 
-Un documento compartido que no debería estar publicado tiene una vía más rápida: cada página que abre un enlace compartido lleva al pie un enlace «Denunciar este documento», que identifica el documento sin que usted tenga que describirlo y no necesita cuenta. Las preguntas sobre qué se guarda, y las peticiones de borrar una cuenta con todo lo que contiene, van a las incidencias como cualquier otra cosa.
+Un documento compartido que no debería estar publicado tiene una vía más rápida: cada página que abre un enlace compartido lleva al pie un enlace «Denunciar este documento», que identifica el documento sin que tengas que describirlo y no necesita cuenta. Las preguntas sobre qué se guarda, y las peticiones de borrar una cuenta con todo lo que contiene, van a las incidencias como cualquier otra cosa.
 
 La dirección antigua \`/contact\` redirige aquí de forma permanente, así que un enlace hacia ella, venga de donde venga, sigue cayendo en el sitio correcto.
 
@@ -1104,7 +1104,7 @@ Autres lectures : [enregistrer une page web en Markdown](/blog/save-a-web-page-a
           'Una fila de cifras maquetada con flex o grid se serializa como 39words en cualquier clipper. La extensión de TransformPipe lee la maquetación y repone los espacios.',
         keywords:
           'clipper web que se come los espacios, palabras pegadas al pasar html a markdown, flex gap sin espacio en markdown, migas de pan convertidas sin espacios, guardar una página web como markdown correctamente',
-        body: `Abra el marcado de una página y mire la fila de cifras que hay bajo el título de un artículo. Muy a menudo no contiene ni un solo carácter de espacio: \`<span>39</span><span>words</span>\`, y la separación que usted ve en pantalla es una propiedad \`gap\` en un contenedor flex. El espacio está en la hoja de estilos, no en el documento.
+        body: `Abre el marcado de una página y mira la fila de cifras que hay bajo el título de un artículo. Muy a menudo no contiene ni un solo carácter de espacio: \`<span>39</span><span>words</span>\`, y la separación que ves en pantalla es una propiedad \`gap\` en un contenedor flex. El espacio está en la hoja de estilos, no en el documento.
 
 Todo conversor que venga después ve la cadena y no la página —el nuestro incluido—, así que las palabras llegan pegadas. Tampoco es una forma exótica: una fila de cifras, una lista de etiquetas, un rastro de migas de pan y una franja de paginación se ven así en cualquier framework actual.
 
@@ -1112,15 +1112,15 @@ Todo conversor que venga después ve la cadena y no la página —el nuestro inc
 
 El único sitio que puede saber si dos elementos están colocados uno al lado del otro es la propia página, mientras exista allí \`getComputedStyle\`. Una vez que el HTML se ha copiado fuera para convertirlo, la maquetación se ha ido con la hoja de estilos y ninguna conjetura la recupera: nada en \`<span>39</span><span>words</span>\` dice si ahí corresponde un espacio o no.
 
-Por eso la extensión clona el documento, recorre el clon junto al original vivo y, allí donde el elemento real coloca a sus hijos como elementos flex o grid, la copia recibe un espacio detrás de cada uno. Lo que se convierte es la copia. Su página no se toca, y esto corre solo en el instante en que usted pulsa el botón: no hay ningún script sentado en sus pestañas.
+Por eso la extensión clona el documento, recorre el clon junto al original vivo y, allí donde el elemento real coloca a sus hijos como elementos flex o grid, la copia recibe un espacio detrás de cada uno. Lo que se convierte es la copia. Tu página no se toca, y esto corre solo en el instante en que pulsas el botón: no hay ningún script sentado en tus pestañas.
 
-Un archivo que usted suelta en el sitio no recibe nada de esto, porque allí no hay maquetación que leer. Esa es la diferencia entre convertir una página y convertir una copia de su marcado, y es buena parte de la razón por la que existe la extensión.
+Un archivo que sueltas en el sitio no recibe nada de esto, porque allí no hay maquetación que leer. Esa es la diferencia entre convertir una página y convertir una copia de su marcado, y es buena parte de la razón por la que existe la extensión.
 
 ### Qué no cubre
 
 Flex y grid, y nada más. El espacio que produce un margen en un inline-block, una posición absoluta o un contenido generado en un \`::before\` sigue siendo invisible en el marcado, y sigue saliendo cerrado.
 
-Convertir una selección tampoco cambia: un rango seleccionado se clona directamente del documento, así que una fila de cifras levantada como selección todavía puede llegar como \`39words\`. Pulse el botón sin seleccionar nada y la vía de página entera le devuelve los espacios.
+Convertir una selección tampoco cambia: un rango seleccionado se clona directamente del documento, así que una fila de cifras levantada como selección todavía puede llegar como \`39words\`. Pulsa el botón sin seleccionar nada y la vía de página entera te devuelve los espacios.
 
 Relacionado: [guardar una página web como Markdown](/blog/save-a-web-page-as-markdown) y [Turndown y las bibliotecas de HTML a Markdown](/blog/turndown-and-html-to-markdown-libraries).`,
       },
@@ -1244,8 +1244,8 @@ Ni l’une ni l’autre n’est indexée. Les deux portent en bas un lien « Sig
 Autres lectures : [partager un document sous forme de lien](/blog/share-a-markdown-document-as-a-link), et [transformer une sortie d’IA en page partageable](/blog/ai-output-to-a-shareable-page).`,
       },
       es: {
-        title: 'Un documento que alguien ha compartido con usted es un documento',
-        summary: `La página que abre un enlace compartido presenta ahora la misma ficha que cualquier otra pantalla pone sobre un documento — el nombre, el peso, el momento de creación y los recuentos — en lugar de una línea de letra pequeña. **Guardar una copia** lo coloca en su propia cuenta, **Compartir** publica esa copia, y **Copiar Markdown** toma el texto. Sin haber iniciado sesión, esos botones abren el diálogo de acceso en vez de quedarse ahí deshabilitados.`,
+        title: 'Un documento que alguien ha compartido contigo es un documento',
+        summary: `La página que abre un enlace compartido presenta ahora la misma ficha que cualquier otra pantalla pone sobre un documento — el nombre, el peso, el momento de creación y los recuentos — en lugar de una línea de letra pequeña. **Guardar una copia** lo coloca en tu propia cuenta, **Compartir** publica esa copia, y **Copiar Markdown** toma el texto. Sin haber iniciado sesión, esos botones abren el diálogo de acceso en vez de quedarse ahí deshabilitados.`,
         description:
           'Un documento compartido en TransformPipe se abre con la misma ficha de cualquier pantalla — nombre, tamaño, recuentos — y botones para guardar o copiar el texto.',
         keywords:
@@ -1254,15 +1254,15 @@ Autres lectures : [partager un document sous forme de lien](/blog/share-a-markdo
 
 ### La misma ficha que en el resto de la aplicación
 
-Sobre el documento aparece ahora: su nombre, una insignia que indica que se compartió con usted, cuánto pesa, cuándo se convirtió, y sus recuentos de palabras, encabezados y tablas. Es la misma ficha que el conversor coloca sobre un documento recién creado, porque es el mismo objeto, y quien decide si conservar algo necesita los mismos datos que su propietario.
+Sobre el documento aparece ahora: su nombre, una insignia que indica que se compartió contigo, cuánto pesa, cuándo se convirtió, y sus recuentos de palabras, encabezados y tablas. Es la misma ficha que el conversor coloca sobre un documento recién creado, porque es el mismo objeto, y quien decide si conservar algo necesita los mismos datos que su propietario.
 
 ### Lo que cambia son los verbos
 
-**Guardar una copia** lo coloca en su propia cuenta, y es una copia: el documento de quien lo envió sigue siendo suyo, y nada de lo que se haga aquí lo alcanza. **Compartir** se refiere a esa copia, así que al pulsarlo primero se guarda una en lugar de ofrecer republicar el documento de otra persona. **Copiar Markdown** toma el texto, y **Descargar** entrega un archivo \`.html\` autónomo que se abre en cualquier lugar sin conexión.
+**Guardar una copia** lo coloca en tu propia cuenta, y es una copia: el documento de quien lo envió sigue siendo suyo, y nada de lo que se haga aquí lo alcanza. **Compartir** se refiere a esa copia, así que al pulsarlo primero se guarda una en lugar de ofrecer republicar el documento de otra persona. **Copiar Markdown** toma el texto, y **Descargar** entrega un archivo \`.html\` autónomo que se abre en cualquier lugar sin conexión.
 
 Sin haber iniciado sesión, ninguno de esos botones se queda ahí deshabilitado explicándose: abren el diálogo de acceso, porque quien ya ha pulsado Guardar ya ha dicho lo que quiere. El diálogo, no Google directamente — a quien se le envió el enlace se le envió a una dirección que bien podría no ser una cuenta de Google.
 
-### Dos páginas, y cuál le toca
+### Dos páginas, y cuál te toca
 
 Un enlace que cualquiera puede abrir es \`/s/<token>\`, generado por el servidor, sin ejecutar ningún script y susceptible de almacenarse en caché — lo que mantiene fuera de la base de datos a un documento muy visitado. Un documento compartido con direcciones concretas no se le puede entregar a un lector no identificado, así que ese enlace lo envía a \`/open/<token>\`, la vista propia de la aplicación, que sabe pedirle que inicie sesión con la dirección con la que se compartió.
 
@@ -1558,9 +1558,9 @@ Autres lectures : [enregistrer une page web en Markdown](/blog/save-a-web-page-a
       },
       es: {
         title: 'Una extensión de navegador',
-        summary: `La página en la que está, convertida a Markdown, sin salir de ella: pulse el botón de la barra de herramientas y el artículo vuelve sin la navegación, la barra lateral ni el aviso de cookies. Cópielo, descárguelo, o guarde la página como un archivo \`.html\` autónomo con sus imágenes dentro. El panel lateral es lo mismo, mantenido abierto junto a la página, convirtiendo cada pestaña en cuanto se llega a ella, y las diez conversiones del sitio también corren dentro de la extensión — nada se sube y nada de ello necesita red. Con la sesión iniciada, Guardar y Compartir colocan un documento en su cuenta y publican un enlace o nombran a quienes pueden leerlo. [Qué es y qué no hace nunca](/extension).`,
+        summary: `La página en la que está, convertida a Markdown, sin salir de ella: pulsa el botón de la barra de herramientas y el artículo vuelve sin la navegación, la barra lateral ni el aviso de cookies. Cópialo, descárgalo, o guarda la página como un archivo \`.html\` autónomo con sus imágenes dentro. El panel lateral es lo mismo, mantenido abierto junto a la página, convirtiendo cada pestaña en cuanto se llega a ella, y las diez conversiones del sitio también corren dentro de la extensión — nada se sube y nada de ello necesita red. Con la sesión iniciada, Guardar y Compartir colocan un documento en tu cuenta y publican un enlace o nombran a quienes pueden leerlo. [Qué es y qué no hace nunca](/extension).`,
         description:
-          'La extensión de TransformPipe convierte la página que está leyendo en Markdown desde la barra de herramientas — en Chrome, Edge y Firefox, sin subir nada.',
+          'La extensión de TransformPipe convierte la página que estás leyendo en Markdown desde la barra de herramientas — en Chrome, Edge y Firefox, sin subir nada.',
         keywords:
           'extensión de chrome para convertir a markdown, guardar una página web como markdown, extensión de navegador html a markdown, convertir un artículo a markdown, recortador web markdown, extensión de firefox para markdown',
         body: `Lo que hace que merezca la pena instalarla no es el botón. Es que la conversión ocurre dentro de la propia página, donde \`getComputedStyle\` todavía existe y la extensión puede ver lo que ve un lector y no lo que dice el marcado.
@@ -1573,7 +1573,7 @@ Seleccionar antes una parte de la página convierte la selección en lugar del a
 
 ### El panel lateral
 
-Lo mismo, mantenido abierto junto a la página. Convierte cada pestaña en cuanto se llega a ella, de modo que recorrer una serie de resultados de búsqueda significa leer el Markdown de cada uno en lugar de pulsar un botón por página. Recuerda si prefiere el panel o la ventana emergente.
+Lo mismo, mantenido abierto junto a la página. Convierte cada pestaña en cuanto se llega a ella, de modo que recorrer una serie de resultados de búsqueda significa leer el Markdown de cada uno en lugar de pulsar un botón por página. Recuerda si prefieres el panel o la ventana emergente.
 
 ### Las diez conversiones, sin conexión
 
@@ -1721,12 +1721,12 @@ Autres lectures : [partager un document Markdown sous forme de lien](/blog/share
       },
       es: {
         title: 'Un documento compartido dice de dónde viene',
-        summary: `Quien abre un enlace que usted ha compartido encuentra ahora, al pie, una línea sobre qué hizo la página, y una forma de convertir algo propio. El \`.html\` descargado lleva la misma línea, discretamente, en su pie de página. Nada ha cambiado en el documento en sí.`,
+        summary: `Quien abre un enlace que has compartido encuentra ahora, al pie, una línea sobre qué hizo la página, y una forma de convertir algo propio. El \`.html\` descargado lleva la misma línea, discretamente, en su pie de página. Nada ha cambiado en el documento en sí.`,
         description:
           'Una página compartida de TransformPipe indica al pie qué la generó y ofrece cómo convertir un archivo propio; el .html descargado lleva la misma línea.',
         keywords:
           'compartir un documento markdown como enlace, qué generó esta página, pie de página de un documento compartido, pie de página en un html autónomo, convertir un archivo propio',
-        body: `Quien abre un enlace que usted envió no tiene ningún motivo para saber qué generó la página que está leyendo. Es un documento en una dirección, sin menú y sin producto alrededor — eso es deliberado, y dejaba al lector sin ningún sitio adonde ir cuando lo que quería era hacer lo mismo con un archivo propio.
+        body: `Quien abre un enlace que enviaste no tiene ningún motivo para saber qué generó la página que está leyendo. Es un documento en una dirección, sin menú y sin producto alrededor — eso es deliberado, y dejaba al lector sin ningún sitio adonde ir cuando lo que quería era hacer lo mismo con un archivo propio.
 
 ### Qué hay al pie de una página compartida
 
@@ -1744,7 +1744,7 @@ Un enlace compartido es el documento de otra persona, y la parte de arriba le pe
 
 ### Lo que no hace
 
-No cambia el documento. El Markdown, el HTML y cada encabezado, tabla y enlace en ellos son exactamente lo que eran, así que un enlace compartido el mes pasado se ve igual hoy. Los dos enlaces llevan \`?from=shared\` y \`?from=file\` en la dirección, y esa marca es todo lo que se añade — ningún identificador para el lector, ninguna petición a ningún sitio, nada escrito en su navegador.
+No cambia el documento. El Markdown, el HTML y cada encabezado, tabla y enlace en ellos son exactamente lo que eran, así que un enlace compartido el mes pasado se ve igual hoy. Los dos enlaces llevan \`?from=shared\` y \`?from=file\` en la dirección, y esa marca es todo lo que se añade — ningún identificador para el lector, ninguna petición a ningún sitio, nada escrito en tu navegador.
 
 Relacionado: [compartir un documento Markdown como enlace](/blog/share-a-markdown-document-as-a-link) y [qué es un archivo HTML autónomo](/blog/self-contained-html-explained).`,
       },
@@ -1883,19 +1883,19 @@ Les mots à l’intérieur de vos documents. Cette recherche interroge le serveu
 Autres lectures : [ce qu’il faut chercher dans un convertisseur de documents en ligne](/blog/best-online-document-converters), et [partager un document Markdown sous forme de lien](/blog/share-a-markdown-document-as-a-link).`,
       },
       es: {
-        title: 'Sus documentos, a dos letras de distancia',
-        summary: `\`⌘K\` se abre ahora sobre los cinco documentos que convirtió más recientemente, y escribir los busca por nombre junto con las conversiones y las páginas — cualquier documento de la lista, no solo esos cinco. \`Ver todos los documentos\` lleva al historial.`,
+        title: 'Tus documentos, a dos letras de distancia',
+        summary: `\`⌘K\` se abre ahora sobre los cinco documentos que convertiste más recientemente, y escribir los busca por nombre junto con las conversiones y las páginas — cualquier documento de la lista, no solo esos cinco. \`Ver todos los documentos\` lleva al historial.`,
         description:
-          'Cmd K sobre TransformPipe abre sus cinco últimos documentos, cada conversión y cada página, y encuentra cualquiera de ellos con solo escribir dos letras.',
+          'Cmd K sobre TransformPipe abre tus cinco últimos documentos, cada conversión y cada página, y encuentra cualquiera de ellos con solo escribir dos letras.',
         keywords:
           'atajos de teclado conversor de documentos, paleta de comandos cmd k, buscar un documento guardado por nombre, ir a un documento convertido, navegación con teclado en el conversor de markdown',
         body: `Hay un solo atajo en esta aplicación, y todo lo demás se alcanza a través de él: \`⌘K\`, o \`Ctrl K\` fuera de un Mac. Está asignado una sola vez, en la barra que aparece sobre cada página, así que funciona en el conversor, en el historial, en la documentación y a mitad de un artículo. Pulsarlo de nuevo cierra lo que abrió.
 
 ### Qué hay en el cuadro antes de escribir
 
-Los cinco documentos que convirtió más recientemente, el más nuevo primero, cada uno con la conversión que lo generó. Una paleta que se abre sobre una lista vacía obliga a escribir antes de decir nada, y la respuesta, la mayoría de las veces, es una de las últimas cosas en las que estaba trabajando.
+Los cinco documentos que convertiste más recientemente, el más nuevo primero, cada uno con la conversión que lo generó. Una paleta que se abre sobre una lista vacía obliga a escribir antes de decir nada, y la respuesta, la mayoría de las veces, es una de las últimas cosas en las que estabas trabajando.
 
-Cuáles sean esos documentos depende de dónde estén sus documentos. Con la sesión iniciada, es el historial de la cuenta; sin ella, es lo que este navegador ha convertido y no ha guardado. Cuando hay más de cinco, una sexta fila lleva al historial para el resto.
+Cuáles sean esos documentos depende de dónde estén tus documentos. Con la sesión iniciada, es el historial de la cuenta; sin ella, es lo que este navegador ha convertido y no ha guardado. Cuando hay más de cinco, una sexta fila lleva al historial para el resto.
 
 Debajo: las diez conversiones con las extensiones de archivo que acepta cada una, la vista previa en directo, los destinos — historial, documentación, blog, registro de cambios — y cada página fija con su dirección.
 
@@ -1910,7 +1910,7 @@ Escribir filtra por el nombre de la fila, por el detalle junto a ella y por el g
 
 ### Lo que no puede encontrar
 
-Palabras dentro de sus documentos. Esa búsqueda se dirige al servidor, que tarda un momento y necesita un lugar donde mostrar lo que encontró junto con su contexto, así que permanece en la página del historial, donde ya vive. Este cuadro responde mientras se sigue escribiendo, y solo puede hacerlo porque la lista ya está en el navegador — no sale ninguna petición al abrirlo.
+Palabras dentro de tus documentos. Esa búsqueda se dirige al servidor, que tarda un momento y necesita un lugar donde mostrar lo que encontró junto con su contexto, así que permanece en la página del historial, donde ya vive. Este cuadro responde mientras se sigue escribiendo, y solo puede hacerlo porque la lista ya está en el navegador — no sale ninguna petición al abrirlo.
 
 Relacionado: [qué buscar en un conversor de documentos en línea](/blog/best-online-document-converters) y [compartir un documento Markdown como enlace](/blog/share-a-markdown-document-as-a-link).`,
       },
@@ -2050,9 +2050,9 @@ Autres lectures : [si un convertisseur en ligne est sûr](/blog/is-an-online-con
       },
       es: {
         title: 'La pregunta de las cookies, bien planteada',
-        summary: `Un aviso en la primera visita, con tres respuestas de un clic cada una: aceptar, solo las necesarias, o abrir los interruptores. La analítica es lo único opcional en este sitio y permanece desactivada hasta que se permite — antes de responder, las etiquetas de Google no escriben nada en su navegador. La respuesta se guarda en este navegador, así que el aviso se pregunta una vez; el botón al pie de la [página de cookies](/cookies) lo vuelve a abrir, y las páginas de privacidad y cookies ahora dicen todo esto.`,
+        summary: `Un aviso en la primera visita, con tres respuestas de un clic cada una: aceptar, solo las necesarias, o abrir los interruptores. La analítica es lo único opcional en este sitio y permanece desactivada hasta que se permite — antes de responder, las etiquetas de Google no escriben nada en tu navegador. La respuesta se guarda en este navegador, así que el aviso se pregunta una vez; el botón al pie de la [página de cookies](/cookies) lo vuelve a abrir, y las páginas de privacidad y cookies ahora dicen todo esto.`,
         description:
-          'Qué guarda TransformPipe en su navegador: dos categorías, analítica desactivada hasta que la permite, y Google sin escribir nada antes de su respuesta.',
+          'Qué guarda TransformPipe en tu navegador: dos categorías, analítica desactivada hasta que la permites, y Google sin escribir nada antes de tu respuesta.',
         keywords:
           'aviso de cookies conversor de documentos, qué cookies usa este sitio, rechazar cookies de analítica, modo de consentimiento de google, cambiar la configuración de cookies',
         body: `Hay dos categorías de almacenamiento en este sitio, y solo una de ellas es una pregunta. **Necesarias** es la sesión de acceso y el aspecto elegido; **Analítica** es Google Analytics, a través de Google Tag Manager, que cuenta cuánta gente llega y qué páginas lee. No hay una tercera categoría, porque aquí no hay publicidad.
@@ -2075,7 +2075,7 @@ Dentro de los interruptores, **Necesarias** está activado y no se puede desacti
 
 La [página de cookies](/cookies) tiene un botón que vuelve a abrir los mismos interruptores, y muestra qué se eligió y cuándo. Elegir de nuevo sustituye la respuesta anterior; borrar los datos del sitio en el navegador la elimina, y la pregunta vuelve a aparecer en la siguiente visita.
 
-Nada de esto tiene que ver con convertir un archivo. Eso funciona igual en su navegador, con analítica o sin ella, con la sesión iniciada o no.
+Nada de esto tiene que ver con convertir un archivo. Eso funciona igual en tu navegador, con analítica o sin ella, con la sesión iniciada o no.
 
 Relacionado: [si un conversor en línea es seguro](/blog/is-an-online-converter-safe) y [depurar Markdown con seguridad](/blog/sanitising-markdown-safely).`,
       },
@@ -2210,7 +2210,7 @@ Autres lectures : [à quoi sert un convertisseur Markdown vers HTML](/blog/markd
       },
       es: {
         title: 'Una barra en la que se puede escribir',
-        summary: `La cabecera se ha reconstruido alrededor de un cuadro de búsqueda: pulse \`⌘K\` — \`Ctrl K\` fuera de un Mac — y cada conversión y cada página de la aplicación está a dos letras de distancia. La propia barra se sitúa ahora bajo la página en lugar de sobre ella, la conversión en la que se encuentra es lo primero que aparece en ella, y el rastro que indica dónde está se ha sacado de la página hacia una línea propia justo debajo.`,
+        summary: `La cabecera se ha reconstruido alrededor de un cuadro de búsqueda: pulsa \`⌘K\` — \`Ctrl K\` fuera de un Mac — y cada conversión y cada página de la aplicación está a dos letras de distancia. La propia barra se sitúa ahora bajo la página en lugar de sobre ella, la conversión en la que se encuentra es lo primero que aparece en ella, y el rastro que indica dónde está se ha sacado de la página hacia una línea propia justo debajo.`,
         description:
           'La cabecera de TransformPipe se construye alrededor de un cuadro de búsqueda: Cmd K y cada conversión, página y documento reciente está a dos letras.',
         keywords:
@@ -2225,15 +2225,15 @@ El control mantiene el nombre de la conversión en toda la aplicación, incluso 
 
 ### El cuadro es un botón
 
-En la barra misma no se escribe nada. Al hacer clic en ella, o al pulsar \`⌘K\` — \`Ctrl K\` fuera de un Mac —, se abre un cuadro sobre la página con toda la aplicación en una sola lista: sus documentos recientes, las diez conversiones con las extensiones que acepta cada una, los destinos, y las páginas fijas con sus direcciones. Dos letras e \`Intro\` son el camino más corto por cualquiera de ellas. La pista a la derecha del cuadro muestra \`⌘\` o \`Ctrl\` según la máquina, leída después de que la página cargue, porque el servidor no tiene teclado.
+En la barra misma no se escribe nada. Al hacer clic en ella, o al pulsar \`⌘K\` — \`Ctrl K\` fuera de un Mac —, se abre un cuadro sobre la página con toda la aplicación en una sola lista: tus documentos recientes, las diez conversiones con las extensiones que acepta cada una, los destinos, y las páginas fijas con sus direcciones. Dos letras e \`Intro\` son el camino más corto por cualquiera de ellas. La pista a la derecha del cuadro muestra \`⌘\` o \`Ctrl\` según la máquina, leída después de que la página cargue, porque el servidor no tiene teclado.
 
 ### El rastro salió de la página
 
-Dónde está usted — las migas desde el blog hasta un artículo, o desde la documentación hasta una sección — antes lo imprimía cada página dentro de su propio contenido. Ahora está en una franja propia justo debajo de la barra, en el mismo lugar en cada página, y las páginas siguen decidiendo qué dice.
+Dónde estás — las migas desde el blog hasta un artículo, o desde la documentación hasta una sección — antes lo imprimía cada página dentro de su propio contenido. Ahora está en una franja propia justo debajo de la barra, en el mismo lugar en cada página, y las páginas siguen decidiendo qué dice.
 
 ### Lo que no es
 
-No es una línea de comandos. Cada fila del cuadro lleva a algún sitio — una conversión, una página, un documento —, y nada en ella convierte, guarda, elimina ni comparte. Tampoco busca dentro de sus documentos; eso vive en el historial, que sí puede mostrar lo que encontró.
+No es una línea de comandos. Cada fila del cuadro lleva a algún sitio — una conversión, una página, un documento —, y nada en ella convierte, guarda, elimina ni comparte. Tampoco busca dentro de tus documentos; eso vive en el historial, que sí puede mostrar lo que encontró.
 
 Relacionado: [para qué sirve un conversor de Markdown a HTML](/blog/markdown-to-html-converter) y [editores de Markdown que merecen la pena](/blog/best-markdown-editors).`,
       },
@@ -2494,9 +2494,9 @@ Autres lectures : [un coffre Obsidian en détail](/blog/convert-obsidian-vault-t
       },
       es: {
         title: 'Una bóveda de Obsidian, en un solo documento',
-        summary: `Una décima conversión: suelte una bóveda de Obsidian comprimida y recupere un solo documento Markdown — cada nota en orden, con un índice. Los \`[[Wikilinks]]\` conservan sus palabras; fundidos en un único documento ya no les queda nada a lo que apuntar, así que la dirección no se traslada, la misma regla que esta aplicación aplica ya a una exportación de Notion o Confluence.`,
+        summary: `Una décima conversión: suelta una bóveda de Obsidian comprimida y recupera un solo documento Markdown — cada nota en orden, con un índice. Los \`[[Wikilinks]]\` conservan sus palabras; fundidos en un único documento ya no les queda nada a lo que apuntar, así que la dirección no se traslada, la misma regla que esta aplicación aplica ya a una exportación de Notion o Confluence.`,
         description:
-          'Comprima una bóveda de Obsidian, suéltela en TransformPipe y reciba un solo documento Markdown: cada nota en orden, con un índice, y todo en su navegador.',
+          'Comprime una bóveda de Obsidian, suéltala en TransformPipe y recibe un solo documento Markdown: cada nota en orden, con un índice, y todo en tu navegador.',
         keywords:
           'convertir bóveda de obsidian a markdown, exportar notas de obsidian a un solo archivo, unir notas de obsidian, obsidian a html, convertir wikilinks de obsidian',
         body: `Una bóveda es un buen sitio para escribir y una cosa incómoda de entregar. Doscientos archivos no son un documento, y la persona a la que se los manda no tiene Obsidian ni ningún interés en instalarlo.
@@ -2515,7 +2515,7 @@ Todo lo que no sea una nota: \`.obsidian/\` y sus ajustes, los adjuntos, las pla
 
 ### No se sube nada
 
-El archivo comprimido se descomprime y se convierte en su navegador. Una bóveda suele ser los apuntes privados de alguien, y la única manera segura de convertir apuntes privados es no enviarlos a ninguna parte — la misma razón por la que este sitio no tiene paso de subida en ninguna de sus diez conversiones.
+El archivo comprimido se descomprime y se convierte en tu navegador. Una bóveda suele ser los apuntes privados de alguien, y la única manera segura de convertir apuntes privados es no enviarlos a ninguna parte — la misma razón por la que este sitio no tiene paso de subida en ninguna de sus diez conversiones.
 
 Relacionado: [una bóveda de Obsidian en detalle](/blog/convert-obsidian-vault-to-markdown) y [Markdown desde Notion, Obsidian y Confluence](/blog/markdown-from-notion-obsidian-and-confluence).`,
       },
@@ -2656,7 +2656,7 @@ Autres lectures : [Excel vers un tableau Markdown en détail](/blog/convert-exce
           'Dos conversiones para los archivos que nadie llama documentos: un .txt escapado que dice lo que dice, y un .xlsx como una tabla Markdown por cada hoja.',
         keywords:
           'txt a markdown, convertir texto plano a markdown, escapar caracteres de markdown, excel a tabla markdown, conversor xlsx a markdown',
-        body: `«Ponga *estrellas* junto a las pruebas que fallan.» Escrita en una nota \`.txt\` para un colega, esa frase dice lo que dice. Entregada a un renderizador de Markdown dice otra cosa — «estrellas» sale en cursiva — y una línea sobre una convención de revisión ha quedado reformateada sin que nadie lo pidiera. Existen dos conversiones para los dos archivos que nadie considera documentos, un archivo de texto y un libro de cálculo, y ambas son claras sobre lo que pueden llevar.
+        body: `«Pon *estrellas* junto a las pruebas que fallan.» Escrita en una nota \`.txt\` para un colega, esa frase dice lo que dice. Entregada a un renderizador de Markdown dice otra cosa — «estrellas» sale en cursiva — y una línea sobre una convención de revisión ha quedado reformateada sin que nadie lo pidiera. Existen dos conversiones para los dos archivos que nadie considera documentos, un archivo de texto y un libro de cálculo, y ambas son claras sobre lo que pueden llevar.
 
 ### Texto plano → Markdown
 
@@ -2670,13 +2670,13 @@ Un \`.txt\` se aceptaba en Markdown → HTML como si ya fuera Markdown, y eso se
 
 ### Qué pierde una hoja de cálculo
 
-Una tabla Markdown es texto en una rejilla y nada más, así que se va todo lo demás que un libro es: una fórmula llega como el último valor que Excel le guardó, las celdas combinadas se aplanan, los formatos de número y moneda quedan en texto crudo, y los colores, el formato condicional, los gráficos, las tablas dinámicas, las imágenes y los comentarios de celda no tienen ninguna representación. Las hojas vacías se omiten, y un libro sin una sola fila se rechaza en lugar de convertirse en nada. \`.xls\`, el formato anterior a 2007, no se lee — guárdelo antes como \`.xlsx\`.
+Una tabla Markdown es texto en una rejilla y nada más, así que se va todo lo demás que un libro es: una fórmula llega como el último valor que Excel le guardó, las celdas combinadas se aplanan, los formatos de número y moneda quedan en texto crudo, y los colores, el formato condicional, los gráficos, las tablas dinámicas, las imágenes y los comentarios de celda no tienen ninguna representación. Las hojas vacías se omiten, y un libro sin una sola fila se rechaza en lugar de convertirse en nada. \`.xls\`, el formato anterior a 2007, no se lee — guárdalo antes como \`.xlsx\`.
 
 Si la rejilla era el documento, esto funciona. Si el formato llevaba el significado, una tabla Markdown es el destino equivocado, y enterarse aquí es mejor que enterarse después de haber pegado el resultado en algún sitio.
 
-### Ambas corren en su navegador
+### Ambas corren en tu navegador
 
-El escapado y el lector del libro son JavaScript en su propia pestaña, así que ninguno de los dos archivos se sube. La API también convierte un \`.xlsx\` enviado como cuerpo de la petición, el único caso en el que no hay navegador donde ejecutarlos.
+El escapado y el lector del libro son JavaScript en tu propia pestaña, así que ninguno de los dos archivos se sube. La API también convierte un \`.xlsx\` enviado como cuerpo de la petición, el único caso en el que no hay navegador donde ejecutarlos.
 
 Relacionado: [Excel a una tabla Markdown al completo](/blog/convert-excel-to-markdown-table) y [para qué sirve realmente el escapado](/blog/markdown-escaping).`,
       },
@@ -2806,28 +2806,28 @@ Autres lectures : [un export Notion en détail](/blog/convert-notion-export-to-m
       },
       es: {
         title: 'Exportaciones de Notion y Confluence, en un solo documento',
-        summary: `Dos conversiones nuevas: suelte el .zip de «Export as Markdown & CSV» de Notion o del «Export → HTML» de un espacio de Confluence y reciba un solo documento Markdown — cada página en orden, con un índice, y una base de datos de Notion incluida como tabla. Un enlace de una página exportada a otra conserva sus palabras; fundido en un único documento ya no tiene adónde apuntar, así que la dirección no se traslada.`,
+        summary: `Dos conversiones nuevas: suelta el .zip de «Export as Markdown & CSV» de Notion o del «Export → HTML» de un espacio de Confluence y recibe un solo documento Markdown — cada página en orden, con un índice, y una base de datos de Notion incluida como tabla. Un enlace de una página exportada a otra conserva sus palabras; fundido en un único documento ya no tiene adónde apuntar, así que la dirección no se traslada.`,
         description:
-          'Suelte el .zip de una exportación de Notion o Confluence en TransformPipe y reciba un solo documento Markdown: cada página en orden, con un índice.',
+          'Suelta el .zip de una exportación de Notion o Confluence en TransformPipe y recibe un solo documento Markdown: cada página en orden, con un índice.',
         keywords:
           'exportar notion a markdown, confluence a markdown, convertir zip de notion a markdown, export html de espacio confluence a markdown, unir páginas de notion en un documento',
         body: `Las dos herramientas exportan una carpeta de archivos, uno por página, con nombres que no ha elegido nadie. Dos conversiones leen esa carpeta y devuelven en su lugar un único documento Markdown: cada página en orden, bajo su propio encabezado, con un índice arriba.
 
 ### Notion
 
-Exporte una página o un espacio de trabajo con **Export as Markdown & CSV**, incluya las subpáginas y suelte el \`.zip\` tal cual se descargó. Notion añade un identificador de 32 caracteres a cada nombre de archivo; esos se quitan. Una base de datos exportada junto a una página llega como \`.csv\` y se convierte en una tabla Markdown ahí mismo, donde la página se refería a ella.
+Exporta una página o un espacio de trabajo con **Export as Markdown & CSV**, incluye las subpáginas y suelta el \`.zip\` tal cual se descargó. Notion añade un identificador de 32 caracteres a cada nombre de archivo; esos se quitan. Una base de datos exportada junto a una página llega como \`.csv\` y se convierte en una tabla Markdown ahí mismo, donde la página se refería a ella.
 
 ### Confluence
 
-Exporte un espacio con **Export → HTML** y suelte ese \`.zip\`. El HTML de Confluence arrastra muchísimo mobiliario — migas de pan, el árbol de páginas, el pie con la fecha de exportación, la tabla de adjuntos — y nada de eso es contenido, así que nada de eso sobrevive. Las macros que se renderizan como texto conservan su texto; las que se renderizan como un widget que solo existe en Confluence, no.
+Exporta un espacio con **Export → HTML** y suelta ese \`.zip\`. El HTML de Confluence arrastra muchísimo mobiliario — migas de pan, el árbol de páginas, el pie con la fecha de exportación, la tabla de adjuntos — y nada de eso es contenido, así que nada de eso sobrevive. Las macros que se renderizan como texto conservan su texto; las que se renderizan como un widget que solo existe en Confluence, no.
 
 ### Los enlaces entre páginas
 
 Un enlace de una página exportada a otra conserva sus palabras y pierde su dirección. Fundido en un solo documento ya no tiene adónde apuntar: el archivo que nombraba ha dejado de existir, y un enlace a un archivo ausente es peor que una frase. La misma regla vale para los \`[[Wikilinks]]\` de una bóveda de Obsidian, que son el mismo problema en otra sintaxis.
 
-### Corre en su navegador
+### Corre en tu navegador
 
-El zip se lee, se descomprime y se convierte en su propia máquina. No se sube nada, y aquí importa más que de costumbre: la exportación de un espacio de Confluence es la documentación interna de una empresa, y el camino seguro más corto es el que no sale nunca.
+El zip se lee, se descomprime y se convierte en tu propia máquina. No se sube nada, y aquí importa más que de costumbre: la exportación de un espacio de Confluence es la documentación interna de una empresa, y el camino seguro más corto es el que no sale nunca.
 
 Relacionado: [una exportación de Notion en detalle](/blog/convert-notion-export-to-markdown) y [una sola página de Confluence](/blog/convert-confluence-page-to-markdown).`,
       },
@@ -2970,7 +2970,7 @@ Aquí el documento se maqueta directamente — encabezados, párrafos, listas, t
 
 ### Lo que no es
 
-No es una copia píxel a píxel de la vista previa. La opción **Imprimir o guardar como PDF** de la aplicación sigue usando la representación propia del navegador, que es exacta, y eso no ha cambiado: si quiere la página tal como la ve, imprímala. Si quiere un PDF desde una máquina, pídalo.
+No es una copia píxel a píxel de la vista previa. La opción **Imprimir o guardar como PDF** de la aplicación sigue usando la representación propia del navegador, que es exacta, y eso no ha cambiado: si quieres la página tal como la ves, imprímela. Si quieres un PDF desde una máquina, pídelo.
 
 ### Cómo se usa
 
@@ -3109,7 +3109,7 @@ Autres lectures : [Markdown vers Word, en détail](/blog/markdown-to-word) et [r
         title: 'Descargar un documento guardado como Word',
         summary: `El menú de descarga de un documento guardado ofrece ahora un \`.docx\`, construido en el momento a partir del mismo HTML que ya muestra la vista previa. Sin navegador sin cabeza de por medio — hace falta guardar antes, porque la conversión trabaja sobre la copia de la cuenta.`,
         description:
-          'Convierta Markdown en un .docx de verdad en TransformPipe: encabezados, tablas, listas y código sobreviven, y Word lo abre sin complementos ni navegador.',
+          'Convierte Markdown en un .docx de verdad en TransformPipe: encabezados, tablas, listas y código sobreviven, y Word lo abre sin complementos ni navegador.',
         keywords:
           'markdown a word, convertir md a docx, conversor markdown docx, descargar markdown como documento word, tabla markdown a word',
         body: `Un documento guardado se puede descargar como \`.docx\`, construido a partir del mismo HTML que ya muestra la vista previa. Word, Pages, LibreOffice y Google Docs lo abren como un documento corriente — los encabezados son encabezados de Word, las tablas son tablas de Word, las listas se anidan y el código conserva su tipografía monoespaciada.
@@ -3122,7 +3122,7 @@ Las imágenes remotas se dejan fuera a propósito. Un conversor que va a buscar 
 
 ### Por qué hace falta guardar antes
 
-La conversión trabaja sobre la copia del documento en la cuenta, que es lo que lee el punto de acceso de descarga. Convertir un archivo que acaba de soltar es cosa del navegador y no involucra a la cuenta en absoluto; \`.docx\` es la única dirección que sí.
+La conversión trabaja sobre la copia del documento en la cuenta, que es lo que lee el punto de acceso de descarga. Convertir un archivo que acabas de soltar es cosa del navegador y no involucra a la cuenta en absoluto; \`.docx\` es la única dirección que sí.
 
 ### El sentido contrario
 
@@ -3338,10 +3338,10 @@ Autres lectures : [convertir des documents avec une API](/blog/converting-docume
         title: 'Webhooks: un aviso firmado cuando se crea o se comparte un documento',
         summary: `Menú de la cuenta → Webhooks registra una URL que recibe un POST firmado para dos eventos, \`document.created\` y \`document.shared\`. Se gestiona solo desde una sesión iniciada, y es a propósito: queda fuera de la API programable, de modo que una clave filtrada no puede convertirse en un flujo permanente de todos los documentos que vengan después.`,
         description:
-          'Registre una URL y TransformPipe envía un aviso firmado en cuanto se crea o se comparte un documento: HMAC-SHA256, con la cabecera que usa Stripe.',
+          'Registra una URL y TransformPipe envía un aviso firmado en cuanto se crea o se comparte un documento: HMAC-SHA256, con la cabecera que usa Stripe.',
         keywords:
           'webhook de documentos, verificar firma hmac sha256 de un webhook, verificación de firma de webhook en node, cabecera x-transformpipe-signature, webhook al crear un documento',
-        body: `En una cuenta ocurren dos cosas de las que otro programa puede querer enterarse en el momento mismo en que pasan: se ha creado un documento y se ha compartido un documento. En **Menú de la cuenta → Webhooks** es donde indica una URL \`https://\` que debe oírlas, y donde lee el secreto con el que se firman sus entregas.
+        body: `En una cuenta ocurren dos cosas de las que otro programa puede querer enterarse en el momento mismo en que pasan: se ha creado un documento y se ha compartido un documento. En **Menú de la cuenta → Webhooks** es donde indicas una URL \`https://\` que debe oírlas, y donde lees el secreto con el que se firman sus entregas.
 
 ### Qué llega
 
@@ -3359,7 +3359,7 @@ Un \`POST\` cuyo cuerpo JSON tiene tres claves — el evento, la hora y los dato
 
 ### Comprobar la firma
 
-Cada entrega trae una cabecera \`x-transformpipe-signature\` con la forma \`t=<segundos unix>,v1=<hex>\`, donde \`v1\` es un HMAC-SHA256 sobre la cadena \`<t>.<cuerpo>\`, con el secreto de este webhook como clave — la misma forma que usan Stripe y GitHub, así que el código de verificación que ya tenga suele necesitar solo un secreto distinto.
+Cada entrega trae una cabecera \`x-transformpipe-signature\` con la forma \`t=<segundos unix>,v1=<hex>\`, donde \`v1\` es un HMAC-SHA256 sobre la cadena \`<t>.<cuerpo>\`, con el secreto de este webhook como clave — la misma forma que usan Stripe y GitHub, así que el código de verificación que ya tengas suele necesitar solo un secreto distinto.
 
 \`\`\`js
 import { createHmac, timingSafeEqual } from 'node:crypto';
@@ -3376,7 +3376,7 @@ export function verify(raw, header, secret) {
 }
 \`\`\`
 
-Rechace una \`t\` de hace más de unos minutos y una entrega capturada no podrá reproducírsele más tarde. El secreto empieza por \`whsec_\` y puede volver a leerse en el diálogo cuando lo necesite: a diferencia de una clave de API, se lo mostramos nosotros a usted, así que verlo dos veces mientras configura un receptor es legítimo y no una filtración.
+Rechaza una \`t\` de hace más de unos minutos y una entrega capturada no podrá reproducírsete más tarde. El secreto empieza por \`whsec_\` y puede volver a leerse en el diálogo cuando lo necesites: a diferencia de una clave de API, te lo mostramos nosotros, así que verlo dos veces mientras configuras un receptor es legítimo y no una filtración.
 
 ### Un intento, sin cola
 
@@ -3570,11 +3570,11 @@ Un parámetro, en el push que crea el documento más reciente:
     curl -H "Authorization: Bearer tp_live_…" --data-binary @v2.md \\
       "https://transformpipe.com/api/v1/documents?name=notes.md&replaces=<id>"
 
-La CLI lo escribe como \`--replaces <id>\`, y la GitHub Action recibe una entrada \`replaces\`. El id del documento anterior es el que imprime \`tp list\`, y el que lleva la salida \`documents\` de la Action. Tiene que ser un documento de la misma cuenta, o la petición responde 404 en lugar de enlazar con algo que usted no puede ver.
+La CLI lo escribe como \`--replaces <id>\`, y la GitHub Action recibe una entrada \`replaces\`. El id del documento anterior es el que imprime \`tp list\`, y el que lleva la salida \`documents\` de la Action. Tiene que ser un documento de la misma cuenta, o la petición responde 404 en lugar de enlazar con algo que no puedes ver.
 
 ### Qué se obtiene
 
-En el historial, un documento enlazado lleva un icono de cadena. Al abrirlo se lista toda la cadena, del más antiguo al más reciente, y cualquier entrada que tenga algo antes se puede comparar con ello: una comparación línea a línea, calculada en su navegador a partir de las dos fuentes que ya había obtenido, de modo que nada en el servidor hace la comparación.
+En el historial, un documento enlazado lleva un icono de cadena. Al abrirlo se lista toda la cadena, del más antiguo al más reciente, y cualquier entrada que tenga algo antes se puede comparar con ello: una comparación línea a línea, calculada en tu navegador a partir de las dos fuentes que ya había obtenido, de modo que nada en el servidor hace la comparación.
 
 Desde un programa, \`GET /api/v1/documents/:id/versions\` — o \`tp versions <id>\` — responde con la cadena a partir de cualquiera de sus miembros — los antecesores que reemplaza, y todo lo que a su vez reemplazó a esos —, cada uno con su \`id\`, \`name\`, \`created_at\` y su propio \`replaces\`. El conector para asistentes expone lo mismo como \`tp_document_versions\`. Cada documento de una lista también lleva su \`replaces\`, de modo que un cliente con la lista en la mano puede reconstruir las cadenas sin una petición por fila.
 
@@ -3724,14 +3724,14 @@ Autres lectures : [convertir des fichiers Markdown par lots](/blog/batch-convert
         title: 'La búsqueda del historial ya mira dentro de sus documentos',
         summary: `Buscar en el historial antes solo comparaba con el nombre del archivo. Con la sesión iniciada, ahora también encuentra un documento por lo que está escrito dentro — el campo de nombre sigue funcionando exactamente igual que antes, solo deja de ser la única entrada.`,
         description:
-          'El cuadro de búsqueda de su historial ya compara con el contenido de un documento guardado, no solo con su nombre, y ordena los resultados por relevancia.',
+          'El cuadro de búsqueda de tu historial ya compara con el contenido de un documento guardado, no solo con su nombre, y ordena los resultados por relevancia.',
         keywords:
           'buscar dentro de documentos, búsqueda de texto completo en markdown, encontrar un documento por su contenido, buscar en archivos convertidos, búsqueda de texto completo en postgres',
-        body: `Nadie recuerda cómo llamó a un archivo. Recuerda una frase que había en él, el nombre del cliente sobre el que trataba, o el único comando que contenía el runbook. El campo en la parte superior de su historial antes no podía ayudar con nada de eso, porque solo comparaba lo que usted escribía con los nombres de archivo.
+        body: `Nadie recuerda cómo llamó a un archivo. Recuerda una frase que había en él, el nombre del cliente sobre el que trataba, o el único comando que contenía el runbook. El campo en la parte superior de tu historial antes no podía ayudar con nada de eso, porque solo comparaba lo que escribías con los nombres de archivo.
 
 ### Dos búsquedas, un solo campo
 
-Al escribir en él, ahora ocurren dos cosas a la vez. El filtro por nombre funciona donde siempre funcionó — en el navegador, sobre cada fila de la página, al instante, tanto en conversiones guardadas como sin guardar. Y un instante después, si su sesión está iniciada, el servidor responde con los documentos guardados cuyo texto coincide, ordenados por lo bien que coinciden, y esas filas se suman a las que el nombre ya había encontrado.
+Al escribir en él, ahora ocurren dos cosas a la vez. El filtro por nombre funciona donde siempre funcionó — en el navegador, sobre cada fila de la página, al instante, tanto en conversiones guardadas como sin guardar. Y un instante después, si tu sesión está iniciada, el servidor responde con los documentos guardados cuyo texto coincide, ordenados por lo bien que coinciden, y esas filas se suman a las que el nombre ya había encontrado.
 
 No hay que elegir entre ambas. Una consulta que es mitad nombre de archivo y mitad frase recordada encuentra los dos tipos de fila, y una que no coincide con nada por contenido simplemente deja el filtro por nombre como estaba. La petición tiene un retardo antes de enviarse, así que escribir no genera una petición por cada tecla, y una búsqueda que falla deja la lista funcionando en lugar de sustituirla por un error.
 
@@ -3739,11 +3739,11 @@ No hay que elegir entre ambas. Una consulta que es mitad nombre de archivo y mit
 
 Cada documento guardado lleva un \`tsvector\` de su Markdown, escrito en el momento en que el documento se guarda e indexado en Postgres. La coincidencia se calcula con \`websearch_to_tsquery\`, así que la sintaxis es la que cualquier campo de búsqueda ya ha enseñado a la gente: \`"una frase entre comillas"\` para palabras en ese orden, \`or\` entre alternativas, un \`-\` inicial para excluir.
 
-Es una configuración deliberadamente sencilla — sin derivación de raíces y sin lista de palabras vacías. Las palabras coinciden tal como se escribieron: buscar \`convert\` no encuentra \`converting\`, y tampoco se reinterpreta en silencio nada de lo que usted busca. Buscar en la fuente Markdown en lugar de en la página ya compuesta tiene un efecto secundario que conviene conocer: la dirección de un enlace, un bloque de código y un encabezado son también texto que se puede buscar.
+Es una configuración deliberadamente sencilla — sin derivación de raíces y sin lista de palabras vacías. Las palabras coinciden tal como se escribieron: buscar \`convert\` no encuentra \`converting\`, y tampoco se reinterpreta en silencio nada de lo que buscas. Buscar en la fuente Markdown en lugar de en la página ya compuesta tiene un efecto secundario que conviene conocer: la dirección de un enlace, un bloque de código y un encabezado son también texto que se puede buscar.
 
 ### Lo que no alcanza
 
-Una conversión que solo existe en este navegador no tiene fila en la base de datos, así que no hay nada indexado para ella y sigue encontrándose solo por el nombre — la consecuencia honesta de que las conversiones permanezcan locales hasta que se guardan. Los documentos que alguien compartió con usted tampoco están cubiertos; el chip que los lista filtra por nombre.
+Una conversión que solo existe en este navegador no tiene fila en la base de datos, así que no hay nada indexado para ella y sigue encontrándose solo por el nombre — la consecuencia honesta de que las conversiones permanezcan locales hasta que se guardan. Los documentos que alguien compartió contigo tampoco están cubiertos; el chip que los lista filtra por nombre.
 
 Desde un script, lo mismo es un solo parámetro: \`GET /api/v1/documents?q=…\`, o \`tp list --q "…"\`, que devuelve las coincidencias mejores primero, y entre dos iguales, la más reciente antes que la más antigua.
 
@@ -4045,17 +4045,17 @@ Un compte est fait pour les documents que vous décidez de garder, pas un regist
 Autres lectures : [un convertisseur en ligne est-il sûr](/blog/is-an-online-converter-safe), et [partager un document sous forme de lien](/blog/share-a-markdown-document-as-a-link).`,
       },
       es: {
-        title: 'Nada llega a su cuenta hasta que usted lo guarda',
-        summary: `Convertir un archivo antes lo dejaba en su cuenta. Soltarlo, mirarlo, cerrar la pestaña — y ahí seguía, junto con todo lo demás que alguna vez había ojeado. Iniciar sesión era peor: todo lo que ese navegador había convertido se subía de una vez, así que veinticinco cosas que había mirado se convertían en veinticinco documentos que nunca había pedido conservar.
+        title: 'Nada llega a tu cuenta hasta que lo guardas',
+        summary: `Convertir un archivo antes lo dejaba en tu cuenta. Soltarlo, mirarlo, cerrar la pestaña — y ahí seguía, junto con todo lo demás que alguna vez había ojeado. Iniciar sesión era peor: todo lo que ese navegador había convertido se subía de una vez, así que veinticinco cosas que había mirado se convertían en veinticinco documentos que nunca había pedido conservar.
 
 Ahora una conversión permanece en este navegador, y Guardar es lo que la pone en la cuenta. El historial muestra ambas cosas y dice cuál es cuál; compartir sigue necesitando un documento guardado, y lo dice en lugar de estar disponible sin explicación.
 
 El conector y la API siempre funcionaron así — \`tp_convert_markdown\` no guarda nada, \`tp_save_document\` sí guarda — así que esto es la interfaz alcanzándolos.`,
         description:
-          'Convertir un archivo en TransformPipe ya no toca su cuenta: la conversión permanece en su navegador hasta que pulsa Guardar, y al iniciar sesión no se sube nada.',
+          'Convertir un archivo en TransformPipe ya no toca tu cuenta: la conversión permanece en tu navegador hasta que pulsas Guardar, y al iniciar sesión no se sube nada.',
         keywords:
           'convertir documentos sin subir archivos, conversor de markdown privado, sube mis archivos un conversor online, conversión de documentos en el navegador, conversor de archivos seguro',
-        body: `La pregunta detrás de este cambio es la que se le hace a cualquier conversor en línea y que la mayoría responde mal: si mi archivo sale de la máquina. Aquí la respuesta es no, salvo que usted pulse **Guardar**, y merece la pena explicar por qué eso es posible.
+        body: `La pregunta detrás de este cambio es la que se le hace a cualquier conversor en línea y que la mayoría responde mal: si mi archivo sale de la máquina. Aquí la respuesta es no, salvo que pulses **Guardar**, y merece la pena explicar por qué eso es posible.
 
 Ahora una conversión permanece en el navegador que la hizo. **Guardar** es lo único que la pone en la cuenta.
 
@@ -4068,9 +4068,9 @@ Ahora una conversión permanece en el navegador que la hizo. **Guardar** es lo �
 
 ### Por qué la conversión nunca necesitó un servidor
 
-Cada una de las diez conversiones se ejecuta en JavaScript en su navegador: Markdown, HTML, \`.docx\`, \`.csv\`, \`.xlsx\`, JSON, texto plano, y los lectores de zip para una exportación de Notion, Confluence u Obsidian. Nunca hubo una razón técnica para enviar el archivo a ningún sitio — la subida existía porque existía la cuenta, y eso es el orden equivocado.
+Cada una de las diez conversiones se ejecuta en JavaScript en tu navegador: Markdown, HTML, \`.docx\`, \`.csv\`, \`.xlsx\`, JSON, texto plano, y los lectores de zip para una exportación de Notion, Confluence u Obsidian. Nunca hubo una razón técnica para enviar el archivo a ningún sitio — la subida existía porque existía la cuenta, y eso es el orden equivocado.
 
-Una cuenta es para los documentos que usted decide conservar, no un registro de todo lo que ha mirado. Si nunca inicia sesión, este sitio no recibe ningún archivo en absoluto.
+Una cuenta es para los documentos que decides conservar, no un registro de todo lo que has mirado. Si nunca inicias sesión, este sitio no recibe ningún archivo en absoluto.
 
 Relacionado: [si un conversor en línea es seguro](/blog/is-an-online-converter-safe) y [compartir un documento como enlace](/blog/share-a-markdown-document-as-a-link).`,
       },
@@ -4217,17 +4217,17 @@ Ils se passent le travail l’un à l’autre. Collez du Markdown dans le conver
 Autres lectures : [convertir du Markdown en HTML en ligne](/blog/convert-markdown-to-html-online), et [des éditeurs Markdown qui valent le coup](/blog/best-markdown-editors).`,
       },
       es: {
-        title: 'Péguelo, o escríbalo y observe',
+        title: 'Pégalo, o escríbelo y observa',
         summary: `Todo esto pedía un archivo, lo cual es raro pedírselo a alguien que tiene el Markdown en el portapapeles. El conversor ahora acepta texto pegado además de un archivo soltado — para todas las conversiones salvo Word, donde no hay nada que pegar — y lo que se obtiene es el mismo documento, con la misma vista previa, descarga, guardado y compartición.
 
 Y una página para la otra pregunta: /markdown-live-preview tiene Markdown a la izquierda y el documento a la derecha, mientras se escribe. No se sube nada y no se guarda nada; el texto permanece en la pestaña. Es el mismo conversor por debajo, así que lo que hay a la derecha es lo que contiene un archivo descargado.
 
 Ambos paneles toman su altura de la ventana, así que una pantalla alta es un editor alto, y hay una pantalla completa para cuando eso todavía no basta. El texto pegado en el conversor llega aquí ya renderizado, y Convertir y conservar lo envía de vuelta en la otra dirección — a la pantalla del documento, con el historial, el enlace para compartir y los demás formatos.`,
         description:
-          'Pegue Markdown en vez de soltar un archivo, o escríbalo en /markdown-live-preview y observe el documento aparecer al lado. No se sube nada.',
+          'Pega Markdown en vez de soltar un archivo, o escríbelo en /markdown-live-preview y observa el documento aparecer al lado. No se sube nada.',
         keywords:
           'vista previa de markdown en vivo, pegar markdown y convertir, editor de markdown con vista previa, vista previa de markdown online, convertir texto pegado a html',
-        body: `Detrás de «convertir este Markdown» se esconden dos tareas distintas. Una es trabajo terminado: existe un archivo y usted quiere el otro formato de él. La otra está sin terminar: usted está escribiendo, y quiere ver cómo queda. Una zona para soltar archivos responde bien a la primera y nada a la segunda, y por eso ahora hay dos respuestas.
+        body: `Detrás de «convertir este Markdown» se esconden dos tareas distintas. Una es trabajo terminado: existe un archivo y quieres el otro formato de él. La otra está sin terminar: estás escribiendo, y quieres ver cómo queda. Una zona para soltar archivos responde bien a la primera y nada a la segunda, y por eso ahora hay dos respuestas.
 
 ### Pegar en vez de soltar
 
@@ -4243,11 +4243,11 @@ Por debajo es el mismo conversor — el mismo renderizador, el mismo saneador, l
 
 ### Nada sale de la pestaña
 
-La vista previa en vivo no tiene cuenta, ni historial, ni red. Su texto nunca se envía a ningún sitio ni se guarda; cerrar la pestaña es la manera de borrarlo. Eso es también lo que permite que la página funcione con solo el paquete cargado.
+La vista previa en vivo no tiene cuenta, ni historial, ni red. Tu texto nunca se envía a ningún sitio ni se guarda; cerrar la pestaña es la manera de borrarlo. Eso es también lo que permite que la página funcione con solo el paquete cargado.
 
 ### Entre las dos
 
-Se pasan trabajo la una a la otra. Pegue Markdown en el conversor y el botón de al lado lo lleva a la vista previa en vivo con su texto ya puesto, en lugar del ejemplo. Escriba algo en la vista previa en vivo y **Convertir y conservar** lo envía en la otra dirección, al conversor, donde están el historial, el enlace para compartir y los demás formatos.
+Se pasan trabajo la una a la otra. Pega Markdown en el conversor y el botón de al lado lo lleva a la vista previa en vivo con tu texto ya puesto, en lugar del ejemplo. Escribe algo en la vista previa en vivo y **Convertir y conservar** lo envía en la otra dirección, al conversor, donde están el historial, el enlace para compartir y los demás formatos.
 
 Relacionado: [convertir Markdown a HTML en línea](/blog/convert-markdown-to-html-online) y [editores de Markdown que merecen la pena](/blog/best-markdown-editors).`,
       },
@@ -4441,7 +4441,7 @@ Una llamada de herramienta es JSON y un \`.docx\` es un zip de bytes. Un asisten
 
 ### Qué tienen todas en común
 
-Todas terminan en Markdown, porque Markdown es la forma en que aquí se guarda un documento — la presentación, la compartición, la API y las herramientas para asistentes se apoyan todas en esa misma forma. Y todas se ejecutan en su propia máquina: no se sube nada a menos que se guarde, ninguna de las diez necesita una cuenta, y el límite es el tamaño, no un plan.
+Todas terminan en Markdown, porque Markdown es la forma en que aquí se guarda un documento — la presentación, la compartición, la API y las herramientas para asistentes se apoyan todas en esa misma forma. Y todas se ejecutan en tu propia máquina: no se sube nada a menos que se guarde, ninguna de las diez necesita una cuenta, y el límite es el tamaño, no un plan.
 
 Relacionado: [Markdown a partir de Notion, Obsidian y Confluence](/blog/markdown-from-notion-obsidian-and-confluence) y [convertir documentos mediante una API](/blog/converting-documents-with-an-api).`,
       },
@@ -4608,20 +4608,20 @@ Autres lectures : [convertir des documents depuis un assistant](/blog/converting
       },
       es: {
         title: 'El botón Connect ya conecta',
-        summary: `Aprobar un asistente no hacía nada. La página decía que el formulario no venía de aquí, y tenía razón de una manera que era errónea: la página de aprobación pedía a los navegadores que no enviaran referrer, y Chrome deriva el origen de una página de ese mismo ajuste — así que el propio formulario de la página llegaba afirmando venir de ningún sitio, y la comprobación que impide que otro sitio apruebe cosas en su nombre detenía a la página misma.
+        summary: `Aprobar un asistente no hacía nada. La página decía que el formulario no venía de aquí, y tenía razón de una manera que era errónea: la página de aprobación pedía a los navegadores que no enviaran referrer, y Chrome deriva el origen de una página de ese mismo ajuste — así que el propio formulario de la página llegaba afirmando venir de ningún sitio, y la comprobación que impide que otro sitio apruebe cosas en tu nombre detenía a la página misma.
 
 Nunca se había conectado nada a través de él. Las pruebas no podían verlo, porque una prueba no es un navegador y envía las cabeceras que se le indican; la base de datos sí podía, y lo decía con toda claridad: todas las peticiones mostradas, ninguna jamás aprobada.
 
-Detrás de eso había un segundo problema. La página le dice al navegador que solo puede enviarlo al asistente que lo pidió — y venía diciendo que no podía enviarlo a ningún sitio salvo de vuelta a nosotros, así que aprobar funcionaba y el viaje de regreso al asistente era rechazado por la propia página. Ahora nombra esa única dirección, y nada más.`,
+Detrás de eso había un segundo problema. La página le dice al navegador que solo puede enviarte al asistente que lo pidió — y venía diciendo que no podía enviarte a ningún sitio salvo de vuelta a nosotros, así que aprobar funcionaba y el viaje de regreso al asistente era rechazado por la propia página. Ahora nombra esa única dirección, y nada más.`,
         description:
-          'Conectar un asistente a TransformPipe es un flujo OAuth 2.1 con PKCE: usted aprueba un cliente identificado, y este se lleva un token solo para sus documentos.',
+          'Conectar un asistente a TransformPipe es un flujo OAuth 2.1 con PKCE: apruebas un cliente identificado, y este se lleva un token solo para tus documentos.',
         keywords:
           'conectar claude con transformpipe, oauth del conector mcp, autorización mcp con pkce, revocar el acceso de un asistente, servidor de autorización oauth 2.1',
         body: `Aprobar un asistente es una página y un botón, y esto es lo que hay detrás de ellos.
 
 ### Qué hace en realidad aprobar
 
-Usted inicia sesión aquí con la cuenta que ya usa, lee una página que nombra al cliente y la dirección con la que va a actuar, y pulsa **Connect**. Lo que el cliente se lleva es un token emitido por este sitio — no su sesión, ni una clave de API. Alcanza los documentos de la cuenta y nada más: ni la cuenta, ni el inicio de sesión, ni sus claves de API. Una conexión de solo lectura no puede guardar, compartir ni eliminar, y eso se hace cumplir sobre la credencial y no sobre las herramientas.
+Inicias sesión aquí con la cuenta que ya usas, lees una página que nombra al cliente y la dirección con la que va a actuar, y pulsas **Connect**. Lo que el cliente se lleva es un token emitido por este sitio — no tu sesión, ni una clave de API. Alcanza los documentos de la cuenta y nada más: ni la cuenta, ni el inicio de sesión, ni tus claves de API. Una conexión de solo lectura no puede guardar, compartir ni eliminar, y eso se hace cumplir sobre la credencial y no sobre las herramientas.
 
 Para esto, TransformPipe tiene que ser su propio servidor de autorización: la especificación de MCP prohíbe que un recurso acepte un token emitido por otro, así que la sesión de inicio de sesión no se puede entregar sin más.
 
@@ -4630,8 +4630,8 @@ Para esto, TransformPipe tiene que ser su propio servidor de autorización: la e
 1. El asistente envía un POST a \`/api/mcp\` sin token y recibe un 401 que indica dónde mirar.
 2. Lee \`/.well-known/oauth-protected-resource\`, y luego \`/.well-known/oauth-authorization-server\`, para encontrar los endpoints.
 3. Se identifica — mediante un documento de metadatos que publica, o registrándose aquí. Ningún secreto en ningún caso: un cliente que corre en la máquina de otra persona no puede guardar uno, y para eso está PKCE.
-4. Lo envía a \`/authorize\` con un desafío. \`code_challenge_method=S256\` es obligatorio; un desafío simple se rechaza directamente.
-5. Usted aprueba con un POST desde la página que se le mostró, así que un enlace por sí solo no autoriza nada.
+4. Te envía a \`/authorize\` con un desafío. \`code_challenge_method=S256\` es obligatorio; un desafío simple se rechaza directamente.
+5. Apruebas con un POST desde la página que se te mostró, así que un enlace por sí solo no autoriza nada.
 6. Intercambia el código y su verificador en \`/token\`.
 
 ### Qué hacen los tokens después
@@ -4642,7 +4642,7 @@ Se puede retirar desde el menú de la cuenta, en Conector MCP; deja de funcionar
 
 ### Por qué el botón no había hecho nada
 
-Dos cabeceras en nuestra propia página. Pedía a los navegadores que no enviaran referrer, y Chrome deriva de ese mismo ajuste el Origin del POST de un formulario — así que el propio formulario llegaba afirmando venir de ningún sitio, y la comprobación que impide que otro sitio apruebe cosas en su nombre detenía a la página misma. Detrás, el \`form-action\` nombraba solo este sitio, así que la vuelta al asistente era rechazada por la política tras acuñarse el código. Ahora nombra la única dirección a la que la petición se enviará, y nada más.
+Dos cabeceras en nuestra propia página. Pedía a los navegadores que no enviaran referrer, y Chrome deriva de ese mismo ajuste el Origin del POST de un formulario — así que el propio formulario llegaba afirmando venir de ningún sitio, y la comprobación que impide que otro sitio apruebe cosas en tu nombre detenía a la página misma. Detrás, el \`form-action\` nombraba solo este sitio, así que la vuelta al asistente era rechazada por la política tras acuñarse el código. Ahora nombra la única dirección a la que la petición se enviará, y nada más.
 
 Relacionado: [convertir documentos desde un asistente](/blog/converting-documents-from-an-assistant) y [si un conversor en línea es seguro](/blog/is-an-online-converter-safe).`,
       },
@@ -4791,7 +4791,7 @@ Autres lectures : [convertir des documents depuis un assistant](/blog/converting
         title: 'Un asistente puede decir quién es sin registrarse',
         summary: `Conectar un asistente exigía que antes se registrara aquí, y Claude creaba un cliente nuevo cada vez que alguien se conectaba. Ahora puede identificarse con un documento de metadatos — una dirección que él mismo publica y que este servidor lee —, que es lo que prefiere la especificación de MCP. El registro sigue disponible para los clientes que no saben hacer otra cosa.
 
-La página de aprobación cambió con ello. Ahora dice dónde está publicada la descripción de un cliente y avisa cuando el único sitio al que puede devolverle a usted es un programa de su propio ordenador, porque cualquier cosa que se ejecute allí puede pedir lo mismo.`,
+La página de aprobación cambió con ello. Ahora dice dónde está publicada la descripción de un cliente y avisa cuando el único sitio al que puede devolverte es un programa de tu propio ordenador, porque cualquier cosa que se ejecute allí puede pedir lo mismo.`,
         description:
           'Un cliente puede identificarse con un Client ID Metadata Document — una dirección https que publica — en lugar de registrarse de nuevo en cada conexión.',
         keywords:
@@ -4800,7 +4800,7 @@ La página de aprobación cambió con ello. Ahora dice dónde está publicada la
 
 ### Qué es un documento de metadatos
 
-Su \`client_id\` es una URL https. El documento que hay en esa dirección dice cómo se llama el cliente, adónde se le puede devolver y, si quiere, qué está pidiendo. El servidor lo recoge mientras usted autoriza, en vez de llevar un registro propio. Es \`draft-ietf-oauth-client-id-metadata-document-00\` tal como lo perfila la especificación de autorización de MCP del 25 de noviembre de 2025, y Claude lo prefiere en cuanto un servidor dice admitirlo.
+Su \`client_id\` es una URL https. El documento que hay en esa dirección dice cómo se llama el cliente, adónde se le puede devolver y, si quiere, qué está pidiendo. El servidor lo recoge mientras autorizas, en vez de llevar un registro propio. Es \`draft-ietf-oauth-client-id-metadata-document-00\` tal como lo perfila la especificación de autorización de MCP del 25 de noviembre de 2025, y Claude lo prefiere en cuanto un servidor dice admitirlo.
 
 ### Qué sustituye
 
@@ -4812,7 +4812,7 @@ Aquí un \`client_id\` es una URL que entrega un desconocido y que después pide
 
 ### Qué dice de ello la página de aprobación
 
-Dónde está publicada la descripción del cliente, y que acaba de leerse. Y un aviso cuando todas las direcciones a las que puede devolverle son programas de su propia máquina: el documento lo publica el cliente auténtico, pero basta con ocupar un puerto para atrapar el código que vuelve, y ninguna página puede distinguir dos programas de su ordenador. Ese juicio queda de su parte.
+Dónde está publicada la descripción del cliente, y que acaba de leerse. Y un aviso cuando todas las direcciones a las que puede devolverte son programas de tu propia máquina: el documento lo publica el cliente auténtico, pero basta con ocupar un puerto para atrapar el código que vuelve, y ninguna página puede distinguir dos programas de tu ordenador. Ese juicio queda de tu parte.
 
 Relacionado: [convertir documentos desde un asistente](/blog/converting-documents-from-an-assistant) y [convertir documentos con una API](/blog/converting-documents-with-an-api).`,
       },
@@ -4962,7 +4962,7 @@ Cada entrada sale de una única lista tipada del repositorio. La página, los ci
 
 ### En inglés, a propósito
 
-El marco está traducido: el encabezado, la entradilla, el panel de los años y las fechas y los nombres de los meses, que \`Intl\` compone en su idioma. Las entradas mismas no. Cinco traducciones por entrada, por versión, para siempre, es un coste que se abandona después de la segunda versión, y un registro al que le faltan tres idiomas es peor que uno honestamente inglés. Cuando una entrada se ha ganado su propia página, esa página sí puede traducirse: hay un puñado de ellas, no una por versión.
+El marco está traducido: el encabezado, la entradilla, el panel de los años y las fechas y los nombres de los meses, que \`Intl\` compone en tu idioma. Las entradas mismas no. Cinco traducciones por entrada, por versión, para siempre, es un coste que se abandona después de la segunda versión, y un registro al que le faltan tres idiomas es peor que uno honestamente inglés. Cuando una entrada se ha ganado su propia página, esa página sí puede traducirse: hay un puñado de ellas, no una por versión.
 
 Relacionado: [notas de versión escritas en Markdown](/blog/release-notes-from-markdown) y [documentación que vive en el repositorio](/blog/documentation-that-lives-in-the-repo).`,
       },
@@ -5106,19 +5106,19 @@ Con ella salieron dos 404 blandas. Un enlace a un artículo inexistente respond�
           'La 404 de TransformPipe: tres salidas con nombre en vez de la página de error del alojamiento, y ya no el conversor bajo una dirección que nadie tecleó.',
         keywords:
           'página no encontrada, error 404, dirección mal escrita conversor markdown, arreglar un 404 blando, dónde está la página',
-        body: `Si está leyendo esto, probablemente ha llegado a una 404 y se ha preguntado qué hace este sitio con ellas.
+        body: `Si estás leyendo esto, probablemente has llegado a una 404 y te has preguntado qué hace este sitio con ellas.
 
 ### Qué ofrece
 
-El número, una línea que dice que esa dirección no es una página, y tres salidas nombradas en lugar de insinuadas: convertir un archivo, leer la documentación, recorrer el blog. El conversor va primero y es el único botón relleno, porque quien tecleó el dominio a mano lo buscaba. Una última línea dice que, si le trajo aquí un enlace de este sitio, eso es un fallo y no una errata — con lo que sabe si conviene volver a teclear la dirección o avisarnos.
+El número, una línea que dice que esa dirección no es una página, y tres salidas nombradas en lugar de insinuadas: convertir un archivo, leer la documentación, recorrer el blog. El conversor va primero y es el único botón relleno, porque quien tecleó el dominio a mano lo buscaba. Una última línea dice que, si te trajo aquí un enlace de este sitio, eso es un fallo y no una errata — con lo que sabes si conviene volver a teclear la dirección o avisarnos.
 
-Lleva la cabecera y el pie del sitio y se recompone en su idioma, así que aterrizar aquí no se parece a que le echen.
+Lleva la cabecera y el pie del sitio y se recompone en tu idioma, así que aterrizar aquí no se parece a que te echen.
 
 ### Por qué antes un error de tecleo mostraba el conversor
 
 El enrutador le hace una sola pregunta a una dirección: qué pantalla quiere. Su última rama era el conversor, la pantalla por defecto, de modo que toda ruta que no reconocía daba la pantalla de Markdown. Una letra equivocada en una URL parecía una portada que funciona con una ruta ajena en la barra de direcciones, y en ningún sitio decía que la dirección estuviera mal. Esa última rama se llama ahora «no encontrado»; el conversor solo se devuelve para una dirección que de verdad pertenece a una de las diez conversiones, o para un documento compartido.
 
-El alojamiento responde a casi todas las direcciones desconocidas antes de que corra el código de la aplicación, pero las responde sirviendo el archivo 404 — y entonces es esto lo que decide qué ve usted.
+El alojamiento responde a casi todas las direcciones desconocidas antes de que corra el código de la aplicación, pero las responde sirviendo el archivo 404 — y entonces es esto lo que decide qué ves.
 
 ### Dos 404 blandas salieron con ella
 
@@ -5126,7 +5126,7 @@ Un enlace a un artículo que no existe respondía 200, que un rastreador archiva
 
 ### Qué no hace
 
-Adivinar qué quería usted, ni redirigir. Una 404 que le manda a otro sitio en silencio es la razón de que un enlace roto siga roto: nadie se entera de que está mal, empezando por quien lo escribió.
+Adivinar qué querías, ni redirigir. Una 404 que te manda a otro sitio en silencio es la razón de que un enlace roto siga roto: nadie se entera de que está mal, empezando por quien lo escribió.
 
 Relacionado: [cómo abrir un archivo .md](/blog/how-to-open-md-file) y [para qué sirve un conversor de Markdown a HTML](/blog/markdown-to-html-converter).`,
       },
@@ -5279,7 +5279,7 @@ Lo que no cambia: la fecha, cada destino de enlace, cada bloque de código, la e
 
 El índice de cada idioma recoge solo sus propios artículos. Un artículo reclama un \`hreflang\` para un idioma únicamente donde hay texto, de modo que a un buscador nunca se le señala una traducción que no existe. Un idioma sin nada traducido no recibe índice alguno, en vez de un encabezado sobre una lista vacía. Las portadas se dibujan por idioma, porque el titular forma parte de la imagen.
 
-El selector de idioma sigue la misma regla: en un artículo que su idioma tiene, le lleva a ese artículo; en uno que no tiene, le lleva al índice de ese idioma, que muestra lo que sí hay. Seguir el prefijo a ciegas ofrecería una dirección alemana para un texto sin contenido alemán: un 404 disfrazado de traducción.
+El selector de idioma sigue la misma regla: en un artículo que tu idioma tiene, te lleva a ese artículo; en uno que no tiene, te lleva al índice de ese idioma, que muestra lo que sí hay. Seguir el prefijo a ciegas ofrecería una dirección alemana para un texto sin contenido alemán: un 404 disfrazado de traducción.
 
 ### Los artículos nuevos ya no funcionan así
 
@@ -5436,7 +5436,7 @@ Lo que el código sí puede hacer es no empeorarlo. Las dos partes MIME en lugar
 
 ### Lo que estos mensajes no son
 
-Sin imágenes y sin píxel de seguimiento; la parte HTML son las mismas palabras que la parte de texto, compuestas por el conversor del propio producto. El nombre de un documento se imprime dentro de un fragmento de código, de modo que un archivo llamado \`[Confirm your account](https://elsewhere.example)\` llega como texto y no como enlace vivo en un mensaje que lleva nuestra firma. Un despliegue sin clave configurada no envía nada y no dice nada, y un compartir que funcionó nunca se comunica como fallido porque fallara el correo. Todo ello va en inglés sea cual sea su idioma: se dirige a una dirección de la que no sabemos nada más.
+Sin imágenes y sin píxel de seguimiento; la parte HTML son las mismas palabras que la parte de texto, compuestas por el conversor del propio producto. El nombre de un documento se imprime dentro de un fragmento de código, de modo que un archivo llamado \`[Confirm your account](https://elsewhere.example)\` llega como texto y no como enlace vivo en un mensaje que lleva nuestra firma. Un despliegue sin clave configurada no envía nada y no dice nada, y un compartir que funcionó nunca se comunica como fallido porque fallara el correo. Todo ello va en inglés sea cual sea tu idioma: se dirige a una dirección de la que no sabemos nada más.
 
 Relacionado: [compartir un documento como enlace](/blog/share-a-markdown-document-as-a-link) y [si un conversor en línea es seguro](/blog/is-an-online-converter-safe).`,
       },
@@ -5573,9 +5573,9 @@ Autres lectures : [partager un document sous forme de lien](/blog/share-a-markdo
 
 ### Un diálogo, no una página
 
-Entrar, registrarse, pedir un enlace de restablecimiento y escribir el código de confirmación son cuatro vistas de un mismo diálogo, encima de lo que estuviera usted haciendo. Quien llega aquí suele estar a medio convertir algo, y una navegación pierde el documento abierto; cambiar de idea entre «entrar» y «registrarse» no cuesta nada por la misma razón. Google va debajo del formulario y no encima: el formulario es aquello para lo que existe el diálogo, y el botón que abandona la página va después del que no lo hace.
+Entrar, registrarse, pedir un enlace de restablecimiento y escribir el código de confirmación son cuatro vistas de un mismo diálogo, encima de lo que estuvieras haciendo. Quien llega aquí suele estar a medio convertir algo, y una navegación pierde el documento abierto; cambiar de idea entre «entrar» y «registrarse» no cuesta nada por la misma razón. Google va debajo del formulario y no encima: el formulario es aquello para lo que existe el diálogo, y el botón que abandona la página va después del que no lo hace.
 
-No figura ninguna regla de contraseña. El servicio de identidad impone su propio mínimo, esta aplicación no sabe cuál es, y una lista de requisitos que contradice al servidor es peor que ninguna lista: le dice que una contraseña vale y luego la rechaza. En su lugar ve usted lo que el servicio dijo de verdad.
+No figura ninguna regla de contraseña. El servicio de identidad impone su propio mínimo, esta aplicación no sabe cuál es, y una lista de requisitos que contradice al servidor es peor que ninguna lista: te dice que una contraseña vale y luego la rechaza. En su lugar ves lo que el servicio dijo de verdad.
 
 ### De dónde viene la sesión
 
@@ -5729,7 +5729,7 @@ El idioma está en la dirección — \`/de/docs\`, \`/fr/csv-to-markdown\` — y
           'La interfaz, la documentación y todas las páginas de texto se leen en inglés, alemán, francés, español e italiano. Qué se traduce aquí y qué no.',
         keywords:
           'conversor de documentos en español, conversor de markdown en español, cambiar el idioma de la interfaz, convertir markdown a html en español, conversor en línea multilingüe',
-        body: `El selector de la cabecera nombra cada idioma en sí mismo — Deutsch, Français, Español, Italiano — porque ese es el único nombre que reconoce quien lo lee. Elegir uno le lleva a la misma página en ese idioma, y la elección se queda puesta.
+        body: `El selector de la cabecera nombra cada idioma en sí mismo — Deutsch, Français, Español, Italiano — porque ese es el único nombre que reconoce quien lo lee. Elegir uno te lleva a la misma página en ese idioma, y la elección se queda puesta.
 
 ### El idioma está en la dirección
 
@@ -5749,7 +5749,7 @@ Un artículo es un archivo y no una cadena, y su traducción es otro archivo al 
 
 ### Qué se queda en inglés
 
-Los mensajes de la API y los del conector, porque una API responde en un idioma. La página de consentimiento a la que le manda un asistente, y la versión que el servidor compone de un documento compartido: ambas se preparan para un lector del que no sabemos nada, en una dirección sin idioma dentro, y equivocarse en una pantalla de consentimiento es peor que el inglés. Las entradas de este registro de cambios también están en inglés; una página como esta se escribe en otro idioma cuando merece la pena tenerla en él.
+Los mensajes de la API y los del conector, porque una API responde en un idioma. La página de consentimiento a la que te manda un asistente, y la versión que el servidor compone de un documento compartido: ambas se preparan para un lector del que no sabemos nada, en una dirección sin idioma dentro, y equivocarse en una pantalla de consentimiento es peor que el inglés. Las entradas de este registro de cambios también están en inglés; una página como esta se escribe en otro idioma cuando merece la pena tenerla en él.
 
 Relacionado: [para qué sirve un conversor de Markdown a HTML](/blog/markdown-to-html-converter) y [cómo elegir entre los conversores de documentos en línea](/blog/best-online-document-converters).`,
       },
@@ -5889,7 +5889,7 @@ Autres lectures : [convertir du Markdown en HTML en JavaScript](/blog/markdown-t
         title: 'Un embed, y la política de frames que la aplicación nunca tuvo',
         summary: `\`/embed\` es el conversor sin nada alrededor, para una página que quiera alojarlo, y habla con su anfitrión mediante \`postMessage\`. Añadirlo obligó a escribir la regla que faltaba: cualquier otra ruta se niega ahora a ser puesta en un frame, algo que antes no decía ninguna.`,
         description:
-          'La página /embed es el conversor de TransformPipe sin nada alrededor, para insertarlo en su sitio. El archivo se convierte en el navegador sin llegar a un servidor.',
+          'La página /embed es el conversor de TransformPipe sin nada alrededor, para insertarlo en tu sitio. El archivo se convierte en el navegador sin llegar a un servidor.',
         keywords:
           'insertar un conversor de documentos en mi sitio, iframe conversor de markdown a html, añadir un conversor de archivos a una página web, integración de iframe con postmessage, conversor de markdown de marca blanca',
         body: `Una zona para soltar el archivo, el documento resultante, un botón de copiar y otro de descargar. Eso es todo \`/embed\`: sin cabecera, sin pie, sin blog, sin cuenta, sin historial — nada que se parezca a nuestra navegación apareciendo dentro de la página de otra persona.
@@ -5898,11 +5898,11 @@ Autres lectures : [convertir du Markdown en HTML en JavaScript](/blog/markdown-t
 
 \`?conversion=\` decide con qué conversión se abre el frame, y \`?theme=dark\` o \`?theme=light\` decide su aspecto. El aspecto lo elige el anfitrión y no el sistema operativo del visitante, porque un widget que sigue al sistema aterriza como un rectángulo oscuro en una página clara para la mitad del público.
 
-Los resultados vuelven por \`postMessage\` a la ventana superior, y cada mensaje lleva \`source: 'TransformPipe'\` — un anfitrión que escucha en \`window\` oye a cada frame que tiene y a sus propios scripts, así que sin un nombre que comprobar, el primer manejador que alguien escriba dispara con el mensaje de otro. Al cargar se envía un mensaje, para que un anfitrión pueda esperar al frame en vez de adivinar un tiempo de espera. Compruebe \`event.origin\` en su extremo.
+Los resultados vuelven por \`postMessage\` a la ventana superior, y cada mensaje lleva \`source: 'TransformPipe'\` — un anfitrión que escucha en \`window\` oye a cada frame que tiene y a sus propios scripts, así que sin un nombre que comprobar, el primer manejador que alguien escriba dispara con el mensaje de otro. Al cargar se envía un mensaje, para que un anfitrión pueda esperar al frame en vez de adivinar un tiempo de espera. Comprueba \`event.origin\` en tu extremo.
 
 ### Por qué insertarlo en un frame y no hacer de proxy
 
-La conversión corre en el navegador del visitante, exactamente como aquí. Su lector suelta un archivo y este no llega ni a su servidor ni al nuestro. Quien quiera conversión en el servidor debe llamar a la API; lo que ofrece el embed es lo único que una API no puede, que el archivo nunca salga de la máquina en la que está.
+La conversión corre en el navegador del visitante, exactamente como aquí. Tu lector suelta un archivo y este no llega ni a tu servidor ni al nuestro. Quien quiera conversión en el servidor debe llamar a la API; lo que ofrece el embed es lo único que una API no puede, que el archivo nunca salga de la máquina en la que está.
 
 También es anónimo a propósito. El embed se representa en lugar de la aplicación, no como la aplicación con su interfaz oculta, y se sitúa por encima de la parte que le pregunta al servidor quién ha iniciado sesión — así que una página en cualquier dominio que lo inserte nunca provoca una petición con credenciales hacia nosotros. Tampoco hay aviso de cookies dentro: pedir consentimiento dentro de la página de otro es pedirlo en su nombre.
 
@@ -6040,7 +6040,7 @@ Autres lectures : [convertir des documents depuis un assistant](/blog/converting
           'Conectar un asistente a TransformPipe tiene su propio diálogo y página de consentimiento: qué puede hacer, y por qué solo lectura es realmente solo lectura.',
         keywords:
           'conectar un asistente a un conversor de documentos, configurar connector mcp, acceso oauth de solo lectura, revocar el acceso de un asistente, añadir un servidor mcp por dirección',
-        body: `Abra el menú de la cuenta, elija el connector, y la pantalla trata de una sola cosa: conectar un asistente. Antes era el diálogo de claves de API, con el argumento de que ambos son formas de entrar en la misma cuenta — y ese argumento era el equivocado, porque quien acababa de elegir «MCP connector» aterrizaba en una pantalla encabezada «API keys» con un generador de claves arriba, y tenía que averiguar si estaba en el lugar correcto.
+        body: `Abre el menú de la cuenta, elige el connector, y la pantalla trata de una sola cosa: conectar un asistente. Antes era el diálogo de claves de API, con el argumento de que ambos son formas de entrar en la misma cuenta — y ese argumento era el equivocado, porque quien acababa de elegir «MCP connector» aterrizaba en una pantalla encabezada «API keys» con un generador de claves arriba, y tenía que averiguar si estaba en el lugar correcto.
 
 ### El diálogo
 
@@ -6048,9 +6048,9 @@ La dirección que hay que añadir, que es \`/api/mcp\` en el origen en el que de
 
 ### La página a la que el asistente le envía
 
-Un cliente que admite OAuth le envía aquí para aprobarlo, y lo que llega es una página generada por el servidor sin ningún script dentro. Nombra la cuenta en cuyo nombre actuaría, y a continuación dice, en frases sencillas: que puede leer los documentos de esta cuenta y sus enlaces para compartir; si puede guardar, compartir y eliminar, o no puede; que compartir publica una página que puede abrir cualquiera que tenga el enlace; y que no puede alcanzar su cuenta, su inicio de sesión ni sus claves de API. La dirección a la que le devolverá aparece impresa. Si el cliente publicó sus propios metadatos, también aparece de dónde se leyeron.
+Un cliente que admite OAuth le envía aquí para aprobarlo, y lo que llega es una página generada por el servidor sin ningún script dentro. Nombra la cuenta en cuyo nombre actuaría, y a continuación dice, en frases sencillas: que puede leer los documentos de esta cuenta y sus enlaces para compartir; si puede guardar, compartir y eliminar, o no puede; que compartir publica una página que puede abrir cualquiera que tenga el enlace; y que no puede alcanzar tu cuenta, tu inicio de sesión ni tus claves de API. La dirección a la que te devolverá aparece impresa. Si el cliente publicó sus propios metadatos, también aparece de dónde se leyeron.
 
-Si todas las direcciones a las que quiere que se le devuelva están en este equipo, la página lo dice y explica por qué importa: cualquier programa de su ordenador puede pedir que se le envíe allí, y ningún servidor puede distinguirlos. Eso es lo único de la página que solo puede juzgar la persona frente al teclado.
+Si todas las direcciones a las que quiere que se le devuelva están en este equipo, la página lo dice y explica por qué importa: cualquier programa de tu ordenador puede pedir que se le envíe allí, y ningún servidor puede distinguirlos. Eso es lo único de la página que solo puede juzgar la persona frente al teclado.
 
 ### Solo lectura es solo lectura
 
@@ -6326,13 +6326,13 @@ Autres lectures : [partager un document Markdown sous forme de lien](/blog/share
 
 ### Por qué enlaces y no botones
 
-Las tres redes ofrecen un script que dibuja su propio botón, lleva la cuenta y ve a todo el que carga la página en la que está. Este sitio afirma que un documento que usted convierte no se envía a ningún sitio, y una página que cargara en silencio tres rastreadores bajo el texto haría esa afirmación con los dedos cruzados. Un simple enlace hace el mismo trabajo: no se ejecuta nada hasta que el lector hace clic, y la única petición que sale es la que él ha pedido.
+Las tres redes ofrecen un script que dibuja su propio botón, lleva la cuenta y ve a todo el que carga la página en la que está. Este sitio afirma que un documento que conviertes no se envía a ningún sitio, y una página que cargara en silencio tres rastreadores bajo el texto haría esa afirmación con los dedos cruzados. Un simple enlace hace el mismo trabajo: no se ejecuta nada hasta que el lector hace clic, y la única petición que sale es la que él ha pedido.
 
 Los nombres están escritos como palabras y no dibujados, por un motivo más aburrido. El conjunto de iconos de este sitio tiene un glifo de LinkedIn y el viejo pájaro de Twitter, ningún símbolo de X ni de Reddit — un pájaro junto a un logo real junto a un Snoo aproximado parece tres decisiones distintas, donde tres palabras parecen una sola.
 
 ### Lo que no hace
 
-Es para los artículos, no para sus documentos. Compartir algo que usted ha convertido es otra pantalla con otras reglas: privado, un enlace que puede abrir cualquiera que lo tenga, o direcciones concretas que inician sesión cada una. Y nada de esto publica en su nombre — el enlace abre el cuadro de composición propio de la red, y la red le pregunta antes de publicar nada.
+Es para los artículos, no para tus documentos. Compartir algo que has convertido es otra pantalla con otras reglas: privado, un enlace que puede abrir cualquiera que lo tenga, o direcciones concretas que inician sesión cada una. Y nada de esto publica en tu nombre — el enlace abre el cuadro de composición propio de la red, y la red te pregunta antes de publicar nada.
 
 Relacionado: [compartir un documento Markdown como enlace](/blog/share-a-markdown-document-as-a-link), y [convertir la salida de un asistente en una página que alguien pueda abrir](/blog/ai-output-to-a-shareable-page).`,
       },
@@ -6662,7 +6662,7 @@ El \`.html\` que devuelve una conversión debía sostenerse por sí solo y no lo
 
 ### Hacia dónde fue después
 
-El pregenerador escribe cada página en cinco idiomas, el blog está en sesenta y tres artículos en inglés, alemán y francés, y el changelog del que viene usted se pregenera a partir de la misma lista escrita — esta página incluida. Las cifras han crecido; la regla no ha cambiado.
+El pregenerador escribe cada página en cinco idiomas, el blog está en sesenta y tres artículos en inglés, alemán y francés, y el changelog del que vienes se pregenera a partir de la misma lista escrita — esta página incluida. Las cifras han crecido; la regla no ha cambiado.
 
 Relacionado: [qué significa HTML autónomo](/blog/self-contained-html-explained), y [un generador de sitios estáticos o un conversor](/blog/static-site-generator-or-converter).`,
       },
@@ -6824,7 +6824,7 @@ La documentación en \`/docs\` se publicó con ella, con capturas tomadas de la 
 
 ### Qué no hacía
 
-Nada que no fuera Markdown. Ni Word, ni CSV, ni JSON, ni HTML de vuelta a Markdown, ni PDF, ni pegar texto — pedía un archivo. Convertir también dejaba el resultado en su cuenta, porque el historial era el objetivo; esa es la parte de esta versión que desde entonces se ha revertido, y ahora una conversión permanece en su navegador hasta que pulsa Guardar.
+Nada que no fuera Markdown. Ni Word, ni CSV, ni JSON, ni HTML de vuelta a Markdown, ni PDF, ni pegar texto — pedía un archivo. Convertir también dejaba el resultado en tu cuenta, porque el historial era el objetivo; esa es la parte de esta versión que desde entonces se ha revertido, y ahora una conversión permanece en tu navegador hasta que pulsas Guardar.
 
 ### Hacia dónde fue después
 
@@ -7035,46 +7035,59 @@ export function changelogProblems(): string[] {
   }
 
   /*
-   * Italian does not address the reader as `Lei`, and `messages/it/ui.ts` says so at the top:
-   * "No 'Lei': a converter that says it sounds like a bank letter." The blog's Italian follows the
-   * same line — `il tuo account`, `puoi`, `ti restituisce`.
+   * Neither the Italian nor the Spanish addresses the reader formally, and both catalogues say so
+   * at the top of themselves — `messages/it/ui.ts`:
+   * "No 'Lei': a converter that says it sounds like a bank letter", and `messages/es/ui.ts`:
+   * "El registro es impersonal siempre que se puede ... y tutea cuando no hay forma de evitar
+   * dirigirse al lector". Both blogs follow the same line — `il tuo account`, `tu cuenta`.
    *
-   * It was a comment, and a comment is a thing you find out about after writing forty-two pages in
-   * the wrong voice. Every Italian page on this file went in addressing the reader formally,
-   * because whoever wrote them was told to and nobody had read the note. This is that note, as
-   * something that fails.
+   * They were comments, and a comment is a thing you find out about after writing forty-two pages
+   * in the wrong voice — twice, once per language, because after fixing the Italian I said the
+   * Spanish was fine without measuring it. This is those notes, as something that fails.
    *
    * Only the forms that cannot be anything else: the `Lei` pronoun with its capitalised
-   * possessives, and the `voi` forms. Lower-case `suo` and `sua` are left alone — they are the
-   * ordinary third-person possessive and appear in every honest sentence about a document and its
-   * author. That makes this check narrower than the rule, which is the right way round: it never
-   * cries wolf, and the rule itself is prose that a person still has to read.
+   * possessives and the `voi` forms; `usted` and `ustedes`. Lower-case `suo`, `sua` and `su` are
+   * left alone — they are the ordinary third-person possessive and appear in every honest sentence
+   * about a document and its author. That makes this check narrower than the rules, which is the
+   * right way round: it never cries wolf, and the rules themselves are prose a person still has to
+   * read.
    */
-  const FORMAL_ITALIAN =
-    /\b(Lei|Suo|Sua|Suoi|Sue|avete|potete|siete|vostro|vostra|vostri|vostre|voi)\b/;
+  const FORMAL: Partial<Record<Locale, { pattern: RegExp; note: string }>> = {
+    it: {
+      pattern:
+        /\b(Lei|Suo|Sua|Suoi|Sue|avete|potete|siete|vostro|vostra|vostri|vostre|voi)\b/,
+      note: "this site's Italian uses tu — see the note at the top of messages/it/ui.ts",
+    },
+    es: {
+      pattern: /\b(usted|ustedes)\b/i,
+      note: "this site's Spanish tutea — see the note at the top of messages/es/ui.ts",
+    },
+  };
 
   for (const entry of CHANGELOG) {
-    const italian = entry.detail?.it;
+    for (const [language, rule] of Object.entries(FORMAL)) {
+      const piece = entry.detail?.[language as Locale];
 
-    if (!italian) {
-      continue;
-    }
+      if (!piece) {
+        continue;
+      }
 
-    const found = [
-      italian.title,
-      italian.summary,
-      italian.description,
-      italian.keywords,
-      italian.body,
-    ]
-      .join(' ')
-      .match(FORMAL_ITALIAN);
+      const found = [
+        piece.title,
+        piece.summary,
+        piece.description,
+        piece.keywords,
+        piece.body,
+      ]
+        .join(' ')
+        .match(rule.pattern);
 
-    if (found) {
-      problems.push(
-        `${entry.date} "${entry.title}" [it]: "${found[0]}" addresses the reader formally; ` +
-          "this site's Italian uses tu — see the note at the top of messages/it/ui.ts"
-      );
+      if (found) {
+        problems.push(
+          `${entry.date} "${entry.title}" [${language}]: "${found[0]}" addresses the reader ` +
+            `formally; ${rule.note}`
+        );
+      }
     }
   }
 
