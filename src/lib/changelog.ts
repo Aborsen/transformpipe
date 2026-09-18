@@ -58,6 +58,23 @@ export type ChangelogDetail = { en: ChangelogDetailText } & Partial<
 
 export interface ChangelogDetailText {
   /**
+   * The page's heading and its `<title>`, when this language has one of its own.
+   *
+   * Absent on `en`, where the entry's own title is already it. Present on a translation, because a
+   * German page indexed under an English headline and a German description is the mismatch this
+   * whole feature exists to avoid: somebody searching in German finds a result that reads as the
+   * wrong language and does not click it.
+   */
+  title?: string;
+  /**
+   * The card's summary in this language, shown above the piece.
+   *
+   * The entry's own `body` stays English — that is the rule, and the list is built from it. This is
+   * the same sentence for the one page where an English paragraph between a German heading and a
+   * German piece would read as a mistake.
+   */
+  summary?: string;
+  /**
    * Markdown, capped at DETAIL_LIMIT characters, and the cap is the point: this is the piece a
    * reader arrives at from a search, and the question it answers is "what is this and does it help
    * me". Past three thousand characters it stops answering that and starts being an article, which
@@ -128,6 +145,31 @@ Nothing about the account's data is cached — \`/api\` is never stored, and nei
 
 The site is the same site. Installing is an option the browser offers once the page says it is installable; ignoring it costs nothing, and uninstalling leaves no trace beyond the browser's own cache.`,
       },
+      de: {
+        title: 'Installieren Sie es, und es arbeitet ohne Netz',
+        summary: `Chrome, Edge und Safari bieten inzwischen an, TransformPipe als App zu installieren — eigenes Fenster, eigenes Symbol, keine Adresszeile. Ohne Verbindung geöffnet startet es trotzdem und konvertiert trotzdem: jede Konvertierung läuft ohnehin im Browser. Dokumente im Konto brauchen das Netz, wie eh und je.`,
+        description:
+          'TransformPipe lässt sich in Chrome, Edge und Safari als App installieren, öffnet ein eigenes Fenster und konvertiert Dokumente ganz ohne Verbindung.',
+        keywords:
+          'markdown konverter offline, markdown konverter als app installieren, markdown in html ohne internet, dokumente offline konvertieren, progressive web app dokumentenkonverter',
+        body: `Der Browser bietet jetzt an, TransformPipe zu installieren: ein eigenes Fenster, ein eigenes Symbol im Dock oder im Startmenü, keine Adresszeile. Chrome und Edge zeigen dafür einen Knopf in der Adresszeile; unter macOS und iOS heißt es in Safari **Zum Dock hinzufügen** und **Zum Home-Bildschirm**.
+
+### Warum es ohne Verbindung funktioniert
+
+Jede Konvertierung hier lief schon immer im Browser — der Markdown-Parser, der HTML-Leser, die Leser für \`.docx\` und \`.xlsx\`, der Zip-Leser für einen Notion- oder Obsidian-Export. Keiner von ihnen hat je einen Server gebraucht, und aus demselben Grund wird nichts hochgeladen, was Sie konvertieren. Die Installation nimmt nur noch das Letzte weg, das ein Netz brauchte: die Seite selbst zu laden.
+
+Eine installierte Kopie startet also im Flugzeug, im Zug oder auf einem abgeschotteten Rechner, nimmt eine Datei an, konvertiert sie und lädt das Ergebnis herunter. Eine Seite, die Sie vorher besucht haben, liegt unter ihrer eigenen Adresse im Cache — die Dokumentation und die Artikel, die Sie gelesen haben, sind also ebenfalls da.
+
+### Was weiterhin ein Netz braucht
+
+Alles, was am Konto hängt: die Liste der gespeicherten Dokumente, das Speichern, das Teilen, die KI-Zusammenfassung und das Anmelden. Das wird in dem Moment angefragt, in dem Sie es benutzen, und sagt ohne Verbindung klar, dass es gerade nicht geht, statt hängen zu bleiben.
+
+Nichts von den Daten des Kontos liegt im Cache — \`/api\` wird nie gespeichert, und ein geteiltes Dokument unter \`/s/\` ebenso wenig. Ein Cache, der auf einem gemeinsam genutzten Rechner die Dokumente einer Person aufbewahrt, wäre ein schlechteres Geschäft als eine langsamere Seite.
+
+### Ohne Installation ändert sich nichts
+
+Die Seite bleibt dieselbe Seite. Die Installation ist ein Angebot, das der Browser macht, sobald die Seite sich als installierbar meldet; sie zu ignorieren kostet nichts, und eine Deinstallation hinterlässt nichts außer dem Cache des Browsers selbst.`,
+      },
     },
     body:
       'Chrome, Edge and Safari now offer to install TransformPipe as an app — its own window, its '
@@ -164,6 +206,33 @@ An assistant that does not draw these yet gets exactly the sentences it always d
 Convert in either direction, save, list, search, summarise, share — privately, by link, or to named addresses — read a document's version history, and report what the account is using. A read-only connection is genuinely read-only: it cannot save, share or delete, and that is enforced on the credential rather than on the tools.
 
 Connect it at \`https://transformpipe.com/api/mcp\`. It signs in with your account; nothing is shared with the assistant's operator.`,
+      },
+      de: {
+        title: 'Ein Dokument im Chat sieht aus wie ein Dokument',
+        summary: `Ein Assistent, der über den Connector ein Dokument speichert oder öffnet, kann dafür jetzt eine Karte zeichnen — den Namen, das Gewicht, die Zählungen, die ersten Zeilen und eine Schaltfläche, die es hier öffnet — statt eines Absatzes Text. Hosts, die noch keine Karten zeichnen, bekommen dieselben Sätze wie immer.`,
+        description:
+          'Der TransformPipe-Konnektor zeichnet für jedes Dokument, das ein Assistent speichert oder öffnet, eine Karte: Name, Größe, Zählwerte, erste Zeilen, Knopf.',
+        keywords:
+          'mcp konnektor dokumentenkonverter, claude markdown konnektor, dokumente aus dem chat konvertieren, mcp apps karte, dokument aus einem chat speichern',
+        body: `Verbinden Sie TransformPipe mit einem Assistenten und bitten Sie ihn, etwas zu konvertieren oder aufzubewahren, dann kommt als Antwort eine Karte statt eines Absatzes: der Name des Dokuments, sein Gewicht, die Zahl seiner Wörter und Überschriften, seine ersten Zeilen und ein Knopf, der es auf der Seite öffnet.
+
+### Was sich geändert hat
+
+Der Konnektor hat die Fakten immer geliefert; er hat sie als Sätze geliefert, was ein Werkzeugergebnis nun einmal ist. Ein Chat voller „Gespeichert als report.md, 12 KB, id 3f1a…" ist ein Chat, den man genau lesen muss, um ihn zu benutzen. Jetzt gilt:
+
+- Wer ein Dokument speichert oder konvertiert, bekommt das Dokument gezeichnet.
+- Die Frage, was auf dem Konto liegt, ergibt eine Liste, deren Zeilen sich öffnen lassen, statt einer id pro Zeile.
+- Ein Löschen, das noch nicht bestätigt ist, zeichnet das Dokument, um das es geht, mit Namen und mit dem Knopf, der es entfernt — die eine Stelle, an der „Sind Sie sicher?" die Sache selbst zeigen sollte und nicht ihre id.
+
+### Es fällt zurück auf das, was es war
+
+Ein Assistent, der solche Karten noch nicht zeichnet, bekommt genau die Sätze, die er immer bekommen hat. Die Karte ist eine zusätzliche Nutzlast neben dem Text, nicht an seiner Stelle: es geht nichts kaputt und es fehlt nichts — ein Host lernt, sie zu zeichnen, und derselbe Konnektor sieht auf einmal anders aus.
+
+### Was der Konnektor kann
+
+In beide Richtungen konvertieren, speichern, auflisten, suchen, zusammenfassen, teilen — privat, per Link oder an benannte Adressen —, die Versionsgeschichte eines Dokuments lesen und melden, was das Konto verbraucht. Eine nur lesende Verbindung liest wirklich nur: sie kann nicht speichern, teilen oder löschen, und das wird an der Zugangsberechtigung durchgesetzt, nicht an den Werkzeugen.
+
+Verbinden Sie ihn unter \`https://transformpipe.com/api/mcp\`. Er meldet sich mit Ihrem Konto an; mit dem Betreiber des Assistenten wird nichts geteilt.`,
       },
     },
     body:
@@ -242,6 +311,35 @@ The extension carries the site's converters rather than calling it: Markdown to 
 Signed in, **Save** puts the document on the account and **Share** opens the same dialogue the site has: private, anybody with the link, or named addresses who each sign in. The extension asks for no host permissions — it can only read a page at the moment you press the button, which is what \`activeTab\` means and why the permission list is as short as it is.
 
 Chrome and Edge install it from the Web Store; Firefox from its own listing.`,
+      },
+      de: {
+        title: 'Eine Browser-Erweiterung',
+        summary: `Die Seite, die Sie gerade lesen, als Markdown — ohne sie zu verlassen: ein Druck auf die Schaltfläche in der Symbolleiste, und der Artikel kommt ohne Navigation, Seitenleiste und Cookie-Hinweis zurück. Kopieren, herunterladen, oder die ganze Seite als eigenständige \`.html\`-Datei mit ihren Bildern darin speichern. Angemeldet legen **Speichern** und **Teilen** ein Dokument in Ihrem Konto ab.`,
+        description:
+          'Die TransformPipe-Erweiterung macht aus der Seite, die Sie gerade lesen, per Knopf in der Symbolleiste Markdown — in Chrome, Edge und Firefox, ohne Upload.',
+        keywords:
+          'markdown konverter chrome erweiterung, webseite als markdown speichern, html in markdown browser erweiterung, artikel in markdown umwandeln, web clipper markdown, firefox markdown erweiterung',
+        body: `Drücken Sie den Knopf in der Symbolleiste, und die Seite, die Sie gerade lesen, kommt als Markdown zurück — der Artikel, ohne Navigation, ohne Seitenleiste, ohne Newsletter-Kasten und ohne Cookie-Hinweis. Kopieren Sie ihn, laden Sie die \`.md\` herunter, oder nehmen Sie die ganze Seite als eine einzige, in sich geschlossene \`.html\`-Datei mit eingebetteten Bildern mit, die sich überall und ganz ohne Verbindung öffnen lässt.
+
+### Was es kann, was Kopieren und Einfügen nicht kann
+
+Eine Webseite ist kein Dokument. Wer einen Artikel markiert und in einen Editor einfügt, nimmt die Menüs mit, verliert den Bau der Tabellen und macht aus jedem Codeblock Fließtext. Die Erweiterung liest die Seite so, wie ein Mensch sie sieht: sie findet den Artikel, lässt das Mobiliar weg, behält Überschriften, Tabellen, Listen und Code-Zäune und setzt die Leerzeichen zurück, die das CSS gehalten hat — eine Reihe von Kennzahlen, als Flex-Elemente gesetzt, wird in jedem anderen Clipper zu \`39words\` und kommt hier als "39 words" an.
+
+Markieren Sie vorher einen Teil der Seite, wird die Markierung konvertiert statt des Artikels — der schnellste Weg, eine einzelne Tabelle aus einer Dokumentationsseite zu heben.
+
+### Die Seitenleiste des Browsers
+
+Dasselbe, offen neben der Seite. Sie konvertiert jeden Tab, sobald Sie ihn aufrufen: Wer sich durch eine Reihe von Suchtreffern bewegt, liest das Markdown jedes Treffers, statt pro Seite einen Knopf zu drücken. Sie merkt sich, ob Sie die Leiste oder das Popup bevorzugen.
+
+### Alle zehn Konvertierungen, offline
+
+Die Erweiterung bringt die Konverter der Seite mit, statt sie aufzurufen: Markdown zu HTML, HTML zu Markdown, \`.docx\`, \`.csv\`, \`.xlsx\`, JSON, reiner Text, ein Notion- oder Confluence-Export, ein Obsidian-Tresor. Nichts wird hochgeladen, nichts braucht ein Netz, und nichts davon hängt an einem Konto.
+
+### Mit Konto
+
+Angemeldet legt **Speichern** das Dokument auf das Konto, und **Teilen** öffnet denselben Dialog wie die Seite: privat, für alle mit dem Link, oder für benannte Adressen, die sich jeweils anmelden. Die Erweiterung verlangt keine Host-Berechtigungen — sie darf eine Seite nur in dem Moment lesen, in dem Sie den Knopf drücken, was \`activeTab\` bedeutet und warum die Liste der Berechtigungen so kurz ist.
+
+Chrome und Edge installieren sie aus dem Web Store, Firefox aus dem eigenen Verzeichnis.`,
       },
     },
     body:
@@ -326,6 +424,31 @@ Anything that is not a note: \`.obsidian/\` and its settings, attachments, templ
 
 The archive is unpacked and converted in your browser. A vault is usually somebody's private notes, and the only safe way to convert private notes is not to send them anywhere — which is the same reason this site has no upload step for any of its ten conversions.`,
       },
+      de: {
+        title: 'Ein Obsidian-Tresor, in einem Dokument',
+        summary: `Eine zehnte Konvertierung: legen Sie einen gezippten Obsidian-Tresor ab und bekommen ein einziges Markdown-Dokument zurück — jede Notiz der Reihe nach, mit Inhaltsverzeichnis. \`[[Wikilinks]]\` behalten ihre Worte; in einem Dokument zusammengeführt gibt es nichts mehr, worauf sie zeigen könnten.`,
+        description:
+          'Obsidian-Tresor zippen, auf TransformPipe ablegen und ein einziges Markdown-Dokument bekommen: jede Notiz der Reihe nach, mit Inhaltsverzeichnis.',
+        keywords:
+          'obsidian tresor in markdown umwandeln, obsidian notizen in eine datei exportieren, obsidian notizen zusammenführen, obsidian in html umwandeln, obsidian wikilinks konvertieren',
+        body: `Zippen Sie den Ordner des Tresors, legen Sie ihn ab, und Sie bekommen ein einziges Markdown-Dokument zurück: jede Notiz der Reihe nach, jede unter ihrer eigenen Überschrift, mit einem Inhaltsverzeichnis oben. Von dort ist es ein Schritt zu HTML, zu einer \`.docx\`, zu einem PDF oder zu einem Link, den jemand anderes öffnen kann.
+
+### Wofür das gut ist
+
+Ein Tresor ist ein guter Ort zum Schreiben und ein unhandlicher Ort zum Übergeben. Jemandem zweihundert Dateien zu schicken heißt, ihm nichts zu schicken; das hier macht das lesbare Objekt, das ein Tresor nicht hat — ein Dokument, das man drucken, veröffentlichen, anhängen oder auf dem Telefon lesen kann.
+
+### Wikilinks
+
+\`[[Some note]]\` behält seine Wörter und verliert seine Adresse. Sobald jede Notiz in einem Dokument steht, gibt es kein Ziel mehr: die Datei, die der Link benannt hat, ist jetzt eine Überschrift auf derselben Seite. Einen toten Link zu behalten, der lebendig aussieht, ist schlechter, als die Wörter zu behalten — also bleiben die Wörter. Ein gewöhnlicher Markdown-Link auf eine Adresse draußen bleibt unangetastet.
+
+### Was übersprungen wird
+
+Alles, was keine Notiz ist: \`.obsidian/\` samt seinen Einstellungen, Anhänge, Vorlagen, die nicht als Notizen geschrieben sind, und die Daten der Plugins. Verschachtelte Ordner behalten ihre Reihenfolge, ein nach Ordnern organisierter Tresor liest sich also in der Reihenfolge, in der er organisiert wurde.
+
+### Nichts wird hochgeladen
+
+Das Archiv wird in Ihrem Browser entpackt und konvertiert. Ein Tresor sind meist die privaten Notizen eines Menschen, und der einzige sichere Weg, private Notizen zu konvertieren, ist, sie nirgendwohin zu schicken — derselbe Grund, aus dem diese Seite für keine ihrer zehn Konvertierungen einen Upload hat.`,
+      },
     },
     body:
       'A tenth conversion: drop a zipped Obsidian vault and get one Markdown document back — every '
@@ -372,6 +495,31 @@ A link from one exported page to another keeps its words and loses its address. 
 
 The zip is read, unpacked and converted on your own machine. Nothing is uploaded, which matters more here than usual: a Confluence space export is a company's internal documentation, and the shortest safe path for it is the one that never leaves.`,
       },
+      de: {
+        title: 'Notion- und Confluence-Exporte, in einem Dokument',
+        summary: `Zwei neue Konvertierungen: legen Sie die .zip aus Notions „Export as Markdown & CSV" oder aus dem „Export → HTML" eines Confluence-Bereichs ab, und Sie bekommen ein einziges Markdown-Dokument zurück — jede Seite der Reihe nach, mit Inhaltsverzeichnis, eine Notion-Datenbank als Tabelle darin.`,
+        description:
+          'Legen Sie die .zip aus einem Notion- oder Confluence-Export auf TransformPipe ab und bekommen Sie ein Markdown-Dokument: alle Seiten der Reihe nach.',
+        keywords:
+          'notion export in markdown umwandeln, confluence in markdown umwandeln, notion zip in markdown konvertieren, confluence space export html in markdown, notion seiten zu einem dokument zusammenführen',
+        body: `Beide Werkzeuge exportieren einen Ordner voller Dateien, eine pro Seite, mit Namen, die niemand gewählt hat. Zwei Konvertierungen lesen diesen Ordner und geben stattdessen ein einziges Markdown-Dokument zurück: jede Seite der Reihe nach, unter ihrer eigenen Überschrift, mit einem Inhaltsverzeichnis oben.
+
+### Notion
+
+Exportieren Sie eine Seite oder einen Workspace mit **Export as Markdown & CSV**, schließen Sie die Unterseiten ein, und legen Sie die \`.zip\` genau so ab, wie sie heruntergeladen wurde. Notion hängt an jeden Dateinamen eine 32-stellige id; die fällt weg. Eine Datenbank, die neben einer Seite exportiert wurde, kommt als \`.csv\` an und wird an Ort und Stelle zu einer Markdown-Tabelle, dort, wo die Seite sich auf sie bezogen hat.
+
+### Confluence
+
+Exportieren Sie einen Space mit **Export → HTML** und legen Sie diese \`.zip\` ab. Das HTML von Confluence trägt eine Menge Mobiliar mit sich — Brotkrumen, den Seitenbaum, die Fußzeile mit dem Exportdatum, die Tabelle der Anhänge —, und nichts davon ist Inhalt, also überlebt nichts davon. Makros, die zu Text werden, behalten ihren Text; Makros, die zu einem Widget werden, das es nur in Confluence gibt, nicht.
+
+### Links zwischen Seiten
+
+Ein Link von einer exportierten Seite auf eine andere behält seine Wörter und verliert seine Adresse. In einem Dokument zusammengeführt gibt es kein Ziel mehr: die Datei, die er benannt hat, existiert nicht mehr, und ein Link auf eine fehlende Datei ist schlechter als eine Wortfolge. Dieselbe Regel gilt für die \`[[Wikilinks]]\` eines Obsidian-Tresors, die dasselbe Problem in einer anderen Syntax sind.
+
+### Es läuft in Ihrem Browser
+
+Die Zip-Datei wird auf Ihrem eigenen Rechner gelesen, entpackt und konvertiert. Nichts wird hochgeladen, was hier mehr zählt als sonst: Der Export eines Confluence-Space ist die interne Dokumentation eines Unternehmens, und der kürzeste sichere Weg für sie ist der, der nirgendwohin führt.`,
+      },
     },
     body:
       'Two new conversions: drop the .zip from Notion\'s "Export as Markdown & CSV" or a '
@@ -409,6 +557,32 @@ It is not a pixel-for-pixel copy of the preview. The app's own **Print or save a
 
 The same document is available as \`.docx\`, \`.html\` and \`.md\` by changing the extension, so one saved document is four formats without a second conversion.`,
       },
+      de: {
+        title: 'Ein PDF aus der API, ohne Browser',
+        summary: `\`GET /api/v1/documents/:id.pdf\` setzt ein Dokument auf dem Server als PDF, für ein Skript oder einen CI-Lauf, der keinen Browser zum Drucken hat. Die App selbst nutzt dafür weiterhin „Drucken oder als PDF sichern" — das ist die exakte Darstellung des Browsers, und dies ersetzt sie nicht.`,
+        description:
+          'GET /api/v1/documents/:id.pdf macht aus einem gespeicherten Markdown-Dokument ein PDF auf dem Server — ohne Headless-Chrome, in einer einzigen Anfrage.',
+        keywords:
+          'markdown in pdf api, markdown ohne browser in pdf umwandeln, md in pdf kommandozeile, pdf in ci erzeugen, markdown in pdf rest api',
+        body: `\`GET /api/v1/documents/:id.pdf\` liefert mit einem API-Schlüssel ein gesetztes PDF eines gespeicherten Dokuments. Gedacht ist es für den Fall, in dem kein Browser vorkommt: ein geplanter Job, ein CI-Schritt, der einem Release einen Bericht anhängt, ein Skript, das eine Wochenübersicht verschickt.
+
+### Warum das getrennt vom Drucken existiert
+
+Die meisten Werkzeuge von Markdown nach PDF sind ein Headless-Chrome im Trenchcoat. Das ergibt eine exakte Darstellung und kostet einen Browser: mehrere hundert Megabyte Abhängigkeit, eine Sandbox, in der er bleibt, ein Start pro Anfrage und eine Speichergrenze, die ein langes Dokument früher erreicht als ein Mensch. Nichts davon passt in eine Serverless-Funktion, und ein Dienst, der still pro Anfrage einen Browser startet, ist langsam und teuer für den einen Fall, der weder das eine noch das andere hätte sein müssen.
+
+Hier wird das Dokument direkt gesetzt — Überschriften, Absätze, Listen, Tabellen, Codeblöcke und Linien —, ohne Browser irgendwo im Weg. Es startet sofort und ist in Millisekunden fertig.
+
+### Was es nicht ist
+
+Es ist keine pixelgenaue Kopie der Vorschau. **Drucken oder als PDF sichern** in der App benutzt weiterhin die Darstellung des Browsers selbst, die exakt ist, und daran ändert sich nichts: Wenn Sie die Seite so wollen, wie Sie sie sehen, drucken Sie sie. Wenn Sie ein PDF von einer Maschine wollen, fragen Sie danach.
+
+### So benutzen Sie es
+
+    curl -H "Authorization: Bearer tp_live_…" \\
+      https://transformpipe.com/api/v1/documents/<id>.pdf -o report.pdf
+
+Dasselbe Dokument gibt es als \`.docx\`, \`.html\` und \`.md\`, indem Sie die Endung ändern — ein gespeichertes Dokument sind also vier Formate ohne eine zweite Konvertierung.`,
+      },
     },
     body:
       '`GET /api/v1/documents/:id.pdf` lays a document out as a PDF on the server, for a script '
@@ -444,6 +618,33 @@ Dropping a \`.docx\` on the converter reads it back into Markdown — headings, 
 ### From a script
 
 \`GET /api/v1/documents/:id.docx\` with an API key returns the same file, for a build that publishes documentation as Word for people who want it that way.`,
+      },
+      de: {
+        title: 'Ein gespeichertes Dokument als Word herunterladen',
+        summary: `Das Download-Menü eines gespeicherten Dokuments bietet jetzt eine \`.docx\` an, an Ort und Stelle aus demselben HTML gebaut, das die Vorschau bereits anzeigt. Kein Browser im Hintergrund — es braucht vorher ein Speichern, denn die Konvertierung läuft auf der Kopie im Konto.`,
+        description:
+          'Markdown auf TransformPipe in eine echte .docx umwandeln: Überschriften, Tabellen, Listen und Code bleiben, und Word öffnet die Datei ohne Plug-in.',
+        keywords:
+          'markdown in word umwandeln, md in docx konvertieren, markdown docx konverter, markdown als word dokument herunterladen, markdown tabelle in word',
+        body: `Ein gespeichertes Dokument lässt sich als \`.docx\` herunterladen, gebaut aus demselben HTML, das die Vorschau ohnehin zeigt. Word, Pages, LibreOffice und Google Docs öffnen es als gewöhnliches Dokument — Überschriften sind Word-Überschriften, Tabellen sind Word-Tabellen, Listen verschachteln sich, und Code behält seine Festbreitenschrift.
+
+### Was die Reise übersteht
+
+Überschriften eins bis sechs, Absätze, Fett und Kursiv, geordnete und ungeordnete Listen samt ihrer Verschachtelung, Tabellen mit ihrer Kopfzeile, Blockzitate, Trennlinien, Links mit ihrem Text und ihrer Adresse und eingezäunter Code. Was nicht: alles, was es nur in einem Browser gibt — eine lebende Einbettung, ein aufklappbarer Abschnitt, ein Mermaid-Diagramm, das nie zu einem Bild gerendert wurde.
+
+Bilder von fremden Adressen bleiben absichtlich draußen. Ein Konverter, der jedes Bild holt, das ein Dokument erwähnt, ist ein Konverter, der eine Anfrage an jede Adresse stellt, die der Autor des Dokuments gewählt hat — und der Handel, ein Bild gegen einen Server, der Fremden hinterherläuft, lohnt sich nicht.
+
+### Warum vorher gespeichert werden muss
+
+Die Konvertierung läuft auf der Kopie des Dokuments im Konto, und die liest der Endpunkt für den Download. Eine Datei zu konvertieren, die Sie gerade erst abgelegt haben, ist Sache des Browsers und hat mit dem Konto überhaupt nichts zu tun; \`.docx\` ist die eine Richtung, die es doch hat.
+
+### Die andere Richtung
+
+Legen Sie eine \`.docx\` auf den Konverter, wird sie zurück nach Markdown gelesen — Überschriften, Tabellen, Listen und alles —, und das ist der Weg, den die meisten tatsächlich wollen: ein Word-Dokument aus dem Postfach einer Kollegin, nach Markdown, in ein Repository.
+
+### Aus einem Skript
+
+\`GET /api/v1/documents/:id.docx\` liefert mit einem API-Schlüssel dieselbe Datei — für einen Build, der Dokumentation als Word veröffentlicht, für Leute, die sie so haben wollen.`,
       },
     },
     body:
@@ -513,6 +714,30 @@ Now a conversion stays in the browser that made it. **Save** is what puts it in 
 Every one of the ten conversions runs in JavaScript in your browser: Markdown, HTML, \`.docx\`, \`.csv\`, \`.xlsx\`, JSON, plain text, and the zip readers for a Notion, Confluence or Obsidian export. There was never a technical reason to send the file anywhere — the upload existed because the account existed, which is the wrong way round.
 
 An account is for the documents you decide to keep, not a record of everything you looked at. If you never sign in, this site never receives a file at all.`,
+      },
+      de: {
+        title: 'Nichts erreicht Ihr Konto, bevor Sie es speichern',
+        summary: `Eine Datei zu konvertieren legte sie früher in Ihrem Konto ab. Ablegen, ansehen, Tab schließen — und sie war da, zusammen mit allem anderen, worauf Sie je einen Blick geworfen hatten. Jetzt bleibt eine Konvertierung in diesem Browser, und **Speichern** ist das, was sie ins Konto legt.`,
+        description:
+          'Eine Konvertierung auf TransformPipe berührt Ihr Konto nicht mehr: Sie bleibt in Ihrem Browser, bis Sie speichern, und das Anmelden lädt nichts hoch.',
+        keywords:
+          'dokumente ohne upload konvertieren, privater markdown konverter, lädt ein online konverter meine datei hoch, konvertierung im browser, sichere dateikonvertierung',
+        body: `Eine Datei zu konvertieren hat sie früher in Ihr Konto gelegt. Etwas ablegen, ansehen, den Tab schließen — und es lag da, zusammen mit allem anderen, worauf Sie je einen Blick geworfen hatten. Das Anmelden war schlimmer: Was dieser Browser konvertiert hatte, ging auf einen Schlag hoch, aus fünfundzwanzig angesehenen Dingen wurden also fünfundzwanzig Dokumente, die Sie nie behalten wollten.
+
+Jetzt bleibt eine Konvertierung in dem Browser, der sie gemacht hat. **Speichern** legt sie ins Konto, und sonst tut das nichts.
+
+### Was das in der Praxis heißt
+
+- Datei ablegen, lesen, Ergebnis herunterladen, Tab schließen: Nichts hat unsere Maschine verlassen und nichts liegt auf dem Konto.
+- Das Anmelden lädt nichts hoch. Der Verlauf zeigt, was lokal und was gespeichert ist, und sagt, was davon was ist.
+- Teilen braucht ein gespeichertes Dokument, denn ein Link muss auf etwas zeigen, das existiert — und genau das steht da, statt dass der Knopf rätselhaft nicht verfügbar wäre.
+- Ein gespeichertes Dokument zu löschen löscht es. Die lokale Kopie gehört dem Browser, und das Löschen der Websitedaten entfernt sie.
+
+### Warum die Konvertierung nie einen Server brauchte
+
+Jede der zehn Konvertierungen läuft in JavaScript in Ihrem Browser: Markdown, HTML, \`.docx\`, \`.csv\`, \`.xlsx\`, JSON, reiner Text und die Zip-Leser für einen Notion-, Confluence- oder Obsidian-Export. Es gab nie einen technischen Grund, die Datei irgendwohin zu schicken — den Upload gab es, weil es das Konto gab, und das ist die falsche Reihenfolge.
+
+Ein Konto ist für die Dokumente da, die Sie behalten wollen, und nicht als Protokoll von allem, was Sie angesehen haben. Wenn Sie sich nie anmelden, bekommt diese Seite überhaupt nie eine Datei.`,
       },
     },
     body:

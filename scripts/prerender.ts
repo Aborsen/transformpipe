@@ -834,18 +834,20 @@ for (const entry of CHANGELOG_PAGES) {
     pages.push({
       locale,
       path,
-      title: `${entry.title} — TransformPipe`,
+      title: `${piece.title ?? entry.title} — TransformPipe`,
       description: piece.description,
       listed: true,
       lastmod: entry.date,
       head: [
         `<meta name="keywords" content="${escapeHtml(piece.keywords)}" />`,
         `<meta property="article:published_time" content="${entry.date}" />`,
-        breadcrumbs(changelogEntryCrumbs(entry.title, catalogue, locale)),
+        breadcrumbs(
+          changelogEntryCrumbs(piece.title ?? entry.title, catalogue, locale)
+        ),
         jsonLd({
           '@context': 'https://schema.org',
           '@type': 'TechArticle',
-          headline: entry.title,
+          headline: piece.title ?? entry.title,
           description: piece.description,
           datePublished: entry.date,
           dateModified: entry.date,
@@ -862,8 +864,8 @@ for (const entry of CHANGELOG_PAGES) {
         formatDate(entry.date, dates)
       )}</time>${
         entry.version ? ` — ${escapeHtml(entry.version)}` : ''
-      }</p><h1>${escapeHtml(entry.title)}</h1>${localiseLinks(
-        markdownToHtml(entry.body),
+      }</p><h1>${escapeHtml(piece.title ?? entry.title)}</h1>${localiseLinks(
+        markdownToHtml(piece.summary ?? entry.body),
         locale
       )}${localiseLinks(markdownToHtml(piece.body), locale)}</article>`,
     });

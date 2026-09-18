@@ -60,7 +60,7 @@ export function ChangelogEntryPage({
 
     const before = document.title;
 
-    document.title = `${entry.title} — TransformPipe`;
+    document.title = `${piece?.title ?? entry.title} — TransformPipe`;
 
     return () => {
       document.title = before;
@@ -90,7 +90,7 @@ export function ChangelogEntryPage({
   return (
     <article className="mx-auto flex w-full max-w-3xl flex-col gap-6">
       <AppBreadcrumbs
-        items={changelogEntryCrumbs(entry.title, content, locale)}
+        items={changelogEntryCrumbs(piece?.title ?? entry.title, content, locale)}
         onNavigate={onGoToConverter}
       />
 
@@ -118,7 +118,7 @@ export function ChangelogEntryPage({
         </div>
 
         <Typography variant="h1" className="text-2xl md:text-3xl">
-          {entry.title}
+          {piece?.title ?? entry.title}
         </Typography>
 
         {/*
@@ -127,7 +127,7 @@ export function ChangelogEntryPage({
          * somewhere else.
          */}
         <DocumentPreview
-          html={markdownToHtml(entry.body)}
+          html={markdownToHtml(piece?.summary ?? entry.body)}
           className="md-article"
         />
       </div>
