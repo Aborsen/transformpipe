@@ -128,7 +128,7 @@ const ENTRIES: ChangelogEntry[] = [
           'TransformPipe installs as an app in Chrome, Edge and Safari, opens in its own window, and converts documents with no connection at all.',
         keywords:
           'offline markdown converter, install markdown converter as an app, markdown to html without internet, progressive web app document converter, convert documents offline',
-        body: `The browser now offers to install TransformPipe: its own window, its own icon in the dock or the Start menu, no address bar. Chrome and Edge show an install button in the address bar; Safari on macOS and iOS uses **Add to Dock** and **Add to Home Screen**.
+        body: `Most web apps that install are a shortcut with extra steps: the window is different and the offline behaviour is a spinner. This one is the opposite case — the thing that needed the network was never the conversion, it was fetching the page.
 
 ### Why it works with no connection
 
@@ -155,7 +155,7 @@ Related: [what a Markdown to HTML converter is for](/blog/markdown-to-html-conve
           'TransformPipe lässt sich in Chrome, Edge und Safari als App installieren, öffnet ein eigenes Fenster und konvertiert Dokumente ganz ohne Verbindung.',
         keywords:
           'markdown konverter offline, markdown konverter als app installieren, markdown in html ohne internet, dokumente offline konvertieren, progressive web app dokumentenkonverter',
-        body: `Der Browser bietet jetzt an, TransformPipe zu installieren: ein eigenes Fenster, ein eigenes Symbol im Dock oder im Startmenü, keine Adresszeile. Chrome und Edge zeigen dafür einen Knopf in der Adresszeile; unter macOS und iOS heißt es in Safari **Zum Dock hinzufügen** und **Zum Home-Bildschirm**.
+        body: `Die meisten Web-Apps, die sich installieren lassen, sind eine Verknüpfung mit Zusatzschritten: das Fenster sieht anders aus, und offline erscheint ein Ladekreis. Hier liegt es umgekehrt — was das Netz brauchte, war nie die Konvertierung, sondern das Laden der Seite selbst.
 
 ### Warum es ohne Verbindung funktioniert
 
@@ -192,7 +192,7 @@ Weiter: [wozu ein Markdown-nach-HTML-Konverter da ist](/blog/markdown-to-html-co
           'The TransformPipe connector draws a real card for a document an assistant saves or opens — name, size, counts, first lines, and a button that opens it.',
         keywords:
           'mcp connector document converter, claude markdown connector, convert documents from an assistant, mcp apps card, save a document from a chat',
-        body: `Connect TransformPipe to an assistant and ask it to convert or keep something, and the answer is a card rather than a paragraph: the document's name, what it weighs, its word and heading counts, its opening lines, and a button that opens it on the site.
+        body: `A tool result is text, and text is what an assistant does with it: "Saved as report.md, 12 KB, id 3f1a…". Read once that is fine. Read five times in a row it is a wall you have to search for the one id you need.
 
 ### What changed
 
@@ -221,7 +221,7 @@ Related: [converting documents from an assistant](/blog/converting-documents-fro
           'Der TransformPipe-Konnektor zeichnet für jedes Dokument, das ein Assistent speichert oder öffnet, eine Karte: Name, Größe, Zählwerte, erste Zeilen, Knopf.',
         keywords:
           'mcp konnektor dokumentenkonverter, claude markdown konnektor, dokumente aus dem chat konvertieren, mcp apps karte, dokument aus einem chat speichern',
-        body: `Verbinden Sie TransformPipe mit einem Assistenten und bitten Sie ihn, etwas zu konvertieren oder aufzubewahren, dann kommt als Antwort eine Karte statt eines Absatzes: der Name des Dokuments, sein Gewicht, die Zahl seiner Wörter und Überschriften, seine ersten Zeilen und ein Knopf, der es auf der Seite öffnet.
+        body: `Ein Werkzeugergebnis ist Text, und Text ist, was ein Assistent daraus macht: „Gespeichert als report.md, 12 KB, id 3f1a…". Einmal gelesen ist das in Ordnung. Fünfmal hintereinander ist es eine Wand, in der Sie die eine id suchen müssen, die Sie brauchen.
 
 ### Was sich geändert hat
 
@@ -299,7 +299,7 @@ Weiter: [Dokumente aus einem Assistenten heraus konvertieren](/blog/converting-d
           'The TransformPipe extension turns the page you are reading into Markdown from the toolbar — in Chrome, Edge and Firefox, with nothing uploaded.',
         keywords:
           'markdown converter chrome extension, save web page as markdown, html to markdown browser extension, convert article to markdown, web clipper markdown, firefox markdown extension',
-        body: `Press the toolbar button and the page you are reading comes back as Markdown — the article, without the navigation, the sidebar, the newsletter box or the cookie notice. Copy it, download the \`.md\`, or take the whole page as a single self-contained \`.html\` file with its pictures embedded, which opens anywhere with no connection at all.
+        body: `The thing that makes this worth installing is not the button. It is that the conversion happens inside the page, where \`getComputedStyle\` still exists and the extension can see what a reader sees rather than what the markup says.
 
 ### What it does that a copy and paste does not
 
@@ -330,7 +330,7 @@ Related: [saving a web page as Markdown](/blog/save-a-web-page-as-markdown), and
           'Die TransformPipe-Erweiterung macht aus der Seite, die Sie gerade lesen, per Knopf in der Symbolleiste Markdown — in Chrome, Edge und Firefox, ohne Upload.',
         keywords:
           'markdown konverter chrome erweiterung, webseite als markdown speichern, html in markdown browser erweiterung, artikel in markdown umwandeln, web clipper markdown, firefox markdown erweiterung',
-        body: `Drücken Sie den Knopf in der Symbolleiste, und die Seite, die Sie gerade lesen, kommt als Markdown zurück — der Artikel, ohne Navigation, ohne Seitenleiste, ohne Newsletter-Kasten und ohne Cookie-Hinweis. Kopieren Sie ihn, laden Sie die \`.md\` herunter, oder nehmen Sie die ganze Seite als eine einzige, in sich geschlossene \`.html\`-Datei mit eingebetteten Bildern mit, die sich überall und ganz ohne Verbindung öffnen lässt.
+        body: `Was die Installation lohnend macht, ist nicht der Knopf. Es ist, dass die Konvertierung in der Seite selbst stattfindet, wo \`getComputedStyle\` noch existiert und die Erweiterung sehen kann, was ein Leser sieht, statt nur, was im Markup steht.
 
 ### Was es kann, was Kopieren und Einfügen nicht kann
 
@@ -419,7 +419,7 @@ Weiter: [eine Webseite als Markdown sichern](/blog/save-a-web-page-as-markdown) 
           'Zip an Obsidian vault, drop it on TransformPipe, and get one Markdown document back — every note in order with a table of contents, converted in your browser.',
         keywords:
           'obsidian vault to markdown, export obsidian notes to one file, merge obsidian notes, obsidian to html, convert obsidian wikilinks',
-        body: `Zip the vault folder, drop it, and get one Markdown document back: every note in order, each under its own heading, with a table of contents at the top. From there it is one step to HTML, to a \`.docx\`, to a PDF, or to a link somebody else can open.
+        body: `A vault is a good place to write and an awkward thing to hand over. Two hundred files is not a document, and the person you are sending them to has no Obsidian and no interest in installing one.
 
 ### What it is for
 
@@ -446,7 +446,7 @@ Related: [an Obsidian vault in detail](/blog/convert-obsidian-vault-to-markdown)
           'Obsidian-Tresor zippen, auf TransformPipe ablegen und ein einziges Markdown-Dokument bekommen: jede Notiz der Reihe nach, mit Inhaltsverzeichnis.',
         keywords:
           'obsidian tresor in markdown umwandeln, obsidian notizen in eine datei exportieren, obsidian notizen zusammenführen, obsidian in html umwandeln, obsidian wikilinks konvertieren',
-        body: `Zippen Sie den Ordner des Tresors, legen Sie ihn ab, und Sie bekommen ein einziges Markdown-Dokument zurück: jede Notiz der Reihe nach, jede unter ihrer eigenen Überschrift, mit einem Inhaltsverzeichnis oben. Von dort ist es ein Schritt zu HTML, zu einer \`.docx\`, zu einem PDF oder zu einem Link, den jemand anderes öffnen kann.
+        body: `Ein Tresor ist ein guter Ort zum Schreiben und ein unhandliches Ding zum Weitergeben. Zweihundert Dateien sind kein Dokument, und die Person, der Sie sie schicken, hat kein Obsidian und keine Lust, eines zu installieren.
 
 ### Wofür das gut ist
 
@@ -727,7 +727,7 @@ Weiter: [Markdown nach Word, ausführlich](/blog/markdown-to-word) und [eine \`.
           'Converting a file on TransformPipe no longer touches your account: the conversion stays in your browser until you press Save, and signing in uploads nothing.',
         keywords:
           'convert documents without uploading, private markdown converter, does an online converter upload my file, browser based document conversion, secure file converter',
-        body: `Converting a file used to put it in your account. Drop something, look at it, close the tab — and it was there, along with everything else you had ever glanced at. Signing in was worse: whatever that browser had converted went up in one go, so twenty-five things you had looked at became twenty-five documents you had never asked to keep.
+        body: `The question behind this one is the one every online converter gets asked and most answer badly: does my file leave the machine. Here the answer is no unless you press **Save**, and it is worth saying exactly why that is possible.
 
 Now a conversion stays in the browser that made it. **Save** is what puts it in the account, and nothing else does.
 
@@ -753,7 +753,7 @@ Related: [whether an online converter is safe](/blog/is-an-online-converter-safe
           'Eine Konvertierung auf TransformPipe berührt Ihr Konto nicht mehr: Sie bleibt in Ihrem Browser, bis Sie speichern, und das Anmelden lädt nichts hoch.',
         keywords:
           'dokumente ohne upload konvertieren, privater markdown konverter, lädt ein online konverter meine datei hoch, konvertierung im browser, sichere dateikonvertierung',
-        body: `Eine Datei zu konvertieren hat sie früher in Ihr Konto gelegt. Etwas ablegen, ansehen, den Tab schließen — und es lag da, zusammen mit allem anderen, worauf Sie je einen Blick geworfen hatten. Das Anmelden war schlimmer: Was dieser Browser konvertiert hatte, ging auf einen Schlag hoch, aus fünfundzwanzig angesehenen Dingen wurden also fünfundzwanzig Dokumente, die Sie nie behalten wollten.
+        body: `Hinter dieser Änderung steht die Frage, die jedem Online-Konverter gestellt und von den meisten schlecht beantwortet wird: verlässt meine Datei den Rechner. Hier lautet die Antwort nein, solange Sie nicht **Speichern** drücken — und es lohnt sich zu sagen, warum das überhaupt möglich ist.
 
 Jetzt bleibt eine Konvertierung in dem Browser, der sie gemacht hat. **Speichern** legt sie ins Konto, und sonst tut das nichts.
 
