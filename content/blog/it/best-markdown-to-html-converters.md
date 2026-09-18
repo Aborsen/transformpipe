@@ -12,7 +12,7 @@ Ogni convertitore da Markdown a HTML produce HTML. È qui che finisce la somigli
 
 Scegli in base a cosa deve succedere al file, non al numero di funzioni. Per un documento che manderai a qualcuno, ti serve un **file HTML completo e autonomo** con gli stili incorporati — non un frammento. Per un documento che contiene qualcosa che non hai scritto tu, ti serve un convertitore che **sanifichi**, perché Markdown permette HTML grezzo e l'HTML grezzo permette script. Per una build, scegli la **libreria che il tuo generatore usa già** e fermati lì. Un convertitore lato browser risolve il primo caso senza caricare niente e senza installare niente. Pandoc copre la gamma più ampia di formati, se sei disposto a installarlo. marked, markdown-it e remark sono le librerie su cui è costruito tutto il resto.
 
-## Perché "converte Markdown" non dice quasi niente
+## Perché “converte Markdown” non dice quasi niente
 
 Convertire un file Markdown in HTML sono quattro lavori in fila, e uno strumento può essere attento a uno e trascurato sul successivo. Analizza il testo in un albero, renderizza quell'albero in tag HTML, sanifica il risultato, e lo avvolge in un documento. [Cosa succede davvero al tuo file](/blog/markdown-to-html-converter) vale la lettura per intero, ma la versione breve è che i convertitori differiscono in ognuna di queste quattro fasi, e le differenze sono invisibili finché non mordono.
 
@@ -65,7 +65,7 @@ TransformPipe convertisce un file Markdown in un documento HTML completo nel tuo
 - Si scarica come `.html`, `.md` o testo semplice, oppure si stampa in PDF tramite la finestra di dialogo del browser
 - La stessa conversione è disponibile da un'API REST, una CLI senza dipendenze, una GitHub Action e un server MCP
 
-**Per chi è?** Per chiunque abbia come passo successivo "mandare questo a una persona". L'esportazione autonoma è il punto: si apre allo stesso modo su un portatile senza connessione come sul tuo, [che è una proprietà specifica da capire](/blog/share-a-markdown-document-as-a-link) prima di mandare per email un file `.md` a qualcuno e sperare.
+**Per chi è?** Per chiunque abbia come passo successivo “mandare questo a una persona”. L'esportazione autonoma è il punto: si apre allo stesso modo su un portatile senza connessione come sul tuo, [che è una proprietà specifica da capire](/blog/share-a-markdown-document-as-a-link) prima di mandare per email un file `.md` a qualcuno e sperare.
 
 ### Pandoc — il migliore per convertire fra molti formati
 
@@ -158,7 +158,7 @@ commonmark.js è l'implementazione di riferimento di CommonMark, scritta dagli s
 
 | Pro | Contro |
 | --- | --- |
-| La risposta definitiva a "cosa dice la specifica?" | Nessuna tabella, elenco di attività o testo barrato — quelle sono GFM |
+| La risposta definitiva a “cosa dice la specifica?” | Nessuna tabella, elenco di attività o testo barrato — quelle sono GFM |
 | Piccolo e prevedibile | Pochi punti di estensione, per progetto |
 | Include un AST | Non pensato come renderer di un'applicazione |
 

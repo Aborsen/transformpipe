@@ -96,9 +96,9 @@ Pandoc è un convertitore di documenti da riga di comando scritto in Haskell che
 
 ### mammoth — il migliore per la conversione dentro il tuo codice
 
-mammoth è una libreria che convertisce `.docx` in HTML, con build per Node e per il browser. È quello che un numero sorprendente di strumenti "Word verso Markdown" si scopre essere, una volta guardato bene.
+mammoth è una libreria che convertisce `.docx` in HTML, con build per Node e per il browser. È quello che un numero sorprendente di strumenti “Word verso Markdown” si scopre essere, una volta guardato bene.
 
-La sua idea distintiva è la mappa di stile. Invece di indovinare, mammoth fa corrispondere gli stili con nome di Word a elementi HTML: `p[style-name='Heading 1'] => h1`, e puoi estendere la mappa per qualunque stile aziendale usi la tua organizzazione. È il meccanismo che fa convertire correttamente un documento con uno stile personalizzato "Titolo capitolo", e l'assenza di quel meccanismo è il motivo per cui gli altri strumenti non lo fanno.
+La sua idea distintiva è la mappa di stile. Invece di indovinare, mammoth fa corrispondere gli stili con nome di Word a elementi HTML: `p[style-name='Heading 1'] => h1`, e puoi estendere la mappa per qualunque stile aziendale usi la tua organizzazione. È il meccanismo che fa convertire correttamente un documento con uno stile personalizzato “Titolo capitolo”, e l'assenza di quel meccanismo è il motivo per cui gli altri strumenti non lo fanno.
 
 | Pro | Contro |
 | --- | --- |
@@ -140,7 +140,7 @@ MarkItDown è uno strumento Python di Microsoft che convertisce molti tipi di fi
 - I formati elencati nel README includono PDF, PowerPoint, Word, Excel, immagini con OCR, audio con trascrizione, HTML, CSV, JSON, XML, ZIP, URL di YouTube ed EPUB
 - Disponibile come libreria Python per l'uso dentro uno script piuttosto che da una shell
 
-**Per chi è?** Per chiunque stia assemblando un corpus. Se il Markdown finisce in un indice di recupero o in un prompt, la fedeltà sotto il livello di "le parole sono nell'ordine giusto" non conta e questa è la strada più veloce per arrivarci. Se una persona leggerà l'output, usa qualcos'altro.
+**Per chi è?** Per chiunque stia assemblando un corpus. Se il Markdown finisce in un indice di recupero o in un prompt, la fedeltà sotto il livello di “le parole sono nell'ordine giusto” non conta e questa è la strada più veloce per arrivarci. Se una persona leggerà l'output, usa qualcos'altro.
 
 ### Google Docs — il migliore quando il documento è già in Drive
 
@@ -270,11 +270,11 @@ python-docx crea, legge e aggiorna file `.docx` da Python. Non ha uno scrittore 
 
 Questa è la sezione che una pagina di un fornitore non scriverà, perché non c'è modo di scriverla che suoni bene. Markdown ha una dozzina di costrutti. Un `.docx` ne ha centinaia. La conversione è lossy per definizione, e l'unica domanda utile è a quali perdite stai accettando di andare incontro. [L'inventario completo, con un verdetto su ogni voce](/blog/what-not-to-keep-from-a-docx), va oltre il riassunto qui sotto.
 
-**Font, dimensioni e colori.** Markdown non ha sintassi per il tipo di carattere, la dimensione in punti o il colore. Non "supporto scarso" — nessuno. Ogni convertitore qui li scarta, e quelli che sembrano non farlo stanno emettendo HTML grezzo con un attributo `style`, che è un documento diverso in un involucro a forma di Markdown. Se il significato del documento dipende dalla sua tipografia, convertirlo in Markdown distrugge il significato e conserva le parole.
+**Font, dimensioni e colori.** Markdown non ha sintassi per il tipo di carattere, la dimensione in punti o il colore. Non “supporto scarso” — nessuno. Ogni convertitore qui li scarta, e quelli che sembrano non farlo stanno emettendo HTML grezzo con un attributo `style`, che è un documento diverso in un involucro a forma di Markdown. Se il significato del documento dipende dalla sua tipografia, convertirlo in Markdown distrugge il significato e conserva le parole.
 
 **Margini, formato pagina e salti di pagina.** Markdown non ha pagine. Un documento impaginato per A4 con margini speculari e un salto di pagina prima di ogni capitolo diventa un unico flusso continuo. Pandoc può emettere un carattere di avanzamento pagina o un blocco grezzo per un salto di pagina, ed è un marcatore per un passaggio successivo da interpretare, non un salto di pagina. Non c'è niente da rompere.
 
-**Intestazioni di pagina, piè di pagina e numeri di pagina.** Questi vivono nelle proprie parti dell'archivio e si riferiscono a un concetto — la pagina — che non esiste dall'altra parte. Vengono scartati silenziosamente da tutto. Nessuno li rimpiange finché un documento con "Riservato — pagina 3 di 12" nel piè di pagina non viene ripubblicato senza.
+**Intestazioni di pagina, piè di pagina e numeri di pagina.** Questi vivono nelle proprie parti dell'archivio e si riferiscono a un concetto — la pagina — che non esiste dall'altra parte. Vengono scartati silenziosamente da tutto. Nessuno li rimpiange finché un documento con “Riservato — pagina 3 di 12” nel piè di pagina non viene ripubblicato senza.
 
 **Modifiche tracciate.** Questa è quella che costa denaro. Un documento revisionato contiene sia l'originale che la revisione, marcati come inserimenti e cancellazioni. Un convertitore senza un'opinione su di essi ti darà tipicamente il testo accettato, il che significa che le cancellazioni di qualcuno sono sparite, e con esse il loro ragionamento. `--track-changes` di Pandoc è l'unico controllo documentato in questa pagina: `accept`, `reject`, oppure `all` per tenere tutto avvolto in span. Se un documento è passato per una revisione legale, convertilo con `all` e leggi il risultato prima di buttare via il `.docx`.
 

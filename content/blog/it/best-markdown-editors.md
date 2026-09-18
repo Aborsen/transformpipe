@@ -8,7 +8,7 @@ keywords: miglior editor markdown, editor markdown gratis, editor markdown con a
 
 La maggior parte dei confronti fra editor Markdown si concentra sulla scrittura: quale ha il font più bello, quale attenua il paragrafo su cui non stai lavorando, quale nasconde gli asterischi. È la parte che si nota il primo giorno, e quella che conta meno dal sesto mese in poi.
 
-Quello che conta più avanti è più prosaico. Dove tiene il testo l'editor — in file che vedi in un file manager, oppure in un servizio a cui devi chiedere una copia? Che sintassi aggiunge, che nessun altro strumento capisce? E cosa esce fuori quando qualcuno chiede "puoi mandarmelo come pagina web", la richiesta che smaschera ogni scorciatoia presa dall'editor mentre tu ti godevi il font.
+Quello che conta più avanti è più prosaico. Dove tiene il testo l'editor — in file che vedi in un file manager, oppure in un servizio a cui devi chiedere una copia? Che sintassi aggiunge, che nessun altro strumento capisce? E cosa esce fuori quando qualcuno chiede “puoi mandarmelo come pagina web”, la richiesta che smaschera ogni scorciatoia presa dall'editor mentre tu ti godevi il font.
 
 Qui sotto ne confrontiamo undici, su questi termini. Alcuni sono editor di testo con supporto Markdown, altri sono applicazioni di scrittura, e uno non è affatto un editor Markdown — è in lista perché metà di chi legge questo articolo lo usa come tale.
 
@@ -124,7 +124,7 @@ iA Writer è prima un'applicazione di scrittura e poi un editor Markdown. Ha ide
 | Esportazione HTML e PDF, con modelli per il contenitore | Poco adatto a documenti densi di codice |
 | Una prova di 7 giorni senza carta richiesta | Deliberatamente poche funzioni, che alcuni leggono come mancanze |
 
-**Prezzo:** acquisto unico per piattaforma — "paghi una volta per piattaforma, e lo possiedi per sempre" — con una prova gratuita di 7 giorni e nessuna carta di credito richiesta (verificato su ia.net/writer, l'8 settembre 2026).
+**Prezzo:** acquisto unico per piattaforma — “paghi una volta per piattaforma, e lo possiedi per sempre” — con una prova gratuita di 7 giorni e nessuna carta di credito richiesta (verificato su ia.net/writer, l'8 settembre 2026).
 
 **Dettagli tecnici e funzioni**
 
@@ -219,9 +219,9 @@ Notion accetta scorciatoie in stile Markdown. Scrivi `## ` e ottieni un'intestaz
 
 **Dettagli tecnici e funzioni**
 
-- Quattro strade di esportazione: PDF, HTML, "Markdown & CSV", e la stampa tramite il browser
+- Quattro strade di esportazione: PDF, HTML, “Markdown & CSV”, e la stampa tramite il browser
 - L'esportazione Markdown arriva come archivio compresso: file `.md` per le pagine e sottopagine non-database, un file `.csv` per ogni database a pagina intera, e cartelle separate per immagini e altri allegati
-- La documentazione di aiuto di Notion afferma che i blocchi callout vengono esportati come HTML "perché non c'è un equivalente Markdown", e che una vista Modulo di un database non si può esportare affatto
+- La documentazione di aiuto di Notion afferma che i blocchi callout vengono esportati come HTML “perché non c'è un equivalente Markdown”, e che una vista Modulo di un database non si può esportare affatto
 - Le emoji personalizzate non appaiono nelle esportazioni PDF
 - Su Windows, l'estrazione può fallire quando i percorsi di cartelle annidate nell'archivio superano i 260 caratteri; le soluzioni documentate sono disattivare la creazione di cartelle per le sottopagine, o usare uno strumento di estrazione diverso
 
@@ -275,7 +275,7 @@ Nota è un editor Markdown per macOS pensato per scrivere e pubblicare da una ca
 
 ### Mark Text — il miglior editor desktop gratuito a riquadro unico
 
-Mark Text è un editor desktop open source con l'approccio "si rende mentre scrivi" che Typora ha reso popolare, distribuito sotto licenza MIT e costruito con Electron e Vue.
+Mark Text è un editor desktop open source con l'approccio “si rende mentre scrivi” che Typora ha reso popolare, distribuito sotto licenza MIT e costruito con Electron e Vue.
 
 | Pro | Contro |
 | --- | --- |
@@ -301,7 +301,7 @@ Ogni elenco di editor Markdown li classifica su un solo asse. L'asse che decide 
 
 **Editor che possiedono i file.** VS Code, Obsidian, Typora, iA Writer, Zettlr, Mark Text, Vim e Nota puntano tutti a una directory su un disco. La conseguenza è che l'editor è sostituibile. Puoi apri la stessa cartella in un secondo editor domani, farci passare un convertitore in una build, cercarla con `grep`, commetterla in git, e farne il backup con lo stesso strumento che fa il backup di tutto il resto. Quando una di queste applicazioni viene abbandonata, perdi l'applicazione. Non perdi la scrittura.
 
-**Applicazioni che possiedono i documenti.** Notion possiede i suoi documenti in un database. StackEdit, finché non collega un provider di sincronizzazione, li possiede nello storage del tuo browser. Un editor ospitato li possiede su un server. La conseguenza è che tirare fuori il tuo testo è un'operazione che il fornitore implementa, alla fedeltà che il fornitore ha scelto, nei formati che il fornitore offre. Quell'operazione va di solito bene, e occasionalmente è il pomeriggio peggiore del trimestre. Il segnale è che si chiama "esportazione" e non "apertura".
+**Applicazioni che possiedono i documenti.** Notion possiede i suoi documenti in un database. StackEdit, finché non collega un provider di sincronizzazione, li possiede nello storage del tuo browser. Un editor ospitato li possiede su un server. La conseguenza è che tirare fuori il tuo testo è un'operazione che il fornitore implementa, alla fedeltà che il fornitore ha scelto, nei formati che il fornitore offre. Quell'operazione va di solito bene, e occasionalmente è il pomeriggio peggiore del trimestre. Il segnale è che si chiama “esportazione” e non “apertura”.
 
 **La sintassi proprietaria è una perdita lenta.** Wikilink, callout, marcature di evidenziazione, query incorporate, transclusione — ciascuna è comoda dentro l'applicazione e inerte fuori. Non te ne accorgi, perché leggi quei file solo dentro l'applicazione che li ha scritti. Te ne accorgi il giorno in cui la documentazione si sposta nel repository, o un collega apre una nota in un editor diverso, o un convertitore rende `[[Onboarding]]` come quattro parentesi letterali e una parola. Niente si corrompe. Semplicemente non è più Markdown, e non lo è da un anno.
 
