@@ -93,11 +93,12 @@ export const DETAIL_LIMIT = 3000;
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-18',
-    title: 'The blog reads in French',
+    title: 'The whole blog reads in French',
     body:
-      'Thirty more articles now exist in French alongside the English and German, and the rest are '
-      + 'on their way. They are written rather than machine-translated: the prose is rebuilt, and '
-      + 'the search terms are the ones a French reader actually types.',
+      'All sixty-three articles now exist in French alongside the English and German. They are '
+      + 'written rather than machine-translated: the prose is rebuilt rather than transposed, and '
+      + 'the search terms are the ones a French reader actually types — while the dates, the '
+      + 'links, the code and every checked-on citation stay exactly as they were.',
   },
   {
     date: '2026-09-18',
