@@ -165,6 +165,51 @@ for (const locale of LOCALES) {
       problems.push(`${name}: emoji`);
     }
 
+    /*
+     * The Spanish and the Italian do not address the reader formally, and each catalogue says so at
+     * the top of itself — messages/es/ui.ts: "El registro es impersonal siempre que se puede ... y
+     * tutea cuando no hay forma de evitar dirigirse al lector"; messages/it/ui.ts: "No 'Lei': a
+     * converter that says it sounds like a bank letter".
+     *
+     * Here because they were comments, and a comment is what you find out about after writing the
+     * articles. The same rules guard the changelog's pages in src/lib/changelog.ts; this is the
+     * other half of the same house, where a hundred and eighteen translations are about to land.
+     *
+     * Only the forms that cannot be anything else. Lower-case `su`, `suo` and `sua` are the
+     * ordinary third-person possessive and appear in any honest sentence about a file and its
+     * author, so they are left alone: a check that cries wolf is a check somebody turns off. That
+     * makes this narrower than the rule, which is the right way round — the rule is prose a person
+     * still has to read.
+     */
+    const FORMAL = {
+      es: {
+        pattern: /\b(usted|ustedes)\b/i,
+        note: 'this blog tutea — see the top of messages/es/ui.ts',
+      },
+      it: {
+        pattern: /\b(Lei|Suo|Sua|Suoi|Sue|avete|potete|siete|vostro|vostra|vostri|vostre|voi)\b/,
+        note: 'this blog uses tu — see the top of messages/it/ui.ts',
+      },
+    };
+
+    const formal = FORMAL[locale];
+
+    if (formal) {
+      /* Code is not prose: a `usted` inside a sample is somebody else's string, not our voice. */
+      const withoutCode = prose
+        .replace(/```[\s\S]*?```/g, ' ')
+        .replace(/`[^`]*`/g, ' ');
+      const found = `${data.title} ${data.description} ${withoutCode}`.match(
+        formal.pattern
+      );
+
+      if (found) {
+        problems.push(
+          `${name}: "${found[0]}" addresses the reader formally; ${formal.note}`
+        );
+      }
+    }
+
     // The whole body, code included: a reader reads the commands too, and an article that explains
     // itself in samples is not thin the way an article of four short paragraphs is. Headings and
     // fences are counted with everything else — this is a smoke alarm, not a judge.
