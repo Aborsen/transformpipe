@@ -143,7 +143,9 @@ Nothing about the account's data is cached — \`/api\` is never stored, and nei
 
 ### It changes nothing if you do not install it
 
-The site is the same site. Installing is an option the browser offers once the page says it is installable; ignoring it costs nothing, and uninstalling leaves no trace beyond the browser's own cache.`,
+The site is the same site. Installing is an option the browser offers once the page says it is installable; ignoring it costs nothing, and uninstalling leaves no trace beyond the browser's own cache.
+
+Related: [what a Markdown to HTML converter is for](/blog/markdown-to-html-converter), and [whether an online converter is safe](/blog/is-an-online-converter-safe).`,
       },
       de: {
         title: 'Installieren Sie es, und es arbeitet ohne Netz',
@@ -168,7 +170,9 @@ Nichts von den Daten des Kontos liegt im Cache — \`/api\` wird nie gespeichert
 
 ### Ohne Installation ändert sich nichts
 
-Die Seite bleibt dieselbe Seite. Die Installation ist ein Angebot, das der Browser macht, sobald die Seite sich als installierbar meldet; sie zu ignorieren kostet nichts, und eine Deinstallation hinterlässt nichts außer dem Cache des Browsers selbst.`,
+Die Seite bleibt dieselbe Seite. Die Installation ist ein Angebot, das der Browser macht, sobald die Seite sich als installierbar meldet; sie zu ignorieren kostet nichts, und eine Deinstallation hinterlässt nichts außer dem Cache des Browsers selbst.
+
+Weiter: [wozu ein Markdown-nach-HTML-Konverter da ist](/blog/markdown-to-html-converter) und [ob ein Online-Konverter sicher ist](/blog/is-an-online-converter-safe).`,
       },
     },
     body:
@@ -205,7 +209,9 @@ An assistant that does not draw these yet gets exactly the sentences it always d
 
 Convert in either direction, save, list, search, summarise, share — privately, by link, or to named addresses — read a document's version history, and report what the account is using. A read-only connection is genuinely read-only: it cannot save, share or delete, and that is enforced on the credential rather than on the tools.
 
-Connect it at \`https://transformpipe.com/api/mcp\`. It signs in with your account; nothing is shared with the assistant's operator.`,
+Connect it at \`https://transformpipe.com/api/mcp\`. It signs in with your account; nothing is shared with the assistant's operator.
+
+Related: [converting documents from an assistant](/blog/converting-documents-from-an-assistant), and [the same thing with an API](/blog/converting-documents-with-an-api).`,
       },
       de: {
         title: 'Ein Dokument im Chat sieht aus wie ein Dokument',
@@ -232,7 +238,9 @@ Ein Assistent, der solche Karten noch nicht zeichnet, bekommt genau die Sätze, 
 
 In beide Richtungen konvertieren, speichern, auflisten, suchen, zusammenfassen, teilen — privat, per Link oder an benannte Adressen —, die Versionsgeschichte eines Dokuments lesen und melden, was das Konto verbraucht. Eine nur lesende Verbindung liest wirklich nur: sie kann nicht speichern, teilen oder löschen, und das wird an der Zugangsberechtigung durchgesetzt, nicht an den Werkzeugen.
 
-Verbinden Sie ihn unter \`https://transformpipe.com/api/mcp\`. Er meldet sich mit Ihrem Konto an; mit dem Betreiber des Assistenten wird nichts geteilt.`,
+Verbinden Sie ihn unter \`https://transformpipe.com/api/mcp\`. Er meldet sich mit Ihrem Konto an; mit dem Betreiber des Assistenten wird nichts geteilt.
+
+Weiter: [Dokumente aus einem Assistenten heraus konvertieren](/blog/converting-documents-from-an-assistant) und [dasselbe über eine API](/blog/converting-documents-with-an-api).`,
       },
     },
     body:
@@ -310,7 +318,9 @@ The extension carries the site's converters rather than calling it: Markdown to 
 
 Signed in, **Save** puts the document on the account and **Share** opens the same dialogue the site has: private, anybody with the link, or named addresses who each sign in. The extension asks for no host permissions — it can only read a page at the moment you press the button, which is what \`activeTab\` means and why the permission list is as short as it is.
 
-Chrome and Edge install it from the Web Store; Firefox from its own listing.`,
+Chrome and Edge install it from the Web Store; Firefox from its own listing.
+
+Related: [saving a web page as Markdown](/blog/save-a-web-page-as-markdown), and [what a converter should keep from a \`.docx\`](/blog/what-not-to-keep-from-a-docx).`,
       },
       de: {
         title: 'Eine Browser-Erweiterung',
@@ -339,7 +349,9 @@ Die Erweiterung bringt die Konverter der Seite mit, statt sie aufzurufen: Markdo
 
 Angemeldet legt **Speichern** das Dokument auf das Konto, und **Teilen** öffnet denselben Dialog wie die Seite: privat, für alle mit dem Link, oder für benannte Adressen, die sich jeweils anmelden. Die Erweiterung verlangt keine Host-Berechtigungen — sie darf eine Seite nur in dem Moment lesen, in dem Sie den Knopf drücken, was \`activeTab\` bedeutet und warum die Liste der Berechtigungen so kurz ist.
 
-Chrome und Edge installieren sie aus dem Web Store, Firefox aus dem eigenen Verzeichnis.`,
+Chrome und Edge installieren sie aus dem Web Store, Firefox aus dem eigenen Verzeichnis.
+
+Weiter: [eine Webseite als Markdown sichern](/blog/save-a-web-page-as-markdown) und [was ein Konverter aus einer \`.docx\` behalten sollte](/blog/what-not-to-keep-from-a-docx).`,
       },
     },
     body:
@@ -422,7 +434,9 @@ Anything that is not a note: \`.obsidian/\` and its settings, attachments, templ
 
 ### Nothing is uploaded
 
-The archive is unpacked and converted in your browser. A vault is usually somebody's private notes, and the only safe way to convert private notes is not to send them anywhere — which is the same reason this site has no upload step for any of its ten conversions.`,
+The archive is unpacked and converted in your browser. A vault is usually somebody's private notes, and the only safe way to convert private notes is not to send them anywhere — which is the same reason this site has no upload step for any of its ten conversions.
+
+Related: [an Obsidian vault in detail](/blog/convert-obsidian-vault-to-markdown), and [Markdown out of Notion, Obsidian and Confluence](/blog/markdown-from-notion-obsidian-and-confluence).`,
       },
       de: {
         title: 'Ein Obsidian-Tresor, in einem Dokument',
@@ -447,7 +461,9 @@ Alles, was keine Notiz ist: \`.obsidian/\` samt seinen Einstellungen, Anhänge, 
 
 ### Nichts wird hochgeladen
 
-Das Archiv wird in Ihrem Browser entpackt und konvertiert. Ein Tresor sind meist die privaten Notizen eines Menschen, und der einzige sichere Weg, private Notizen zu konvertieren, ist, sie nirgendwohin zu schicken — derselbe Grund, aus dem diese Seite für keine ihrer zehn Konvertierungen einen Upload hat.`,
+Das Archiv wird in Ihrem Browser entpackt und konvertiert. Ein Tresor sind meist die privaten Notizen eines Menschen, und der einzige sichere Weg, private Notizen zu konvertieren, ist, sie nirgendwohin zu schicken — derselbe Grund, aus dem diese Seite für keine ihrer zehn Konvertierungen einen Upload hat.
+
+Weiter: [ein Obsidian-Tresor im Detail](/blog/convert-obsidian-vault-to-markdown) und [Markdown aus Notion, Obsidian und Confluence](/blog/markdown-from-notion-obsidian-and-confluence).`,
       },
     },
     body:
@@ -493,7 +509,9 @@ A link from one exported page to another keeps its words and loses its address. 
 
 ### It runs in your browser
 
-The zip is read, unpacked and converted on your own machine. Nothing is uploaded, which matters more here than usual: a Confluence space export is a company's internal documentation, and the shortest safe path for it is the one that never leaves.`,
+The zip is read, unpacked and converted on your own machine. Nothing is uploaded, which matters more here than usual: a Confluence space export is a company's internal documentation, and the shortest safe path for it is the one that never leaves.
+
+Related: [a Notion export in detail](/blog/convert-notion-export-to-markdown), and [one Confluence page](/blog/convert-confluence-page-to-markdown).`,
       },
       de: {
         title: 'Notion- und Confluence-Exporte, in einem Dokument',
@@ -518,7 +536,9 @@ Ein Link von einer exportierten Seite auf eine andere behält seine Wörter und 
 
 ### Es läuft in Ihrem Browser
 
-Die Zip-Datei wird auf Ihrem eigenen Rechner gelesen, entpackt und konvertiert. Nichts wird hochgeladen, was hier mehr zählt als sonst: Der Export eines Confluence-Space ist die interne Dokumentation eines Unternehmens, und der kürzeste sichere Weg für sie ist der, der nirgendwohin führt.`,
+Die Zip-Datei wird auf Ihrem eigenen Rechner gelesen, entpackt und konvertiert. Nichts wird hochgeladen, was hier mehr zählt als sonst: Der Export eines Confluence-Space ist die interne Dokumentation eines Unternehmens, und der kürzeste sichere Weg für sie ist der, der nirgendwohin führt.
+
+Weiter: [ein Notion-Export im Detail](/blog/convert-notion-export-to-markdown) und [eine einzelne Confluence-Seite](/blog/convert-confluence-page-to-markdown).`,
       },
     },
     body:
@@ -555,7 +575,9 @@ It is not a pixel-for-pixel copy of the preview. The app's own **Print or save a
     curl -H "Authorization: Bearer tp_live_…" \\
       https://transformpipe.com/api/v1/documents/<id>.pdf -o report.pdf
 
-The same document is available as \`.docx\`, \`.html\` and \`.md\` by changing the extension, so one saved document is four formats without a second conversion.`,
+The same document is available as \`.docx\`, \`.html\` and \`.md\` by changing the extension, so one saved document is four formats without a second conversion.
+
+Related: [the ways Markdown becomes a PDF](/blog/markdown-to-pdf), and [converting documents with an API](/blog/converting-documents-with-an-api).`,
       },
       de: {
         title: 'Ein PDF aus der API, ohne Browser',
@@ -581,7 +603,9 @@ Es ist keine pixelgenaue Kopie der Vorschau. **Drucken oder als PDF sichern** in
     curl -H "Authorization: Bearer tp_live_…" \\
       https://transformpipe.com/api/v1/documents/<id>.pdf -o report.pdf
 
-Dasselbe Dokument gibt es als \`.docx\`, \`.html\` und \`.md\`, indem Sie die Endung ändern — ein gespeichertes Dokument sind also vier Formate ohne eine zweite Konvertierung.`,
+Dasselbe Dokument gibt es als \`.docx\`, \`.html\` und \`.md\`, indem Sie die Endung ändern — ein gespeichertes Dokument sind also vier Formate ohne eine zweite Konvertierung.
+
+Weiter: [die Wege von Markdown zum PDF](/blog/markdown-to-pdf) und [Dokumente über eine API konvertieren](/blog/converting-documents-with-an-api).`,
       },
     },
     body:
@@ -617,7 +641,9 @@ Dropping a \`.docx\` on the converter reads it back into Markdown — headings, 
 
 ### From a script
 
-\`GET /api/v1/documents/:id.docx\` with an API key returns the same file, for a build that publishes documentation as Word for people who want it that way.`,
+\`GET /api/v1/documents/:id.docx\` with an API key returns the same file, for a build that publishes documentation as Word for people who want it that way.
+
+Related: [Markdown to Word, in full](/blog/markdown-to-word), and [reading a \`.docx\` back into Markdown](/blog/convert-docx-to-markdown).`,
       },
       de: {
         title: 'Ein gespeichertes Dokument als Word herunterladen',
@@ -644,7 +670,9 @@ Legen Sie eine \`.docx\` auf den Konverter, wird sie zurück nach Markdown geles
 
 ### Aus einem Skript
 
-\`GET /api/v1/documents/:id.docx\` liefert mit einem API-Schlüssel dieselbe Datei — für einen Build, der Dokumentation als Word veröffentlicht, für Leute, die sie so haben wollen.`,
+\`GET /api/v1/documents/:id.docx\` liefert mit einem API-Schlüssel dieselbe Datei — für einen Build, der Dokumentation als Word veröffentlicht, für Leute, die sie so haben wollen.
+
+Weiter: [Markdown nach Word, ausführlich](/blog/markdown-to-word) und [eine \`.docx\` zurück nach Markdown lesen](/blog/convert-docx-to-markdown).`,
       },
     },
     body:
@@ -713,7 +741,9 @@ Now a conversion stays in the browser that made it. **Save** is what puts it in 
 
 Every one of the ten conversions runs in JavaScript in your browser: Markdown, HTML, \`.docx\`, \`.csv\`, \`.xlsx\`, JSON, plain text, and the zip readers for a Notion, Confluence or Obsidian export. There was never a technical reason to send the file anywhere — the upload existed because the account existed, which is the wrong way round.
 
-An account is for the documents you decide to keep, not a record of everything you looked at. If you never sign in, this site never receives a file at all.`,
+An account is for the documents you decide to keep, not a record of everything you looked at. If you never sign in, this site never receives a file at all.
+
+Related: [whether an online converter is safe](/blog/is-an-online-converter-safe), and [sharing a document as a link](/blog/share-a-markdown-document-as-a-link).`,
       },
       de: {
         title: 'Nichts erreicht Ihr Konto, bevor Sie es speichern',
@@ -737,7 +767,9 @@ Jetzt bleibt eine Konvertierung in dem Browser, der sie gemacht hat. **Speichern
 
 Jede der zehn Konvertierungen läuft in JavaScript in Ihrem Browser: Markdown, HTML, \`.docx\`, \`.csv\`, \`.xlsx\`, JSON, reiner Text und die Zip-Leser für einen Notion-, Confluence- oder Obsidian-Export. Es gab nie einen technischen Grund, die Datei irgendwohin zu schicken — den Upload gab es, weil es das Konto gab, und das ist die falsche Reihenfolge.
 
-Ein Konto ist für die Dokumente da, die Sie behalten wollen, und nicht als Protokoll von allem, was Sie angesehen haben. Wenn Sie sich nie anmelden, bekommt diese Seite überhaupt nie eine Datei.`,
+Ein Konto ist für die Dokumente da, die Sie behalten wollen, und nicht als Protokoll von allem, was Sie angesehen haben. Wenn Sie sich nie anmelden, bekommt diese Seite überhaupt nie eine Datei.
+
+Weiter: [ob ein Online-Konverter sicher ist](/blog/is-an-online-converter-safe) und [ein Dokument als Link teilen](/blog/share-a-markdown-document-as-a-link).`,
       },
     },
     body:
