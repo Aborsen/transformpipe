@@ -285,9 +285,10 @@ Weiter: [Dokumente aus einem Assistenten heraus konvertieren](/blog/converting-d
     date: '2026-09-18',
     title: 'The connector says who it is',
     body:
-      'An assistant adding TransformPipe as a connector now sees its icon, its name and a sentence '
-      + 'about what it does before connecting, rather than after. Nothing about an account is '
-      + 'readable without signing in — that has not changed.',
+      'The connector now carries an icon, a name and a sentence about what it does, so an assistant '
+      + 'shows what it is connected to rather than a bare URL. It is read after signing in, not '
+      + 'before: every message needs a token, `initialize` included, because a server that answers '
+      + 'one without a token is a server a client reads as having no sign-in at all.',
   },
   {
     date: '2026-09-17',
