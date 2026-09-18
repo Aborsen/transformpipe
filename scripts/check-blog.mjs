@@ -181,6 +181,30 @@ for (const locale of LOCALES) {
      * makes this narrower than the rule, which is the right way round — the rule is prose a person
      * still has to read.
      */
+    /*
+     * A letter from the wrong alphabet, inside a word made of the right one.
+     *
+     * A Cyrillic `о` is a different character from a Latin `o` and looks exactly like it. It
+     * survives every check here, renders identically, and makes the word it sits in unfindable:
+     * searching the site for `esteso` does not match `estesо`, and nobody can see why. One arrived
+     * in an Italian article the only way these ever do — a translator writing in one script with
+     * another one in mind.
+     *
+     * Mixed inside a word, not merely present: an article quoting Cyrillic or Greek on purpose is
+     * a legitimate thing to write, and a whole word in another script is obviously deliberate. It
+     * is the single stray letter between Latin ones that is always a mistake.
+     */
+    const mixed = prose.match(
+      /[A-Za-zÀ-ÿ][\u0370-\u03FF\u0400-\u04FF]|[\u0370-\u03FF\u0400-\u04FF][A-Za-zÀ-ÿ]/
+    );
+
+    if (mixed) {
+      problems.push(
+        `${name}: "${mixed[0]}" mixes alphabets inside a word — a Cyrillic or Greek letter ` +
+          'standing in for a Latin one, which looks identical and breaks search'
+      );
+    }
+
     const FORMAL = {
       es: {
         pattern: /\b(usted|ustedes)\b/i,

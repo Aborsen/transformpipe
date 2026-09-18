@@ -95,7 +95,7 @@ Pandoc è un convertitore di documenti da riga di comando scritto in Haskell che
 | Pro | Contro |
 | --- | --- |
 | Un solo strumento per HTML a Markdown, e da Markdown a quasi tutto | Richiede un'installazione e un terminale |
-| Il suo scrittore Markdown può emettere o rifiutare HTML grezzo, su richiesta | Il suo dialetto Markdown estesо non è GFM a meno che tu non chieda GFM |
+| Il suo scrittore Markdown può emettere o rifiutare HTML grezzo, su richiesta | Il suo dialetto Markdown esteso non è GFM a meno che tu non chieda GFM |
 | I filtri Lua ti permettono di riscrivere il documento a metà conversione | Nessuna estrazione: una pagina intera converte come una pagina intera |
 | Gestisce documenti molto grandi senza un browser in mezzo | Il numero di opzioni è una curva di apprendimento tutta sua |
 
