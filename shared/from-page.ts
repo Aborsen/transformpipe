@@ -75,6 +75,20 @@ export interface PageDocument {
   article: boolean;
 }
 
+/** The last readable part of an address, for a page that names itself nowhere. */
+function titleFromUrl(url: string): string {
+  try {
+    const { hostname, pathname } = new URL(url);
+    const last = pathname.split('/').filter(Boolean).pop();
+
+    return last
+      ? `${decodeURIComponent(last).replace(/[-_]+/g, ' ')} — ${hostname.replace(/^www\./, '')}`
+      : hostname.replace(/^www\./, '');
+  } catch {
+    return '';
+  }
+}
+
 /** `Docs — Install & setup` becomes `docs-install-setup.md`. */
 function fileName(title: string): string {
   const slug =
@@ -226,13 +240,45 @@ export function pageToMarkdown({
    * of cards, a search result — has no article in it to find, and answering with nothing at all
    * would be worse than answering with the page. So the fallback is the body as it stands.
    */
-  const article = selection
+  const found = selection
     ? null
     : new Readability(parsed.cloneNode(true) as Document, {
         charThreshold: 200,
       }).parse();
 
-  const finalTitle = (article?.title || pageTitle || title || 'Page').trim();
+  /*
+   * Whether what it found is the page, or a corner of it.
+   *
+   * Readability always answers if anything scores over its threshold, and on an application it
+   * finds *a* block rather than none — a sidebar of labels, one card, a table of figures — and
+   * hands that back as though it were the article. A dashboard came out as ninety-seven words of
+   * menu, which is worse than the whole page, because the whole page at least contains the part
+   * somebody wanted.
+   *
+   * So the answer is measured against the page it came from. A tenth of the text is a corner, not
+   * an article, and a real article inside a heavy site clears that easily — the sidebar and footer
+   * of a news site are nothing like nine tenths of its words.
+   */
+  const pageText = (parsed.body.textContent ?? '').replace(/\s+/g, ' ').trim();
+  const articleText = (found?.textContent ?? '').replace(/\s+/g, ' ').trim();
+  const article =
+    found && (pageText.length < 1000 || articleText.length >= pageText.length / 10)
+      ? found
+      : null;
+
+  /*
+   * A name from the address when nothing else offers one, rather than the word "Page".
+   *
+   * `/vicgorlenko-6241s-projects/transformpipe` is not a title, but it says which page this was,
+   * and it is the name the file will be saved under.
+   */
+  const finalTitle = (
+    article?.title ||
+    pageTitle ||
+    title ||
+    titleFromUrl(url) ||
+    'Page'
+  ).trim();
 
   /*
    * Readability resolves addresses itself; the other two paths — a selection, and a page it could
