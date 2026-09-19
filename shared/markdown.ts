@@ -6,7 +6,8 @@
  * Only the DOM differs. DOMPurify needs one, and the two runtimes get it from different places —
  * so each passes its own `sanitize` in, built from the shared config below.
  */
-import { Marked } from 'marked';
+import katex from 'katex';
+import { Marked, type Tokens } from 'marked';
 import {
   mdDocPrintOverride,
   mdDocResponsiveTheme,
@@ -18,6 +19,126 @@ import {
 const marked = new Marked({
   gfm: true,
   breaks: false,
+});
+
+/**
+ * TeX between dollars, rendered to MathML.
+ *
+ * MathML rather than KaTeX's own HTML, and the reason is the exported file. KaTeX's HTML output is
+ * a stack of positioned spans that needs a 23 kB stylesheet and the best part of a megabyte of
+ * fonts to mean anything; a document carrying those inline stops being a document. MathML needs
+ * neither — every browser lays it out with its own maths font — so a formula survives being saved,
+ * emailed and opened somewhere with no network, which is what this file promises everywhere else.
+ *
+ * It renders in both runtimes, which is the other half of the point: KaTeX runs in Node, so a
+ * shared link and an API response carry the same formula the preview drew, with no second pass and
+ * no browser involved.
+ */
+function renderMath(tex: string, display: boolean): string {
+  try {
+    return katex.renderToString(tex, {
+      output: 'mathml',
+      displayMode: display,
+      throwOnError: true,
+      strict: false,
+    });
+  } catch {
+    /*
+     * Half-written TeX keeps its dollars and stays text — the same answer a broken mermaid fence
+     * gets. KaTeX will happily render an error in red instead, and an error message in the middle
+     * of a paragraph is worth less to whoever is still typing than the formula they typed.
+     */
+    return escapeHtml(display ? `$$${tex}$$` : `$${tex}$`);
+  }
+}
+
+/**
+ * Whether a run of text between two dollars is a formula or a sentence.
+ *
+ * "No space after the opening dollar, none before the closing one" — the rule every implementation
+ * of this uses — is not enough on its own, and a page of ours proved it: *"It costs $5 to $10"
+ * renders exactly as…* lost everything from the second dollar onwards to a formula, because the
+ * second dollar opens cleanly and some dollar further along the line closes cleanly.
+ *
+ * So: strip the TeX out — commands and anything braced — and look at what is left. Real TeX is
+ * operators and single letters once its commands are gone, because a bare word in maths renders as
+ * its letters multiplied together and nobody writes that. Prose is words. Three letters in a row
+ * that no backslash or brace accounts for means this is a sentence, and the dollars stay dollars.
+ *
+ * It errs toward text, which is the safe direction: a formula that does not render keeps its
+ * source, the same fallback a fence that will not parse gets.
+ */
+function looksLikeMath(tex: string): boolean {
+  let bare = tex.replace(/\\[a-zA-Z]+/g, ' ').replace(/\\./g, ' ');
+
+  /* Innermost braces first, repeatedly, so `\\frac{a}{\\sqrt{b}}` empties out rather than stalling. */
+  for (let pass = 0; pass < 8; pass += 1) {
+    const next = bare.replace(/\{[^{}]*\}/g, ' ');
+
+    if (next === bare) break;
+
+    bare = next;
+  }
+
+  return !/[A-Za-z]{3}/.test(bare);
+}
+
+/*
+ * Registered once, on the instance, rather than inside the render call.
+ *
+ * `use` appends tokenizers to an array; calling it per render would add another pair of them per
+ * converted document and walk every one of them at every position in the source.
+ */
+marked.use({
+  extensions: [
+    {
+      name: 'mathBlock',
+      level: 'block',
+      start(src: string) {
+        return src.indexOf('$$');
+      },
+      tokenizer(src: string) {
+        const match = /^\$\$([\s\S]+?)\$\$(?:\n+|$)/.exec(src);
+
+        if (!match) return undefined;
+
+        return {
+          type: 'mathBlock',
+          raw: match[0],
+          text: match[1].trim(),
+        };
+      },
+      renderer(token: Tokens.Generic) {
+        return `<div class="md-math">${renderMath(String(token.text), true)}</div>\n`;
+      },
+    },
+    {
+      name: 'mathInline',
+      level: 'inline',
+      start(src: string) {
+        return src.indexOf('$');
+      },
+      /*
+       * What stops `$5 and $10` becoming a formula: no space after the opening dollar, none before
+       * the closing one, and no digit straight after it. Prices are written with the space in
+       * exactly the place TeX never puts one.
+       */
+      tokenizer(src: string) {
+        const match = /^\$(?![\s$])((?:\\.|[^$\\])+?)(?<![\s\\])\$(?!\d)/.exec(src);
+
+        if (!match || !looksLikeMath(match[1])) return undefined;
+
+        return {
+          type: 'mathInline',
+          raw: match[0],
+          text: match[1],
+        };
+      },
+      renderer(token: Tokens.Generic) {
+        return renderMath(String(token.text), false);
+      },
+    },
+  ],
 });
 
 function escapeHtml(value: string): string {
@@ -65,11 +186,29 @@ export const ALLOWED_TAGS = [
   'blockquote', 'pre', 'code', 'kbd', 'samp',
   'table', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td', 'caption',
   'a', 'img', 'input',
+  /*
+   * MathML, which is what a `$…$` becomes. A long list for one feature, and still the cheap
+   * option: the vocabulary is inert — it has no event attributes, no URLs and nothing that
+   * executes — where the alternative was allowing `style` on everything so KaTeX could position
+   * its spans.
+   */
+  'math', 'semantics', 'annotation', 'mrow', 'mi', 'mn', 'mo', 'ms', 'mtext',
+  'mspace', 'msup', 'msub', 'msubsup', 'mfrac', 'msqrt', 'mroot', 'munder',
+  'mover', 'munderover', 'mmultiscripts', 'mprescripts', 'none', 'mtable',
+  'mtr', 'mtd', 'mlabeledtr', 'mpadded', 'mphantom', 'menclose', 'mstyle',
+  'merror', 'mglyph',
 ];
 
 export const ALLOWED_ATTR = [
   'href', 'src', 'alt', 'title', 'id', 'class', 'align',
   'target', 'rel', 'type', 'checked', 'disabled', 'colspan', 'rowspan',
+  /* MathML's own. `xmlns` is the one that decides whether a browser treats `math` as maths. */
+  'xmlns', 'display', 'displaystyle', 'scriptlevel', 'mathvariant', 'mathsize',
+  'encoding', 'stretchy', 'symmetric', 'fence', 'separator', 'accent',
+  'accentunder', 'largeop', 'movablelimits', 'form', 'minsize', 'maxsize',
+  'linethickness', 'notation', 'lspace', 'rspace', 'voffset', 'width',
+  'height', 'depth', 'columnalign', 'columnspacing', 'columnlines',
+  'rowspacing', 'rowlines',
 ];
 
 export type Sanitize = (html: string) => string;

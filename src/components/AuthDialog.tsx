@@ -1,4 +1,3 @@
-import { Mail, ShieldCheck } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { GoogleGlyph } from '@/components/GoogleGlyph';
 import { useAuth } from '@/lib/auth';
@@ -20,6 +19,7 @@ import {
 import { PasswordInput } from '@/ui/components/PasswordInput';
 import { Separator } from '@/ui/components/Separator';
 import { Typography } from '@/ui/components/Typography';
+import { cn } from '@/ui/lib/utils';
 
 /*
  * Signing in, signing up, and asking for a reset link — one dialog, three views.
@@ -31,6 +31,13 @@ import { Typography } from '@/ui/components/Typography';
  * Google stays on all three because it is the shortest path for anybody who has an account already,
  * and it sits below the form rather than above it: the form is what this dialog exists for now, and
  * the button that leaves the page belongs after the one that does not.
+ *
+ * What it does not look like, on purpose: a dialog with an envelope in one rounded box and a
+ * padlock in the next, a full-width teal button under it and a line offering an account at the
+ * bottom. That is the shape every product ships, and it made this one unrecognisable as ours. The
+ * chrome here is the app's own — the header's accent hairline across the top, and the same
+ * uppercase eyebrow the converter puts over MARKDOWN and PREVIEW, over each field instead of an
+ * icon inside it.
  *
  * No password rules are listed. The auth service enforces its own minimum and this app does not
  * know what it is — a list of requirements that disagrees with the server is worse than no list,
@@ -177,10 +184,20 @@ export function AuthDialog({
           ? t('auth.dialog.verify.title')
           : t('auth.dialog.reset.title');
 
+  /* The converter's eyebrow, over a field instead of over a pane. */
+  const eyebrow =
+    'font-medium text-ink-secondary text-xxs uppercase tracking-[0.12em]';
+
   return (
     <Modal open={open} onOpenChange={onOpenChange}>
-      <ModalContent className="sm:max-w-[26rem]">
-        <ModalHeader align="center">
+      <ModalContent className="overflow-hidden sm:max-w-[25rem]">
+        {/* The header's own hairline, full bleed across the top of the dialog. */}
+        <div
+          aria-hidden
+          className="-mx-4 -mt-4 mb-4 h-0.5 bg-gradient-to-r from-brand-tertiary via-brand-primary to-transparent"
+        />
+
+        <ModalHeader>
           <ModalTitle>{title}</ModalTitle>
           {view === 'reset' && (
             <Typography variant="p" textColor="secondary" className="text-sm">
@@ -196,37 +213,45 @@ export function AuthDialog({
         </ModalHeader>
 
         <ModalBody className="flex flex-col gap-4">
-          <form className="flex flex-col gap-3" onSubmit={submit}>
-            {/*
-              * An InputGroup, not a bare `Input`.
-              *
-              * `Input` in this design system is transparent and borderless — it is the field
-              * inside a group, not a field on its own — so on its own it rendered the placeholder
-              * as loose text with no box around it, beside a password field that looked right.
-              */}
+          <form className="flex flex-col gap-3.5" onSubmit={submit}>
             {view !== 'verify' && (
-            <InputGroup>
-              <InputGroupAddon>
-                <Mail className="size-4" />
-              </InputGroupAddon>
-              <InputGroupInput
-                type="email"
-                required
-                autoComplete="email"
-                placeholder={t('auth.dialog.email')}
-                aria-label={t('auth.dialog.email')}
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </InputGroup>
+              <div className="flex flex-col gap-1.5">
+                <label className={eyebrow} htmlFor="auth-email">
+                  {t('auth.dialog.email')}
+                </label>
+                <InputGroup size="lg" inputId="auth-email">
+                  <InputGroupInput
+                    type="email"
+                    required
+                    autoComplete="email"
+                    aria-label={t('auth.dialog.email')}
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                  />
+                </InputGroup>
+              </div>
             )}
 
             {view === 'verify' && (
-              <>
-                <InputGroup>
-                  <InputGroupAddon>
-                    <ShieldCheck className="size-4" />
-                  </InputGroupAddon>
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-baseline justify-between gap-3">
+                  <label className={eyebrow} htmlFor="auth-code">
+                    {t('auth.dialog.verify.code')}
+                  </label>
+                  <button
+                    type="button"
+                    className="rounded text-brand-tertiary text-xs hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
+                    onClick={async () => {
+                      const failed = await sendVerificationCode(email);
+
+                      setSaid(failed ?? t('auth.dialog.verify.resent'));
+                      setDone(!failed);
+                    }}
+                  >
+                    {t('auth.dialog.verify.resend')}
+                  </button>
+                </div>
+                <InputGroup size="lg" inputId="auth-code">
                   <InputGroupInput
                     required
                     /*
@@ -237,56 +262,59 @@ export function AuthDialog({
                     inputMode="numeric"
                     autoComplete="one-time-code"
                     maxLength={6}
-                    placeholder={t('auth.dialog.verify.code')}
                     aria-label={t('auth.dialog.verify.code')}
-                    className="tracking-[0.3em]"
+                    className="text-center text-base tracking-[0.5em]"
                     value={code}
                     onChange={(event) =>
                       setCode(event.target.value.replace(/\D/g, '').slice(0, 6))
                     }
                   />
                 </InputGroup>
-
-                <button
-                  type="button"
-                  className="self-start rounded text-brand-tertiary text-xs hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
-                  onClick={async () => {
-                    const failed = await sendVerificationCode(email);
-
-                    setSaid(failed ?? t('auth.dialog.verify.resent'));
-                    setDone(!failed);
-                  }}
-                >
-                  {t('auth.dialog.verify.resend')}
-                </button>
-              </>
+              </div>
             )}
 
             {view !== 'reset' && view !== 'verify' && (
-              <PasswordInput
-                required
-                /*
-                 * The browser needs telling which one this is: `current-password` on a sign-in and
-                 * `new-password` on a sign-up, or a password manager offers the wrong thing and
-                 * saves the wrong thing.
-                 */
-                autoComplete={
-                  view === 'signin' ? 'current-password' : 'new-password'
-                }
-                placeholder={t('auth.dialog.password')}
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-              />
-            )}
-
-            {view === 'signin' && (
-              <button
-                type="button"
-                className="self-start rounded text-brand-tertiary text-xs hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
-                onClick={() => move('reset')}
-              >
-                {t('auth.dialog.forgot')}
-              </button>
+              <div className="flex flex-col gap-1.5">
+                {/*
+                  * "Forgot?" sits on the label's line, not under the field.
+                  *
+                  * Under it, it is a third thing stacked between the password and the button, and
+                  * it reads as a step. On the label's line it is what it is: a way out of this one
+                  * field, offered where the field is named.
+                  */}
+                <div className="flex items-baseline justify-between gap-3">
+                  <label className={eyebrow} htmlFor="auth-password">
+                    {t('auth.dialog.password')}
+                  </label>
+                  {view === 'signin' && (
+                    <button
+                      type="button"
+                      className="rounded text-brand-tertiary text-xs hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
+                      onClick={() => move('reset')}
+                    >
+                      {t('auth.dialog.forgot')}
+                    </button>
+                  )}
+                </div>
+                <PasswordInput
+                  id="auth-password"
+                  required
+                  /*
+                   * The browser needs telling which one this is: `current-password` on a sign-in
+                   * and `new-password` on a sign-up, or a password manager offers the wrong thing
+                   * and saves the wrong thing.
+                   */
+                  autoComplete={
+                    view === 'signin' ? 'current-password' : 'new-password'
+                  }
+                  aria-label={t('auth.dialog.password')}
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  inputGroupProps={{ size: 'lg' }}
+                  /* The padlock goes with the envelope: the label says which field this is. */
+                  classNames={{ startAddonClassName: 'hidden' }}
+                />
+              </div>
             )}
 
             {view === 'signup' && (
@@ -326,7 +354,14 @@ export function AuthDialog({
               </Typography>
             )}
 
-            <Button type="submit" fullWidth isLoading={isSigningIn}>
+            <Button
+              type="submit"
+              size="xl"
+              rounded="full"
+              fullWidth
+              className="mt-0.5"
+              isLoading={isSigningIn}
+            >
               {view === 'signin'
                 ? t('auth.dialog.submit.signin')
                 : view === 'signup'
@@ -336,6 +371,34 @@ export function AuthDialog({
                     : t('auth.dialog.submit.reset')}
             </Button>
           </form>
+
+          {view !== 'reset' && view !== 'verify' && (
+            <>
+              <div className="flex items-center gap-3">
+                <Separator className="flex-1" />
+                <Typography
+                  variant="span"
+                  textColor="secondary"
+                  className="text-xxs uppercase tracking-[0.12em]"
+                >
+                  {t('auth.dialog.or')}
+                </Typography>
+                <Separator className="flex-1" />
+              </div>
+
+              <Button
+                type="button"
+                variant="secondary"
+                size="xl"
+                rounded="full"
+                fullWidth
+                leftSlot={<GoogleGlyph aria-hidden className="size-4" />}
+                onClick={() => void signIn()}
+              >
+                {t('auth.dialog.google')}
+              </Button>
+            </>
+          )}
 
           {view === 'verify' ? (
             /*
@@ -359,17 +422,22 @@ export function AuthDialog({
               {t('auth.dialog.back')}
             </button>
           ) : (
+            /*
+             * Under Google rather than above it. The form is what this dialog is for, Google is the
+             * shortcut past it, and "do you have one of these at all" is the question that comes
+             * after both — not one wedged between the button and the alternative to it.
+             */
             <Typography
               variant="p"
               textColor="secondary"
-              className="text-center text-sm"
+              className={cn('text-center text-xs')}
             >
               {view === 'signin'
                 ? t('auth.dialog.tonew')
                 : t('auth.dialog.toexisting')}{' '}
               <button
                 type="button"
-                className="rounded text-brand-tertiary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
+                className="rounded font-medium text-brand-tertiary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
                 onClick={() => move(view === 'signin' ? 'signup' : 'signin')}
               >
                 {view === 'signin'
@@ -377,32 +445,6 @@ export function AuthDialog({
                   : t('auth.dialog.toexisting.action')}
               </button>
             </Typography>
-          )}
-
-          {view !== 'reset' && view !== 'verify' && (
-            <>
-              <div className="flex items-center gap-3">
-                <Separator className="flex-1" />
-                <Typography
-                  variant="span"
-                  textColor="light"
-                  className="text-xs uppercase tracking-wide"
-                >
-                  {t('auth.dialog.or')}
-                </Typography>
-                <Separator className="flex-1" />
-              </div>
-
-              <Button
-                type="button"
-                variant="secondary"
-                fullWidth
-                leftSlot={<GoogleGlyph aria-hidden className="size-4" />}
-                onClick={() => void signIn()}
-              >
-                {t('auth.dialog.google')}
-              </Button>
-            </>
           )}
         </ModalBody>
       </ModalContent>

@@ -93,6 +93,64 @@ export const DETAIL_LIMIT = 3000;
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-19',
+    title: 'Maths between dollar signs',
+    slug: 'math-in-markdown',
+    body:
+      'Write $E = mc^2$ in a sentence or put a formula between $$ on its own lines, and it is set '
+      + 'as maths — in the preview, in the file you download, in a shared link and in what the API '
+      + 'returns. A price written as $5 to $10 is still a price.',
+    detail: {
+      en: {
+        description:
+          'TeX between dollar signs is now typeset wherever a document is shown, and it needs no '
+          + 'stylesheet and no fonts to do it.',
+        keywords:
+          'markdown math to html, render latex in markdown, katex markdown converter, '
+          + 'mathml export, convert equations markdown',
+        body: `\`$…$\` in a line and \`$$…$$\` on lines of their own are read as TeX and typeset with
+KaTeX.
+
+## Everywhere, not only on screen
+
+This one renders the same in every place a document is built, because KaTeX runs in a server as
+happily as in a browser. The preview, the downloaded .html, a shared link and the API's own HTML
+all carry the same formula, worked out once, with no second pass anywhere.
+
+## What travels inside the file
+
+MathML — the maths vocabulary browsers lay out themselves — rather than KaTeX's own HTML. The
+difference matters exactly once, and it is the moment somebody saves the file: KaTeX's HTML is a
+stack of positioned boxes that means nothing without a stylesheet and the better part of a
+megabyte of fonts, and a document that carries those has stopped being a document. MathML needs
+neither. A formula in a saved file opens correctly on a machine with no network, which is what
+every other part of that file already promised.
+
+It is also text. The formula can be selected and copied, a screen reader reads it as maths rather
+than as a picture, and the TeX you typed is kept alongside it inside the document.
+
+## A price is not a formula
+
+Two dollar signs in one line are how most tools decide something is maths, and it is why "it
+costs $5 to $10" comes out of some of them as one long italic formula. Here the text between the
+dollars has to look like maths — operators and short symbols once its commands are accounted for,
+rather than words — or the dollars stay dollars. Three letters in a row that no command or brace
+explains means a sentence.
+
+Half-written TeX keeps its source too, rather than being replaced by an error.`,
+      },
+    },
+  },
+  {
+    date: '2026-09-19',
+    title: 'Signing in looks like the rest of the product',
+    body:
+      'The sign-in dialog had drifted into the shape every product ships: an envelope in one box, '
+      + 'a padlock in the next, and a line at the bottom offering an account. It now wears the '
+      + 'header\'s accent line and the same small capitals the converter puts over its panes, and '
+      + '"forgot your password" sits on the field it belongs to rather than under it.',
+  },
+  {
+    date: '2026-09-19',
     title: 'Mermaid diagrams are drawn, not printed as code',
     slug: 'mermaid-diagrams',
     body:

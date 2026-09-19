@@ -273,6 +273,19 @@ export const MD_DOC_STYLE = `
   height: auto;
 }
 
+/*
+ * Maths. There is no stylesheet to ship here — MathML is laid out by the browser, with the maths
+ * font it already has — so this is only about where the formula sits on the page.
+ */
+.md-doc .md-math {
+  margin: 1.25em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: center;
+}
+.md-doc math { font-size: 1.05em; }
+.md-doc .md-math math { font-size: 1.15em; }
+
 .md-doc kbd {
   padding: 0.1em 0.4em;
   border: 1px solid var(--md-stroke);
