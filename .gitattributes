@@ -1,0 +1,4 @@
+brand/store/*.zip export-ignore
+dist export-ignore
+dist-extension export-ignore
+dist-extension-firefox export-ignore
