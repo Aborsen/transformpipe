@@ -93,6 +93,65 @@ export const DETAIL_LIMIT = 3000;
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-19',
+    title: 'The things people actually write in Markdown',
+    slug: 'markdown-people-write',
+    body:
+      'A note from Obsidian opened with a horizontal rule and its own YAML set as a heading. '
+      + 'A GitHub alert showed the word [!WARNING]. A footnote marker stayed as [^1] and the note '
+      + 'under it as a paragraph. Water came out with a line through the 2. All of that now reads '
+      + 'the way it was written.',
+    detail: {
+      en: {
+        description:
+          'Front matter, GitHub alerts and Obsidian callouts, footnotes, wikilinks, highlights and '
+          + 'subscripts are now read rather than printed as punctuation.',
+        keywords:
+          'obsidian to html, github alerts markdown, markdown footnotes html, '
+          + 'yaml front matter converter, markdown callout rendering',
+        body: `Six things a Markdown file routinely contains that this converter used to print as
+punctuation.
+
+## Front matter
+
+The \`---\` block of properties at the top of every Obsidian note, every Jekyll page and most of
+what a static site generator produces. It was being read as a horizontal rule followed by a
+heading made of YAML, so a note opened with a line and its own tags set in bold.
+
+It is dropped. The properties describe the vault or the site that defined them and mean nothing
+in a converted document — which is the call the Obsidian importer already made, for a vault
+uploaded as a zip. The same note pasted on its own kept them, so one file converted two ways came
+out as two different documents. Both go through the same rule now.
+
+## Alerts and callouts
+
+\`> [!NOTE]\`, \`> [!TIP]\`, \`> [!IMPORTANT]\`, \`> [!WARNING]\` and \`> [!CAUTION]\` are boxes with
+a coloured edge rather than quotes with a marker visible at the top. Obsidian's callouts use the
+same shape with a dozen more names — \`success\`, \`danger\`, \`question\` — and those map onto the
+five, including the title Obsidian lets you write after the marker.
+
+## Footnotes
+
+\`[^1]\` in a sentence becomes a numbered marker that links to the note, and the notes gather at
+the foot of the document in the order they were referred to, each with a way back to where it was
+cited. Numbering follows the reading order rather than the order the notes were written in.
+
+## Wikilinks, highlights, subscripts
+
+\`[[Another note]]\` keeps its words — there is no vault to resolve it against once a document has
+left one. \`==highlighted==\` is highlighted. \`H~2~O\` is a subscript and \`r^2^\` a superscript;
+the first of those is a correction, because a single tilde was being read as strikethrough and
+putting a line through the 2.
+
+## What is still not read
+
+Definition lists, \`:emoji:\` shortcodes and abbreviation definitions. Each is one dialect's
+extension rather than something a file arrives carrying, and an unread \`:rocket:\` is a word
+where the others were visible punctuation.`,
+      },
+    },
+  },
+  {
+    date: '2026-09-19',
     title: 'Code is highlighted, in the document\'s own colours',
     slug: 'syntax-highlighting',
     body:

@@ -7,6 +7,7 @@
  * so each passes its own `sanitize` in, built from the shared config below.
  */
 import { highlightCode } from './highlight.js';
+import { rewriteWikilinks, stripFrontmatter } from './notes.js';
 import katex from 'katex';
 import { Marked, type Tokens } from 'marked';
 import {
@@ -85,6 +86,55 @@ function looksLikeMath(tex: string): boolean {
 }
 
 /*
+ * The footnotes collected while one document is being parsed.
+ *
+ * Module state for something that is per-document, which is only safe because it is: `marked.parse`
+ * runs synchronously here — `{ async: false }` — so one document is parsed start to finish before
+ * another begins, and `renderMarkdown` resets this on the way in. The alternative, threading a
+ * context through marked's extension API, is not offered by that API.
+ */
+let notes: { order: string[]; text: Map<string, string> } | null = null;
+
+/** A footnote's id, made safe for an `id=` and prefixed like every other anchor in a document. */
+function slugifyNote(id: string): string {
+  return id.toLowerCase().replace(/[^\p{L}\p{N}-]+/gu, '-').replace(/^-|-$/g, '') || 'n';
+}
+
+/**
+ * GitHub's five alert kinds, and the Obsidian callouts that mean the same thing.
+ *
+ * Obsidian ships a dozen more names than GitHub does, and a document written in one is read in the
+ * other often enough that mapping them is worth more than rendering `[!success]` as literal text.
+ * Anything not on this list stays an ordinary quote, which is what it looks like anyway.
+ */
+const ALERTS: Record<string, { kind: string; label: string }> = {
+  note: { kind: 'note', label: 'Note' },
+  info: { kind: 'note', label: 'Note' },
+  abstract: { kind: 'note', label: 'Note' },
+  summary: { kind: 'note', label: 'Note' },
+  quote: { kind: 'note', label: 'Note' },
+  tip: { kind: 'tip', label: 'Tip' },
+  hint: { kind: 'tip', label: 'Tip' },
+  success: { kind: 'tip', label: 'Tip' },
+  check: { kind: 'tip', label: 'Tip' },
+  done: { kind: 'tip', label: 'Tip' },
+  example: { kind: 'tip', label: 'Tip' },
+  important: { kind: 'important', label: 'Important' },
+  question: { kind: 'important', label: 'Important' },
+  help: { kind: 'important', label: 'Important' },
+  faq: { kind: 'important', label: 'Important' },
+  todo: { kind: 'important', label: 'Important' },
+  warning: { kind: 'warning', label: 'Warning' },
+  attention: { kind: 'warning', label: 'Warning' },
+  caution: { kind: 'caution', label: 'Caution' },
+  danger: { kind: 'caution', label: 'Caution' },
+  error: { kind: 'caution', label: 'Caution' },
+  failure: { kind: 'caution', label: 'Caution' },
+  bug: { kind: 'caution', label: 'Caution' },
+  missing: { kind: 'caution', label: 'Caution' },
+};
+
+/*
  * Registered once, on the instance, rather than inside the render call.
  *
  * `use` appends tokenizers to an array; calling it per render would add another pair of them per
@@ -111,6 +161,124 @@ marked.use({
       },
       renderer(token: Tokens.Generic) {
         return `<div class="md-math">${renderMath(String(token.text), true)}</div>\n`;
+      },
+    },
+    {
+      /*
+       * `[^1]: the note` — a footnote's text, taken out of the flow and kept for the end.
+       *
+       * The raw includes the indented continuation lines, so a footnote can be a paragraph rather
+       * than a sentence, which is what people write them as.
+       */
+      name: 'footnoteDef',
+      level: 'block',
+      start(src: string) {
+        return src.search(/^\[\^[^\]\s]+\]:/m);
+      },
+      tokenizer(src: string) {
+        const match = /^\[\^([^\]\s]+)\]:[ \t]*([^\n]*(?:\n(?:[ \t]+[^\n]*|[ \t]*))*)/.exec(
+          src
+        );
+
+        if (!match) return undefined;
+
+        if (notes) {
+          const id = match[1];
+
+          if (!notes.text.has(id)) notes.order.push(id);
+
+          notes.text.set(id, match[2].replace(/\n[ \t]+/g, ' ').trim());
+        }
+
+        return { type: 'footnoteDef', raw: match[0], text: '' };
+      },
+      renderer() {
+        /* Nothing here: the note is printed once, at the end, in the order it was referenced. */
+        return '';
+      },
+    },
+    {
+      /* `[^1]` in a sentence — the marker that points at it. */
+      name: 'footnoteRef',
+      level: 'inline',
+      start(src: string) {
+        return src.indexOf('[^');
+      },
+      tokenizer(src: string) {
+        const match = /^\[\^([^\]\s]+)\]/.exec(src);
+
+        if (!match || !notes) return undefined;
+
+        const id = match[1];
+
+        if (!notes.text.has(id) && !notes.order.includes(id)) notes.order.push(id);
+
+        return { type: 'footnoteRef', raw: match[0], text: id };
+      },
+      renderer(token: Tokens.Generic) {
+        const id = String(token.text);
+        const at = (notes?.order.indexOf(id) ?? 0) + 1;
+        const slug = slugifyNote(id);
+
+        return `<sup class="md-fnref" id="doc-fnref-${slug}"><a href="#doc-fn-${slug}">${at}</a></sup>`;
+      },
+    },
+    {
+      /* `==marked==`, Obsidian's highlight. `mark` was already on the allow-list. */
+      name: 'markHighlight',
+      level: 'inline',
+      start(src: string) {
+        return src.indexOf('==');
+      },
+      tokenizer(src: string) {
+        const match = /^==(?!\s)([\s\S]+?)(?<!\s)==/.exec(src);
+
+        if (!match) return undefined;
+
+        return { type: 'markHighlight', raw: match[0], text: match[1] };
+      },
+      renderer(token: Tokens.Generic) {
+        return `<mark>${escapeHtml(String(token.text))}</mark>`;
+      },
+    },
+    {
+      /*
+       * `H~2~O` and `x^2^`, Pandoc's subscript and superscript.
+       *
+       * The subscript is a correction as much as an addition: a single tilde was being read as
+       * strikethrough, so a chemical formula came out with a line through the number.
+       */
+      name: 'subscript',
+      level: 'inline',
+      start(src: string) {
+        return src.indexOf('~');
+      },
+      tokenizer(src: string) {
+        const match = /^~(?![~\s])([^~\s]+)~(?!~)/.exec(src);
+
+        if (!match) return undefined;
+
+        return { type: 'subscript', raw: match[0], text: match[1] };
+      },
+      renderer(token: Tokens.Generic) {
+        return `<sub>${escapeHtml(String(token.text))}</sub>`;
+      },
+    },
+    {
+      name: 'superscript',
+      level: 'inline',
+      start(src: string) {
+        return src.indexOf('^');
+      },
+      tokenizer(src: string) {
+        const match = /^\^(?![\^\s])([^\^\s]+)\^/.exec(src);
+
+        if (!match) return undefined;
+
+        return { type: 'superscript', raw: match[0], text: match[1] };
+      },
+      renderer(token: Tokens.Generic) {
+        return `<sup>${escapeHtml(String(token.text))}</sup>`;
       },
     },
     {
@@ -288,6 +456,8 @@ export type Sanitize = (html: string) => string;
 export function renderMarkdown(markdown: string, sanitize: Sanitize): string {
   const used = new Map<string, number>();
 
+  notes = { order: [], text: new Map() };
+
   marked.use({
     renderer: {
       heading({ tokens, depth }) {
@@ -336,6 +506,36 @@ export function renderMarkdown(markdown: string, sanitize: Sanitize): string {
 
         return `<pre><code class="hljs language-${escapeHtml(info)}">${lit}</code></pre>\n`;
       },
+      /*
+       * `> [!NOTE]` and its relatives — an alert, not a quote.
+       *
+       * GitHub renders five of these and Obsidian a dozen more under the name "callout", and both
+       * are common enough in the documents this converts that leaving `[!WARNING]` sitting as text
+       * at the top of a quote reads as a converter that did not know what it was looking at.
+       *
+       * The first line of the quote is replaced rather than parsed as markup: whatever follows the
+       * marker on that line is the writer's own title for the box, which Obsidian allows and
+       * GitHub ignores.
+       */
+      blockquote({ tokens }) {
+        const first = tokens[0];
+        const opener =
+          first?.type === 'paragraph' && typeof first.raw === 'string'
+            ? /^\[!([A-Za-z]+)\][ \t]*([^\n]*)/.exec(first.raw.trim())
+            : null;
+        const alert = opener ? ALERTS[opener[1].toLowerCase()] : undefined;
+
+        if (!opener || !alert) return false;
+
+        const rest = first.raw.trim().slice(opener[0].length).replace(/^\r?\n/, '');
+        const body = this.parser.parse([
+          ...(rest ? marked.lexer(rest) : []),
+          ...tokens.slice(1),
+        ]);
+        const title = opener[2].trim() || alert.label;
+
+        return `<blockquote class="md-alert md-alert-${alert.kind}"><p class="md-alert-title">${escapeHtml(title)}</p>\n${body}</blockquote>\n`;
+      },
       link({ href, title, tokens }) {
         const text = this.parser.parseInline(tokens);
         const titleAttr = title ? ` title="${escapeHtml(title)}"` : '';
@@ -348,7 +548,42 @@ export function renderMarkdown(markdown: string, sanitize: Sanitize): string {
     },
   });
 
-  return sanitize(marked.parse(markdown, { async: false }) as string);
+  /*
+   * Two rewrites before the parser sees any of it, both of them about a note that came out of
+   * somewhere else: the properties block at the top, and the double-bracket links through the
+   * prose. `notes.ts` explains why both are dropped rather than shown.
+   */
+  const source = rewriteWikilinks(stripFrontmatter(markdown));
+  const body = marked.parse(source, { async: false }) as string;
+  const collected = notes;
+
+  notes = null;
+
+  return sanitize(body + footnoteSection(collected));
+}
+
+/** The notes themselves, once, at the end, numbered in the order the document referred to them. */
+function footnoteSection(collected: typeof notes): string {
+  if (!collected || collected.order.length === 0) return '';
+
+  const items = collected.order
+    .map((id, index) => {
+      const slug = slugifyNote(id);
+      const text = collected.text.get(id);
+
+      /*
+       * A marker with no note under it keeps its number and says so, rather than linking to an
+       * anchor that is not there. It is the sort of thing the document check will one day flag.
+       */
+      const inner = text
+        ? (marked.parseInline(text, { async: false }) as string)
+        : `<em>${escapeHtml(id)}</em>`;
+
+      return `<li id="doc-fn-${slug}">${inner} <a href="#doc-fnref-${slug}" class="md-fnback">\u21a9</a></li>`;
+    })
+    .join('\n');
+
+  return `<hr class="md-fnrule">\n<ol class="md-footnotes">\n${items}\n</ol>\n`;
 }
 
 interface StandaloneOptions {

@@ -36,6 +36,11 @@ const DARK: ThemeVars = {
   '--md-syn-fn': '#8ab4f8',
   '--md-syn-var': '#d1d5db',
   '--md-syn-del': '#f28b82',
+  '--md-alert-note': '#5b9dd9',
+  '--md-alert-tip': '#57b87f',
+  '--md-alert-important': '#a482e0',
+  '--md-alert-warning': '#d9a441',
+  '--md-alert-caution': '#e06c6c',
 };
 
 const LIGHT: ThemeVars = {
@@ -60,6 +65,11 @@ const LIGHT: ThemeVars = {
   '--md-syn-fn': '#2a5db0',
   '--md-syn-var': '#334155',
   '--md-syn-del': '#b3261e',
+  '--md-alert-note': '#2a5db0',
+  '--md-alert-tip': '#1f7a52',
+  '--md-alert-important': '#6d4bb0',
+  '--md-alert-warning': '#a4552a',
+  '--md-alert-caution': '#b3261e',
 };
 
 /**
@@ -371,6 +381,60 @@ export const MD_DOC_STYLE = `
 
 .md-doc .hljs-emphasis { font-style: italic; }
 .md-doc .hljs-strong { font-weight: 600; }
+
+/*
+ * An alert — a NOTE marker and its relatives. A quote with a coloured edge and a word on top.
+ *
+ * One rule and a variable per kind, rather than five blocks: the only thing that differs between
+ * a note and a caution is the colour, and writing that five times is five places to forget.
+ */
+.md-doc .md-alert {
+  border-left-width: 3px;
+  border-left-color: var(--md-alert);
+  border-left-style: solid;
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: var(--md-card-2);
+  padding: 0.85rem 1.1rem;
+  margin: 1.25em 0;
+  font-style: normal;
+  color: var(--md-body);
+}
+.md-doc .md-alert-note { --md-alert: var(--md-alert-note); }
+.md-doc .md-alert-tip { --md-alert: var(--md-alert-tip); }
+.md-doc .md-alert-important { --md-alert: var(--md-alert-important); }
+.md-doc .md-alert-warning { --md-alert: var(--md-alert-warning); }
+.md-doc .md-alert-caution { --md-alert: var(--md-alert-caution); }
+
+.md-doc .md-alert-title {
+  margin: 0 0 0.35em;
+  color: var(--md-alert);
+  font-weight: 600;
+  font-size: 0.9375em;
+}
+.md-doc .md-alert > :last-child { margin-bottom: 0; }
+
+.md-doc mark {
+  padding: 0.05em 0.2em;
+  border-radius: 0.2rem;
+  background: var(--md-alert-warning);
+  color: var(--md-page);
+}
+
+/* Footnotes: the rule that separates them, the list itself, and the way back up. */
+.md-doc .md-fnrule { margin-top: 2.5em; }
+.md-doc .md-footnotes {
+  padding-left: 1.2em;
+  font-size: 0.875em;
+  color: var(--md-secondary);
+}
+.md-doc .md-footnotes li { margin: 0.35em 0; }
+.md-doc .md-fnref { font-size: 0.75em; }
+.md-doc .md-fnref a,
+.md-doc .md-fnback {
+  color: var(--md-brand-3);
+  text-decoration: none;
+}
+.md-doc .md-fnback { margin-left: 0.35em; }
 
 .md-doc kbd {
   padding: 0.1em 0.4em;
