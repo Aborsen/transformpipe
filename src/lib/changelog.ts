@@ -93,6 +93,55 @@ export const DETAIL_LIMIT = 3000;
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-19',
+    title: 'Code is highlighted, in the document\'s own colours',
+    slug: 'syntax-highlighting',
+    body:
+      'A fenced block with a language on it — ```ts, ```python, ```bash and about forty more — is '
+      + 'now coloured, in the preview, the downloaded file, a shared link and every article on '
+      + 'this site. Six colours rather than twenty, drawn from the same palette as the rest of '
+      + 'the document, and they follow the theme you are reading in.',
+    detail: {
+      en: {
+        description:
+          'Fenced code blocks are syntax highlighted everywhere a document is shown, in a palette '
+          + 'taken from the document rather than from an editor theme.',
+        keywords:
+          'markdown syntax highlighting, highlight code in html export, '
+          + 'convert markdown code blocks, code highlighting converter, fenced code block html',
+        body: `Put a language after the backticks and the block is coloured.
+
+## Six colours, not twenty
+
+An editor theme paints twenty kinds of token because somebody is going to spend the afternoon in
+that file. A reader is skimming a snippet in the middle of a document, and a block painted in
+twenty colours reads as decoration rather than as code. So there are six roles — comments,
+keywords, strings, numbers, names and everything else — and they are the document's own colours,
+which is why the block does not look like a screenshot from somebody else's editor.
+
+Switch between the light and dark theme and the colours move with it, in the preview and in the
+file you download, because they are the same \`--md-*\` values the rest of the document is painted
+with.
+
+## Which languages
+
+About forty spellings resolve: the ones documentation is written in — shell, JavaScript and
+TypeScript, Python, JSON, YAML, HTML, CSS, SQL, Go, Rust, Java, Kotlin, Swift, C and its family,
+PHP, Ruby, Dockerfiles, TOML, GraphQL, diffs — and the short forms people actually type, so
+\`\`\`sh, \`\`\`yml and \`\`\`tsx all land where you would expect.
+
+A language nobody registered, or a fence with no language at all, is the plain code block it has
+always been. Nothing guesses: a highlighter asked to identify a three-line config file will
+cheerfully decide it is Perl, and a wrong colour is worse than none.
+
+## In the file, not in a stylesheet you have to keep
+
+The colours ship inside the exported document like every other style it carries, so a saved file
+opens coloured on a machine with no network.`,
+      },
+    },
+  },
+  {
+    date: '2026-09-19',
     title: 'Maths between dollar signs',
     slug: 'math-in-markdown',
     body:
@@ -142,12 +191,12 @@ Half-written TeX keeps its source too, rather than being replaced by an error.`,
   },
   {
     date: '2026-09-19',
-    title: 'Signing in looks like the rest of the product',
+    title: 'The sign-in dialog says what an account is for',
     body:
-      'The sign-in dialog had drifted into the shape every product ships: an envelope in one box, '
-      + 'a padlock in the next, and a line at the bottom offering an account. It now wears the '
-      + 'header\'s accent line and the same small capitals the converter puts over its panes, and '
-      + '"forgot your password" sits on the field it belongs to rather than under it.',
+      'It was the shape every product ships — an envelope in one box, a padlock in the next, and '
+      + 'a narrow column with no room in it. There is now a panel beside the form listing what '
+      + 'signing in actually gets you: the history, shareable links, a key for the API and the '
+      + 'extension. The form beside it has room to breathe, and on a phone it stands alone.',
   },
   {
     date: '2026-09-19',

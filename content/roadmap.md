@@ -51,6 +51,11 @@ endpoint shipped, and `/api/v1` has accepted them ever since.
   what this is.
 - **Share on X, Reddit and LinkedIn** at the foot of every article — three plain links, no SDK, so
   nothing loads until a reader clicks.
+- **Code is highlighted** in every fence that names a language — six colours from the document's
+  own palette, following the theme, inside the exported file rather than in a stylesheet somebody
+  has to keep.
+- **Signing in says what an account is for**: a panel beside the form listing the history, links,
+  the API key and the extension, and a form with room in it. The panel folds away on a phone.
 - **Maths between dollar signs** — `$…$` and `$$…$$` typeset with KaTeX, as MathML, so a formula
   needs no stylesheet and no fonts to survive being saved. A price written as `$5 to $10` stays a
   price.
@@ -89,24 +94,23 @@ The rule that came out of this: submit early in a week and ship something else w
 
 ## Next, in order
 
-Eighteen weeks, and the first two are the ones that improve every conversion at once rather than
-adding an eleventh.
+Seventeen weeks. The first is the last of the ones that improve every conversion at once rather
+than adding an eleventh.
 
 ### The document itself
 
 | Week | Ships | Notes |
 | --- | --- | --- |
-| 1 | **Syntax highlighting**, in a palette that matches the page | One renderer, four surfaces: the app, the download, the shared link, the blog |
-| 2 | **A document check** — dead links, duplicate anchors, empty headings, images with no alt text | A panel beside the preview. Nothing is rewritten without being asked |
+| 1 | **A document check** — dead links, duplicate anchors, empty headings, images with no alt text | A panel beside the preview. Nothing is rewritten without being asked |
 
 ### Formats, going in
 
 | Week | Ships | Notes |
 | --- | --- | --- |
-| 3 | **PowerPoint → Markdown** — one slide, one section, speaker notes kept | `.pptx` is a zip of XML; `fflate` is already here |
-| 4 | **EPUB → Markdown** — a book as one document with its own contents | Zip plus XHTML, and `htmlToMarkdown()` exists |
-| 5 | **ODT and RTF → Markdown** — LibreOffice and Google Docs exports | Two in a week because ODT is a zip of XML and RTF is small |
-| 6 | **Evernote → Markdown** — an `.enex` export, notes merged | The one format here with a user base actively looking for the door |
+| 2 | **PowerPoint → Markdown** — one slide, one section, speaker notes kept | `.pptx` is a zip of XML; `fflate` is already here |
+| 3 | **EPUB → Markdown** — a book as one document with its own contents | Zip plus XHTML, and `htmlToMarkdown()` exists |
+| 4 | **ODT and RTF → Markdown** — LibreOffice and Google Docs exports | Two in a week because ODT is a zip of XML and RTF is small |
+| 5 | **Evernote → Markdown** — an `.enex` export, notes merged | The one format here with a user base actively looking for the door |
 
 ### Formats, going out
 
@@ -115,28 +119,28 @@ it. "I have the Markdown, I need it in Confluence" still has no good answer on t
 
 | Week | Ships | Notes |
 | --- | --- | --- |
-| 7 | **Markdown → Confluence storage format** | XHTML with Confluence's own macro elements. A renderer, not a filter |
-| 8 | **Markdown → Jira wiki markup**, and **→ Slack mrkdwn** | Line-level transforms of the token stream; they share a week |
-| 9 | **Markdown → EPUB** | Zip, XHTML, a manifest — the inverse of week 4 |
-| 10 | **Markdown → Word, properly** — styles a Word user can edit | The `.docx` export exists; this is the week it stops looking like converted HTML |
+| 6 | **Markdown → Confluence storage format** | XHTML with Confluence's own macro elements. A renderer, not a filter |
+| 7 | **Markdown → Jira wiki markup**, and **→ Slack mrkdwn** | Line-level transforms of the token stream; they share a week |
+| 8 | **Markdown → EPUB** | Zip, XHTML, a manifest — the inverse of week 3 |
+| 9 | **Markdown → Word, properly** — styles a Word user can edit | The `.docx` export exists; this is the week it stops looking like converted HTML |
 
 ### The pull request, and the link
 
 | Week | Ships | Notes |
 | --- | --- | --- |
-| 11 | **The GitHub App**: install once, and every pull request touching Markdown gets a rendered link per changed file | App registration, `pull_request` webhook, installation tokens. The heaviest single item left |
-| 12 | **The same app, useful**: a check run rather than a comment thread, and the Marketplace listing | Comments pile up on a long review; a check run updates in place |
-| 13 | **A password on a shared link** | Hash on the row, one gate before the render — server-side, since the shared page has no scripts |
-| 14 | **An expiry date, and a view count** | Two columns and a sweep. Answers "is this link still live" without asking anybody |
+| 10 | **The GitHub App**: install once, and every pull request touching Markdown gets a rendered link per changed file | App registration, `pull_request` webhook, installation tokens. The heaviest single item left |
+| 11 | **The same app, useful**: a check run rather than a comment thread, and the Marketplace listing | Comments pile up on a long review; a check run updates in place |
+| 12 | **A password on a shared link** | Hash on the row, one gate before the render — server-side, since the shared page has no scripts |
+| 13 | **An expiry date, and a view count** | Two columns and a sweep. Answers "is this link still live" without asking anybody |
 
 ### The desk
 
 | Week | Ships | Notes |
 | --- | --- | --- |
-| 15 | **A chosen address** instead of a token, and **a QR code** for it | Collision handling is the feature; the QR is an afternoon |
-| 16 | **The shared page grows up**: contents, a print stylesheet, its own preview image | The image is the interesting half — a per-document card drawn the way the blog covers are |
-| 17 | **Tags in the history**, filterable beside the existing chips | The chip plumbing exists; this adds a source of chips |
-| 18 | **A trash**: deletes recoverable for thirty days, and **drop a folder** to get a zip back | `deleted_at` rather than a delete, and one honest sentence in the privacy page |
+| 14 | **A chosen address** instead of a token, and **a QR code** for it | Collision handling is the feature; the QR is an afternoon |
+| 15 | **The shared page grows up**: contents, a print stylesheet, its own preview image | The image is the interesting half — a per-document card drawn the way the blog covers are |
+| 16 | **Tags in the history**, filterable beside the existing chips | The chip plumbing exists; this adds a source of chips |
+| 17 | **A trash**: deletes recoverable for thirty days, and **drop a folder** to get a zip back | `deleted_at` rather than a delete, and one honest sentence in the privacy page |
 
 ---
 

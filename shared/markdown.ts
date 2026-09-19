@@ -6,6 +6,7 @@
  * Only the DOM differs. DOMPurify needs one, and the two runtimes get it from different places —
  * so each passes its own `sanitize` in, built from the shared config below.
  */
+import { highlightCode } from './highlight.js';
 import katex from 'katex';
 import { Marked, type Tokens } from 'marked';
 import {
@@ -252,9 +253,18 @@ export function renderMarkdown(markdown: string, sanitize: Sanitize): string {
        * owning the markup for code blocks in general.
        */
       code({ text, lang }) {
-        if ((lang ?? '').trim().split(/\s+/)[0].toLowerCase() !== 'mermaid') return false;
+        const info = (lang ?? '').trim().split(/\s+/)[0].toLowerCase();
 
-        return `<pre class="md-mermaid"><code class="language-mermaid">${escapeHtml(text)}</code></pre>\n`;
+        if (info === 'mermaid') {
+          return `<pre class="md-mermaid"><code class="language-mermaid">${escapeHtml(text)}</code></pre>\n`;
+        }
+
+        const lit = info ? highlightCode(text, info) : null;
+
+        /* An unknown language, or none at all, is marked's own code block and always was. */
+        if (!lit) return false;
+
+        return `<pre><code class="hljs language-${escapeHtml(info)}">${lit}</code></pre>\n`;
       },
       link({ href, title, tokens }) {
         const text = this.parser.parseInline(tokens);

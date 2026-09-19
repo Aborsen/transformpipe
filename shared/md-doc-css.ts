@@ -22,6 +22,20 @@ const DARK: ThemeVars = {
   '--md-card-2': '#21212c',
   '--md-stroke': '#2a2834',
   '--md-table-header': '#2a2834',
+  /*
+   * Code, in six roles rather than the twenty a editor theme uses.
+   *
+   * Six is what a document needs: a reader is skimming a snippet, not editing it, and a block
+   * painted in twenty colours reads as decoration. Keywords take the brand teal because that is
+   * the colour this product already uses for "this is the important word".
+   */
+  '--md-syn-comment': '#7b8794',
+  '--md-syn-key': '#2ebec4',
+  '--md-syn-str': '#9ecb8b',
+  '--md-syn-num': '#e0a77a',
+  '--md-syn-fn': '#8ab4f8',
+  '--md-syn-var': '#d1d5db',
+  '--md-syn-del': '#f28b82',
 };
 
 const LIGHT: ThemeVars = {
@@ -38,6 +52,14 @@ const LIGHT: ThemeVars = {
   '--md-card-2': '#f1f5f9',
   '--md-stroke': '#e2e8f0',
   '--md-table-header': '#eaeff5',
+  /* The same six, darkened until each one carries text on paper. */
+  '--md-syn-comment': '#6b7a8c',
+  '--md-syn-key': '#0d717a',
+  '--md-syn-str': '#2f7d4f',
+  '--md-syn-num': '#a4552a',
+  '--md-syn-fn': '#2a5db0',
+  '--md-syn-var': '#334155',
+  '--md-syn-del': '#b3261e',
 };
 
 /**
@@ -285,6 +307,60 @@ export const MD_DOC_STYLE = `
 }
 .md-doc math { font-size: 1.05em; }
 .md-doc .md-math math { font-size: 1.15em; }
+
+/*
+ * Highlighted code. Classes come from highlight.js; the colours are this document's.
+ *
+ * Grouped by what a reader is looking for rather than by grammar, which is why one rule carries a
+ * dozen selectors: hljs-section, hljs-selector-tag and hljs-keyword are the same thing in
+ * three languages, and colouring them apart would tell a reader nothing.
+ */
+.md-doc .hljs-comment,
+.md-doc .hljs-quote { color: var(--md-syn-comment); font-style: italic; }
+
+.md-doc .hljs-keyword,
+.md-doc .hljs-selector-tag,
+.md-doc .hljs-section,
+.md-doc .hljs-doctag,
+.md-doc .hljs-meta .hljs-keyword,
+.md-doc .hljs-tag { color: var(--md-syn-key); }
+
+.md-doc .hljs-string,
+.md-doc .hljs-regexp,
+.md-doc .hljs-char.escape_,
+.md-doc .hljs-addition,
+.md-doc .hljs-meta .hljs-string,
+.md-doc .hljs-symbol { color: var(--md-syn-str); }
+
+.md-doc .hljs-number,
+.md-doc .hljs-literal,
+.md-doc .hljs-bullet,
+.md-doc .hljs-link,
+.md-doc .hljs-selector-attr,
+.md-doc .hljs-selector-pseudo { color: var(--md-syn-num); }
+
+.md-doc .hljs-title,
+.md-doc .hljs-name,
+.md-doc .hljs-built_in,
+.md-doc .hljs-type,
+.md-doc .hljs-class,
+.md-doc .hljs-selector-id,
+.md-doc .hljs-selector-class,
+.md-doc .hljs-template-tag { color: var(--md-syn-fn); }
+
+.md-doc .hljs-attr,
+.md-doc .hljs-attribute,
+.md-doc .hljs-property,
+.md-doc .hljs-variable,
+.md-doc .hljs-params,
+.md-doc .hljs-template-variable,
+.md-doc .hljs-subst,
+.md-doc .hljs-meta { color: var(--md-syn-var); }
+
+.md-doc .hljs-deletion { color: var(--md-syn-del); }
+
+.md-doc .hljs-emphasis { font-style: italic; }
+.md-doc .hljs-strong { font-weight: 600; }
 
 .md-doc kbd {
   padding: 0.1em 0.4em;

@@ -1,4 +1,6 @@
+import { Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { Logo } from '@/components/Logo';
 import { GoogleGlyph } from '@/components/GoogleGlyph';
 import { useAuth } from '@/lib/auth';
 import { useT } from '@/lib/i18n/context';
@@ -11,7 +13,6 @@ import {
 } from '@/ui/components/InputGroup';
 import {
   Modal,
-  ModalBody,
   ModalContent,
   ModalHeader,
   ModalTitle,
@@ -19,7 +20,6 @@ import {
 import { PasswordInput } from '@/ui/components/PasswordInput';
 import { Separator } from '@/ui/components/Separator';
 import { Typography } from '@/ui/components/Typography';
-import { cn } from '@/ui/lib/utils';
 
 /*
  * Signing in, signing up, and asking for a reset link — one dialog, three views.
@@ -32,10 +32,17 @@ import { cn } from '@/ui/lib/utils';
  * and it sits below the form rather than above it: the form is what this dialog exists for now, and
  * the button that leaves the page belongs after the one that does not.
  *
- * What it does not look like, on purpose: a dialog with an envelope in one rounded box and a
- * padlock in the next, a full-width teal button under it and a line offering an account at the
- * bottom. That is the shape every product ships, and it made this one unrecognisable as ours. The
- * chrome here is the app's own — the header's accent hairline across the top, and the same
+ * Two panels, and the left one is the argument.
+ *
+ * A sign-in dialog is a narrow column of fields by convention, and a narrow column of fields is
+ * what every product ships — which is how this one ended up unrecognisable as ours, and cramped
+ * with it. The panel on the left says what the account is actually for, which is the one thing a
+ * sign-in form never says, and it is what earns the width: the form beside it can breathe because
+ * the dialog is now wide for a reason rather than tall for no reason.
+ *
+ * It is `sm:` and up. Below that there is no room for two of anything, and the form stands alone.
+ *
+ * The chrome is the app's own — the header's accent hairline across the top, and the same
  * uppercase eyebrow the converter puts over MARKDOWN and PREVIEW, over each field instead of an
  * icon inside it.
  *
@@ -188,265 +195,319 @@ export function AuthDialog({
   const eyebrow =
     'font-medium text-ink-secondary text-xxs uppercase tracking-[0.12em]';
 
+  /* The left panel, and only where there is room for one. */
+  const aside: [string, string][] = [
+    [t('auth.dialog.aside.history'), t('auth.dialog.aside.history.detail')],
+    [t('auth.dialog.aside.links'), t('auth.dialog.aside.links.detail')],
+    [t('auth.dialog.aside.api'), t('auth.dialog.aside.api.detail')],
+    [
+      t('auth.dialog.aside.extension'),
+      t('auth.dialog.aside.extension.detail'),
+    ],
+  ];
+
   return (
     <Modal open={open} onOpenChange={onOpenChange}>
-      <ModalContent className="overflow-hidden sm:max-w-[25rem]">
-        {/* The header's own hairline, full bleed across the top of the dialog. */}
-        <div
-          aria-hidden
-          className="-mx-4 -mt-4 mb-4 h-0.5 bg-gradient-to-r from-brand-tertiary via-brand-primary to-transparent"
-        />
+      <ModalContent className="grid max-w-[42rem] gap-0 overflow-hidden p-0 sm:grid-cols-[15rem_1fr]">
+        <div className="hidden flex-col gap-6 border-stroke border-r bg-gradient-to-b from-surface-accent to-surface-card p-7 sm:flex">
+          <Logo className="h-5 w-auto self-start text-ink-primary" />
 
-        <ModalHeader>
-          <ModalTitle>{title}</ModalTitle>
-          {view === 'reset' && (
-            <Typography variant="p" textColor="secondary" className="text-sm">
-              {t('auth.dialog.reset.lede')}
-            </Typography>
-          )}
+          <Typography
+            variant="p"
+            textColor="secondary"
+            className="text-sm leading-relaxed"
+          >
+            {t('auth.dialog.aside.lede')}
+          </Typography>
 
-          {view === 'verify' && (
-            <Typography variant="p" textColor="secondary" className="text-sm">
-              {t('auth.dialog.verify.lede', { email })}
-            </Typography>
-          )}
-        </ModalHeader>
-
-        <ModalBody className="flex flex-col gap-4">
-          <form className="flex flex-col gap-3.5" onSubmit={submit}>
-            {view !== 'verify' && (
-              <div className="flex flex-col gap-1.5">
-                <label className={eyebrow} htmlFor="auth-email">
-                  {t('auth.dialog.email')}
-                </label>
-                <InputGroup size="lg" inputId="auth-email">
-                  <InputGroupInput
-                    type="email"
-                    required
-                    autoComplete="email"
-                    aria-label={t('auth.dialog.email')}
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                  />
-                </InputGroup>
-              </div>
-            )}
-
-            {view === 'verify' && (
-              <div className="flex flex-col gap-1.5">
-                <div className="flex items-baseline justify-between gap-3">
-                  <label className={eyebrow} htmlFor="auth-code">
-                    {t('auth.dialog.verify.code')}
-                  </label>
-                  <button
-                    type="button"
-                    className="rounded text-brand-tertiary text-xs hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
-                    onClick={async () => {
-                      const failed = await sendVerificationCode(email);
-
-                      setSaid(failed ?? t('auth.dialog.verify.resent'));
-                      setDone(!failed);
-                    }}
-                  >
-                    {t('auth.dialog.verify.resend')}
-                  </button>
-                </div>
-                <InputGroup size="lg" inputId="auth-code">
-                  <InputGroupInput
-                    required
-                    /*
-                     * `inputMode` and `one-time-code` are what make a phone offer the code from
-                     * the message instead of a keyboard, and what stop a password manager filling
-                     * the field with something else.
-                     */
-                    inputMode="numeric"
-                    autoComplete="one-time-code"
-                    maxLength={6}
-                    aria-label={t('auth.dialog.verify.code')}
-                    className="text-center text-base tracking-[0.5em]"
-                    value={code}
-                    onChange={(event) =>
-                      setCode(event.target.value.replace(/\D/g, '').slice(0, 6))
-                    }
-                  />
-                </InputGroup>
-              </div>
-            )}
-
-            {view !== 'reset' && view !== 'verify' && (
-              <div className="flex flex-col gap-1.5">
-                {/*
-                  * "Forgot?" sits on the label's line, not under the field.
-                  *
-                  * Under it, it is a third thing stacked between the password and the button, and
-                  * it reads as a step. On the label's line it is what it is: a way out of this one
-                  * field, offered where the field is named.
-                  */}
-                <div className="flex items-baseline justify-between gap-3">
-                  <label className={eyebrow} htmlFor="auth-password">
-                    {t('auth.dialog.password')}
-                  </label>
-                  {view === 'signin' && (
-                    <button
-                      type="button"
-                      className="rounded text-brand-tertiary text-xs hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
-                      onClick={() => move('reset')}
-                    >
-                      {t('auth.dialog.forgot')}
-                    </button>
-                  )}
-                </div>
-                <PasswordInput
-                  id="auth-password"
-                  required
-                  /*
-                   * The browser needs telling which one this is: `current-password` on a sign-in
-                   * and `new-password` on a sign-up, or a password manager offers the wrong thing
-                   * and saves the wrong thing.
-                   */
-                  autoComplete={
-                    view === 'signin' ? 'current-password' : 'new-password'
-                  }
-                  aria-label={t('auth.dialog.password')}
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  inputGroupProps={{ size: 'lg' }}
-                  /* The padlock goes with the envelope: the label says which field this is. */
-                  classNames={{ startAddonClassName: 'hidden' }}
-                />
-              </div>
-            )}
-
-            {view === 'signup' && (
-              <label className="flex items-center gap-2 text-ink-secondary text-xs">
-                <Checkbox
-                  checked={accepted}
-                  onCheckedChange={(value) => setAccepted(value === true)}
-                />
-                {/* One sentence with the link dropped into it, so it can be reordered. */}
-                {t('auth.dialog.terms').split('{terms}').map((piece, index) => (
-                  <span key={index}>
-                    {piece}
-                    {index === 0 && (
-                      <a
-                        href="/terms"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-brand-tertiary hover:underline"
-                      >
-                        {t('auth.dialog.terms.link')}
-                      </a>
-                    )}
-                  </span>
-                ))}
-              </label>
-            )}
-
-            {said && (
-              <Typography
-                variant="p"
-                className={
-                  done ? 'text-ink-secondary text-xs' : 'text-danger text-xs'
-                }
-                role={done ? 'status' : 'alert'}
-              >
-                {said}
-              </Typography>
-            )}
-
-            <Button
-              type="submit"
-              size="xl"
-              rounded="full"
-              fullWidth
-              className="mt-0.5"
-              isLoading={isSigningIn}
-            >
-              {view === 'signin'
-                ? t('auth.dialog.submit.signin')
-                : view === 'signup'
-                  ? t('auth.dialog.submit.signup')
-                  : view === 'verify'
-                    ? t('auth.dialog.verify.submit')
-                    : t('auth.dialog.submit.reset')}
-            </Button>
-          </form>
-
-          {view !== 'reset' && view !== 'verify' && (
-            <>
-              <div className="flex items-center gap-3">
-                <Separator className="flex-1" />
+          <ul className="flex flex-col gap-3.5">
+            {aside.map(([name, detail]) => (
+              <li className="flex gap-2.5" key={name}>
+                <Check className="mt-0.5 size-3.5 shrink-0 text-brand-tertiary" />
                 <Typography
                   variant="span"
                   textColor="secondary"
-                  className="text-xxs uppercase tracking-[0.12em]"
+                  className="text-xs leading-snug"
                 >
-                  {t('auth.dialog.or')}
+                  <span className="font-medium text-ink-body">{name}</span>
+                  {' — '}
+                  {detail}
                 </Typography>
-                <Separator className="flex-1" />
-              </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="relative flex min-h-0 flex-col">
+          {/* The header's own hairline, over the half of the dialog that is the form. */}
+          <div
+            aria-hidden
+            className="h-0.5 shrink-0 bg-gradient-to-r from-brand-tertiary via-brand-primary to-transparent"
+          />
+
+          <div className="flex min-h-0 flex-col overflow-y-auto p-7">
+            <ModalHeader className="mb-6">
+              <ModalTitle>{title}</ModalTitle>
+              {view === 'reset' && (
+                <Typography
+                  variant="p"
+                  textColor="secondary"
+                  className="text-sm"
+                >
+                  {t('auth.dialog.reset.lede')}
+                </Typography>
+              )}
+
+              {view === 'verify' && (
+                <Typography
+                  variant="p"
+                  textColor="secondary"
+                  className="text-sm"
+                >
+                  {t('auth.dialog.verify.lede', { email })}
+                </Typography>
+              )}
+            </ModalHeader>
+
+            <form className="flex flex-col gap-4" onSubmit={submit}>
+              {view !== 'verify' && (
+                <div className="flex flex-col gap-2">
+                  <label className={eyebrow} htmlFor="auth-email">
+                    {t('auth.dialog.email')}
+                  </label>
+                  <InputGroup size="xl" inputId="auth-email">
+                    <InputGroupInput
+                      type="email"
+                      required
+                      autoComplete="email"
+                      aria-label={t('auth.dialog.email')}
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                    />
+                  </InputGroup>
+                </div>
+              )}
+
+              {view === 'verify' && (
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <label className={eyebrow} htmlFor="auth-code">
+                      {t('auth.dialog.verify.code')}
+                    </label>
+                    <button
+                      type="button"
+                      className="rounded text-brand-tertiary text-xs hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
+                      onClick={async () => {
+                        const failed = await sendVerificationCode(email);
+
+                        setSaid(failed ?? t('auth.dialog.verify.resent'));
+                        setDone(!failed);
+                      }}
+                    >
+                      {t('auth.dialog.verify.resend')}
+                    </button>
+                  </div>
+                  <InputGroup size="xl" inputId="auth-code">
+                    <InputGroupInput
+                      required
+                      /*
+                       * `inputMode` and `one-time-code` are what make a phone offer the code from
+                       * the message instead of a keyboard, and what stop a password manager
+                       * filling the field with something else.
+                       */
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      maxLength={6}
+                      aria-label={t('auth.dialog.verify.code')}
+                      className="text-center text-base tracking-[0.5em]"
+                      value={code}
+                      onChange={(event) =>
+                        setCode(
+                          event.target.value.replace(/\D/g, '').slice(0, 6)
+                        )
+                      }
+                    />
+                  </InputGroup>
+                </div>
+              )}
+
+              {view !== 'reset' && view !== 'verify' && (
+                <div className="flex flex-col gap-2">
+                  {/*
+                    * "Forgot?" sits on the label's line, not under the field.
+                    *
+                    * Under it, it is a third thing stacked between the password and the button,
+                    * and it reads as a step. On the label's line it is what it is: a way out of
+                    * this one field, offered where the field is named.
+                    */}
+                  <div className="flex items-baseline justify-between gap-3">
+                    <label className={eyebrow} htmlFor="auth-password">
+                      {t('auth.dialog.password')}
+                    </label>
+                    {view === 'signin' && (
+                      <button
+                        type="button"
+                        className="rounded text-brand-tertiary text-xs hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
+                        onClick={() => move('reset')}
+                      >
+                        {t('auth.dialog.forgot')}
+                      </button>
+                    )}
+                  </div>
+                  <PasswordInput
+                    id="auth-password"
+                    required
+                    /*
+                     * The browser needs telling which one this is: `current-password` on a sign-in
+                     * and `new-password` on a sign-up, or a password manager offers the wrong
+                     * thing and saves the wrong thing.
+                     */
+                    autoComplete={
+                      view === 'signin' ? 'current-password' : 'new-password'
+                    }
+                    aria-label={t('auth.dialog.password')}
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    inputGroupProps={{ size: 'xl' }}
+                    /* The padlock goes with the envelope: the label says which field this is. */
+                    classNames={{ startAddonClassName: 'hidden' }}
+                  />
+                </div>
+              )}
+
+              {view === 'signup' && (
+                <label className="flex items-center gap-2 text-ink-secondary text-xs">
+                  <Checkbox
+                    checked={accepted}
+                    onCheckedChange={(value) => setAccepted(value === true)}
+                  />
+                  {/* One sentence with the link dropped into it, so it can be reordered. */}
+                  {t('auth.dialog.terms')
+                    .split('{terms}')
+                    .map((piece, index) => (
+                      <span key={index}>
+                        {piece}
+                        {index === 0 && (
+                          <a
+                            href="/terms"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-brand-tertiary hover:underline"
+                          >
+                            {t('auth.dialog.terms.link')}
+                          </a>
+                        )}
+                      </span>
+                    ))}
+                </label>
+              )}
+
+              {said && (
+                <Typography
+                  variant="p"
+                  className={
+                    done ? 'text-ink-secondary text-xs' : 'text-danger text-xs'
+                  }
+                  role={done ? 'status' : 'alert'}
+                >
+                  {said}
+                </Typography>
+              )}
 
               <Button
-                type="button"
-                variant="secondary"
+                type="submit"
                 size="xl"
                 rounded="full"
                 fullWidth
-                leftSlot={<GoogleGlyph aria-hidden className="size-4" />}
-                onClick={() => void signIn()}
-              >
-                {t('auth.dialog.google')}
-              </Button>
-            </>
-          )}
-
-          {view === 'verify' ? (
-            /*
-             * A way out that is not a dead end. The account exists and works; what is missing is a
-             * confirmed address, and trapping somebody in a modal over it is a worse product than
-             * letting them convert a file and confirm from the account menu later.
-             */
-            <button
-              type="button"
-              className="self-center rounded text-ink-secondary text-sm hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
-              onClick={() => onOpenChange(false)}
-            >
-              {t('auth.dialog.verify.later')}
-            </button>
-          ) : view === 'reset' ? (
-            <button
-              type="button"
-              className="self-center rounded text-brand-tertiary text-sm hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
-              onClick={() => move('signin')}
-            >
-              {t('auth.dialog.back')}
-            </button>
-          ) : (
-            /*
-             * Under Google rather than above it. The form is what this dialog is for, Google is the
-             * shortcut past it, and "do you have one of these at all" is the question that comes
-             * after both — not one wedged between the button and the alternative to it.
-             */
-            <Typography
-              variant="p"
-              textColor="secondary"
-              className={cn('text-center text-xs')}
-            >
-              {view === 'signin'
-                ? t('auth.dialog.tonew')
-                : t('auth.dialog.toexisting')}{' '}
-              <button
-                type="button"
-                className="rounded font-medium text-brand-tertiary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
-                onClick={() => move(view === 'signin' ? 'signup' : 'signin')}
+                className="mt-1"
+                isLoading={isSigningIn}
               >
                 {view === 'signin'
-                  ? t('auth.dialog.tonew.action')
-                  : t('auth.dialog.toexisting.action')}
+                  ? t('auth.dialog.submit.signin')
+                  : view === 'signup'
+                    ? t('auth.dialog.submit.signup')
+                    : view === 'verify'
+                      ? t('auth.dialog.verify.submit')
+                      : t('auth.dialog.submit.reset')}
+              </Button>
+            </form>
+
+            {view !== 'reset' && view !== 'verify' && (
+              <>
+                <div className="my-5 flex items-center gap-3">
+                  <Separator className="flex-1" />
+                  <Typography
+                    variant="span"
+                    textColor="secondary"
+                    className="text-xxs uppercase tracking-[0.12em]"
+                  >
+                    {t('auth.dialog.or')}
+                  </Typography>
+                  <Separator className="flex-1" />
+                </div>
+
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="xl"
+                  rounded="full"
+                  fullWidth
+                  leftSlot={<GoogleGlyph aria-hidden className="size-4" />}
+                  onClick={() => void signIn()}
+                >
+                  {t('auth.dialog.google')}
+                </Button>
+              </>
+            )}
+
+            {view === 'verify' ? (
+              /*
+               * A way out that is not a dead end. The account exists and works; what is missing is
+               * a confirmed address, and trapping somebody in a modal over it is a worse product
+               * than letting them convert a file and confirm from the account menu later.
+               */
+              <button
+                type="button"
+                className="mt-5 self-center rounded text-ink-secondary text-sm hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
+                onClick={() => onOpenChange(false)}
+              >
+                {t('auth.dialog.verify.later')}
               </button>
-            </Typography>
-          )}
-        </ModalBody>
+            ) : view === 'reset' ? (
+              <button
+                type="button"
+                className="mt-5 self-center rounded text-brand-tertiary text-sm hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
+                onClick={() => move('signin')}
+              >
+                {t('auth.dialog.back')}
+              </button>
+            ) : (
+              /*
+               * Under Google rather than above it. The form is what this dialog is for, Google is
+               * the shortcut past it, and "do you have one of these at all" is the question that
+               * comes after both — not one wedged between the button and the alternative to it.
+               */
+              <Typography
+                variant="p"
+                textColor="secondary"
+                className="mt-5 text-center text-xs"
+              >
+                {view === 'signin'
+                  ? t('auth.dialog.tonew')
+                  : t('auth.dialog.toexisting')}{' '}
+                <button
+                  type="button"
+                  className="rounded font-medium text-brand-tertiary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand"
+                  onClick={() => move(view === 'signin' ? 'signup' : 'signin')}
+                >
+                  {view === 'signin'
+                    ? t('auth.dialog.tonew.action')
+                    : t('auth.dialog.toexisting.action')}
+                </button>
+              </Typography>
+            )}
+          </div>
+        </div>
       </ModalContent>
     </Modal>
   );
