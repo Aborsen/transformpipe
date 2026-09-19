@@ -74,6 +74,85 @@ function instance(): NodeHtmlMarkdown {
   return converter;
 }
 
+/** A row of a Markdown table, split on the pipes that are not escaped. */
+function cellsOf(line: string): string[] {
+  return line
+    .trim()
+    .replace(/^\||\|$/g, '')
+    .split(/(?<!\\)\|/)
+    .map((cell) => cell.trim());
+}
+
+const SEPARATOR = /^[\s|:-]+$/;
+
+/**
+ * Tables, tidied — the widths dropped and the empty columns with them.
+ *
+ * A table written by hand has short cells and reads better aligned, which is what the library does:
+ * every cell is padded to the widest in its column and the separator row is padded to match. A
+ * table lifted off a web page has neither property. One cell holding a sentence pads its whole
+ * column to that width, so the separator becomes two hundred dashes on a line of its own, and the
+ * spacer cells a layout uses arrive as columns that are empty in every row. Both were visible in a
+ * dashboard somebody saved: a wall of dashes with `|  |  |` running through it.
+ *
+ * So: any column with nothing in it anywhere goes, and what is left is written compactly. Markdown
+ * renders the two identically; only the source differs, and the compact one is the one a person can
+ * read.
+ */
+function tidyTables(markdown: string): string {
+  const lines = markdown.split('\n');
+  const out: string[] = [];
+
+  for (let i = 0; i < lines.length; i += 1) {
+    if (!lines[i].trim().startsWith('|')) {
+      out.push(lines[i]);
+      continue;
+    }
+
+    const block: string[] = [];
+
+    while (i < lines.length && lines[i].trim().startsWith('|')) {
+      block.push(lines[i]);
+      i += 1;
+    }
+
+    i -= 1;
+
+    const rows = block.map(cellsOf);
+    const width = Math.max(...rows.map((row) => row.length));
+    const separators = new Set(
+      block.map((line, at) => (SEPARATOR.test(line) ? at : -1)).filter((at) => at >= 0)
+    );
+
+    /* A column is empty when no row that carries content has anything in it. */
+    const keep: number[] = [];
+
+    for (let column = 0; column < width; column += 1) {
+      const used = rows.some(
+        (row, at) => !separators.has(at) && (row[column] ?? '').length > 0
+      );
+
+      if (used) keep.push(column);
+    }
+
+    /* Every column empty means this was layout, not a table; the block is left alone. */
+    if (keep.length === 0) {
+      out.push(...block);
+      continue;
+    }
+
+    for (const [at, row] of rows.entries()) {
+      out.push(
+        separators.has(at)
+          ? `| ${keep.map(() => '---').join(' | ')} |`
+          : `| ${keep.map((column) => row[column] ?? '').join(' | ')} |`
+      );
+    }
+  }
+
+  return out.join('\n');
+}
+
 /** Everything a browser or an editor wraps a fragment in, and none of it is the document. */
 const STRIP = /<(script|style|noscript|template|svg|iframe|head|nav|footer)\b[\s\S]*?<\/\1>/gi;
 
@@ -84,8 +163,10 @@ export function htmlToMarkdown(html: string): string {
     .replace(/<!--[\s\S]*?-->/g, '');
 
   return (
-    instance()
-      .translate(body)
+    tidyTables(
+      instance()
+        .translate(body)
+    )
       // Three or more blank lines is what a converted page usually arrives as.
       .replace(/\n{3,}/g, '\n\n')
       /*

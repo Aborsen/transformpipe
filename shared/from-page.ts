@@ -65,6 +65,14 @@ export interface PageDocument {
    * the person who knows which they meant.
    */
   html: string;
+  /**
+   * Whether an article was found, or whether this is the page for want of one.
+   *
+   * A dashboard, a board of cards, a search result: there is no prose in them to score, so what
+   * comes back is the whole body — menus, buttons and all — and it reads like a broken conversion
+   * rather than like a page that was never an article. The caller can say which it got.
+   */
+  article: boolean;
 }
 
 /** `Docs — Install & setup` becomes `docs-install-setup.md`. */
@@ -265,5 +273,7 @@ export function pageToMarkdown({
     name: fileName(finalTitle),
     markdown,
     html: sanitised,
+    /* A selection is a person's own choice of what the document is, so it counts as one. */
+    article: Boolean(article) || Boolean(selection),
   };
 }

@@ -168,6 +168,7 @@ export const ui: Content['ui'] = {
   'ext.converting': 'Wird umgewandelt…',
   'ext.failed': 'Diese Seite lässt sich nicht lesen',
   'ext.restricted': 'Chrome lässt keine Erweiterung seine eigenen Seiten lesen. Öffnen Sie eine normale Seite und drücken Sie erneut — oder wandeln Sie stattdessen eine Datei um.',
+  'ext.wholepage': 'Ganze Seite',
   'ext.selection': 'Auswahl',
   'ext.stats': '{words} Wörter · {size}',
   'ext.copy': 'Markdown kopieren',

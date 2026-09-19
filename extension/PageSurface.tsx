@@ -422,6 +422,14 @@ export function PageSurface({ live = false }: { live?: boolean }) {
                     className="text-xs"
                   >
                     {fromSelection ? `${t('ext.selection')} · ` : ''}
+                    {/*
+                      * Said only when it is true and worth saying: a dashboard or a board of
+                      * cards has no article in it, so what was taken is the page itself, menus
+                      * and all. Without the word it reads as a conversion that went wrong.
+                      */}
+                    {!fromSelection && !document_.article
+                      ? `${t('ext.wholepage')} · `
+                      : ''}
                     {t('ext.stats', {
                       words: stats.words.toLocaleString(),
                       size: formatBytes(

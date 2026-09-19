@@ -149,7 +149,8 @@ const MAX_SNAPSHOT = 24 * 1024 * 1024;
  * — gets the page's structure with its images still as addresses, and the popup gets both.
  */
 export async function pageHtmlFile(
-  document_: PageDocument,
+  /* Whether an article was found does not change the file, so it is not asked for. */
+  document_: Omit<PageDocument, 'article'>,
   flavour: HtmlFlavour,
   theme: 'dark' | 'light',
   tabId?: number

@@ -154,6 +154,7 @@ export const ui: Content['ui'] = {
   'ext.converting': 'Conversion…',
   'ext.failed': 'Cette page ne peut pas être lue',
   'ext.restricted': 'Chrome n’autorise aucune extension à lire ses propres pages. Ouvrez une page ordinaire et réessayez — ou convertissez un fichier à la place.',
+  'ext.wholepage': 'Page entière',
   'ext.selection': 'Sélection',
   'ext.stats': '{words} mots · {size}',
   'ext.copy': 'Copier le Markdown',
