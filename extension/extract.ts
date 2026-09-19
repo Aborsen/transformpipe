@@ -22,7 +22,7 @@ export interface Extracted {
 
 export function extract(): Extracted {
   /**
-   * Puts back the spaces that CSS was providing.
+   * The page as it reads: what is on the screen, with the spaces CSS was providing.
    *
    * `<span>39</span><span>words</span>` laid out side by side reads as "39 words" on the screen and
    * serialises as `39words`: the gap between them is a layout property and there is no whitespace
@@ -38,8 +38,16 @@ export function extract(): Extracted {
    * Anything that generates a box of its own is separated from its neighbour on screen, so a space
    * after it is what the page already means.
    *
-   * The one place that can tell is here, inside the page, where `getComputedStyle` still exists. So
-   * the document is cloned first and the clone is walked beside the living one.
+   * The second job is dropping what is not on the screen, and it is the one that matters more. An
+   * application does not throw a screen away when you leave it: the route you came from stays
+   * mounted and hidden, the dialog you closed is still there, the menu that is shut is markup.
+   * Reading the document gets all of them at once — a dashboard came back as its overview, its
+   * logs and its deployments in one pile, under whichever title was set first, and no amount of
+   * listening for navigation fixes that, because every one of those screens really is in the page.
+   *
+   * The one place that can tell is here, inside the page, where `getComputedStyle` and
+   * `getClientRects` still exist. So the document is cloned first and the clone is walked beside
+   * the living one: what draws nothing is taken out, and what draws a box gets its space.
    *
    * The walkers stay in step because only text nodes are inserted and the walkers see elements, so
    * the sequence one is reading does not change under it.
@@ -49,19 +57,44 @@ export function extract(): Extracted {
    * around it exists in the extension's world and nowhere the page can reach — it would be a
    * ReferenceError at the top of every conversion.
    */
-  function withLayoutSpacing(root: HTMLElement): HTMLElement {
+  function asItReads(root: HTMLElement): HTMLElement {
     const copy = root.cloneNode(true) as HTMLElement;
     const living = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
     const twin = document.createTreeWalker(copy, NodeFilter.SHOW_ELEMENT);
+    const hidden: Element[] = [];
 
     while (living.nextNode() && twin.nextNode()) {
-      const display = getComputedStyle(living.currentNode as Element).display;
+      const element = living.currentNode as Element;
+      const style = getComputedStyle(element);
+      const mirror = twin.currentNode as Element;
 
-      if (display === 'inline' || display === 'none' || display === 'contents') {
+      /*
+       * `contents` draws no box of its own and its children draw theirs, so it is neither hidden
+       * nor spaced — the walk passes straight through it.
+       */
+      if (style.display === 'contents') continue;
+
+      if (
+        style.display === 'none' ||
+        style.visibility === 'hidden' ||
+        style.visibility === 'collapse' ||
+        style.opacity === '0' ||
+        element.getClientRects().length === 0
+      ) {
+        /*
+         * Collected rather than removed here: the two walkers are stepping through matching trees
+         * and taking a node out from under one of them ends the correspondence. Removing an
+         * ancestor later takes its descendants with it, so the repeats cost nothing.
+         */
+        hidden.push(mirror);
         continue;
       }
 
-      (twin.currentNode as Element).after(document.createTextNode(' '));
+      mirror.after(document.createTextNode(' '));
+    }
+
+    for (const node of hidden) {
+      node.remove();
     }
 
     return copy;
@@ -87,7 +120,7 @@ export function extract(): Extracted {
   }
 
   return {
-    html: withLayoutSpacing(document.documentElement).outerHTML,
+    html: asItReads(document.documentElement).outerHTML,
     url: document.location.href,
     title: document.title,
     selection: false,
