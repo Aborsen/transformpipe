@@ -255,14 +255,16 @@ export function pageToMarkdown({
    * menu, which is worse than the whole page, because the whole page at least contains the part
    * somebody wanted.
    *
-   * So the answer is measured against the page it came from. A tenth of the text is a corner, not
-   * an article, and a real article inside a heavy site clears that easily — the sidebar and footer
-   * of a news site are nothing like nine tenths of its words.
+   * So the answer is measured against the page it came from, and a third is the line. A written
+   * article is most of the words on the page it is published on — the navigation and the footer
+   * around it are not half of a news site. One section of a marketing page is a fifth of it, and
+   * a fifth was passing a tenth: a landing page came back as the middle of itself, with the
+   * headline it was built around missing.
    */
   const pageText = (parsed.body.textContent ?? '').replace(/\s+/g, ' ').trim();
   const articleText = (found?.textContent ?? '').replace(/\s+/g, ' ').trim();
   const article =
-    found && (pageText.length < 1000 || articleText.length >= pageText.length / 10)
+    found && (pageText.length < 1000 || articleText.length >= pageText.length / 3)
       ? found
       : null;
 

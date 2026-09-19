@@ -527,14 +527,24 @@ export function PageSurface({ live = false }: { live?: boolean }) {
                    * already `flex-1` against the window, so a second limit here left the document
                    * stopping at 352 pixels with the rest of the panel blank underneath it.
                    */
-                  'h-full overflow-y-auto [zoom:0.8]',
+                  'h-full overflow-y-auto',
                   live ? undefined : 'max-h-[22rem]'
                 )}
               >
-                <DocumentPreview
-                  className="p-4"
-                  html={markdownToHtml(document_.markdown)}
-                />
+                {/*
+                  * The zoom is on the document, not on the box that scrolls it.
+                  *
+                  * On the box it scaled the box: `h-full` resolved against the panel and then
+                  * eight tenths of that was what got painted, so the scrolling area ended a fifth
+                  * of the window early and the last of a long page could not be reached. Inside,
+                  * it does what it was meant to — a smaller document, scrolled in full.
+                  */}
+                <div className="[zoom:0.8]">
+                  <DocumentPreview
+                    className="p-4"
+                    html={markdownToHtml(document_.markdown)}
+                  />
+                </div>
               </div>
             ) : (
               <div className="flex flex-col gap-2 p-3">

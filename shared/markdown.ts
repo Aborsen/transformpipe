@@ -536,6 +536,22 @@ export function renderMarkdown(markdown: string, sanitize: Sanitize): string {
 
         return `<blockquote class="md-alert md-alert-${alert.kind}"><p class="md-alert-title">${escapeHtml(title)}</p>\n${body}</blockquote>\n`;
       },
+      /*
+       * A table in a box that scrolls, rather than a table squeezed into the column.
+       *
+       * `max-width: 100%` on the table itself does not hold the columns apart — it makes the table
+       * layout shrink them, and a ten-column compatibility table in a side panel came out one
+       * letter per line. The wrapper takes the width limit and the overflow, and the table inside
+       * it keeps the width its content needs. The same bargain a diagram gets.
+       */
+      table(token) {
+        const rendered = this.parser.renderer.constructor.prototype.table.call(
+          this,
+          token
+        );
+
+        return `<div class="md-table">${rendered}</div>\n`;
+      },
       link({ href, title, tokens }) {
         const text = this.parser.parseInline(tokens);
         const titleAttr = title ? ` title="${escapeHtml(title)}"` : '';

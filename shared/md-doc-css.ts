@@ -256,12 +256,23 @@ export const MD_DOC_STYLE = `
   border-top: 1px solid var(--md-stroke);
 }
 
-.md-doc table {
-  display: block;
-  width: max-content;
+/*
+ * The limit and the scrolling belong to the box, not to the table.
+ *
+ * With both on the table, a wide one does not scroll — the table layout obeys the limit and
+ * squeezes its columns instead, and a ten-column compatibility table in a side panel came back
+ * one letter per line. Here the box is as wide as there is room for and scrolls, and the table
+ * inside it takes the width its content needs.
+ */
+.md-doc .md-table {
   max-width: 100%;
   margin: 1.15em 0;
   overflow-x: auto;
+}
+
+.md-doc table {
+  width: max-content;
+  max-width: none;
   border-collapse: collapse;
   font-size: 0.875rem;
 }
