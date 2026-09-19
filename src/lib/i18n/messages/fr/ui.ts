@@ -587,7 +587,13 @@ export const ui: Content['ui'] = {
   'live.eyebrow': 'Aperçu en direct',
   'live.title': 'Aperçu Markdown en direct',
   'live.lede':
-    'Tapez ou collez du Markdown à gauche, le document se construit à droite. Rien n’est envoyé : le texte reste dans cet onglet.',
+    'Tapez ou collez du Markdown à gauche et regardez le document se construire à droite — tableaux, code coloré, diagrammes Mermaid et maths LaTeX compris. Rien n’est téléversé : le texte reste dans cet onglet.',
+  'live.renders': 'Ce qui est rendu ici',
+  'live.renders.gfm': 'GitHub Flavored Markdown',
+  'live.renders.tables': 'Tableaux et listes de tâches',
+  'live.renders.code': 'Code coloré',
+  'live.renders.mermaid': 'Diagrammes Mermaid',
+  'live.renders.math': 'Maths LaTeX',
   'live.save': 'Convertir et garder',
   'live.save.hint':
     'L’ouvre comme document : dans l’historique, prêt à partager ou à télécharger dans un autre format.',
@@ -597,12 +603,12 @@ export const ui: Content['ui'] = {
   'live.download': 'Télécharger le .html',
   'live.filename': 'apercu',
   'live.note':
-    'Le convertisseur du reste du site, donc ce que vous voyez ici est ce que contient le fichier téléchargé. Le HTML brut est assaini.',
+    'Le même convertisseur que le reste du site : ce que vous voyez ici est ce que contient le fichier téléchargé — diagrammes et formules voyagent dedans, sans feuille de style ni police à récupérer. Le HTML brut de la source est assaini.',
   'live.seo.title': 'Aperçu Markdown en direct',
   'live.seo.description':
-    'Collez du Markdown, voyez le document à côté, copiez le HTML ou téléchargez un fichier autonome. Rien n’est envoyé.',
+    'Collez du Markdown et voyez-le rendu à côté : GitHub Flavored Markdown, code coloré, diagrammes Mermaid et maths KaTeX. Copiez le HTML ou téléchargez un fichier autonome.',
   'live.sample':
-    '# Aperçu Markdown en direct\n\nTapez à gauche. Le document à droite suit, avec les styles qu’un fichier téléchargé **emporte avec lui**.\n\n- Listes, tableaux, citations et code fonctionnent.\n- GitHub Flavored Markdown, assaini.\n\n| Format | Devient |\n| --- | --- |\n| Markdown | HTML |\n\n```js\nconsole.log(\'hello\');\n```\n',
+    '# Aperçu Markdown en direct\n\nTapez à gauche. Le document à droite suit, avec les styles qu’un fichier téléchargé **emporte avec lui**.\n\n- GitHub Flavored Markdown, assaini.\n- Tableaux, listes de tâches, citations et code.\n\n| Format | Devient |\n| --- | --- |\n| Markdown | HTML |\n\nLe code est coloré selon son langage :\n\n```ts\nexport const render = (md: string) => toHtml(md); // one converter everywhere\n```\n\nDes maths entre dollars : $E = mc^2$, $\\sum_{i=1}^{n} i = \\frac{n(n+1)}{2}$\n\nEt un diagramme depuis un bloc :\n\n```mermaid\nflowchart LR\n  MD[Markdown] --> TP[TransformPipe]\n  TP --> HTML\n  TP --> Word\n```\n',
 
   /*
    * The changelog page, at /changelog and linked from the footer's Resources.

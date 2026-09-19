@@ -586,7 +586,13 @@ export const ui: Content['ui'] = {
   'live.eyebrow': 'Live preview',
   'live.title': 'Markdown live preview',
   'live.lede':
-    'Type or paste Markdown on the left and watch the document build itself on the right. Nothing is uploaded: the text stays in this tab.',
+    'Type or paste Markdown on the left and watch the document build itself on the right — tables, highlighted code, Mermaid diagrams and LaTeX maths included. Nothing is uploaded: the text stays in this tab.',
+  'live.renders': 'What renders here',
+  'live.renders.gfm': 'GitHub Flavored Markdown',
+  'live.renders.tables': 'Tables and task lists',
+  'live.renders.code': 'Syntax-highlighted code',
+  'live.renders.mermaid': 'Mermaid diagrams',
+  'live.renders.math': 'LaTeX maths',
   'live.save': 'Convert and keep',
   'live.save.hint':
     'Opens it as a document: in your history, ready to share or download in another format.',
@@ -596,12 +602,12 @@ export const ui: Content['ui'] = {
   'live.download': 'Download .html',
   'live.filename': 'preview',
   'live.note':
-    'The same converter the rest of the site uses, so what you see here is what a downloaded file contains. Raw HTML in the source is sanitised.',
+    'The same converter the rest of the site uses, so what you see here is what a downloaded file contains — diagrams and formulas travel inside it, with no stylesheet or font to fetch. Raw HTML in the source is sanitised.',
   'live.seo.title': 'Markdown live preview',
   'live.seo.description':
-    'Paste Markdown, see the rendered document beside it, copy the HTML or download a self-contained file. Nothing is uploaded.',
+    'Paste Markdown and see it rendered beside you: GitHub Flavored Markdown, syntax-highlighted code, Mermaid diagrams and KaTeX maths. Copy the HTML or download a self-contained file.',
   'live.sample':
-    '# Markdown live preview\n\nType on the left. The document on the right follows, and the styles are the ones a downloaded file **carries with it**.\n\n- Lists, tables, quotes and code all work.\n- GitHub Flavored Markdown, sanitised.\n\n| Format | Becomes |\n| --- | --- |\n| Markdown | HTML |\n\n```js\nconsole.log(\'hello\');\n```\n',
+    '# Markdown live preview\n\nType on the left. The document on the right follows, and the styles are the ones a downloaded file **carries with it**.\n\n- GitHub Flavored Markdown, sanitised.\n- Tables, task lists, quotes and code.\n\n| Format | Becomes |\n| --- | --- |\n| Markdown | HTML |\n\nCode is highlighted by language:\n\n```ts\nexport const render = (md: string) => toHtml(md); // one converter everywhere\n```\n\nMaths between dollars: $E = mc^2$, $\\sum_{i=1}^{n} i = \\frac{n(n+1)}{2}$\n\nAnd a diagram from a fence:\n\n```mermaid\nflowchart LR\n  MD[Markdown] --> TP[TransformPipe]\n  TP --> HTML\n  TP --> Word\n```\n',
 
   /*
    * The changelog page, at /changelog and linked from the footer's Resources.

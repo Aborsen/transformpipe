@@ -586,7 +586,13 @@ export const ui: Content['ui'] = {
   'live.eyebrow': 'Vista en vivo',
   'live.title': 'Vista previa de Markdown en vivo',
   'live.lede':
-    'Escribe o pega Markdown a la izquierda y mira cómo se construye el documento a la derecha. No se sube nada: el texto se queda en esta pestaña.',
+    'Escribe o pega Markdown a la izquierda y mira cómo se construye el documento a la derecha: tablas, código resaltado, diagramas Mermaid y matemáticas LaTeX incluidos. No se sube nada: el texto se queda en esta pestaña.',
+  'live.renders': 'Qué se renderiza aquí',
+  'live.renders.gfm': 'GitHub Flavored Markdown',
+  'live.renders.tables': 'Tablas y listas de tareas',
+  'live.renders.code': 'Código resaltado',
+  'live.renders.mermaid': 'Diagramas Mermaid',
+  'live.renders.math': 'Matemáticas LaTeX',
   'live.save': 'Convertir y guardar',
   'live.save.hint':
     'Lo abre como documento: en tu historial, listo para compartir o descargar en otro formato.',
@@ -596,12 +602,12 @@ export const ui: Content['ui'] = {
   'live.download': 'Descargar .html',
   'live.filename': 'vista-previa',
   'live.note':
-    'El mismo conversor que usa el resto del sitio, así que lo que ves aquí es lo que contiene el archivo descargado. El HTML crudo se sanea.',
+    'El mismo conversor que usa el resto del sitio: lo que ves aquí es lo que contiene el archivo descargado — los diagramas y las fórmulas viajan dentro, sin hoja de estilos ni tipografía que buscar. El HTML crudo del origen se sanea.',
   'live.seo.title': 'Vista previa de Markdown en vivo',
   'live.seo.description':
-    'Pega Markdown, ve el documento al lado, copia el HTML o descarga un archivo autónomo. No se sube nada.',
+    'Pega Markdown y velo renderizado al lado: GitHub Flavored Markdown, código resaltado, diagramas Mermaid y matemáticas KaTeX. Copia el HTML o descarga un archivo autónomo.',
   'live.sample':
-    '# Vista previa de Markdown en vivo\n\nEscribe a la izquierda. El documento de la derecha sigue, con los estilos que un archivo descargado **lleva consigo**.\n\n- Listas, tablas, citas y código funcionan.\n- GitHub Flavored Markdown, saneado.\n\n| Formato | Se convierte en |\n| --- | --- |\n| Markdown | HTML |\n\n```js\nconsole.log(\'hello\');\n```\n',
+    '# Vista previa de Markdown en vivo\n\nEscribe a la izquierda. El documento de la derecha sigue, con los estilos que un archivo descargado **lleva consigo**.\n\n- GitHub Flavored Markdown, saneado.\n- Tablas, listas de tareas, citas y código.\n\n| Formato | Se convierte en |\n| --- | --- |\n| Markdown | HTML |\n\nEl código se resalta según su lenguaje:\n\n```ts\nexport const render = (md: string) => toHtml(md); // one converter everywhere\n```\n\nMatemáticas entre dólares: $E = mc^2$, $\\sum_{i=1}^{n} i = \\frac{n(n+1)}{2}$\n\nY un diagrama desde un bloque:\n\n```mermaid\nflowchart LR\n  MD[Markdown] --> TP[TransformPipe]\n  TP --> HTML\n  TP --> Word\n```\n',
 
   /*
    * The changelog page, at /changelog and linked from the footer's Resources.

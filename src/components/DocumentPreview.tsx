@@ -4,8 +4,8 @@ import {
   MD_DOC_STYLE,
   MD_PREVIEW_STYLE,
 } from '@shared/md-doc-css';
-import { useEffect, useRef } from 'react';
-import { renderDiagrams } from '@/lib/mermaid';
+import { useEffect, useState } from 'react';
+import { inlineDiagrams } from '@/lib/mermaid';
 import { useTheme } from '@/lib/theme';
 import { cn } from '@/ui/lib/utils';
 
@@ -21,17 +21,34 @@ interface DocumentPreviewProps {
  */
 export function DocumentPreview({ html, className }: DocumentPreviewProps) {
   const { theme } = useTheme();
-  const sheet = useRef<HTMLDivElement>(null);
 
   /*
-   * Diagrams are drawn after the fragment is in the DOM, because mermaid needs to measure text.
+   * The fragment with its diagrams drawn into it, once there are any.
    *
-   * The `key` below is what makes a theme switch work: a drawn diagram is an <svg>, not the
-   * <pre> this looks for, so React is asked to rebuild the fragment from the html it was given
-   * and the diagrams are drawn again in the other palette.
+   * Drawn into the markup rather than into the DOM, and that is the whole point. The obvious
+   * version swaps each `pre.md-mermaid` for an `<svg>` in place — and it works for about a second:
+   * mermaid takes that long to load, React rebuilds this subtree when the theme resolves, and the
+   * swap either lands in a node that is no longer on the page or is undone by the next render.
+   * Nothing throws; the diagram simply is not there. Here the drawn fragment is state, so React
+   * renders it and no re-render can take it away.
+   *
+   * `html` goes up first, so the document appears at once and the diagram fills in behind it. A
+   * document with no fence in it never waits, and never loads mermaid.
    */
+  const [shown, setShown] = useState(html);
+
   useEffect(() => {
-    if (sheet.current) void renderDiagrams(sheet.current, theme);
+    setShown(html);
+
+    let live = true;
+
+    void inlineDiagrams(html, theme).then((drawn) => {
+      if (live) setShown(drawn);
+    });
+
+    return () => {
+      live = false;
+    };
   }, [html, theme]);
 
   return (
@@ -42,10 +59,8 @@ export function DocumentPreview({ html, className }: DocumentPreviewProps) {
       <div className={cn('md-sheet', className)}>
         <div
           className="md-doc"
-          key={theme}
-          ref={sheet}
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized with DOMPurify in markdownToHtml
-          dangerouslySetInnerHTML={{ __html: html }}
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitised in markdownToHtml, and the diagrams again in inlineDiagrams
+          dangerouslySetInnerHTML={{ __html: shown }}
         />
       </div>
     </>

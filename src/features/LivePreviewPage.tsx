@@ -151,6 +151,42 @@ export function LivePreviewPage({
       />
 
       {/*
+       * What this page renders, named.
+       *
+       * The two panes demonstrate it and the sample exercises all of it, but a demonstration is
+       * not a claim: somebody arriving with a vault full of diagrams wants to read that they will
+       * render before they paste anything, and a search engine has nothing to read in an <svg>
+       * the browser drew after the page loaded.
+       */}
+      <ul className="flex flex-wrap items-center gap-2">
+        <Typography
+          element="span"
+          variant="span"
+          textColor="light"
+          className="text-xxs uppercase tracking-wide"
+        >
+          {t('live.renders')}
+        </Typography>
+
+        {(
+          [
+            'live.renders.gfm',
+            'live.renders.tables',
+            'live.renders.code',
+            'live.renders.mermaid',
+            'live.renders.math',
+          ] as const
+        ).map((key) => (
+          <li
+            className="rounded-full border border-stroke bg-surface-card px-2.5 py-1 text-ink-secondary text-xs"
+            key={key}
+          >
+            {t(key)}
+          </li>
+        ))}
+      </ul>
+
+      {/*
        * Two panes side by side above `lg`, stacked below it. On a phone the editor comes first and
        * the preview under it, which is the order the work happens in.
        *

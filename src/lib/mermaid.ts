@@ -12,20 +12,33 @@ import DOMPurify from 'dompurify';
  *
  * Mermaid is ~1 MB parsed and most documents have no diagram in them, so it is imported on the
  * first fence that actually turns up and never before.
+ *
+ * Drawing is split in two on purpose, and the reason is a bug this cost a while: mermaid takes a
+ * second or two to load, React rebuilds the preview's subtree whenever the theme resolves, and a
+ * <pre> captured before that await is a detached node by the time there is an SVG to put in its
+ * place. Nothing throws — the diagram simply never appears. So `warmDiagrams` holds no DOM at all
+ * and only fills the cache, and `paintDiagrams` is synchronous over whatever is on the page at the
+ * moment it runs.
  */
 
 type Theme = 'dark' | 'light';
 
-/** Drawn diagrams, by theme and source. A document redrawn on a theme switch costs one lookup. */
-const drawn = new Map<string, string>();
+/** Drawn diagrams, by theme and source. `null` is a fence that will not parse; it is not retried. */
+const drawn = new Map<string, string | null>();
+
+/** One promise per diagram being drawn, so six callers at once cost one render. */
+const pending = new Map<string, Promise<string | null>>();
 
 let loading: Promise<typeof import('mermaid').default> | null = null;
 let count = 0;
+
+const keyFor = (source: string, theme: Theme) => `${theme}::${source}`;
 
 async function mermaidFor(theme: Theme) {
   loading ??= import('mermaid').then((module) => module.default);
 
   const mermaid = await loading;
+  const md = mdDocVars(theme);
 
   /*
    * Re-initialised per batch rather than once: the theme is a global in mermaid, and the app's is
@@ -33,8 +46,6 @@ async function mermaidFor(theme: Theme) {
    * that later gets emailed around; `suppressErrorRendering` is what keeps a typo in a fence from
    * replacing the diagram with mermaid's own error graphic — the source stays instead.
    */
-  const md = mdDocVars(theme);
-
   mermaid.initialize({
     startOnLoad: false,
     securityLevel: 'strict',
@@ -77,10 +88,7 @@ async function mermaidFor(theme: Theme) {
 }
 
 async function draw(source: string, theme: Theme): Promise<string | null> {
-  const key = `${theme}::${source}`;
-  const already = drawn.get(key);
-
-  if (already) return already;
+  const key = keyFor(source, theme);
 
   try {
     const mermaid = await mermaidFor(theme);
@@ -95,22 +103,51 @@ async function draw(source: string, theme: Theme): Promise<string | null> {
     return clean;
   } catch {
     /* An unparseable fence keeps its source, which is more use to the author than an error box. */
+    drawn.set(key, null);
+
     return null;
+  } finally {
+    pending.delete(key);
   }
 }
 
-/** Replaces every `pre.md-mermaid` under `root` with the diagram it describes. */
-export async function renderDiagrams(
-  root: ParentNode,
+/** The source of every fence under `root`. */
+function diagramSources(root: ParentNode): string[] {
+  return [...root.querySelectorAll('pre.md-mermaid')].map(
+    (block) => block.textContent ?? ''
+  );
+}
+
+/** Draws each source into the cache. Touches no DOM, so nothing here can go stale. */
+async function warmDiagrams(
+  sources: string[],
   theme: Theme
 ): Promise<void> {
-  const blocks = [...root.querySelectorAll<HTMLElement>('pre.md-mermaid')];
+  await Promise.all(
+    sources.map((source) => {
+      const key = keyFor(source, theme);
 
-  for (const block of blocks) {
-    const svg = await draw(block.textContent ?? '', theme);
+      if (drawn.has(key)) return drawn.get(key);
 
-    /* The preview may have moved on to another document while mermaid was loading. */
-    if (!svg || !block.isConnected) continue;
+      const already = pending.get(key);
+
+      if (already) return already;
+
+      const job = draw(source, theme);
+
+      pending.set(key, job);
+
+      return job;
+    })
+  );
+}
+
+/** Swaps every fence under `root` for its drawn diagram, from the cache, in one synchronous pass. */
+function paintDiagrams(root: ParentNode, theme: Theme): void {
+  for (const block of [...root.querySelectorAll('pre.md-mermaid')]) {
+    const svg = drawn.get(keyFor(block.textContent ?? '', theme));
+
+    if (!svg) continue;
 
     const figure = block.ownerDocument.createElement('figure');
 
@@ -120,7 +157,12 @@ export async function renderDiagrams(
   }
 }
 
-/** The same, for a fragment on its way into a file rather than onto the screen. */
+/**
+ * A fragment with every diagram drawn into it.
+ *
+ * The only entry point, and it returns markup rather than touching a page: what the preview shows
+ * and what a downloaded file contains are then the same string, produced the same way.
+ */
 export async function inlineDiagrams(
   html: string,
   theme: Theme
@@ -129,7 +171,8 @@ export async function inlineDiagrams(
 
   const parsed = new DOMParser().parseFromString(html, 'text/html');
 
-  await renderDiagrams(parsed.body, theme);
+  await warmDiagrams(diagramSources(parsed.body), theme);
+  paintDiagrams(parsed.body, theme);
 
   return parsed.body.innerHTML;
 }
