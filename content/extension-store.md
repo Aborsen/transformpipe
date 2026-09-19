@@ -37,8 +37,10 @@ which are localised with it.
 >
 > **A file on your machine, converted without uploading it.**
 >
-> Word documents, PDFs, spreadsheets, HTML, CSV, JSON, EPUB and more — ten conversions, all of them
-> running in your browser. Nothing is uploaded, and none of it needs a network connection.
+> Drop in a Word document and it comes back as Markdown. So does a spreadsheet, a page of saved
+> HTML, or the zip that Notion, Confluence and Obsidian produce when you export. Ten conversions in
+> all, every one of them running in your browser: nothing is uploaded, and none of it needs a
+> network connection.
 >
 > **Why it reads pages better than a copy and paste**
 >
@@ -58,6 +60,22 @@ which are localised with it.
 > the people you name — which is the only time anything leaves your browser.
 >
 > Open source: https://github.com/raudarlabs/transformpipe
+
+### Why this paragraph is prose and not a list
+
+Google rejected version 1.0.0 on 18 September 2026 under **Spam and Placement in the Store**,
+quoting one sentence: *"Word documents, PDFs, spreadsheets, HTML, CSV, JSON, EPUB"*. The policy
+words it as excessive keywords, and it was — a comma-separated run of formats written for a search
+box rather than for a person.
+
+It was also wrong. This extension has never converted a PDF and has never converted an EPUB; the
+ten conversions take `.md`, `.html`, `.txt`, `.csv`, `.tsv`, `.json`, `.docx`, `.xlsx` and the
+`.zip` from Notion, Confluence or Obsidian. Two of the seven formats in that list did not exist
+here. Had a reviewer installed it and looked for the PDF option, the rejection would have been the
+worse kind.
+
+So: name formats in sentences, name only what `shared/conversions.ts` actually lists, and let "ten
+conversions" carry the rest. `npm run store:check` enforces the second half of that.
 
 ## Single purpose
 
