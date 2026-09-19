@@ -61,7 +61,7 @@ export function extract(): Extracted {
     const copy = root.cloneNode(true) as HTMLElement;
     const living = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
     const twin = document.createTreeWalker(copy, NodeFilter.SHOW_ELEMENT);
-    const hidden: Element[] = [];
+    const hidden: Node[] = [];
     /*
      * Structural edits, held back until the walk is over.
      *
@@ -95,7 +95,10 @@ export function extract(): Extracted {
        */
       const formChoice =
         element instanceof HTMLOptionElement ||
-        element instanceof HTMLOptGroupElement;
+        element instanceof HTMLOptGroupElement ||
+        /* The menu itself is a widget the browser draws; its box is not a page's box. */
+        element instanceof HTMLSelectElement ||
+        element instanceof HTMLDataListElement;
 
       /*
        * Three tests, and not a fourth.
@@ -111,12 +114,27 @@ export function extract(): Extracted {
        * descendant can undo, which is the one imperfection here, and it is rare enough to be worth
        * the words it would take to check.
        */
+      /*
+       * A box that clips and has no room to clip into.
+       *
+       * `width: 0; height: 0; overflow: hidden`, and the one-pixel variant an accessibility helper
+       * uses, are how a page parks a string it needs but nobody should read — a blob of
+       * configuration turned up in a converted dashboard that way. The text inside is laid out
+       * normally and has rectangles of its own, so measuring the text cannot find it; the box can.
+       */
+      const clips =
+        style.overflow !== 'visible' &&
+        element instanceof HTMLElement &&
+        (element.clientWidth <= 1 || element.clientHeight <= 1);
+
       if (
         !formChoice &&
         (style.display === 'none' ||
           style.visibility === 'hidden' ||
           style.visibility === 'collapse' ||
-          style.opacity === '0')
+          style.contentVisibility === 'hidden' ||
+          style.opacity === '0' ||
+          clips)
       ) {
         /*
          * Collected rather than removed here: the two walkers are stepping through matching trees
@@ -205,8 +223,57 @@ export function extract(): Extracted {
         else mirror.append(node);
       }
 
-      mirror.after(document.createTextNode(' '));
+      /*
+       * Never inside preformatted content.
+       *
+       * White space there is the markup's own and is already right; CSS is not providing any of
+       * it. A space added after the `<code>` of a `<pre><code>` made the converter read the block
+       * as an inline span, and an inline span cannot hold a newline — so a repository's directory
+       * listing arrived as one run-on line. `white-space` inherits, so the element's own value
+       * answers for the context it sits in.
+       */
+      if (!style.whiteSpace.startsWith('pre')) {
+        mirror.after(document.createTextNode(' '));
+      }
     };
+
+    /*
+     * Text that draws nothing, found before a single node is touched.
+     *
+     * The element test cannot answer this: a container with no box of its own may be perfectly
+     * visible, which is why testing containers for one emptied a settings page. A run of text
+     * either has a rectangle on the screen or it does not, and a `Range` says which — so a string
+     * of configuration parked in a box of no size is dropped while everything around it stays.
+     *
+     * Both trees are still pristine clones here, so their text nodes correspond one to one.
+     */
+    const liveText = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const twinText = document.createTreeWalker(copy, NodeFilter.SHOW_TEXT);
+    const ruler = document.createRange();
+
+    while (liveText.nextNode() && twinText.nextNode()) {
+      const node = liveText.currentNode;
+
+      if (!(node.textContent ?? '').trim()) continue;
+
+      /*
+       * The labels of a menu, which draw nothing until it is opened and are its content all the
+       * same — the same exemption the boxes around them get.
+       */
+      if (node.parentElement?.closest('select, datalist')) continue;
+
+      ruler.selectNodeContents(node);
+
+      /*
+       * Rectangles with no area: `font-size: 0`, which draws the words and gives them no size.
+       * The rest of what hides text is a property of the box around it and is tested above.
+       */
+      const drawn = [...ruler.getClientRects()].some(
+        (rect) => rect.width > 0 && rect.height > 0
+      );
+
+      if (!drawn) hidden.push(twinText.currentNode);
+    }
 
     consider(root, copy);
 
@@ -233,7 +300,8 @@ export function extract(): Extracted {
     const unfiltered = copy.cloneNode(true) as HTMLElement;
 
     for (const node of hidden) {
-      node.remove();
+      /* An element or a run of text; both go the same way, and a detached one is already gone. */
+      node.parentNode?.removeChild(node);
     }
 
     if (whole > 400 && readable(copy) < whole / 10) {
