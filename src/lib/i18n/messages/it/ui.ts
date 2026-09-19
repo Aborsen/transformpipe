@@ -581,6 +581,8 @@ export const ui: Content['ui'] = {
   'live.renders.code': 'Codice evidenziato',
   'live.renders.mermaid': 'Diagrammi Mermaid',
   'live.renders.math': 'Matematica LaTeX',
+  'live.bare': 'Sembra un diagramma Mermaid da solo. Markdown lo disegna solo dentro un blocco di codice.',
+  'live.bare.action': 'Racchiudilo in un blocco',
   'live.save': 'Converti e tieni',
   'live.save.hint':
     'Lo apre come documento: nella cronologia, pronto da condividere o da scaricare in un altro formato.',

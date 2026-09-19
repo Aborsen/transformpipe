@@ -8,6 +8,7 @@ import { livePreviewCrumbs } from '@/lib/breadcrumbs';
 import { downloadDoc } from '@/lib/download';
 import { useI18n, useT } from '@/lib/i18n/context';
 import { markdownToHtml } from '@/lib/markdown';
+import { looksLikeBareDiagram } from '@/lib/mermaid';
 import { useTheme } from '@/lib/theme';
 import { Button } from '@/ui/components/Button';
 import { IconButton } from '@/ui/components/IconButton';
@@ -115,6 +116,16 @@ export function LivePreviewPage({
   }, [markdown]);
 
   const html = useMemo(() => markdownToHtml(settled), [settled]);
+
+  /*
+   * A diagram pasted on its own, with no fence around it.
+   *
+   * Every other tool that draws these is a diagram editor, where the diagram *is* the document —
+   * so this is what somebody does first, and what they get is an indented code block and a
+   * paragraph of run-together arrows. It looks like the renderer is broken when it is a
+   * misunderstanding about which kind of editor this is, so the page says so and offers the fence.
+   */
+  const bare = useMemo(() => looksLikeBareDiagram(settled), [settled]);
 
   const copyHtml = async () => {
     try {
@@ -315,6 +326,29 @@ export function LivePreviewPage({
            * not grow with what is being typed.
            */}
           <div className="min-h-0 flex-1 overflow-auto rounded-xl border border-stroke bg-surface-card">
+            {bare && (
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-stroke border-b bg-surface-accent px-4 py-3">
+                <Typography
+                  variant="span"
+                  textColor="secondary"
+                  className="text-xs"
+                >
+                  {t('live.bare')}
+                </Typography>
+
+                <Button
+                  variant="secondary"
+                  size="xs"
+                  rounded="full"
+                  onClick={() =>
+                    onMarkdownChange(`\`\`\`mermaid\n${markdown.trim()}\n\`\`\`\n`)
+                  }
+                >
+                  {t('live.bare.action')}
+                </Button>
+              </div>
+            )}
+
             <DocumentPreview html={html} className="md-article p-4" />
           </div>
         </div>

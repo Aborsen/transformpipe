@@ -593,6 +593,8 @@ export const ui: Content['ui'] = {
   'live.renders.code': 'Syntax-highlighted code',
   'live.renders.mermaid': 'Mermaid diagrams',
   'live.renders.math': 'LaTeX maths',
+  'live.bare': 'That looks like a Mermaid diagram on its own. Markdown needs it inside a fence to draw it.',
+  'live.bare.action': 'Wrap it in a fence',
   'live.save': 'Convert and keep',
   'live.save.hint':
     'Opens it as a document: in your history, ready to share or download in another format.',

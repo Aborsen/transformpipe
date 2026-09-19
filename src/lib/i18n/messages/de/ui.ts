@@ -608,6 +608,8 @@ export const ui: Content['ui'] = {
   'live.renders.code': 'Hervorgehobener Code',
   'live.renders.mermaid': 'Mermaid-Diagramme',
   'live.renders.math': 'LaTeX-Mathematik',
+  'live.bare': 'Das sieht nach einem Mermaid-Diagramm ohne Umgebung aus. Markdown zeichnet es erst in einem Codeblock.',
+  'live.bare.action': 'In einen Codeblock setzen',
   'live.save': 'Umwandeln und behalten',
   'live.save.hint':
     'Öffnet es als Dokument: im Verlauf, bereit zum Teilen oder als anderes Format zu laden.',

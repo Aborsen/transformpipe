@@ -80,8 +80,29 @@ async function mermaidFor(theme: Theme) {
      * part of SVG that most of those renderers ignore.
      */
     htmlLabels: false,
-    flowchart: { htmlLabels: false },
-    class: { htmlLabels: false },
+    /*
+     * Drawn at its natural size, not stretched to the pane.
+     *
+     * Mermaid's default writes `width="100%"` on the SVG, which sounds responsive and is how a
+     * diagram 828px wide ends up squeezed into a 412px preview at half scale, with labels too
+     * small to read. At its own size it overflows instead, and the figure around it scrolls — the
+     * same bargain a wide table already gets in this stylesheet.
+     */
+    flowchart: { htmlLabels: false, useMaxWidth: false },
+    class: { htmlLabels: false, useMaxWidth: false },
+    sequence: { useMaxWidth: false },
+    state: { useMaxWidth: false },
+    er: { useMaxWidth: false },
+    journey: { useMaxWidth: false },
+    gantt: { useMaxWidth: false },
+    pie: { useMaxWidth: false },
+    mindmap: { useMaxWidth: false },
+    timeline: { useMaxWidth: false },
+    gitGraph: { useMaxWidth: false },
+    quadrantChart: { useMaxWidth: false },
+    xyChart: { useMaxWidth: false },
+    block: { useMaxWidth: false },
+    sankey: { useMaxWidth: false },
   });
 
   return mermaid;
@@ -109,6 +130,38 @@ async function draw(source: string, theme: Theme): Promise<string | null> {
   } finally {
     pending.delete(key);
   }
+}
+
+/*
+ * The words a mermaid diagram starts with, as mermaid's own parser recognises them.
+ *
+ * Kept here rather than asked of mermaid, because the whole point is to answer before mermaid has
+ * been loaded — the question is being asked about text somebody has just pasted, on a page that
+ * should not fetch a megabyte to find out it was prose.
+ */
+const OPENERS = [
+  'sequencediagram', 'flowchart', 'graph', 'classdiagram', 'statediagram',
+  'erdiagram', 'journey', 'gantt', 'pie', 'quadrantchart', 'requirementdiagram',
+  'gitgraph', 'mindmap', 'timeline', 'zenuml', 'sankey', 'xychart', 'block',
+  'packet', 'architecture', 'kanban', 'radar', 'treemap', 'c4context',
+];
+
+/**
+ * Whether this text is a bare diagram somebody pasted without wrapping it in a fence.
+ *
+ * It happens because every other tool that draws these is a diagram editor, where the diagram is
+ * the whole document. Here it is a Markdown converter, so an unfenced diagram is prose — indented
+ * lines become a code block, the rest runs together into a paragraph, and what comes out looks
+ * broken rather than looking like a misunderstanding. So the page says which it was.
+ */
+export function looksLikeBareDiagram(markdown: string): boolean {
+  if (markdown.includes('```')) return false;
+
+  const first = markdown.trim().split('\n', 1)[0].trim().toLowerCase();
+
+  return OPENERS.some(
+    (word) => first === word || first.startsWith(`${word} `) || first.startsWith(`${word}-`)
+  );
 }
 
 /** The source of every fence under `root`. */

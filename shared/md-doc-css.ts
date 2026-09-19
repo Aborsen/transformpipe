@@ -281,17 +281,25 @@ export const MD_DOC_STYLE = `
  * which needs no rule of its own: it is a code block, and it is meant to look like one.
  */
 .md-doc .md-diagram {
-  display: flex;
-  justify-content: center;
   margin: 1.4em 0;
   padding: 0.9rem 1rem;
   overflow-x: auto;
   border: 1px solid var(--md-stroke);
   border-radius: 0.75rem;
   background: var(--md-page);
+  text-align: center;
 }
+
+/*
+ * Its own size, and the figure scrolls when that is wider than the page.
+ *
+ * A max-width of 100% reads as the careful choice and is the wrong one here: a diagram is a drawing
+ * with text in it, and halving it to fit a narrow pane halves the labels too, at which point
+ * nobody can read it and it may as well not be there. Centring applies to one that fits and
+ * leaves one that does not starting at the left edge, where reading it begins.
+ */
 .md-doc .md-diagram svg {
-  max-width: 100%;
+  max-width: none;
   height: auto;
 }
 
