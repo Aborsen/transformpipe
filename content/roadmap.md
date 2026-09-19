@@ -51,6 +51,9 @@ endpoint shipped, and `/api/v1` has accepted them ever since.
   what this is.
 - **Share on X, Reddit and LinkedIn** at the foot of every article — three plain links, no SDK, so
   nothing loads until a reader clicks.
+- **Mermaid diagrams are drawn** rather than printed as code — in the preview, in the downloaded
+  .html and in what prints, redrawn when the theme changes, and left as readable source wherever
+  there is no browser to measure text in.
 - A **reload keeps the document you were reading**; the FAQ stops resizing as you read it.
 
 ### Content
@@ -81,26 +84,25 @@ The rule that came out of this: submit early in a week and ship something else w
 
 ## Next, in order
 
-Twenty weeks, and the first four are the ones that improve every conversion at once rather than
-adding an eleventh.
+Nineteen weeks, and the first three are the ones that improve every conversion at once rather
+than adding an eleventh.
 
 ### The document itself
 
 | Week | Ships | Notes |
 | --- | --- | --- |
-| 1 | **Mermaid diagrams** render in the preview and the HTML export | A fenced ```mermaid block is dead text today. Mermaid needs a browser to measure text, so the shared page and the API render what the browser produced |
-| 2 | **Math**: `$…$` and `$$…$$` with KaTeX | KaTeX runs in Node as well, so this one is the same everywhere. Obsidian and Confluence exports are full of it |
-| 3 | **Syntax highlighting**, in a palette that matches the page | One renderer, four surfaces: the app, the download, the shared link, the blog |
-| 4 | **A document check** — dead links, duplicate anchors, empty headings, images with no alt text | A panel beside the preview. Nothing is rewritten without being asked |
+| 1 | **Math**: `$…$` and `$$…$$` with KaTeX | KaTeX runs in Node as well, so this one is the same everywhere. Obsidian and Confluence exports are full of it |
+| 2 | **Syntax highlighting**, in a palette that matches the page | One renderer, four surfaces: the app, the download, the shared link, the blog |
+| 3 | **A document check** — dead links, duplicate anchors, empty headings, images with no alt text | A panel beside the preview. Nothing is rewritten without being asked |
 
 ### Formats, going in
 
 | Week | Ships | Notes |
 | --- | --- | --- |
-| 5 | **PowerPoint → Markdown** — one slide, one section, speaker notes kept | `.pptx` is a zip of XML; `fflate` is already here |
-| 6 | **EPUB → Markdown** — a book as one document with its own contents | Zip plus XHTML, and `htmlToMarkdown()` exists |
-| 7 | **ODT and RTF → Markdown** — LibreOffice and Google Docs exports | Two in a week because ODT is a zip of XML and RTF is small |
-| 8 | **Evernote → Markdown** — an `.enex` export, notes merged | The one format here with a user base actively looking for the door |
+| 4 | **PowerPoint → Markdown** — one slide, one section, speaker notes kept | `.pptx` is a zip of XML; `fflate` is already here |
+| 5 | **EPUB → Markdown** — a book as one document with its own contents | Zip plus XHTML, and `htmlToMarkdown()` exists |
+| 6 | **ODT and RTF → Markdown** — LibreOffice and Google Docs exports | Two in a week because ODT is a zip of XML and RTF is small |
+| 7 | **Evernote → Markdown** — an `.enex` export, notes merged | The one format here with a user base actively looking for the door |
 
 ### Formats, going out
 
@@ -109,28 +111,28 @@ it. "I have the Markdown, I need it in Confluence" still has no good answer on t
 
 | Week | Ships | Notes |
 | --- | --- | --- |
-| 9 | **Markdown → Confluence storage format** | XHTML with Confluence's own macro elements. A renderer, not a filter |
-| 10 | **Markdown → Jira wiki markup**, and **→ Slack mrkdwn** | Line-level transforms of the token stream; they share a week |
-| 11 | **Markdown → EPUB** | Zip, XHTML, a manifest — the inverse of week 6 |
-| 12 | **Markdown → Word, properly** — styles a Word user can edit | The `.docx` export exists; this is the week it stops looking like converted HTML |
+| 8 | **Markdown → Confluence storage format** | XHTML with Confluence's own macro elements. A renderer, not a filter |
+| 9 | **Markdown → Jira wiki markup**, and **→ Slack mrkdwn** | Line-level transforms of the token stream; they share a week |
+| 10 | **Markdown → EPUB** | Zip, XHTML, a manifest — the inverse of week 5 |
+| 11 | **Markdown → Word, properly** — styles a Word user can edit | The `.docx` export exists; this is the week it stops looking like converted HTML |
 
 ### The pull request, and the link
 
 | Week | Ships | Notes |
 | --- | --- | --- |
-| 13 | **The GitHub App**: install once, and every pull request touching Markdown gets a rendered link per changed file | App registration, `pull_request` webhook, installation tokens. The heaviest single item left |
-| 14 | **The same app, useful**: a check run rather than a comment thread, and the Marketplace listing | Comments pile up on a long review; a check run updates in place |
-| 15 | **A password on a shared link** | Hash on the row, one gate before the render — server-side, since the shared page has no scripts |
-| 16 | **An expiry date, and a view count** | Two columns and a sweep. Answers "is this link still live" without asking anybody |
+| 12 | **The GitHub App**: install once, and every pull request touching Markdown gets a rendered link per changed file | App registration, `pull_request` webhook, installation tokens. The heaviest single item left |
+| 13 | **The same app, useful**: a check run rather than a comment thread, and the Marketplace listing | Comments pile up on a long review; a check run updates in place |
+| 14 | **A password on a shared link** | Hash on the row, one gate before the render — server-side, since the shared page has no scripts |
+| 15 | **An expiry date, and a view count** | Two columns and a sweep. Answers "is this link still live" without asking anybody |
 
 ### The desk
 
 | Week | Ships | Notes |
 | --- | --- | --- |
-| 17 | **A chosen address** instead of a token, and **a QR code** for it | Collision handling is the feature; the QR is an afternoon |
-| 18 | **The shared page grows up**: contents, a print stylesheet, its own preview image | The image is the interesting half — a per-document card drawn the way the blog covers are |
-| 19 | **Tags in the history**, filterable beside the existing chips | The chip plumbing exists; this adds a source of chips |
-| 20 | **A trash**: deletes recoverable for thirty days, and **drop a folder** to get a zip back | `deleted_at` rather than a delete, and one honest sentence in the privacy page |
+| 16 | **A chosen address** instead of a token, and **a QR code** for it | Collision handling is the feature; the QR is an afternoon |
+| 17 | **The shared page grows up**: contents, a print stylesheet, its own preview image | The image is the interesting half — a per-document card drawn the way the blog covers are |
+| 18 | **Tags in the history**, filterable beside the existing chips | The chip plumbing exists; this adds a source of chips |
+| 19 | **A trash**: deletes recoverable for thirty days, and **drop a folder** to get a zip back | `deleted_at` rather than a delete, and one honest sentence in the privacy page |
 
 ---
 

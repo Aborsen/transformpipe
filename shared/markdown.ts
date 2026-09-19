@@ -101,6 +101,22 @@ export function renderMarkdown(markdown: string, sanitize: Sanitize): string {
 
         return `<h${depth} id="${id}">${text}</h${depth}>\n`;
       },
+      /*
+       * A ```mermaid fence, marked for the browser and left readable for everything else.
+       *
+       * Mermaid measures text to lay a diagram out, which needs a real DOM — so nothing is drawn
+       * here. What this emits is the code block marked would have emitted anyway, wearing a class,
+       * so the shared page, the API and any runtime without mermaid keep showing the diagram's
+       * source rather than a blank. The browser swaps it for the picture once it has drawn one.
+       *
+       * `false` hands every other fence back to marked's own renderer: this file has no business
+       * owning the markup for code blocks in general.
+       */
+      code({ text, lang }) {
+        if ((lang ?? '').trim().split(/\s+/)[0].toLowerCase() !== 'mermaid') return false;
+
+        return `<pre class="md-mermaid"><code class="language-mermaid">${escapeHtml(text)}</code></pre>\n`;
+      },
       link({ href, title, tokens }) {
         const text = this.parser.parseInline(tokens);
         const titleAttr = title ? ` title="${escapeHtml(title)}"` : '';

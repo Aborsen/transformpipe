@@ -93,6 +93,58 @@ export const DETAIL_LIMIT = 3000;
 const ENTRIES: ChangelogEntry[] = [
   {
     date: '2026-09-19',
+    title: 'Mermaid diagrams are drawn, not printed as code',
+    slug: 'mermaid-diagrams',
+    body:
+      'A ```mermaid fence used to come out of every conversion as a block of text. It is now a '
+      + 'picture — in the preview, in the .html you download and in what you print — and the '
+      + 'picture follows the theme you are reading in. A fence that does not parse keeps its '
+      + 'source, which is the thing worth seeing when a diagram is wrong.',
+    detail: {
+      en: {
+        description:
+          'Flowcharts, sequence diagrams and the rest of Mermaid now render wherever a document is '
+          + 'shown in a browser, and travel inside the file you download.',
+        keywords:
+          'mermaid to html, render mermaid diagrams, markdown flowchart converter, '
+          + 'mermaid sequence diagram, export mermaid as html',
+        body: `Anything written inside a \`\`\`mermaid fence — a flowchart, a sequence diagram, a
+state machine, a Gantt chart, a pie — is now drawn.
+
+## Where it is drawn
+
+In the preview, as you convert. In the .html file you download, with the diagram inside the file
+rather than fetched from anywhere — the same promise the rest of that file already made. And in
+what the print button hands to your PDF writer, where the diagram is drawn on the light palette
+the printed page uses, whatever the screen was set to.
+
+Switch the theme and the diagram is drawn again in the other palette, rather than staying dark on
+a white page.
+
+## Where it is not
+
+A diagram is laid out by measuring text, and measuring text needs a browser. A document rendered
+by the API or opened through a shared link is built by a server that has none, so a fence there
+still shows its source. That is the honest fallback and not a placeholder: the source of a
+diagram is readable, which an empty box is not.
+
+## When a fence is wrong
+
+It keeps its source and nothing is replaced. Mermaid has an error graphic of its own for this and
+it is switched off here, because a half-written diagram is something you are still editing, and
+the text you are editing is more use on screen than a picture of the word "error".
+
+## What is not carried across
+
+Labels are drawn as text rather than as HTML laid inside the picture. Mermaid can do the latter,
+and it buys richer labels, at the cost of a file that draws correctly in a browser and nowhere
+else — not in an editor, not in most PDF tools, not in a word processor. A diagram that survives
+being emailed is worth more here than a bold word in a box.`,
+      },
+    },
+  },
+  {
+    date: '2026-09-19',
     title: 'The blog reads in all five languages',
     body:
       'All sixty-three articles now exist in English, German, French, Spanish and Italian — 315 in '

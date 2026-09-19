@@ -1,4 +1,5 @@
 import { buildStandaloneHtml, markdownToHtml } from './markdown';
+import { inlineDiagrams } from './mermaid';
 import { markdownToText } from '@shared/to-text';
 import { type DocFormat, toFileName } from './format';
 import type { Translate } from './i18n/context';
@@ -30,7 +31,7 @@ export function saveBlob(fileName: string, blob: Blob) {
 }
 
 /** Hands over the document as what was asked for: the source, the built page, or the words. */
-export function downloadDoc(
+export async function downloadDoc(
   name: string,
   markdown: string,
   createdAt: number,
@@ -51,11 +52,12 @@ export function downloadDoc(
     return;
   }
 
+  /* Any mermaid fence is drawn before the file is written, so the picture travels with it. */
   save(
     toFileName(name, 'html'),
     buildStandaloneHtml({
       title: name,
-      body: markdownToHtml(markdown),
+      body: await inlineDiagrams(markdownToHtml(markdown), theme),
       createdAt,
       theme,
     }),
@@ -76,13 +78,20 @@ export function downloadDoc(
  * the failure, which the caller shows as the second line of a toast — so `t` comes in from the
  * component that has one. This is a module; it cannot call a hook.
  */
-export function printDoc(
+export async function printDoc(
   name: string,
   html: string,
   createdAt: number,
   theme: 'dark' | 'light',
   t: Translate
 ): Promise<void> {
+  /*
+   * Diagrams drawn light, whatever the screen is on: the exported file's print rule puts the
+   * document back on a light palette, and mermaid's dark palette is pale text — which on paper is
+   * no diagram at all.
+   */
+  const body = await inlineDiagrams(html, 'light');
+
   return new Promise((resolve, reject) => {
     const frame = document.createElement('iframe');
 
@@ -117,7 +126,7 @@ export function printDoc(
 
     frame.srcdoc = buildStandaloneHtml({
       title: name,
-      body: html,
+      body,
       createdAt,
       theme,
     });

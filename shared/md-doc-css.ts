@@ -243,6 +243,25 @@ export const MD_DOC_STYLE = `
   border-radius: 0.5rem;
 }
 
+/*
+ * A drawn mermaid diagram. Until the browser draws one the fence is still a pre.md-mermaid,
+ * which needs no rule of its own: it is a code block, and it is meant to look like one.
+ */
+.md-doc .md-diagram {
+  display: flex;
+  justify-content: center;
+  margin: 1.4em 0;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  border: 1px solid var(--md-stroke);
+  border-radius: 0.75rem;
+  background: var(--md-page);
+}
+.md-doc .md-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
 .md-doc kbd {
   padding: 0.1em 0.4em;
   border: 1px solid var(--md-stroke);
