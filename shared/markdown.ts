@@ -114,6 +114,76 @@ marked.use({
       },
     },
     {
+      /*
+       * `\\[ … \\]`, LaTeX's own display delimiters, and inline rather than block on purpose.
+       *
+       * They almost never begin a block. What people write is a sentence introducing the formula
+       * and the delimiter on the next line with no blank line between — which Markdown reads as
+       * one paragraph, so a block-level tokenizer never sees it. As an inline token it is found
+       * wherever it turns up, and the span below is display-styled by the stylesheet.
+       */
+      name: 'mathBracket',
+      level: 'inline',
+      start(src: string) {
+        return src.indexOf('\\[');
+      },
+      tokenizer(src: string) {
+        const match = /^\\\[([\s\S]+?)\\\]/.exec(src);
+
+        if (!match || !looksLikeMath(match[1])) return undefined;
+
+        return { type: 'mathBracket', raw: match[0], text: match[1].trim() };
+      },
+      renderer(token: Tokens.Generic) {
+        return `<span class="md-math">${renderMath(String(token.text), true)}</span>`;
+      },
+    },
+    {
+      /* `\\( … \\)`, the inline pair. Unambiguous: nobody escapes a bracket this way in prose. */
+      name: 'mathParen',
+      level: 'inline',
+      start(src: string) {
+        return src.indexOf('\\(');
+      },
+      tokenizer(src: string) {
+        const match = /^\\\(([\s\S]+?)\\\)/.exec(src);
+
+        if (!match || !looksLikeMath(match[1])) return undefined;
+
+        return { type: 'mathParen', raw: match[0], text: match[1].trim() };
+      },
+      renderer(token: Tokens.Generic) {
+        return renderMath(String(token.text), false);
+      },
+    },
+    {
+      /*
+       * A bare `\\begin{equation}` and its relatives, handed to KaTeX whole.
+       *
+       * KaTeX knows these environments, so the delimiters are the environment itself and there is
+       * nothing to strip. No plausibility guard either: `\\begin{align}` in running prose is not a
+       * thing that happens by accident.
+       */
+      name: 'mathEnv',
+      level: 'inline',
+      start(src: string) {
+        return src.indexOf('\\begin{');
+      },
+      tokenizer(src: string) {
+        const match =
+          /^\\begin\{(equation|align|alignat|gather|multline|flalign|eqnarray|CD)(\*?)\}([\s\S]+?)\\end\{\1\2\}/.exec(
+            src
+          );
+
+        if (!match) return undefined;
+
+        return { type: 'mathEnv', raw: match[0], text: match[0] };
+      },
+      renderer(token: Tokens.Generic) {
+        return `<span class="md-math">${renderMath(String(token.text), true)}</span>`;
+      },
+    },
+    {
       name: 'mathInline',
       level: 'inline',
       start(src: string) {

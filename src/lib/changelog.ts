@@ -145,9 +145,10 @@ opens coloured on a machine with no network.`,
     title: 'Maths between dollar signs',
     slug: 'math-in-markdown',
     body:
-      'Write $E = mc^2$ in a sentence or put a formula between $$ on its own lines, and it is set '
-      + 'as maths — in the preview, in the file you download, in a shared link and in what the API '
-      + 'returns. A price written as $5 to $10 is still a price.',
+      'Write $E = mc^2$ in a sentence, put a formula between $$ on its own lines, or use LaTeX\'s '
+      + 'own delimiters and environments, and it is set as maths — in the preview, in the file you '
+      + 'download, in a shared link and in what the API returns. A price written as $5 to $10 is '
+      + 'still a price.',
     detail: {
       en: {
         description:
@@ -158,6 +159,22 @@ opens coloured on a machine with no network.`,
           + 'mathml export, convert equations markdown',
         body: `\`$…$\` in a line and \`$$…$$\` on lines of their own are read as TeX and typeset with
 KaTeX.
+
+## And LaTeX's own delimiters
+
+\`\\( … \\)\` for a formula in a sentence, \`\\[ … \\]\` for one on a line of its own, and the
+environments themselves — \`\\begin{equation}\`, \`\\begin{align}\`, \`gather\`, \`multline\`,
+\`alignat\` and their starred forms — handed to KaTeX whole, so aligned equations line up on the
+equals sign the way they were written to.
+
+These are what a paper, a thesis or anything written near LaTeX actually uses, and they almost
+never begin a paragraph: people write the sentence introducing the formula and the delimiter on
+the next line, with no blank line between. Markdown reads that as one paragraph, so they are
+found wherever they turn up in a line rather than only at the start of a block.
+
+What is not read is the rest of LaTeX. \`\\section\`, \`\\textbf\`, \`\\begin{itemize}\` and the
+preamble are a document format, not maths, and this converts Markdown. Paste a whole .tex file
+and the formulas in it will set; the commands around them stay as text.
 
 ## Everywhere, not only on screen
 

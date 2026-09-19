@@ -308,6 +308,8 @@ export const MD_DOC_STYLE = `
  * font it already has — so this is only about where the formula sits on the page.
  */
 .md-doc .md-math {
+  /* A span as well as a div: LaTeX's own display delimiters arrive inside a paragraph. */
+  display: block;
   margin: 1.25em 0;
   overflow-x: auto;
   overflow-y: hidden;
