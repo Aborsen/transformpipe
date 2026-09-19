@@ -204,14 +204,23 @@ marked.use({
       start(src: string) {
         return src.indexOf('[^');
       },
+      /*
+       * A marker only counts when there is a note under it.
+       *
+       * marked lexes every block before it parses any inline content, so by the time this runs the
+       * definitions are all in hand — which means the question can be asked. Without it, writing
+       * `[^1]` in a sentence *about* footnotes produced a superscript and an empty note at the
+       * foot of the page, which is what happened to a changelog entry describing this very
+       * feature. Nothing to define means nothing to refer to, and the brackets stay brackets.
+       */
       tokenizer(src: string) {
         const match = /^\[\^([^\]\s]+)\]/.exec(src);
 
-        if (!match || !notes) return undefined;
+        if (!match || !notes?.text.has(match[1])) return undefined;
 
         const id = match[1];
 
-        if (!notes.text.has(id) && !notes.order.includes(id)) notes.order.push(id);
+        if (!notes.order.includes(id)) notes.order.push(id);
 
         return { type: 'footnoteRef', raw: match[0], text: id };
       },
@@ -585,15 +594,10 @@ function footnoteSection(collected: typeof notes): string {
   const items = collected.order
     .map((id, index) => {
       const slug = slugifyNote(id);
-      const text = collected.text.get(id);
-
-      /*
-       * A marker with no note under it keeps its number and says so, rather than linking to an
-       * anchor that is not there. It is the sort of thing the document check will one day flag.
-       */
-      const inner = text
-        ? (marked.parseInline(text, { async: false }) as string)
-        : `<em>${escapeHtml(id)}</em>`;
+      /* Only a defined note reaches this list now, so there is always something to print. */
+      const inner = marked.parseInline(collected.text.get(id) ?? '', {
+        async: false,
+      }) as string;
 
       return `<li id="doc-fn-${slug}">${inner} <a href="#doc-fnref-${slug}" class="md-fnback">\u21a9</a></li>`;
     })
