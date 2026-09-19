@@ -188,31 +188,57 @@ export function PageSurface({ live = false }: { live?: boolean }) {
       };
     }
 
-    const again = () => {
-      setDocument(null);
-      /* A new page is not the page that was saved: the buttons go back to offering it. */
-      account.reset();
-      setCopied(false);
-      setSharing(false);
-      void convertActiveTab(() => alive);
+    let pending: ReturnType<typeof setTimeout> | undefined;
+
+    const again = (after = 0) => {
+      clearTimeout(pending);
+
+      pending = setTimeout(() => {
+        setDocument(null);
+        /* A new page is not the page that was saved: the buttons go back to offering it. */
+        account.reset();
+        setCopied(false);
+        setSharing(false);
+        void convertActiveTab(() => alive);
+      }, after);
     };
 
+    /*
+     * Two kinds of arriving somewhere else, and only one of them loads a page.
+     *
+     * `status: 'complete'` is a document being fetched and parsed — a typed address, a reload, a
+     * link to another site. Inside an application it never comes: the router calls `pushState`,
+     * swaps what is on screen and fetches nothing, so the panel sat on the dashboard somebody had
+     * left ten minutes ago while the address bar said otherwise.
+     *
+     * A changed address or title is that second kind. Both are waited on briefly rather than read
+     * at once, because the route changes before the screen does and reading immediately catches
+     * the page that is leaving — and because the two arrive within a moment of each other, so
+     * whichever is second cancels the first rather than converting twice.
+     */
     const onUpdated = (
       _id: number,
-      change: { status?: string },
+      change: { status?: string; url?: string; title?: string },
       tab: chrome.tabs.Tab
     ) => {
-      if (change.status === 'complete' && tab.active) {
+      if (!tab.active) return;
+
+      if (change.status === 'complete') {
         again();
+      } else if (change.url || change.title) {
+        again(600);
       }
     };
 
-    chrome.tabs.onActivated.addListener(again);
+    const onActivated = () => again();
+
+    chrome.tabs.onActivated.addListener(onActivated);
     chrome.tabs.onUpdated.addListener(onUpdated);
 
     return () => {
       alive = false;
-      chrome.tabs.onActivated.removeListener(again);
+      clearTimeout(pending);
+      chrome.tabs.onActivated.removeListener(onActivated);
       chrome.tabs.onUpdated.removeListener(onUpdated);
     };
   }, [account.reset, convertActiveTab, live]);
