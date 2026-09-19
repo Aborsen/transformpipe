@@ -74,7 +74,7 @@ Drei Dinge ändern das, und ein viertes umgeht die Frage.
 
 Die Zwei-Leerzeichen-Regel ist der ursprüngliche harte Zeilenumbruch und der zerbrechliche. Leerraum am Zeilenende ist unsichtbar, viele Editoren entfernen ihn beim Speichern, Linter markieren ihn, und ein Prüfer, der einen Diff liest, kann nicht sehen, was sich geändert hat.
 
-Zwei Details, die die Spezifikation ergänzt und die meisten Anleitungen weglassen. Die Regel lautet zwei Leerzeichen *oder mehr*, eine Zeile, die auf fünf Leerzeichen endet, bricht also genauso wie eine, die auf zwei endet — was zum Teil der Grund ist, warum niemand es durch Hinsehen erkennen kann, und warum „noch ein Leerzeichen dazu" nie die Lösung ist. Und keine der beiden Formen bewirkt am Ende eines Blocks etwas: ein harter Zeilenumbruch braucht eine Zeile nach sich innerhalb desselben Absatzes, Leerzeichen am Ende der letzten Zeile eines Absatzes sind also nur Leerzeichen am Zeilenende.
+Zwei Details, die die Spezifikation ergänzt und die meisten Anleitungen weglassen. Die Regel lautet zwei Leerzeichen *oder mehr*, eine Zeile, die auf fünf Leerzeichen endet, bricht also genauso wie eine, die auf zwei endet — was zum Teil der Grund ist, warum niemand es durch Hinsehen erkennen kann, und warum „noch ein Leerzeichen dazu“ nie die Lösung ist. Und keine der beiden Formen bewirkt am Ende eines Blocks etwas: ein harter Zeilenumbruch braucht eine Zeile nach sich innerhalb desselben Absatzes, Leerzeichen am Ende der letzten Zeile eines Absatzes sind also nur Leerzeichen am Zeilenende.
 
 Ein drittes Detail entscheidet einen Streit, den Leute mit ihren eigenen Dateien haben. Ein harter
 Zeilenumbruch kann nicht innerhalb einer Code-Spanne und nicht innerhalb eines HTML-Tags passieren.
@@ -102,7 +102,7 @@ wartet darauf, dass ein Leser eine durchgelaufene Zeile bemerkt.
 
 ### `<br>`, und was der Konverter davon hält
 
-Die vierte Möglichkeit ist, für diese eine Zeile aufzuhören, Markdown zu benutzen, und `<br>` selbst zu schreiben. Markdown erlaubt rohes HTML von Entwurf her, ein wörtliches `<br>` in der Quelle kommt also in der Ausgabe als `<br>` an. Es ist die einzige der vier Formen, die in einem Diff sichtbar ist, einen Formatierer übersteht und von keiner Editoreinstellung gelöscht werden kann. Es hängt allerdings davon ab, dass der Konverter rohes HTML durchlässt, und das ist nicht selbstverständlich: markdown-it liefert `html: false` in seiner Standardvoreinstellung, kommentiert mit „Enable HTML tags in source" (geprüft auf cdn.jsdelivr.net, 9. September 2026), rohe Tags werden also maskiert, und Ihr `<br>` kommt als sichtbarer Text auf der Seite an, sofern nicht jemand diese Option eingeschaltet hat. Ein Konverter, der eine Datei bereinigt, die er nicht geschrieben hat, kann außerdem Tags verwerfen, die er nicht kennt. `<br>` steht auf jeder vernünftigen Positivliste, in der Praxis kommt es also an — aber das ist die Entscheidung des Konverters und nicht Ihre.
+Die vierte Möglichkeit ist, für diese eine Zeile aufzuhören, Markdown zu benutzen, und `<br>` selbst zu schreiben. Markdown erlaubt rohes HTML von Entwurf her, ein wörtliches `<br>` in der Quelle kommt also in der Ausgabe als `<br>` an. Es ist die einzige der vier Formen, die in einem Diff sichtbar ist, einen Formatierer übersteht und von keiner Editoreinstellung gelöscht werden kann. Es hängt allerdings davon ab, dass der Konverter rohes HTML durchlässt, und das ist nicht selbstverständlich: markdown-it liefert `html: false` in seiner Standardvoreinstellung, kommentiert mit „Enable HTML tags in source“ (geprüft auf cdn.jsdelivr.net, 9. September 2026), rohe Tags werden also maskiert, und Ihr `<br>` kommt als sichtbarer Text auf der Seite an, sofern nicht jemand diese Option eingeschaltet hat. Ein Konverter, der eine Datei bereinigt, die er nicht geschrieben hat, kann außerdem Tags verwerfen, die er nicht kennt. `<br>` steht auf jeder vernünftigen Positivliste, in der Praxis kommt es also an — aber das ist die Entscheidung des Konverters und nicht Ihre.
 
 ### Was ein einzelner Zeilenumbruch tut, Renderer für Renderer
 
@@ -115,7 +115,7 @@ Bevor man zwischen den vier Formen wählt, ist es wert zu sehen, was die Rendere
 | Ein GitHub-Kommentar, ein Issue, ein Pull Request oder eine Review | `<br>` | Dieselbe Anleitung sagt, Kommentarfelder stellen den Zeilenumbruch für Sie dar (geprüft auf docs.github.com, 9. September 2026) |
 | marked, wie ausgeliefert | Ein Leerzeichen | Seine Option `breaks` ist standardmäßig `false` (geprüft auf marked.js.org, 9. September 2026) |
 | marked mit `gfm: true` und `breaks: true` | `<br>` | Dokumentiert als Nachbildung von GitHubs Verhalten in Kommentaren, ausdrücklich nicht seines Verhaltens bei dargestellten Markdown-Dateien; `breaks` setzt `gfm` voraus (geprüft auf marked.js.org, 9. September 2026) |
-| markdown-it, wie ausgeliefert | Ein Leerzeichen | Seine Standardvoreinstellung setzt `breaks: false`, kommentiert mit „Convert '\n' in paragraphs into `<br>`" (geprüft auf cdn.jsdelivr.net, 9. September 2026) |
+| markdown-it, wie ausgeliefert | Ein Leerzeichen | Seine Standardvoreinstellung setzt `breaks: false`, kommentiert mit „Convert '\n' in paragraphs into `<br>`“ (geprüft auf cdn.jsdelivr.net, 9. September 2026) |
 | markdown-it mit `breaks: true` | `<br>` | Derselbe Optionsname, dieselbe Arbeit |
 | Python-Markdown, wie ausgeliefert | Ein Leerzeichen | Zeilenumbrüche innerhalb eines Absatzes sind Leerraum, sofern keine Erweiterung etwas anderes sagt |
 | Python-Markdown mit der Erweiterung `nl2br` | `<br />` | Die Erweiterung behandelt jeden Zeilenumbruch als harten Umbruch; eingeschaltet mit `extensions=['nl2br']` (geprüft auf python-markdown.github.io, 9. September 2026) |
@@ -469,7 +469,7 @@ sich das merkt, brauchen Sie eine Anwendung und kein Dokument.
 Die Art zu scheitern mit einem Konverter, der GFM nicht spricht, ist leiser, als es klingt. Sie bekommen
 keinen Fehler; Sie bekommen `<li>[ ] Aufgabe</li>`, was eine Liste von Elementen ist, die mit zwei eckigen
 Klammern beginnen. Auf einer Seite mit ordentlicher Gestaltung liest sich das als Formatierungsfehler und
-nicht als fehlende Funktion, weshalb „meine Checkboxen funktionieren nicht mehr" meist ein Dialektproblem
+nicht als fehlende Funktion, weshalb „meine Checkboxen funktionieren nicht mehr“ meist ein Dialektproblem
 ist — dasselbe, das dahintersteckt, wenn Tabellen und Durchgestrichenes zur gleichen Zeit verschwinden.
 
 ## Ein Zeichen maskieren, das etwas bedeutet
@@ -537,7 +537,7 @@ werden, und ein Titel, der ein Anführungszeichen enthält, kann es tragen.
 
 In die andere Richtung — HTML, eine `.docx` oder eine Tabelle nach Markdown — ist jedes dieser Zeichen das
 Problem des Konverters und nicht Ihres, und es ist eine vernünftige Art, einen zu beurteilen. Ein
-Word-Absatz, der mit „1986. Die Jahreszahl" beginnt, muss als `1986\. Die Jahreszahl` ankommen, oder das
+Word-Absatz, der mit „1986. Die Jahreszahl“ beginnt, muss als `1986\. Die Jahreszahl` ankommen, oder das
 Dokument bekommt eine Liste, die niemand geschrieben hat. Eine Überschrift, deren Text ein `#` enthält,
 ein Satz mit einem Unterstrich oder einem Sternchen, eine Tabellenzelle mit einer Pipe: jedes braucht
 während der Konvertierung einen eingefügten Backslash, und ein Konverter, der das überspringt, erzeugt
@@ -568,7 +568,7 @@ Der Linter stimmt dem Editor zu und widerspricht der Spezifikation. markdownlint
 `br_spaces`, der eine Ausnahme für eine bestimmte Anzahl von Leerzeichen am Zeilenende erlaubt, die als
 ausdrücklicher Umbruch dienen; sein Standardwert ist `2` (geprüft auf github.com, 9. September 2026). Ein
 Umbruch aus zwei Leerzeichen geht also durch, und einer aus drei wird markiert — obwohl beide identisch
-dargestellt werden, weil die Regel „zwei oder mehr" lautet. Die Syntax ist bei jeder Breite über eins
+dargestellt werden, weil die Regel „zwei oder mehr“ lautet. Die Syntax ist bei jeder Breite über eins
 erlaubt und bei genau einer Breite lint-rein.
 
 Nehmen Sie die letzten zwei Tatsachen hinzu, und das Bild ist vollständig. Eine Code-Review zeigt nichts:

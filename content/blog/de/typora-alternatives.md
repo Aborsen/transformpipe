@@ -12,7 +12,7 @@ Typora ist ein guter Editor, und die meisten, die nach einer Alternative suchen,
 
 Wenn der Grund das Geld ist, gibt Mark Text Ihnen dasselbe Render-während-des-Tippens-Editieren kostenlos unter der MIT-Lizenz, und Ghostwriter und Zettlr sind ebenfalls kostenlos, mit anderen Prioritäten. Wenn der Grund ein Handy oder ein Browser ist, hat Typora überhaupt keine Antwort, und iA Writer, StackEdit und Dillinger schon. Wenn der Grund die Arbeit rund ums Schreiben ist — verknüpfte Notizen, Code im selben Ordner, eine Bibliografie —, dann ist die ehrliche Antwort Obsidian, VS Code oder Zettlr, von denen keines versucht, eine ruhigere Tippfläche zu sein. Und wenn das Einzige, was Sie eigentlich wollten, eine einzige gestaltete HTML-Datei zum Verschicken war, behalten Sie Typora und fügen Sie einen Konverter hinzu, denn das ist eine Minute Arbeit statt einer Editor-Migration.
 
-„Typora-Alternative" ist keine einzige Frage. Es sind mindestens vier, und sie haben unterschiedliche Antworten, weshalb eine rangierte Liste von Editoren so unbefriedigend zu lesen ist, wenn man ein konkretes Problem hat. Die erste betrifft die Lizenz: Typora ist ein einmaliger Kauf, der bis zu drei Geräte abdeckt, und eine Drei-Geräte-Grenze ist großzügig, bis genau zu dem Moment, in dem Sie vier haben. Ein Desktop, ein Laptop, eine Maschine im Büro und eine virtuelle Maschine sind vier. Menschen in dieser Lage suchen keinen besseren Editor; sie wollen denselben Editor ohne den Zähler.
+„Typora-Alternative“ ist keine einzige Frage. Es sind mindestens vier, und sie haben unterschiedliche Antworten, weshalb eine rangierte Liste von Editoren so unbefriedigend zu lesen ist, wenn man ein konkretes Problem hat. Die erste betrifft die Lizenz: Typora ist ein einmaliger Kauf, der bis zu drei Geräte abdeckt, und eine Drei-Geräte-Grenze ist großzügig, bis genau zu dem Moment, in dem Sie vier haben. Ein Desktop, ein Laptop, eine Maschine im Büro und eine virtuelle Maschine sind vier. Menschen in dieser Lage suchen keinen besseren Editor; sie wollen denselben Editor ohne den Zähler.
 
 Die zweite betrifft das Gerät. Typora ist eine Desktop-Anwendung, und bei Desktops hört es auf — kein Handy, kein Tablet, nichts, das in einem Browser-Tab auf einer Maschine läuft, auf der man keine Software installieren kann. Die dritte betrifft alles rund um das Schreiben herum: Ein Ein-Dokument-Editor ist genau richtig für ein Dokument und unhilfreich, sobald man vierhundert hat, die aufeinander verweisen, oder ein Repository, in dem das Markdown neben dem Code liegt, den es dokumentiert, oder eine Arbeit mit neunzig Referenzen. Das sind andere Aufgaben, und die dafür gebauten Anwendungen sehen absichtlich nichts wie Typora aus.
 
@@ -38,7 +38,7 @@ Typora ersetzt das Markdown während des Tippens durch seine Darstellung, in ein
 - Eine Option, eingefügte Bilder in einen Ordner neben dem Dokument zu kopieren, was den Unterschied zwischen einer portablen Datei und einer macht, die auf Ihren Desktop zeigt
 - Desktop-Builds für alle drei großen Betriebssysteme, Linux eingeschlossen, was sich lohnt zu wissen, bevor man allein aus diesem Grund wechselt
 
-**Für wen ist es geeignet?** Menschen, die die meisten Tage Markdown schreiben, auf nicht mehr als drei Maschinen, und eine Anwendung statt eines Browser-Tabs wollen. Der verbreitete Irrtum bei dieser Suche ist, Typora sei nur für macOS oder nur für Windows; das stimmt nicht, und „ich bin zu Linux gewechselt" ist für sich allein kein Grund, den Editor zu verlassen. Die Gründe, die standhalten, sind die Gerätezahl, das Fehlen von allem Mobilen, und die Tatsache, dass eine angenehme Tippfläche nicht dasselbe ist wie ein Workflow.
+**Für wen ist es geeignet?** Menschen, die die meisten Tage Markdown schreiben, auf nicht mehr als drei Maschinen, und eine Anwendung statt eines Browser-Tabs wollen. Der verbreitete Irrtum bei dieser Suche ist, Typora sei nur für macOS oder nur für Windows; das stimmt nicht, und „ich bin zu Linux gewechselt“ ist für sich allein kein Grund, den Editor zu verlassen. Die Gründe, die standhalten, sind die Gerätezahl, das Fehlen von allem Mobilen, und die Tatsache, dass eine angenehme Tippfläche nicht dasselbe ist wie ein Workflow.
 
 ## Schnellvergleich: die Übersicht
 
@@ -58,7 +58,7 @@ Typora ersetzt das Markdown während des Tippens durch seine Darstellung, in ein
 
 ## Grund eins: der Preis. Kostenlose Editoren, die so schreiben wie Typora
 
-Zwei kostenlose Editoren beantworten „dasselbe, ohne die Rechnung" ehrlich. Beide halten Ihren Text in gewöhnlichen Dateien, was die Eigenschaft ist, die das alles reversibel macht: Enttäuscht der Ersatz Sie, schließen Sie ihn und öffnen etwas anderes auf demselben Ordner.
+Zwei kostenlose Editoren beantworten „dasselbe, ohne die Rechnung“ ehrlich. Beide halten Ihren Text in gewöhnlichen Dateien, was die Eigenschaft ist, die das alles reversibel macht: Enttäuscht der Ersatz Sie, schließen Sie ihn und öffnen etwas anderes auf demselben Ordner.
 
 ### Mark Text — das nächstliegende kostenlose Äquivalent
 
@@ -81,7 +81,7 @@ Mark Text ist ein Desktop-Editor, gebaut mit Electron und Vue, der denselben Ans
 - Electron und Vue, die Quelle ist also zugänglich, falls etwas geändert werden muss
 - Liest und schreibt einfache `.md`-Dateien in Ordnern, die Sie schon haben
 
-**Für wen ist es geeignet?** Jeden, dessen einzige Beschwerde über Typora ist, dass es Geld kostet. Lesen Sie die Commit-Historie, bevor Sie einen größeren Arbeitsumfang darauf setzen — nicht weil das Projekt schlecht ist, sondern weil „kostenlos" und „aktiv gepflegt" getrennte Behauptungen sind, und nur eine davon auf einer Download-Seite steht. Ist eine gepflegte Roadmap Ihnen mehr wert als 14,99 $, ist der rationale Schritt, weiter zu zahlen.
+**Für wen ist es geeignet?** Jeden, dessen einzige Beschwerde über Typora ist, dass es Geld kostet. Lesen Sie die Commit-Historie, bevor Sie einen größeren Arbeitsumfang darauf setzen — nicht weil das Projekt schlecht ist, sondern weil „kostenlos“ und „aktiv gepflegt“ getrennte Behauptungen sind, und nur eine davon auf einer Download-Seite steht. Ist eine gepflegte Roadmap Ihnen mehr wert als 14,99 $, ist der rationale Schritt, weiter zu zahlen.
 
 ### Ghostwriter — die native Option, und die, die Ihre Distribution ausliefert
 
@@ -121,7 +121,7 @@ iA Writer ist eine Schreibanwendung mit starken Meinungen zur Typografie, einem 
 | HTML- und PDF-Export, mit Vorlagen, die die Hülle steuern | Ein schlechter Fit für code-lastige oder dokumentationslastige Arbeit |
 | Eine 7-tägige Testphase ohne erforderliche Karte | Absichtlich wenige Funktionen, was manche als fehlend lesen |
 
-**Preis:** „einmal zahlen pro Plattform, für immer besitzen", mit einer 7-tägigen kostenlosen Testphase und ohne erforderliche Kreditkarte. Verfügbar für Mac (macOS 10.15 oder neuer), Windows (Windows 10 oder neuer), iPhone und iPad (geprüft auf ia.net/writer, 8. September 2026).
+**Preis:** „einmal zahlen pro Plattform, für immer besitzen“, mit einer 7-tägigen kostenlosen Testphase und ohne erforderliche Kreditkarte. Verfügbar für Mac (macOS 10.15 oder neuer), Windows (Windows 10 oder neuer), iPhone und iPad (geprüft auf ia.net/writer, 8. September 2026).
 
 **Technische Details und Funktionen**
 
@@ -298,15 +298,15 @@ Keine Vergleichsseite hat diesen Abschnitt, denn es ist der Teil, in dem die Alt
 
 **Kostenlos bedeutet die Abende von jemandem.** Mark Text beschreibt sich selbst als in Entwicklung; Ghostwriters Windows- und macOS-Installer stehen beide noch aus. Das ist keine Kritik, so funktioniert Freiwilligensoftware, und es ist der eigentliche Unterschied zwischen 14,99 $ und nichts. Ein bezahlter Editor kauft die fortgesetzte Aufmerksamkeit von jemandem, und ob das das Geld wert ist, hängt davon ab, wie sehr Ihnen daran liegt, dass Ihre Schreibumgebung langweilig und stabil ist.
 
-**„Kostenlos" und „plattformübergreifend" ziehen in verschiedene Richtungen.** Die kostenlosen Editoren hier decken Desktops gut ab und Handys überhaupt nicht. Der, der Handys richtig abdeckt, berechnet pro Plattform. Die, die überall laufen, laufen im Browser, was bedeutet, dass der Text entweder im Browser-Speicher oder auf dem Server von jemandem liegt. Nichts auf dieser Seite ist kostenlos, nativ auf fünf Plattformen und ganz lokal, und jede Liste, die etwas anderes andeutet, hat nicht nachgeprüft.
+**„Kostenlos“ und „plattformübergreifend“ ziehen in verschiedene Richtungen.** Die kostenlosen Editoren hier decken Desktops gut ab und Handys überhaupt nicht. Der, der Handys richtig abdeckt, berechnet pro Plattform. Die, die überall laufen, laufen im Browser, was bedeutet, dass der Text entweder im Browser-Speicher oder auf dem Server von jemandem liegt. Nichts auf dieser Seite ist kostenlos, nativ auf fünf Plattformen und ganz lokal, und jede Liste, die etwas anderes andeutet, hat nicht nachgeprüft.
 
-**Browser-Speicher ist kein Speicher.** StackEdit funktioniert offline und behält Dokumente im Browser, bis ein Sync-Anbieter verbunden ist. Website-Daten löschen, den Browser wechseln, oder ein hilfsbereites „lass mich einfach deinen Cache löschen" eines Kollegen nimmt jeweils das Dokument mit. Verbinden Sie zuerst Sync, dann schreiben Sie.
+**Browser-Speicher ist kein Speicher.** StackEdit funktioniert offline und behält Dokumente im Browser, bis ein Sync-Anbieter verbunden ist. Website-Daten löschen, den Browser wechseln, oder ein hilfsbereites „lass mich einfach deinen Cache löschen“ eines Kollegen nimmt jeweils das Dokument mit. Verbinden Sie zuerst Sync, dann schreiben Sie.
 
 **Zwei Ansichten sind eine Gewohnheitsänderung.** Wenn Ihnen an Typora gefiel, nie das Markup zu sehen, bringen die meisten kostenlosen Alternativen es zurück auf den Bildschirm. Mark Text tut das nicht; Ghostwriter, VS Code, StackEdit und Dillinger tun es. Das klingt trivial und ist der häufigste einzelne Grund, warum ein Wechsel innerhalb einer Woche rückgängig gemacht wird.
 
 ## So wählen Sie
 
-1. **Benennen Sie den Grund in einem Satz, bevor Sie irgendetwas vergleichen.** „Ich habe vier Maschinen", „ich brauche es auf meinem Handy", „ich kann bei der Arbeit keine Software installieren" und „der Export sah falsch aus" führen zu vier verschiedenen Werkzeugen, und mit einer Feature-Tabelle statt damit zu beginnen bedeutet, auf der falschen Achse zu wählen und es in vierzehn Tagen zu bemerken.
+1. **Benennen Sie den Grund in einem Satz, bevor Sie irgendetwas vergleichen.** „Ich habe vier Maschinen“, „ich brauche es auf meinem Handy“, „ich kann bei der Arbeit keine Software installieren“ und „der Export sah falsch aus“ führen zu vier verschiedenen Werkzeugen, und mit einer Feature-Tabelle statt damit zu beginnen bedeutet, auf der falschen Achse zu wählen und es in vierzehn Tagen zu bemerken.
 2. **Bestehen Sie darauf, dass der Editor Dateien in einem Ordner Ihrer Wahl editiert.** Jede Option oben außer den zwei Browser-Editoren tut das. Die Folge ist, dass der nächste Wechsel nichts kostet: Sie schließen eine Anwendung und öffnen eine andere auf demselben Verzeichnis, ohne dass ein Dokument konvertiert, exportiert oder verloren wird.
 3. **Testen Sie ein repräsentatives Dokument, nicht einen Absatz.** Packen Sie eine Tabelle, einen eingezäunten Codeblock, ein Bild, eine Fußnote und was auch immer für Mathe- oder Diagramm-Syntax Sie nutzen in eine einzige Datei und öffnen Sie sie im Kandidaten. Was dort kaputt ist, wird an dem Tag kaputt sein, an dem Sie keine Zeit haben, und [Tabellen sind, wo eine Konvertierung zuerst bricht](/blog/markdown-tables-that-survive-conversion).
 4. **Zählen Sie, was der Export installiert braucht.** Ein Editor, der über Pandoc exportiert, ist ausgezeichnet und sind zwei Installationen, was auf Ihrer eigenen Maschine in Ordnung ist und der Grund, warum der Export auf einem verwalteten Laptop nie passiert.

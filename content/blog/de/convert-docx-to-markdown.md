@@ -80,7 +80,7 @@ Ein Konverter von `.docx` zu Markdown ist also ein Programm, das vier Dinge in R
 | mammoth (Node oder Browser) | Konvertierung in der eigenen Anwendung | npm | Data-URIs standardmäßig, oder Ihr eigener Callback | Kostenlos, BSD-2-Clause |
 | mammoth-CLI | Ein Einzelfall mit Bildern als Dateien | npm | `--output-dir` schreibt sie neben das HTML | Kostenlos, BSD-2-Clause |
 | MarkItDown | Text in eine Pipeline speisen, nicht an einen Menschen | Python | Extrahiert, wo das Format es erlaubt | Kostenlos, MIT |
-| Word, „Als Webseite speichern" | Ein Dokument, das andere Konverter verstümmeln | Word | In einen Ordner neben dem HTML geschrieben | Mit Word |
+| Word, „Als Webseite speichern“ | Ein Dokument, das andere Konverter verstümmeln | Word | In einen Ordner neben dem HTML geschrieben | Mit Word |
 | Google-Docs-Export | Ein Dokument, das schon in Drive liegt | Keine | Im Download enthalten | Kostenlos mit Konto |
 | Kopieren und Einfügen | Ein paar Absätze, sofort | Keine | Verloren | Kostenlos |
 | LibreOffice, headless | Altes `.doc`, `.rtf` und sonderbare Formate | LibreOffice | In die geschriebene `.docx` übernommen | Kostenlos, MPL 2.0 |
@@ -178,7 +178,7 @@ Get-ChildItem *.docx | ForEach-Object {
 
 ## Der Weg über mammoth: eine .docx im eigenen Code konvertieren
 
-mammoth ist eine JavaScript-Bibliothek, die `.docx` in HTML umwandelt, mit Builds für Node und für den Browser. Sehr viele „Word zu Markdown"-Werkzeuge entpuppen sich als mammoth mit einem angeschraubten zweiten Schritt, und wenn Sie Ihren eigenen Konverter schreiben, ist es die vernünftige Grundlage.
+mammoth ist eine JavaScript-Bibliothek, die `.docx` in HTML umwandelt, mit Builds für Node und für den Browser. Sehr viele „Word zu Markdown“-Werkzeuge entpuppen sich als mammoth mit einem angeschraubten zweiten Schritt, und wenn Sie Ihren eigenen Konverter schreiben, ist es die vernünftige Grundlage.
 
 Seine unterscheidende Idee ist die Stilzuordnung. Statt zu raten, was ein Absatz ist, ordnet mammoth die benannten Stile von Word HTML-Elementen zu, und diese Zuordnung ist Konfiguration, die Sie kontrollieren:
 
@@ -206,7 +206,7 @@ for (const message of messages) {
 
 Zwei Dinge in diesem Schnipsel sind der ganze Grund, die Bibliothek zu verwenden.
 
-Das erste ist `styleMap`. Eine Organisation mit Hausstilen — „Chapter Title" statt „Heading 1" — bekommt von jedem anderen Werkzeug auf dieser Seite einfache Absätze, denn es gibt nirgends eine Regel, die sagt, dass ein Stil namens „Chapter Title" eine Überschrift ist. Hier schreiben Sie diese Regel. Das Suffix `:fresh` sagt mammoth, ein neues Element zu beginnen statt in das vorherige zu verschmelzen, was Sie bei Überschriften wollen und bei einem Stil, der einen Absatz fortsetzt, nicht.
+Das erste ist `styleMap`. Eine Organisation mit Hausstilen — „Chapter Title“ statt „Heading 1“ — bekommt von jedem anderen Werkzeug auf dieser Seite einfache Absätze, denn es gibt nirgends eine Regel, die sagt, dass ein Stil namens „Chapter Title“ eine Überschrift ist. Hier schreiben Sie diese Regel. Das Suffix `:fresh` sagt mammoth, ein neues Element zu beginnen statt in das vorherige zu verschmelzen, was Sie bei Überschriften wollen und bei einem Stil, der einen Absatz fortsetzt, nicht.
 
 Das zweite ist `messages`. Jedes mammoth-Ergebnis trägt ein Array von Warnungen mit den Stilen, die es nicht erkannt hat, und den Elementen, die es nicht behandelt hat. Das ist die einzige maschinenlesbare Auskunft darüber, was ein Konverter verworfen hat, die irgendein Weg auf dieser Seite liefert. Drucken Sie sie, protokollieren Sie sie, zeigen Sie sie Ihren Nutzern. Eine Warnung über einen unerkannten Stil ist genau der Moment, eine Zeile zur Stilzuordnung hinzuzufügen.
 
@@ -309,7 +309,7 @@ Kopfzeilen verschwinden aus einem bestimmten Grund, den man kennen sollte: Word 
 
 **Textfelder und Formen** sind Zeichenobjekte, nicht Teil des Dokumentflusses. Der Text in einem davon kann im XML fast überall stehen, relativ zu dort, wo er auf der Seite erscheint, und er verschwindet häufig. Das ist der Verlust, den Leute am schwersten glauben, denn das hervorgehobene Zitat war doch direkt auf dem Bildschirm. Suchen Sie in der Ausgabe nach einer Formulierung, von der Sie wissen, dass sie in einem Textfeld stand; fehlt sie, war sie nie im Fluss.
 
-Und dann die Dinge ohne jede Markdown-Entsprechung: Schriften, Schriftgrößen, Farben, Ränder, Seitengröße, Seitenumbrüche, Kopf- und Fußzeilen und Seitenzahlen. Nicht „schlecht unterstützt" — in der Syntax nicht vorhanden. Ein Werkzeug, das sie scheinbar behält, gibt rohes HTML mit `style`-Attributen aus, und das ist ein anderes Dokument in der Kleidung einer Markdown-Erweiterung.
+Und dann die Dinge ohne jede Markdown-Entsprechung: Schriften, Schriftgrößen, Farben, Ränder, Seitengröße, Seitenumbrüche, Kopf- und Fußzeilen und Seitenzahlen. Nicht „schlecht unterstützt“ — in der Syntax nicht vorhanden. Ein Werkzeug, das sie scheinbar behält, gibt rohes HTML mit `style`-Attributen aus, und das ist ein anderes Dokument in der Kleidung einer Markdown-Erweiterung.
 
 ## Die Prüfliste: was in der konvertierten Datei zu lesen ist
 
@@ -353,7 +353,7 @@ Select-String -Path report.md -Pattern '!\['
 2. **Zählen Sie die Dokumente, dann die Klicks.** Eine Datei rechtfertigt nicht, ein Haskell-Programm zu installieren. Zweihundert Dateien rechtfertigen keinen Browser-Tab und keinen Menschen, der darin klickt. Die Installation wird einmal bezahlt; das Klicken jedes Mal, was die Antwort irgendwo zwischen fünf und fünfzig Dateien kippen lässt.
 3. **Stellen Sie fest, ob das Dokument ein Review hinter sich hat.** Verfolgte Änderungen und Kommentare werden fast überall standardmäßig verworfen. Zählt das Review, ist `--track-changes=all` der dokumentierte Weg, es zu behalten — und wenn Sie nicht Pandoc verwenden, akzeptieren Sie, dass es weg ist, statt es später zu entdecken.
 4. **Entscheiden Sie vor der Konvertierung, was mit den Bildern passieren soll, nicht danach.** Dateien in einem Ordner, oder Base64 im Markdown. Beides ist vertretbar; keines bekommt man versehentlich, und das Versehen sind meist Verweise, die auf nichts zeigen.
-5. **Finden Sie heraus, ob das Dokument echte Stile verwendet.** Öffnen Sie es in Word und klicken Sie eine Überschrift an: sagt das Stilfeld „Überschrift 1", funktioniert jeder Weg. Sagt es „Standard", funktioniert keiner, und die Abhilfe liegt im Dokument statt im Werkzeug.
+5. **Finden Sie heraus, ob das Dokument echte Stile verwendet.** Öffnen Sie es in Word und klicken Sie eine Überschrift an: sagt das Stilfeld „Überschrift 1“, funktioniert jeder Weg. Sagt es „Standard“, funktioniert keiner, und die Abhilfe liegt im Dokument statt im Werkzeug.
 6. **Behalten Sie die `.docx`.** Alles im Abschnitt oben ist einseitig. Archivieren Sie das Original, wo Sie es finden können, denn der Tag, an dem jemand fragt, was im gelöschten Absatz stand, ist der Tag, an dem Sie lernen, dass die Antwort nur in der Datei stand, die Sie gelöscht haben.
 
 ## Fazit

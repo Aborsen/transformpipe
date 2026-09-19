@@ -10,15 +10,15 @@ Wer nach einem kostenlosen Konverter von Obsidian nach Markdown sucht, hat den u
 
 Und doch wird ständig danach gesucht, denn die Dateien funktionieren nicht mehr, sobald sie draußen sind. Eine Notiz, die sich in Obsidian perfekt liest, kommt anderswo mit `[[Project Brief]]` in doppelten Klammern an, mit einem `> [!warning]`-Marker, der als wörtlicher Text über einem Blockquote steht, und mit einem `![[diagram.png]]`, das nichts zeigt. Wonach Leute suchen, ist kein Formatwechsel. Es ist eine Reparatur an vier Konstrukten, die Obsidian erfunden hat, und jedes Werkzeug, dessen Vergleich sich lohnt, ist eine andere Antwort darauf, wie diese vier repariert werden.
 
-Das rückt die Preisfrage nützlich zurecht. Wenn das Grundformat kostenlos ist und die Quelldateien ohnehin Ihnen gehören, ist „kostenlos" kein Rabatt mehr, sondern der Normalfall. Was die Optionen tatsächlich kosten, sind Einrichtung, Kontrolle und wie viel von der Struktur des Vaults Sie im Tausch aufzugeben bereit sind.
+Das rückt die Preisfrage nützlich zurecht. Wenn das Grundformat kostenlos ist und die Quelldateien ohnehin Ihnen gehören, ist „kostenlos“ kein Rabatt mehr, sondern der Normalfall. Was die Optionen tatsächlich kosten, sind Einrichtung, Kontrolle und wie viel von der Struktur des Vaults Sie im Tausch aufzugeben bereit sind.
 
 ### Kurzfassung
 
-Jede ernstzunehmende Option hier ist kostenlos, wählen Sie also nach Form statt nach Preis. **Der Browser-Konverter unter [/obsidian-to-markdown](/obsidian-to-markdown)** nimmt einen gezippten Vault und gibt ein Dokument mit Inhaltsverzeichnis zurück, Wikilinks auf die Worte reduziert, die sie zeigten, und Frontmatter entfernt — keine Installation, nichts hochgeladen, solange Sie abgemeldet sind, und die richtige Antwort, wenn das Ziel ein einzelnes lesbares Dokument ist. **[obsidian-export](https://github.com/zoni/obsidian-export)** ist eine kostenlose Rust-CLI (BSD-2-Clause-Patent, geprüft auf github.com/zoni/obsidian-export, 14. September 2026), die einen Vault durchläuft und auf der anderen Seite CommonMark-Dateien mit aufgelösten Links und Embeds herausschreibt — genau das, was Sie wollen, wenn der Vault ein Ordner separater Dateien bleiben muss. **Obsidians eigene Einstellung „Use \[\[Wikilinks\]\]"** kostet nichts und repariert rückwirkend nichts. **Ein Community-Export-Plugin** exportiert eine Notiz oder einen Ordner samt Bildern, aus Obsidian selbst heraus. **Pandoc** ist kostenlos und GPL und liest Wikilinks nur hinter einer nicht standardmäßig aktiven Erweiterung — ohne Vault-Index kann es `[[Notiz]]` nicht so auf einen Pfad auflösen, wie Obsidian es tut. **Ein Skript, das Sie selbst schreiben**, ist der einzige Weg, auf dem Sie entscheiden, was mit einem doppelten Dateinamen passiert. Für das Syntaxdetail hinter alldem geht [die vollständige Anleitung den Dialekt Notiz für Notiz durch](/blog/convert-obsidian-vault-to-markdown).
+Jede ernstzunehmende Option hier ist kostenlos, wählen Sie also nach Form statt nach Preis. **Der Browser-Konverter unter [/obsidian-to-markdown](/obsidian-to-markdown)** nimmt einen gezippten Vault und gibt ein Dokument mit Inhaltsverzeichnis zurück, Wikilinks auf die Worte reduziert, die sie zeigten, und Frontmatter entfernt — keine Installation, nichts hochgeladen, solange Sie abgemeldet sind, und die richtige Antwort, wenn das Ziel ein einzelnes lesbares Dokument ist. **[obsidian-export](https://github.com/zoni/obsidian-export)** ist eine kostenlose Rust-CLI (BSD-2-Clause-Patent, geprüft auf github.com/zoni/obsidian-export, 14. September 2026), die einen Vault durchläuft und auf der anderen Seite CommonMark-Dateien mit aufgelösten Links und Embeds herausschreibt — genau das, was Sie wollen, wenn der Vault ein Ordner separater Dateien bleiben muss. **Obsidians eigene Einstellung „Use \[\[Wikilinks\]\]“** kostet nichts und repariert rückwirkend nichts. **Ein Community-Export-Plugin** exportiert eine Notiz oder einen Ordner samt Bildern, aus Obsidian selbst heraus. **Pandoc** ist kostenlos und GPL und liest Wikilinks nur hinter einer nicht standardmäßig aktiven Erweiterung — ohne Vault-Index kann es `[[Notiz]]` nicht so auf einen Pfad auflösen, wie Obsidian es tut. **Ein Skript, das Sie selbst schreiben**, ist der einzige Weg, auf dem Sie entscheiden, was mit einem doppelten Dateinamen passiert. Für das Syntaxdetail hinter alldem geht [die vollständige Anleitung den Dialekt Notiz für Notiz durch](/blog/convert-obsidian-vault-to-markdown).
 
 ## Warum ein Ordner voller Markdown-Dateien trotzdem einen Konverter braucht
 
-Der Grund, warum es diese Aufgabe überhaupt gibt, ist, dass Obsidians Dialekt eine Obermenge ist und die Extras nirgends in der Datei als Extras markiert sind. Es gibt kein Flag, keinen Namensraum, keinen eingezäunten Bereich, der sagt „dieses Stück gehört uns". Ein Wikilink sieht aus wie ganz gewöhnlicher Text mit Klammern darin, und genau deshalb behandelt ein Standardparser ihn als gewöhnlichen Text mit Klammern darin.
+Der Grund, warum es diese Aufgabe überhaupt gibt, ist, dass Obsidians Dialekt eine Obermenge ist und die Extras nirgends in der Datei als Extras markiert sind. Es gibt kein Flag, keinen Namensraum, keinen eingezäunten Bereich, der sagt „dieses Stück gehört uns“. Ein Wikilink sieht aus wie ganz gewöhnlicher Text mit Klammern darin, und genau deshalb behandelt ein Standardparser ihn als gewöhnlichen Text mit Klammern darin.
 
 Vier Konstrukte tragen fast den gesamten Schaden, und sie sind die vollständige Grundlage, auf der sich die Werkzeuge unten unterscheiden:
 
@@ -32,9 +32,9 @@ Vier Konstrukte tragen fast den gesamten Schaden, und sie sind die vollständige
 
 Ein fünfter Punkt ist kein Konstrukt, sondern ein Kategorienfehler, den man früh benennen sollte: alles, was ein Plugin dargestellt statt geschrieben hat. Eine Dataview-Abfrage liegt als eingezäunter Codeblock mit der Frage darin, und die Tabelle, die sie erzeugte, entstand beim Öffnen, jedes Mal neu. Kein Konverter, kostenlos oder nicht, holt sie zurück, denn es gibt nichts zurückzuholen. Frontmatter und `%%Inline-Kommentare%%` runden die Liste ab, beides billig zu behandeln, wenn das Werkzeug sich die Mühe macht — [was Konverter allgemein mit Frontmatter tun](/blog/front-matter-and-what-converters-do-with-it), gilt hier unverändert.
 
-## Was „kostenlos" in jeder Richtung kostet
+## Was „kostenlos“ in jeder Richtung kostet
 
-Da die Preisspalte unten in jeder Zeile „kostenlos" lautet, lohnt es sich, ausdrücklich zu sagen, was stattdessen variiert.
+Da die Preisspalte unten in jeder Zeile „kostenlos“ lautet, lohnt es sich, ausdrücklich zu sagen, was stattdessen variiert.
 
 **Einrichtungsaufwand.** Eine Browser-Seite ist null. Ein Rust-Binary ist ein Download oder ein `cargo install`. Ein Community-Plugin ist ein Plugin, das Sie jetzt pflegen. Ein Skript ist ein Nachmittag und danach für immer.
 
@@ -50,7 +50,7 @@ Da die Preisspalte unten in jeder Zeile „kostenlos" lautet, lohnt es sich, aus
 | --- | --- | --- | --- |
 | TransformPipe | Einen Vault oder einen Teil davon, der ein lesbares Dokument werden soll | Gezippter Vault rein, ein Dokument mit Inhaltsverzeichnis raus, Wikilinks und Frontmatter im selben Durchgang erledigt | Kostenlos |
 | obsidian-export | Einen Vault, der ein Ordner separater, verlinkter Dateien bleiben muss | Rekursiver Vault-zu-CommonMark-Export, der `[[notiz]]`-Links und `![[notiz]]`-Embeds auflöst | Kostenlos, BSD-2-Clause-Patent |
-| Obsidians Einstellung „Use \[\[Wikilinks\]\]" | Den Rückstau am Wachsen zu hindern | Schreibt für alles nach der Umstellung Erstellte Standard-`[Text](Pfad)`-Links | Kostenlos, eingebaut |
+| Obsidians Einstellung „Use \[\[Wikilinks\]\]“ | Den Rückstau am Wachsen zu hindern | Schreibt für alles nach der Umstellung Erstellte Standard-`[Text](Pfad)`-Links | Kostenlos, eingebaut |
 | Ein Community-Export-Plugin | Eine Notiz oder einen Ordner aus Obsidian heraus zu exportieren | Bündelt verlinkte Bildanhänge neben dem exportierten Markdown | Kostenlos |
 | Pandoc | Einen Vault, der eine von mehreren Eingaben in einem ohnehin laufenden Dokument-Build ist | Wikilink-Unterstützung hinter einer nicht standardmäßigen Erweiterung, in jedes Format, das Pandoc schreibt | Kostenlos, GPL |
 | Ein Skript, das Sie selbst schreiben | Doppelte Dateinamen, Aliase und Regeln, die nur Sie kennen | Genaue Kontrolle über jeden mehrdeutigen Fall, und sonst nichts, dem zu trauen wäre | Kostenlos, kostet Zeit |
@@ -108,11 +108,11 @@ obsidian-export ist ein Kommandozeilenprogramm und eine Rust-Bibliothek, die ein
 - Eine Notiz, die auf eine ausgeschlossene Notiz verlinkt, wird entlinkt statt ins Leere zeigen gelassen — der Linktext überlebt, der Link nicht
 - Zwei Notizen, die sich gegenseitig einbetten, sind standardmäßig ein Fehler, wobei `--no-recursive-embeds` den Kreis bricht, indem es beim zweiten Antreffen stattdessen einen Link einfügt
 
-**Für wen ist das?** Für alle, die einen Vault in eine statische Seite, ein Dokumentations-Repository oder irgendwohin exportieren, wo die Notizen ihre eigene Identität und ihre Links untereinander behalten müssen. Das ist das kostenlose Werkzeug, das dem gedanklichen Modell von „meinen Vault exportieren" am direktesten entspricht, so wie die meisten es meinen.
+**Für wen ist das?** Für alle, die einen Vault in eine statische Seite, ein Dokumentations-Repository oder irgendwohin exportieren, wo die Notizen ihre eigene Identität und ihre Links untereinander behalten müssen. Das ist das kostenlose Werkzeug, das dem gedanklichen Modell von „meinen Vault exportieren“ am direktesten entspricht, so wie die meisten es meinen.
 
-### Obsidians eigene Einstellung „Use \[\[Wikilinks\]\]" — kostenlos, eingebaut und nur eine halbe Abhilfe
+### Obsidians eigene Einstellung „Use \[\[Wikilinks\]\]“ — kostenlos, eingebaut und nur eine halbe Abhilfe
 
-Die Einstellung liegt unter Einstellungen, Dateien und Links: Schalten Sie „Use \[\[Wikilinks\]\]" aus, und Obsidian schreibt ab diesem Moment für alles, was Sie erstellen, Standard-Markdown-Links `[Text](Pfad)` (geprüft auf obsidian.md und über Obsidians eigene Einstellungsdokumentation, 14. September 2026). Die Autovervollständigung bleibt unverändert — `[[` tippen, Notiz auswählen — nur die auf die Platte geschriebene Syntax unterscheidet sich.
+Die Einstellung liegt unter Einstellungen, Dateien und Links: Schalten Sie „Use \[\[Wikilinks\]\]“ aus, und Obsidian schreibt ab diesem Moment für alles, was Sie erstellen, Standard-Markdown-Links `[Text](Pfad)` (geprüft auf obsidian.md und über Obsidians eigene Einstellungsdokumentation, 14. September 2026). Die Autovervollständigung bleibt unverändert — `[[` tippen, Notiz auswählen — nur die auf die Platte geschriebene Syntax unterscheidet sich.
 
 | Dafür | Dagegen |
 | --- | --- |
@@ -140,7 +140,7 @@ Obsidians Verzeichnis der Community-Plugins führt Export-Plugins, und [obsidian
 **Technische Details und Funktionen**
 
 - Dokumentierte Fähigkeiten sind Ordner- und Einzeldateiexport, das Einbeziehen von Bildanhängen, eine Option für Ausgabe in GitHub Flavored Markdown, die Behandlung eingebetteter Inhalte und Ausgabe wahlweise als `md` oder `html` (geprüft auf github.com/bingryan/obsidian-markdown-export-plugin, 14. September 2026)
-- Die Installation ist der gewöhnliche Weg für Community-Plugins: Einstellungen, Community-Plugins, durchsuchen, nach „markdown export" suchen
+- Die Installation ist der gewöhnliche Weg für Community-Plugins: Einstellungen, Community-Plugins, durchsuchen, nach „markdown export“ suchen
 - Weil es innerhalb von Obsidian läuft, hat es Zugriff auf denselben Vault-Index, den Obsidian selbst beim Auflösen eines Links verwendet — der strukturelle Vorteil, den Plugins gegenüber jedem externen Werkzeug hier haben
 
 Die übliche Vorsicht gegenüber Community-Plugins gilt, ohne dass man zimperlich werden müsste: Bevor Sie sich für etwas auf eines verlassen, das Sie nicht von Hand wiederholen können, prüfen Sie den aktuellen Eintrag auf den Wartungsstand und lesen Sie nach, was es mit den Konstrukten tut, die Sie tatsächlich haben. Ein Plugin, das Callouts still fallen lässt, ist in Ordnung, wenn Sie keine Callouts haben.
@@ -192,11 +192,11 @@ Die letzte kostenlose Option ist die ohne Werkzeug darin. Den Vault durchlaufen,
 
 ## Wo die kostenlose und naheliegende Wahl nicht trägt
 
-Die naheliegende kostenlose Wahl ist für die meisten „einfach den Ordner kopieren" — der Vault ist Markdown, also verschieben und fertig. Wo das scheitert, verdient Genauigkeit, denn die Fehlschläge sind leise und kommen später.
+Die naheliegende kostenlose Wahl ist für die meisten „einfach den Ordner kopieren“ — der Vault ist Markdown, also verschieben und fertig. Wo das scheitert, verdient Genauigkeit, denn die Fehlschläge sind leise und kommen später.
 
 **Links sehen gut aus, bis jemand auf einen klickt.** In einem reinen Texteditor ist `[[Project Brief]]` lesbar, und eine Leserin versteht es. In einer dargestellten GitHub-README oder auf einer statischen Seite ist es lesbar und tot. Nichts meldet einen Fehler; die Seite trägt nur ein Stück Text, das aussieht, als wollte es ein Link sein, und die Leserin nimmt an, die Seite sei kaputt, nicht die Quelle.
 
-**Callouts verlieren ihre Betonung und behalten ihre Worte.** Ein `> [!warning]`-Blockquote verliert seine Gestaltung und behält seinen Text, eine Notiz, die Callout-Farbe nutzte, um „tun Sie das" von „tun Sie das nie" zu unterscheiden, liest sich jetzt also als zwei identische Blockquotes. Das ist schlimmer, als den Inhalt zu verlieren, denn der Inhalt ist da und seine Gewichtung ist weg.
+**Callouts verlieren ihre Betonung und behalten ihre Worte.** Ein `> [!warning]`-Blockquote verliert seine Gestaltung und behält seinen Text, eine Notiz, die Callout-Farbe nutzte, um „tun Sie das“ von „tun Sie das nie“ zu unterscheiden, liest sich jetzt also als zwei identische Blockquotes. Das ist schlimmer, als den Inhalt zu verlieren, denn der Inhalt ist da und seine Gewichtung ist weg.
 
 **Anhänge brechen auf eine Art, die der Text nicht zeigt.** Bilder liegen in einem Anhangsordner, auf den ein Embed verweist. Kopieren Sie die `.md`-Dateien ohne den Ordner, und jedes Bild ist weg; kopieren Sie den Ordner an eine andere relative Position, und jedes Bild ist weg, und zwar auf eine Art, die identisch aussieht. Das Markdown ist in beiden Fällen unverändert und korrekt.
 
@@ -216,7 +216,7 @@ Die naheliegende kostenlose Wahl ist für die meisten „einfach den Ordner kopi
 
 ## Fazit
 
-Es gibt hier keine kostenpflichtige Stufe zu vergleichen, was diesen Vergleich ungewöhnlich ehrlich macht: Jeder Weg ist kostenlos, und die Entscheidung dreht sich ganz um die Form der Ausgabe und darum, wie viel von Obsidians Dialekt jeder Weg versteht. Für einen Vault, der ein funktionierender Ordner verlinkter Dateien bleiben muss, ist obsidian-export das kostenlose Werkzeug, das genau dafür gebaut wurde. Für eine Notiz oder einen Ordner, deren Bilder mitreisen müssen, ist ein Community-Plugin der einzige Weg, der Binärdateien trägt. Für einen Vault, der ein Dokument wird, das jemand außerhalb von Obsidian lesen soll, erledigt TransformPipes [Obsidian-→-Markdown-Konvertierung](/obsidian-to-markdown) die Zusammenführung, das Inhaltsverzeichnis, das Auflösen der Wikilinks und das Entfernen der Frontmatter in einem Durchgang, im Browser, ohne dass etwas hochgeladen wird. Was Sie auch wählen: Schalten Sie „Use \[\[Wikilinks\]\]" am selben Tag aus, damit der Rückstau aufhört zu wachsen, und suchen Sie nach Dataview-Blöcken, solange der Vault noch offen ist — das ist das eine, was kein Konverter hier zu keinem Preis zurückholt. Falls Obsidian nicht die einzige Quelle im Spiel ist, deckt [der Vergleich der drei Exporte](/blog/markdown-from-notion-obsidian-and-confluence) ab, was Notion und Confluence anders machen.
+Es gibt hier keine kostenpflichtige Stufe zu vergleichen, was diesen Vergleich ungewöhnlich ehrlich macht: Jeder Weg ist kostenlos, und die Entscheidung dreht sich ganz um die Form der Ausgabe und darum, wie viel von Obsidians Dialekt jeder Weg versteht. Für einen Vault, der ein funktionierender Ordner verlinkter Dateien bleiben muss, ist obsidian-export das kostenlose Werkzeug, das genau dafür gebaut wurde. Für eine Notiz oder einen Ordner, deren Bilder mitreisen müssen, ist ein Community-Plugin der einzige Weg, der Binärdateien trägt. Für einen Vault, der ein Dokument wird, das jemand außerhalb von Obsidian lesen soll, erledigt TransformPipes [Obsidian-→-Markdown-Konvertierung](/obsidian-to-markdown) die Zusammenführung, das Inhaltsverzeichnis, das Auflösen der Wikilinks und das Entfernen der Frontmatter in einem Durchgang, im Browser, ohne dass etwas hochgeladen wird. Was Sie auch wählen: Schalten Sie „Use \[\[Wikilinks\]\]“ am selben Tag aus, damit der Rückstau aufhört zu wachsen, und suchen Sie nach Dataview-Blöcken, solange der Vault noch offen ist — das ist das eine, was kein Konverter hier zu keinem Preis zurückholt. Falls Obsidian nicht die einzige Quelle im Spiel ist, deckt [der Vergleich der drei Exporte](/blog/markdown-from-notion-obsidian-and-confluence) ab, was Notion und Confluence anders machen.
 
 ## FAQ
 
@@ -226,7 +226,7 @@ Alle sind es. Obsidians Dateien sind schon Markdown, und jedes Werkzeug auf dies
 
 ### Hat Obsidian einen eingebauten Export nach Markdown?
 
-Nein, und es braucht keinen — der Vault ist bereits ein Ordner mit `.md`-Dateien. Obsidian hat eine Einstellung „Use \[\[Wikilinks\]\]", die neue Links zu Standard-Markdown macht, sie gilt aber nur für Links, die nach der Umstellung geschrieben werden, es ist also eine Vorbeugung und kein Export.
+Nein, und es braucht keinen — der Vault ist bereits ein Ordner mit `.md`-Dateien. Obsidian hat eine Einstellung „Use \[\[Wikilinks\]\]“, die neue Links zu Standard-Markdown macht, sie gilt aber nur für Links, die nach der Umstellung geschrieben werden, es ist also eine Vorbeugung und kein Export.
 
 ### Was ist der schnellste kostenlose Weg, einen ganzen Vault in eine Datei zu verwandeln?
 

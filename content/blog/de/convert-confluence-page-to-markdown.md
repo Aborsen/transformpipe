@@ -8,7 +8,7 @@ keywords: confluence nach markdown, confluence seite nach markdown konvertieren,
 
 Confluence hat einen Export-Knopf, dahinter mehrere Formate, und keines davon ist Markdown. Das ist kein Versehen: Eine Confluence-Seite wird nicht als Markdown gespeichert, oder auch nur als etwas, das dem nahekommt. Sie liegt in Confluences eigenem Speicherformat — XHTML-basiertem Markup mit zwei eigenen Namensräumen obendrauf, für Makros und für Ressourcenverweise —, und jedes Exportformat, das Confluence anbietet, ist eine Darstellung dieses Speicherformats in etwas anderes. Zu Markdown zu kommen heißt, eine dieser Darstellungen zu wählen und sie ein zweites Mal zu konvertieren.
 
-Die praktische Folge: „Confluence nach Markdown konvertieren" ist immer eine Arbeit in zwei Schritten — erst in einem Format exportieren, das genug Struktur behält, um das Konvertieren zu lohnen, dann eine echte HTML-zu-Markdown-Konvertierung über das laufen lassen, was herauskam. Direkt zu Word oder PDF zu springen wirft die Struktur weg, bevor der zweite Schritt überhaupt etwas hat, womit er arbeiten kann.
+Die praktische Folge: „Confluence nach Markdown konvertieren“ ist immer eine Arbeit in zwei Schritten — erst in einem Format exportieren, das genug Struktur behält, um das Konvertieren zu lohnen, dann eine echte HTML-zu-Markdown-Konvertierung über das laufen lassen, was herauskam. Direkt zu Word oder PDF zu springen wirft die Struktur weg, bevor der zweite Schritt überhaupt etwas hat, womit er arbeiten kann.
 
 ### Kurzfassung
 
@@ -33,7 +33,7 @@ Confluences Export-Menü bietet also stattdessen Darstellungen des Speicherforma
 | Space-Export, CSV | Ganzer Space | Space-Admin | Inhalt als CSV-Zeilen, Anhänge und Kommentare standardmäßig dabei | Nein — flacht Struktur ab, die eine Markdown-Konvertierung braucht |
 | Eine Marketplace-App | Seite, Baum oder Space, je nach App | Was die App verlangt | Markdown direkt, in der eigenen Form der App | Manchmal — die aktuelle Liste prüfen; mehrere kostenlose Optionen existieren |
 
-Jede Angabe zu Umfang und Berechtigung in dieser Tabelle stammt aus Atlassians eigener Dokumentation: HTML, XML und CSV existieren nur als Space-Level-Exporte und brauchen Space-Admin-Rechte, und „nur Inhalt, der für Sie sichtbar ist, wird exportiert" gilt für den eigenen Export eines Space-Admins — ein Site-Admin, der denselben CSV- oder XML-Export ausführt, bekommt alles, Sichtbarkeitsbeschränkungen eingeschlossen (geprüft auf support.atlassian.com, 14. September 2026). Blogbeiträge werden aus dem PDF- und HTML-Export eines Space ausgelassen, und Kommentare sind in einem PDF-Export nie enthalten, beides laut derselben Seite.
+Jede Angabe zu Umfang und Berechtigung in dieser Tabelle stammt aus Atlassians eigener Dokumentation: HTML, XML und CSV existieren nur als Space-Level-Exporte und brauchen Space-Admin-Rechte, und „nur Inhalt, der für Sie sichtbar ist, wird exportiert“ gilt für den eigenen Export eines Space-Admins — ein Site-Admin, der denselben CSV- oder XML-Export ausführt, bekommt alles, Sichtbarkeitsbeschränkungen eingeschlossen (geprüft auf support.atlassian.com, 14. September 2026). Blogbeiträge werden aus dem PDF- und HTML-Export eines Space ausgelassen, und Kommentare sind in einem PDF-Export nie enthalten, beides laut derselben Seite.
 
 ## Space-Export nach HTML — der Weg, der die Struktur behält
 
@@ -101,7 +101,7 @@ Für einen Space, bei dem das Ziel immer ein einziges lesbares Dokument war stat
 
 ## Eine Marketplace-App, wenn ein Markdown-Export besser zu Ihrem Ablauf passt
 
-Mehrere Apps im Atlassian Marketplace exportieren eine Seite, einen Seitenbaum oder einen ganzen Space direkt nach Markdown, mit kostenlosen Optionen neben kostenpflichtigen (geprüft auf marketplace.atlassian.com, 14. September 2026) — die Kategorie existiert und ändert sich oft genug, dass es hier veraltet wäre, eine bestimmte App zu nennen, was genau der Grund ist, warum der Weg „exportieren, dann konvertieren" oben trotzdem einen Blick wert bleibt: Er hängt von nichts ab außer Confluences eigenem eingebautem Export und einem Konverter, von denen keiner ein Abonnement ist, das seine Preise ändern oder aus einer Marketplace-Liste verschwinden kann.
+Mehrere Apps im Atlassian Marketplace exportieren eine Seite, einen Seitenbaum oder einen ganzen Space direkt nach Markdown, mit kostenlosen Optionen neben kostenpflichtigen (geprüft auf marketplace.atlassian.com, 14. September 2026) — die Kategorie existiert und ändert sich oft genug, dass es hier veraltet wäre, eine bestimmte App zu nennen, was genau der Grund ist, warum der Weg „exportieren, dann konvertieren“ oben trotzdem einen Blick wert bleibt: Er hängt von nichts ab außer Confluences eigenem eingebautem Export und einem Konverter, von denen keiner ein Abonnement ist, das seine Preise ändern oder aus einer Marketplace-Liste verschwinden kann.
 
 | Vorteile | Nachteile |
 | --- | --- |

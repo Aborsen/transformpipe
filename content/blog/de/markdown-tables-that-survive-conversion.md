@@ -324,7 +324,7 @@ Die Syntax oben behandelt Tabellen, die funktionieren sollten und es nicht tun. 
 **Breite Tabellen.** Hinter einer Beschwerde verstecken sich zwei Probleme. Das erste ist die Quelldatei, in der eine neunspaltige Tabelle jämmerlich zu bearbeiten und unmöglich zu prüfen ist. Das zweite ist die Seite: eine HTML-Tabelle nimmt die Breite, die ihr Inhalt verlangt, eine breite quetscht ihre Spalten also entweder zu Bändern oder zieht die Seite seitwärts. Abhilfen, etwa in der Reihenfolge, in der sie Ihnen gefallen sollten:
 
 - Streichen Sie eine Spalte. Breite Tabellen enthalten meist eine mit demselben Wert in jeder Zeile, oder zwei, die eine sein könnten.
-- Kürzen Sie die Überschriften. Eine Überschrift, die nicht umbrechen kann, setzt die Mindestbreite der Spalte — „Authentifizierung erforderlich" kostet also mehr als „Auth".
+- Kürzen Sie die Überschriften. Eine Überschrift, die nicht umbrechen kann, setzt die Mindestbreite der Spalte — „Authentifizierung erforderlich“ kostet also mehr als „Auth“.
 - Drehen Sie sie. Vier Spalten und drei Zeilen lesen sich oft andersherum besser.
 - Teilen Sie sie in zwei Tabellen mit einer gemeinsamen Schlüsselspalte.
 - Lassen Sie sie scrollen, indem Sie sie in einen Container packen, dem Ihr Stylesheet `overflow-x: auto` gibt.

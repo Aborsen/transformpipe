@@ -56,7 +56,7 @@ Das ist YAML-Frontmatter: Metadaten für das Werkzeug, das die Seite gebaut hat,
 
 Jedes Desktop-Betriebssystem wählt das Programm zum Öffnen einer Datei anhand der Dateiendung, und jedes scheitert anders, wenn diese Endung von nichts richtig beansprucht wird.
 
-**Windows bringt nichts mit, das `.md` registriert.** Also gewinnt, was sich zuletzt installiert und die Hand gehoben hat. Auf einem Arbeitsgerät ist das meist ein Code-Editor, ein Git-Client oder irgendein Werkzeug, das mit der Werkzeugkette für Entwickler mitkam — und wenn nichts die Endung beansprucht hat, bekommen Sie den Dialog „Wie möchten Sie diese Datei öffnen?" mit einer Liste von Anwendungen und ohne jeden Hinweis, welche die richtige ist. Keines der beiden Ergebnisse sagt etwas über Ihre Datei.
+**Windows bringt nichts mit, das `.md` registriert.** Also gewinnt, was sich zuletzt installiert und die Hand gehoben hat. Auf einem Arbeitsgerät ist das meist ein Code-Editor, ein Git-Client oder irgendein Werkzeug, das mit der Werkzeugkette für Entwickler mitkam — und wenn nichts die Endung beansprucht hat, bekommen Sie den Dialog „Wie möchten Sie diese Datei öffnen?“ mit einer Liste von Anwendungen und ohne jeden Hinweis, welche die richtige ist. Keines der beiden Ergebnisse sagt etwas über Ihre Datei.
 
 **macOS fällt auf TextEdit zurück**, das sie bereitwillig öffnet und Ihnen die Quelle zeigt. Das sieht wie ein Fehlschlag aus und ist keiner: TextEdit tut genau seine Aufgabe, nämlich Text anzuzeigen. Wählen Sie die Datei aus und drücken Sie die Leertaste für Quick Look, dann bekommen Sie im Allgemeinen dasselbe — die Zeichen, nicht die Formatierung.
 
@@ -114,7 +114,7 @@ Jeder Windows-Rechner kann Ihnen den Text ohne Installation zeigen:
 
 Um die Darstellung zu lesen, ist der kürzeste Weg ohne Installation ein Browser: einen Betrachter im Browser öffnen und die Datei auf die Seite ziehen. Wenn Sie oft genug Markdown lesen, dass der Doppelklick zählt, installieren Sie einen Editor mit Vorschau und setzen dann die Standardanwendung, damit Windows aufhört zu fragen.
 
-**Die Standardanwendung unter Windows ändern.** Rechtsklick auf die Datei, Öffnen mit wählen, dann Andere App auswählen, das Programm wählen und das Kästchen ankreuzen, das die Wahl dauerhaft macht. Wenn die gewünschte Anwendung nicht aufgeführt ist, nehmen Sie „Andere App auf diesem PC suchen" und zeigen Windows die ausführbare Datei. Es geht auch über die Einstellungen: Apps, dann Standard-Apps, dann nach dem Dateityp `.md` suchen und dort den Handler setzen. Der zweite Weg ist der, den man nimmt, wenn die Endung von etwas beansprucht wurde, das Sie seither deinstalliert haben, sodass die Verknüpfung ins Nichts zeigt.
+**Die Standardanwendung unter Windows ändern.** Rechtsklick auf die Datei, Öffnen mit wählen, dann Andere App auswählen, das Programm wählen und das Kästchen ankreuzen, das die Wahl dauerhaft macht. Wenn die gewünschte Anwendung nicht aufgeführt ist, nehmen Sie „Andere App auf diesem PC suchen“ und zeigen Windows die ausführbare Datei. Es geht auch über die Einstellungen: Apps, dann Standard-Apps, dann nach dem Dateityp `.md` suchen und dort den Handler setzen. Der zweite Weg ist der, den man nimmt, wenn die Endung von etwas beansprucht wurde, das Sie seither deinstalliert haben, sodass die Verknüpfung ins Nichts zeigt.
 
 ### macOS
 
@@ -129,7 +129,7 @@ TextEdit ist ohnehin der Rückfall, ein Doppelklick zeigt Ihnen also meist die Q
 
 Eine macOS-eigene Falle: TextEdit lässt sich so einstellen, dass es Dateien als formatierten Text behandelt, und wenn das so eingestellt ist, kann es anbieten, das Geöffnete umzuwandeln oder neu zu formatieren. Lesen ist so oder so gefahrlos, aber speichern Sie nicht aus TextEdit, solange Sie nicht sicher sind, dass es im Modus für reinen Text läuft, denn eine als RTF gespeicherte `.md`-Datei ist keine `.md`-Datei mehr.
 
-**Die Standardanwendung unter macOS ändern.** Wählen Sie die Datei aus, drücken Sie Command-I für Informationen, öffnen Sie den Abschnitt „Öffnen mit", wählen Sie die Anwendung und klicken Sie dann auf „Alle ändern", damit die Einstellung für jede `.md`-Datei gilt und nicht nur für diese eine. Der Klick auf „Alle ändern" ist der Teil, den Leute übersehen; ohne ihn gilt die Einstellung für eine Datei, und der nächste Download überrascht Sie erneut.
+**Die Standardanwendung unter macOS ändern.** Wählen Sie die Datei aus, drücken Sie Command-I für Informationen, öffnen Sie den Abschnitt „Öffnen mit“, wählen Sie die Anwendung und klicken Sie dann auf „Alle ändern“, damit die Einstellung für jede `.md`-Datei gilt und nicht nur für diese eine. Der Klick auf „Alle ändern“ ist der Teil, den Leute übersehen; ohne ihn gilt die Einstellung für eine Datei, und der nächste Download überrascht Sie erneut.
 
 ### Linux
 
@@ -233,7 +233,7 @@ Erweiterungen wie Markdown Viewer stellen `.md`-Dateien dar, sobald Sie sie im B
 **Technische Details und Funktionen**
 
 - Verfügbar für Chrome, Firefox, Edge, Opera, Brave, Chromium und Vivaldi
-- Braucht „Zugriff auf Datei-URLs zulassen" ausdrücklich aktiviert auf der Detailseite der Erweiterung, bevor lokale Dateien dargestellt werden
+- Braucht „Zugriff auf Datei-URLs zulassen“ ausdrücklich aktiviert auf der Detailseite der Erweiterung, bevor lokale Dateien dargestellt werden
 - Stellt in der Seite dar, Suche, Zoom und Druck des Browsers funktionieren also normal
 
 **Wer sollte es verwenden?** Leute, die wöchentlich lokale Markdown-Dateien öffnen und wollen, dass der Browser sie ohne Umweg übernimmt. Lesen Sie zuerst die Berechtigungen: der Schalter für Datei-URLs ist der ganze Sinn der Erweiterung und gleichzeitig der Grund, eine zu wählen, der Sie Ihre Festplatte zutrauen würden.
@@ -352,11 +352,11 @@ Manchmal liegt die Datei auf einem Rechner, den Sie über SSH erreicht haben, un
 - `bat notes.md` gibt die Quelle mit Syntaxhervorhebung für Markdown aus
 - `glow notes.md` zeichnet eine Darstellung ins Terminal, gestaltet für dunkel oder hell
 
-**Wer sollte es verwenden?** Alle, die eine README oder ein Betriebshandbuch auf einem Server lesen, wo „eine Desktop-Anwendung installieren" kein Satz ist, der etwas bedeutet.
+**Wer sollte es verwenden?** Alle, die eine README oder ein Betriebshandbuch auf einem Server lesen, wo „eine Desktop-Anwendung installieren“ kein Satz ist, der etwas bedeutet.
 
 ### Markor, Obsidian mobil und Working Copy — am besten auf einem Telefon
 
-Mobil scheitert „einfach die Datei öffnen" am härtesten, es lohnt sich also, eine App pro Plattform zu kennen.
+Mobil scheitert „einfach die Datei öffnen“ am härtesten, es lohnt sich also, eine App pro Plattform zu kennen.
 
 | Vorteile | Nachteile |
 | --- | --- |
@@ -417,17 +417,17 @@ Solange Sie noch schreiben, läuft die Abwägung umgekehrt. Ein Editor mit Live-
 
 ## Wo die naheliegende Wahl scheitert
 
-Der naheliegende Rat lautet „installieren Sie VS Code" oder „öffnen Sie es einfach im Editor", und beide sind etwa die Hälfte der Zeit richtig. Hier ist, was jeder von beiden Sie kostet.
+Der naheliegende Rat lautet „installieren Sie VS Code“ oder „öffnen Sie es einfach im Editor“, und beide sind etwa die Hälfte der Zeit richtig. Hier ist, was jeder von beiden Sie kostet.
 
 **Roher Text verbirgt Struktur genau dann, wenn Sie sie brauchen.** Eine Datei mit vierzig Zeilen ist als Quelle in Ordnung. Ein Betriebshandbuch mit sechzig Seiten, vier Verschachtelungsebenen, einem Dutzend Tabellen und Inline-Code in jeder dritten Zeile ist es nicht: Sie parsen am Ende die Satzzeichen, statt die Wörter zu lesen, und Sie werden Dinge übersehen. Das Scheitern ist lautlos — Sie merken nicht, welchen Punkt Sie übersprungen haben.
 
 **Einen Editor für eine einzige Datei zu installieren ist ein schlechtes Geschäft und schwer zurückzunehmen.** Ein Code-Editor ist ein großer Download, eine Führung durch Einstellungen, um die Sie nicht gebeten haben, und eine neue Standardanwendung für eine Endung, die er vielleicht nicht besitzen soll. Er neigt außerdem dazu, Markdown mit eingeschalteter Syntaxhervorhebung zu öffnen, was nicht dasselbe ist wie es darzustellen — die Rautezeichen sind weiterhin da, sie haben jetzt nur eine andere Farbe.
 
-**„Online"-Betrachter bedeuten meist hochgeladen.** „Online" und „im Browser" klingen gleich und sind es nicht. Manche Werkzeuge schicken Ihre Datei zum Umwandeln an einen Server; manche machen die Arbeit lokal und senden nichts. Für eine öffentliche README ist der Unterschied belanglos. Für einen Vertrag, eine Patientennotiz, einen unveröffentlichten Plan oder einen internen Vorfallsbericht ist es die einzige Frage, die zählt, und die Antwort steht auf der Seite oder ist im Netzwerk-Tab überprüfbar.
+**„Online“-Betrachter bedeuten meist hochgeladen.** „Online“ und „im Browser“ klingen gleich und sind es nicht. Manche Werkzeuge schicken Ihre Datei zum Umwandeln an einen Server; manche machen die Arbeit lokal und senden nichts. Für eine öffentliche README ist der Unterschied belanglos. Für einen Vertrag, eine Patientennotiz, einen unveröffentlichten Plan oder einen internen Vorfallsbericht ist es die einzige Frage, die zählt, und die Antwort steht auf der Seite oder ist im Netzwerk-Tab überprüfbar.
 
 **Browser-Erweiterungen wollen Zugriff auf Ihre Festplatte.** Eine Erweiterung, die lokale `.md`-Dateien darstellt, kann das nur mit der Berechtigung, Datei-URLs zu lesen, und diese Berechtigung ist nicht eng gefasst. Es ist ein vernünftiges Geschäft, wenn Sie ständig Markdown lesen, und ein schlechtes für einen einzelnen Anhang.
 
-**Betrachter sind sich über Markdown nicht einig.** Tabellen, Aufgabenlisten, Durchgestrichenes und Autolinks kommen aus GitHub Flavored Markdown und nicht aus der ursprünglichen Syntax, ein strenger CommonMark-Betrachter zeigt also rohe Pipes, wo Sie eine Tabelle erwartet haben. Die Datei ist in Ordnung; der Betrachter setzt einen kleineren Dialekt um. Das ist die mit Abstand häufigste Meldung „mein Markdown ist kaputt", und es ist fast nie die Datei. Es lohnt sich, [die Dialekte](/blog/commonmark-gfm-and-the-flavours) zu kennen, wenn Sie Markdown aus mehr als einer Quelle bekommen.
+**Betrachter sind sich über Markdown nicht einig.** Tabellen, Aufgabenlisten, Durchgestrichenes und Autolinks kommen aus GitHub Flavored Markdown und nicht aus der ursprünglichen Syntax, ein strenger CommonMark-Betrachter zeigt also rohe Pipes, wo Sie eine Tabelle erwartet haben. Die Datei ist in Ordnung; der Betrachter setzt einen kleineren Dialekt um. Das ist die mit Abstand häufigste Meldung „mein Markdown ist kaputt“, und es ist fast nie die Datei. Es lohnt sich, [die Dialekte](/blog/commonmark-gfm-and-the-flavours) zu kennen, wenn Sie Markdown aus mehr als einer Quelle bekommen.
 
 **Bilder stehen nicht in der Datei.** Markdown verweist auf Bilder über einen Pfad; es enthält sie nicht. Öffnen Sie eine `.md`-Datei, die mit einem Ordner `images/` daneben exportiert wurde, in einem Betrachter, der nur die `.md` bekommen hat, und jedes Bild ist ein kaputtes Symbol. Das ist nicht der Betrachter, der scheitert, das ist [was relative Pfade tun, wenn eine Datei umzieht](/blog/images-and-links-that-still-work).
 

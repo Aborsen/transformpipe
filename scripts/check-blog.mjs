@@ -205,6 +205,56 @@ for (const locale of LOCALES) {
       );
     }
 
+    /*
+     * Each language quotes the way that language quotes, and closes what it opens.
+     *
+     * Measured across the corpus rather than assumed, because assuming is what went wrong: French
+     * and Spanish use « », Italian uses “ ”, German uses „ “. Two rounds of Italian translations
+     * arrived with guillemets because the brief said so, and ten files had to be repaired by hand.
+     *
+     * The balance half found something nobody was looking for. German opened 658 quotes with „ and
+     * closed only 45 of them with “ — the other 613 closed with a straight ASCII `"`, so 55 of the
+     * 63 German articles carried `„so etwas"`, which is not a German quotation and had been live
+     * for weeks. Nothing read it, because nothing was counting.
+     *
+     * English is left alone: it uses straight quotes throughout and typographic pairs nowhere, and
+     * a rule inferred from an absence is a rule nobody agreed to.
+     */
+    const QUOTES = {
+      de: { open: '\u201e', close: '\u201c', foreign: ['\u00ab', '\u00bb', '\u201d'] },
+      fr: { open: '\u00ab', close: '\u00bb', foreign: ['\u201e', '\u201c', '\u201d'] },
+      es: { open: '\u00ab', close: '\u00bb', foreign: ['\u201e', '\u201c', '\u201d'] },
+      it: { open: '\u201c', close: '\u201d', foreign: ['\u00ab', '\u00bb', '\u201e'] },
+    };
+
+    const marks = QUOTES[locale];
+
+    if (marks) {
+      /* Code is not prose: a guillemet inside a sample is the sample's, not ours. */
+      const withoutCode = prose
+        .replace(/```[\s\S]*?```/g, ' ')
+        .replace(/`[^`\n]*`/g, ' ');
+      const count = (mark) => withoutCode.split(mark).length - 1;
+      const opened = count(marks.open);
+      const closed = count(marks.close);
+
+      if (opened !== closed) {
+        problems.push(
+          `${name}: ${opened} ${marks.open} against ${closed} ${marks.close} — ` +
+            'a quotation this language opens and does not close'
+        );
+      }
+
+      for (const mark of marks.foreign) {
+        if (count(mark) > 0) {
+          problems.push(
+            `${name}: uses ${mark}, which belongs to another language here — ` +
+              `${locale} quotes with ${marks.open}${marks.close}`
+          );
+        }
+      }
+    }
+
     const FORMAL = {
       es: {
         pattern: /\b(usted|ustedes)\b/i,

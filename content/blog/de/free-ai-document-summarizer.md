@@ -12,9 +12,9 @@ Ein Dokument landet in Ihrem Verlauf mit einem Namen und einer Größe, und kein
 
 **Ein Konverter mit eingebauter Zusammenfassung** ist der Weg mit der geringsten Reibung: Dokument konvertieren oder speichern, auf Zusammenfassung klicken, und ein zwischengespeichertes Ergebnis kommt zurück — nichts kopieren, kein zweites Konto, nichts einfügen. [Die Zusammenfassung von TransformPipe](/) nutzt Googles Modell Gemini Flash direkt, drei bis fünf schlichte Sätze, am Dokument zwischengespeichert, also einmal berechnet und vielfach gelesen, kostenlos bis zu 20 Zusammenfassungen pro Tag und Konto. **Ein kostenloses Chatmodell** — ChatGPT oder die Gemini-App, beide ohne hinterlegte Karte nutzbar — funktioniert für jedes Dokument, das Sie bereit sind von Hand einzufügen, ohne Tageslimit auf das Gespräch selbst, aber auch ohne Zwischenspeicher, ohne API und ohne Erinnerung daran, sobald der Chat weg ist. **Notion AI** fasst Seiten nativ zusammen, aber nur im kostenpflichtigen Business-Plan zu 20 $ pro Mitglied und Monat (geprüft auf notion.com, 14. September 2026) — kostenlose und Plus-Arbeitsbereiche bekommen eine begrenzte Testphase, nicht die Sache selbst. Was Sie auch wählen: die ehrliche Frage ist, wohin der Text geht, bevor Sie einen Vertrag oder eine Patientennotiz irgendwo davon einfügen.
 
-## Was „kostenlos" hier tatsächlich heißt
+## Was „kostenlos“ hier tatsächlich heißt
 
-Jede Möglichkeit unten ist im gewöhnlichen Sinn kostenlos nutzbar — keine Karte nötig, um es zu probieren — aber „kostenlos" verdeckt echte Unterschiede, sobald man anschaut, was danach passiert. Eine Zusammenfassung, die Sie einmal erzeugen und nie wiedersehen, kostet Sie in einer Woche die Zeit, den Text erneut einzufügen. Eine am Dokument zwischengespeicherte Zusammenfassung ist da, wenn Sie es öffnen, ohne dass noch einmal gefragt wird. Und eine Zusammenfassung von einem Dienst, der Ihre Eingabe für das Training behält, ist eine andere Art kostenlos als eine, die das nicht tut, was auch immer das Preisschild sagt.
+Jede Möglichkeit unten ist im gewöhnlichen Sinn kostenlos nutzbar — keine Karte nötig, um es zu probieren — aber „kostenlos“ verdeckt echte Unterschiede, sobald man anschaut, was danach passiert. Eine Zusammenfassung, die Sie einmal erzeugen und nie wiedersehen, kostet Sie in einer Woche die Zeit, den Text erneut einzufügen. Eine am Dokument zwischengespeicherte Zusammenfassung ist da, wenn Sie es öffnen, ohne dass noch einmal gefragt wird. Und eine Zusammenfassung von einem Dienst, der Ihre Eingabe für das Training behält, ist eine andere Art kostenlos als eine, die das nicht tut, was auch immer das Preisschild sagt.
 
 ## Kurzvergleich: der Spickzettel
 
@@ -29,13 +29,13 @@ Jede Möglichkeit unten ist im gewöhnlichen Sinn kostenlos nutzbar — keine Ka
 
 ## Die eingebaute Zusammenfassung von TransformPipe — ohne separates Einfügen
 
-Sobald ein Dokument konvertiert oder gespeichert ist, sitzt ein Reiter „Zusammenfassung" neben Vorschau und Quelltext. Ihn zum ersten Mal zu öffnen ruft das Modell auf; ihn erneut zu öffnen liest das zwischengespeicherte Ergebnis, denn der Sinn eines Zwischenspeichers ist, dass ein Dokument, das Sie zweimal prüfen, nicht zweimal nachdenken sollte.
+Sobald ein Dokument konvertiert oder gespeichert ist, sitzt ein Reiter „Zusammenfassung“ neben Vorschau und Quelltext. Ihn zum ersten Mal zu öffnen ruft das Modell auf; ihn erneut zu öffnen liest das zwischengespeicherte Ergebnis, denn der Sinn eines Zwischenspeichers ist, dass ein Dokument, das Sie zweimal prüfen, nicht zweimal nachdenken sollte.
 
 | Dafür | Dagegen |
 | --- | --- |
 | Der Text wird nirgendwohin kopiert — das Dokument ist bereits da | 20 Zusammenfassungen pro Tag und Konto, nicht unbegrenzt |
 | Zwischengespeichert: das Modell läuft einmal, das Ergebnis lesen Sie so oft Sie wollen | Drei bis fünf Sätze mit Absicht — kein Ersatz für die Lektüre eines Dokuments, das Sie wirklich im Detail brauchen |
-| Eine Schaltfläche „Neu erzeugen", wenn sich das Dokument geändert hat und die gespeicherte Zusammenfassung nicht | Braucht ein Dokument, das zuerst in einem Konto gespeichert ist — eine konvertierte, aber ungespeicherte Datei hat nichts, woran die Zusammenfassung hängen könnte |
+| Eine Schaltfläche „Neu erzeugen“, wenn sich das Dokument geändert hat und die gespeicherte Zusammenfassung nicht | Braucht ein Dokument, das zuerst in einem Konto gespeichert ist — eine konvertierte, aber ungespeicherte Datei hat nichts, woran die Zusammenfassung hängen könnte |
 | Auch über die API verfügbar (`POST /api/v1/documents/:id/summary`), ein Skript kann also dasselbe verlangen | Setzt voraus, dass in der Installation ein Google-AI-Schlüssel konfiguriert ist — beim Selbsthosten brauchen Sie Ihren eigenen |
 
 **Preis:** kostenlos, 20 am Tag pro Konto. API und CLI (`tp summary <id>`) zehren vom selben Kontingent.
@@ -50,7 +50,7 @@ Seit August 2026 hat OpenAI die Nachrichtengrenze für den Textchat im kostenlos
 
 | Dafür | Dagegen |
 | --- | --- |
-| Kein Tageslimit auf das reine Textgespräch | Jedes Dokument ist ein manuelles Einfügen — kein Verlauf, kein Zwischenspeicher, kein „Dokument öffnen und Zusammenfassung sehen" |
+| Kein Tageslimit auf das reine Textgespräch | Jedes Dokument ist ein manuelles Einfügen — kein Verlauf, kein Zwischenspeicher, kein „Dokument öffnen und Zusammenfassung sehen“ |
 | Überhaupt keine Kontokosten | Der Modellzugang in der kostenlosen Stufe beschränkt sich auf das kleinste Modell der aktuellen Reihe |
 | Funktioniert mit allem, was Sie einfügen können — Markdown, reiner Text, eine eingefügte Tabelle | Kein API-Zugang im kostenlosen Plan, den ein Skript aufrufen könnte |
 | Vertraute Oberfläche, wenn Sie sie ohnehin für anderes benutzen | Was mit eingefügtem Text geschieht, hängt an den Dateneinstellungen Ihres Kontos — prüfen Sie sie, bevor Sie etwas Heikles einfügen |
@@ -99,7 +99,7 @@ Für ein Dokument, das wirklich kein Netz erreichen darf — juristisch, medizin
 
 **Preis:** kostenlos, quelloffen; der Preis sind Ihre eigene Zeit und Ihr Rechner, kein Abonnement.
 
-**Für wen ist das?** Für alle, deren tatsächliche Einschränkung „das darf meinen Rechner nicht verlassen" lautet statt „das muss schnell gehen" — das sind zwei verschiedene Probleme mit zwei verschiedenen richtigen Antworten.
+**Für wen ist das?** Für alle, deren tatsächliche Einschränkung „das darf meinen Rechner nicht verlassen“ lautet statt „das muss schnell gehen“ — das sind zwei verschiedene Probleme mit zwei verschiedenen richtigen Antworten.
 
 ## Wo eine Zusammenfassung am meisten bringt: das Dokument, das früher fünfzig Dokumente war
 
@@ -107,7 +107,7 @@ Der Fall, in dem eine Zusammenfassung am wenigsten nützt, ist der, den die meis
 
 Der Fall, in dem sie wirklich nützt, ist der zusammengeführte Export: ein ganzer Notion-Arbeitsbereich, ein Confluence-Bereich oder ein Obsidian-Tresor, verwandelt in ein einziges Markdown-Dokument. [Alle drei Exporte kommen als ZIP aus vielen Seiten an](/blog/markdown-from-notion-obsidian-and-confluence), und sie zusammenzuführen ergibt ein einzelnes Dokument, das korrekt, vollständig und auf einen Blick vollkommen unlesbar ist — vierzigtausend Wörter mit einem Inhaltsverzeichnis, in dem Seitentitel stehen, die jemand für ein Wiki geschrieben hat, nicht für einen Leser, der neu dazukommt.
 
-Genau diese Form bringt eine Zusammenfassung aus drei Sätzen wieder in Ordnung. Den Export konvertieren, speichern, und die Zusammenfassung beantwortet „was steckt eigentlich in diesem Ding", ohne es zu öffnen — und das ist die Frage, die Sie ein Jahr später zu einem archivierten Arbeitsbereich haben, und die niemand aus einem Dateinamen beantworten kann.
+Genau diese Form bringt eine Zusammenfassung aus drei Sätzen wieder in Ordnung. Den Export konvertieren, speichern, und die Zusammenfassung beantwortet „was steckt eigentlich in diesem Ding“, ohne es zu öffnen — und das ist die Frage, die Sie ein Jahr später zu einem archivierten Arbeitsbereich haben, und die niemand aus einem Dateinamen beantworten kann.
 
 | Quelle | Typische Größe nach dem Zusammenführen | Was die Zusammenfassung beantwortet |
 | --- | --- | --- |
@@ -126,8 +126,8 @@ Bei jeder kostenlosen Möglichkeit oben außer der lokalen erreicht der Text Ihr
 1. **Fragen Sie, ob Sie die Zusammenfassung später noch einmal brauchen.** Eine am aufbewahrten Dokument zwischengespeicherte Zusammenfassung schlägt jedes Mal ein Chatprotokoll, das Sie erst suchen müssen, wenn Sie dasselbe Dokument zweimal prüfen wollen.
 2. **Fragen Sie, wo das Dokument schon lebt.** Eine Notion-Seite will Notion AI, falls Sie ohnehin dafür zahlen; eine Datei will ein Werkzeug, das Dateien liest, statt ein manuelles Einfügen zu verlangen.
 3. **Zählen Sie, wie oft Sie das tun.** Zwanzig am Tag sind viel für einen Menschen und wenig für ein Skript, das einen Ordner abarbeitet — wissen Sie, was von beidem Sie sind, bevor Sie an die Decke stoßen.
-4. **Klären Sie, was „darf den Rechner nicht verlassen" für dieses Dokument tatsächlich bedeutet.** Wenn die ehrliche Antwort „nichts Gehostetes" lautet, ist der lokale Weg der einzige, der dem wirklich gerecht wird, nicht der am schnellsten eingerichtete.
-5. **Prüfen Sie die tatsächlichen Grenzen des kostenlosen Plans, bevor Sie sich darauf verlassen.** Eine kostenlose Stufe, die ihre Grenzen in den letzten sechs Monaten geändert hat, ist in dieser Kategorie häufig genug, dass „heute auf der Seite des Anbieters geprüft" jeden Vergleich von vor einem Jahr schlägt — diesen eingeschlossen.
+4. **Klären Sie, was „darf den Rechner nicht verlassen“ für dieses Dokument tatsächlich bedeutet.** Wenn die ehrliche Antwort „nichts Gehostetes“ lautet, ist der lokale Weg der einzige, der dem wirklich gerecht wird, nicht der am schnellsten eingerichtete.
+5. **Prüfen Sie die tatsächlichen Grenzen des kostenlosen Plans, bevor Sie sich darauf verlassen.** Eine kostenlose Stufe, die ihre Grenzen in den letzten sechs Monaten geändert hat, ist in dieser Kategorie häufig genug, dass „heute auf der Seite des Anbieters geprüft“ jeden Vergleich von vor einem Jahr schlägt — diesen eingeschlossen.
 
 ## Fazit
 

@@ -12,15 +12,15 @@ Dillinger ist gute Software und kostenlos, niemand sucht also aus Frust über da
 
 Wollten Sie eine einzelne Konvertierung statt einer Schreibsitzung, ist die Antwort ein Konverter, kein weiterer Editor — Markdown Live Preview für einen Blick, ein browserseitiger Konverter für ein vollständiges HTML-Dokument, das Sie verschicken können. War der Einwand die Cloud-Verbindung, beachten Sie zunächst, dass Dillinger sagt, Dokumente blieben in Ihrem Browser und keine Daten lägen auf seinen Servern (geprüft auf dillinger.io, 9. September 2026); die Zugriffsanfrage erscheint nur, wenn Sie Dropbox, Drive, OneDrive, GitHub oder Bitbucket verknüpfen, und Sie können das einfach lassen. Wollen Sie das Werkzeug selbst auf Ihrer Maschine, bleibt StackEdit in einem Tab und funktioniert offline, und Typora, Obsidian und Zettlr sind Anwendungen. Gehört es in einen Build, trifft nichts davon zu, und Pandoc trifft zu.
 
-„Dillinger-Alternative" sind vier Suchen in einer Phrase. Die erste ist jemand, der mit einer `.md`-Datei ankam, HTML daraus wollte und einen Zwei-Spalten-Editor mit Cloud-Menü fand — mehr Werkzeug, als die Besorgung brauchte. Die zweite ist jemand, der bei der Integrationsaufforderung anhielt, denn einen ganzen Drive mit einer Website zu verknüpfen, um eine Datei zu bewegen, ist ein schlechter Tausch. Die dritte will die Software installiert, auf einem Laptop, funktionierend im Zug, mit den Dateien auf einer Platte, die man sichern kann. Die vierte schreibt einen Build-Schritt und braucht einen Befehl, keinen Tab.
+„Dillinger-Alternative“ sind vier Suchen in einer Phrase. Die erste ist jemand, der mit einer `.md`-Datei ankam, HTML daraus wollte und einen Zwei-Spalten-Editor mit Cloud-Menü fand — mehr Werkzeug, als die Besorgung brauchte. Die zweite ist jemand, der bei der Integrationsaufforderung anhielt, denn einen ganzen Drive mit einer Website zu verknüpfen, um eine Datei zu bewegen, ist ein schlechter Tausch. Die dritte will die Software installiert, auf einem Laptop, funktionierend im Zug, mit den Dateien auf einer Platte, die man sichern kann. Die vierte schreibt einen Build-Schritt und braucht einen Befehl, keinen Tab.
 
-Diese vier wollen unterschiedliche Dinge, und nur eine davon will einen Editor. Das ist es wert zu wissen, bevor man irgendeine Liste liest, auch diese, denn die meisten „Dillinger-Alternativen"-Seiten beantworten alle vier Fragen mit einem gerankten Stapel Markdown-Editoren, und drei der vier Leser gehen mit dem falschen Werkzeug.
+Diese vier wollen unterschiedliche Dinge, und nur eine davon will einen Editor. Das ist es wert zu wissen, bevor man irgendeine Liste liest, auch diese, denn die meisten „Dillinger-Alternativen“-Seiten beantworten alle vier Fragen mit einem gerankten Stapel Markdown-Editoren, und drei der vier Leser gehen mit dem falschen Werkzeug.
 
 Es gibt auch einen fünften Fall, der es wert ist, genannt zu werden, denn er taucht in Support-Threads auf: Der Export kam heraus und sah nicht wie die Vorschau aus. Das ist kein Grund, den Editor zu wechseln. Es ist eine Eigenschaft davon, wie das HTML geschrieben wurde, und behebbar, ohne irgendetwas zu migrieren.
 
 ## Dillinger auf seinen eigenen Bedingungen
 
-Dillinger ist ein browserbasierter Markdown-Editor mit Live-Vorschau, gebaut auf dem Monaco-Editor — derselben Editing-Komponente, die VS Code nutzt. Er bietet scrollsynchrone Vorschau, Vim- und Emacs-Tastenkombinationen hinter einer Einstellung, Drag-and-Drop von Markdown-, HTML- und Bilddateien, einen Dunkelmodus und einen Vollbild-Zen-Modus. Export wird beschrieben als „Markdown, gestyltes HTML oder PDF", als Ein-Klick-Download. Dokumente speichern sich automatisch im Speicher Ihres Browsers, und die Website sagt es unumwunden: „No account required, no data on our servers" (geprüft auf dillinger.io, 9. September 2026).
+Dillinger ist ein browserbasierter Markdown-Editor mit Live-Vorschau, gebaut auf dem Monaco-Editor — derselben Editing-Komponente, die VS Code nutzt. Er bietet scrollsynchrone Vorschau, Vim- und Emacs-Tastenkombinationen hinter einer Einstellung, Drag-and-Drop von Markdown-, HTML- und Bilddateien, einen Dunkelmodus und einen Vollbild-Zen-Modus. Export wird beschrieben als „Markdown, gestyltes HTML oder PDF“, als Ein-Klick-Download. Dokumente speichern sich automatisch im Speicher Ihres Browsers, und die Website sagt es unumwunden: „No account required, no data on our servers“ (geprüft auf dillinger.io, 9. September 2026).
 
 Es ist Open Source. Das Repository nennt die MIT-Lizenz und listet den Stack als Next.js, Monaco, Tailwind CSS und Zustand, mit einem schlichten `npm run build` und `npm start`, um es selbst zu betreiben (geprüft auf github.com/joemccann/dillinger, 9. September 2026). MIT heißt, Sie können es hosten, forken und ändern, was mehr ist, als die meisten kostenlosen Web-Werkzeuge bieten, und das ehrliche Gegengewicht zu allem unten.
 
@@ -32,13 +32,13 @@ Die Integrationen sind der Teil, auf den Leute reagieren. Fünf sind gelistet �
 | Monaco bietet echtes Editieren — mehrere Cursor, Suchen und Ersetzen | Die Seite kommt von einer gehosteten Domain, der erste Ladevorgang braucht also das Netzwerk |
 | Dokumente bleiben im Browser-Speicher erhalten, nichts auf ihren Servern | Browser-Speicher ist pro Browser und pro Profil, und Website-Daten löschen löscht ihn |
 | Exportiert Markdown, gestyltes HTML und PDF mit einem Klick | Cloud-Synchronisierung heißt, einer Website Zugriff auf einen Drive oder ein Repository zu gewähren |
-| MIT-lizenziert, Sie können es also selbst hosten | Das Export-Styling ist das des Werkzeugs, und „gestylt" ist nicht dasselbe wie eigenständig |
+| MIT-lizenziert, Sie können es also selbst hosten | Das Export-Styling ist das des Werkzeugs, und „gestylt“ ist nicht dasselbe wie eigenständig |
 
 **Lizenz:** kostenlos, MIT (geprüft auf github.com/joemccann/dillinger, 9. September 2026).
 
 **Für wen ist das?** Für jemanden, der gerade jetzt ein Dokument schreibt, in einem Browser, und eine Live-Vorschau und am Ende eine Datei will. Auf dieser Aufgabe ist es schwer zu schlagen, und es gibt keinen Grund zu gehen. Jeder Grund unten handelt von einer anderen Aufgabe.
 
-Zwei Dinge sind es wert, geprüft zu werden, bevor Sie entscheiden, dass das Werkzeug Sie im Stich gelassen hat. Erstens ist Browser-Speicher kein Backup: Er lebt in einem Browser auf einer Maschine, und ein gelöschter Cache oder ein privates Fenster nimmt das Dokument mit. Zweitens sind ein „gestylter HTML"-Export und ein eigenständiges HTML-Dokument getrennte Eigenschaften. Öffnen Sie die exportierte Datei mit ausgeschaltetem Netzwerk, in einem anderen Browser. Sieht sie noch richtig aus, kamen die Stile mit. Wird sie zu schwarzem Text auf weißem Grund in voller Fensterbreite, zeigte das Styling irgendwohin, das die Datei nicht erreichen kann — ein Problem, [das es sich lohnt, richtig zu verstehen](/blog/self-contained-html-explained), denn es wird Sie zu jedem Werkzeug begleiten, zu dem Sie wechseln.
+Zwei Dinge sind es wert, geprüft zu werden, bevor Sie entscheiden, dass das Werkzeug Sie im Stich gelassen hat. Erstens ist Browser-Speicher kein Backup: Er lebt in einem Browser auf einer Maschine, und ein gelöschter Cache oder ein privates Fenster nimmt das Dokument mit. Zweitens sind ein „gestylter HTML“-Export und ein eigenständiges HTML-Dokument getrennte Eigenschaften. Öffnen Sie die exportierte Datei mit ausgeschaltetem Netzwerk, in einem anderen Browser. Sieht sie noch richtig aus, kamen die Stile mit. Wird sie zu schwarzem Text auf weißem Grund in voller Fensterbreite, zeigte das Styling irgendwohin, das die Datei nicht erreichen kann — ein Problem, [das es sich lohnt, richtig zu verstehen](/blog/self-contained-html-explained), denn es wird Sie zu jedem Werkzeug begleiten, zu dem Sie wechseln.
 
 ## Kurzvergleich: die Übersichtstabelle
 
@@ -81,11 +81,11 @@ Ein browserseitiger Konverter nimmt die Markdown-Datei und gibt ein vollständig
 - Download als `.html`, `.md` oder reiner Text, oder Druck zu PDF über den eigenen Dialog des Browsers
 - Dieselbe Konvertierung ist über eine REST-API, ein abhängigkeitsfreies CLI, eine GitHub Action und einen MCP-Server verfügbar
 
-**Für wen ist das?** Für jeden, dessen nächster Schritt „das jemandem schicken" ist. Kamen Sie mit einer Datei zu Dillinger und gingen mit einem Dokument, bei dem Sie nicht sicher waren, ob es auf einer anderen Maschine öffnet, ist das der Tausch, der es behebt, und er dauert etwa so lang wie der Export.
+**Für wen ist das?** Für jeden, dessen nächster Schritt „das jemandem schicken“ ist. Kamen Sie mit einer Datei zu Dillinger und gingen mit einem Dokument, bei dem Sie nicht sicher waren, ob es auf einer anderen Maschine öffnet, ist das der Tausch, der es behebt, und er dauert etwa so lang wie der Export.
 
 ### Markdown Live Preview — zum Ansehen, nicht zum Verschicken
 
-Markdown Live Preview ist genau das, was sein Repository sagt: „a tiny web tool to preview Markdown formatted text", dort beschrieben als „markdown editor with live preview" und unter MIT-Lizenz veröffentlicht (geprüft auf github.com/tanabe/markdown-live-preview, 9. September 2026). Seine eigene Website verweigerte am Tag, an dem dies geschrieben wurde, eine automatisierte Anfrage, alles oben stammt also aus dem Repository statt von der Seite.
+Markdown Live Preview ist genau das, was sein Repository sagt: „a tiny web tool to preview Markdown formatted text“, dort beschrieben als „markdown editor with live preview“ und unter MIT-Lizenz veröffentlicht (geprüft auf github.com/tanabe/markdown-live-preview, 9. September 2026). Seine eigene Website verweigerte am Tag, an dem dies geschrieben wurde, eine automatisierte Anfrage, alles oben stammt also aus dem Repository statt von der Seite.
 
 | Vorteile | Nachteile |
 | --- | --- |
@@ -101,17 +101,17 @@ Markdown Live Preview ist genau das, was sein Repository sagt: „a tiny web too
 
 Der gemeinsame Faden ist, dass es kein Dokument zu verlieren gibt. Kein Browser-Speicher zu leeren, kein Sync zu konfigurieren, kein OAuth-Prompt, und kein halbfertiger Entwurf in einem Tab, den Sie letzte Woche geschlossen haben. Der Tausch ist eine Datei für eine andere, und dann ist es vorbei. Für einen überraschenden Anteil des Verkehrs hinter dieser Suche ist das die ganze Anforderung, und alles andere auf der Seite ist eine Antwort auf eine Frage, die der Leser nicht gestellt hat.
 
-Es ändert auch, was „sicher" bedeutet. Ein Online-Konverter, der hochlädt, hat Ihr Dokument; einer, der im Browser konvertiert, hat es nicht. Dieser Unterschied [lohnt sich zu prüfen statt anzunehmen](/blog/is-an-online-converter-safe), für jedes Werkzeug in dieser Kategorie, auch die hier, denn beide Bauformen existieren, und die Seite führt selten damit an, welche es ist.
+Es ändert auch, was „sicher“ bedeutet. Ein Online-Konverter, der hochlädt, hat Ihr Dokument; einer, der im Browser konvertiert, hat es nicht. Dieser Unterschied [lohnt sich zu prüfen statt anzunehmen](/blog/is-an-online-converter-safe), für jedes Werkzeug in dieser Kategorie, auch die hier, denn beide Bauformen existieren, und die Seite führt selten damit an, welche es ist.
 
 ## Grund zwei: Ich will es offline, oder irgendwo, das ich kontrolliere
 
-Die zweite Gruppe will das Werkzeug auf ihrer Seite des Netzwerks. Manchmal ist das Richtlinie — eine Arbeitsmaschine, das Dokument eines Kunden, eine Branche, in der „wir haben es in eine Website eingefügt" kein akzeptabler Satz ist. Manchmal ist es praktisch: ein Zug, ein Flugzeug, ein Gebäude mit schlechtem WLAN. Und manchmal ist es einfach eine Vorliebe für Software, die weiterläuft, wenn eine Firma das Interesse verliert.
+Die zweite Gruppe will das Werkzeug auf ihrer Seite des Netzwerks. Manchmal ist das Richtlinie — eine Arbeitsmaschine, das Dokument eines Kunden, eine Branche, in der „wir haben es in eine Website eingefügt“ kein akzeptabler Satz ist. Manchmal ist es praktisch: ein Zug, ein Flugzeug, ein Gebäude mit schlechtem WLAN. Und manchmal ist es einfach eine Vorliebe für Software, die weiterläuft, wenn eine Firma das Interesse verliert.
 
 Seien Sie präzise darüber, was Dillinger hier tut und nicht tut, denn die Reflexannahme ist meist falsch. Die eigene Seite sagt, der Editor funktioniere ohne Verbindung weiter, sobald er geladen ist, und Dokumente speicherten sich automatisch in den lokalen Browserspeicher, ohne Daten auf ihren Servern (geprüft auf dillinger.io, 9. September 2026). Was es nicht kann, ist ohne den ersten Ladevorgang zu existieren: Die Anwendung wird von einer Domain ausgeliefert, der Code kommt also jedes Mal übers Netzwerk an, wenn er nicht im Cache liegt, und die Version, die Sie bekommen, ist die gerade deployte. Das ist eine andere Eigenschaft als eine signierte Anwendung auf Ihrer Platte, und für manche Leser ist das der ganze Unterschied.
 
 ### StackEdit — der Browser-Editor, gebaut, um offline zu funktionieren
 
-StackEdit ist ein browserinterner Markdown-Editor mit Live-Vorschau und Scroll-Synchronisierung, und wirbt direkt mit Offline-Nutzung: „Even when you travel, StackEdit is still accessible and lets you write offline just like any desktop application." Es synchronisiert Dateien mit Google Drive, Dropbox und GitHub, veröffentlicht auf Blogger, WordPress und Zendesk und ist unter der Apache-Lizenz 2.0 lizenziert (alles geprüft auf stackedit.io, 9. September 2026).
+StackEdit ist ein browserinterner Markdown-Editor mit Live-Vorschau und Scroll-Synchronisierung, und wirbt direkt mit Offline-Nutzung: „Even when you travel, StackEdit is still accessible and lets you write offline just like any desktop application.“ Es synchronisiert Dateien mit Google Drive, Dropbox und GitHub, veröffentlicht auf Blogger, WordPress und Zendesk und ist unter der Apache-Lizenz 2.0 lizenziert (alles geprüft auf stackedit.io, 9. September 2026).
 
 | Vorteile | Nachteile |
 | --- | --- |
@@ -133,7 +133,7 @@ StackEdit ist ein browserinterner Markdown-Editor mit Live-Vorschau und Scroll-S
 
 ### Typora — die Anwendung, wenn Sie fast täglich schreiben
 
-Typora ist ein Desktop-Editor für macOS, Windows und Linux, der das Vorschaufenster, den Modus-Umschalter und die Syntaxmarker entfernt und das Dokument beim Tippen darstellt; seine Themes werden als „fully configurable by CSS" beschrieben (beides geprüft auf typora.io, 9. September 2026). Seine Dokumentation sagt, Typora „supports exporting the current document into PDF, HTML, HTML (without styles) and the Image format", und listet Word, OpenOffice, LaTeX, EPUB und den Rest als Exporte, die über ein installiertes Pandoc laufen (geprüft auf support.typora.io, 9. September 2026). Weil das Theme CSS ist, erbt der HTML-Export, welches Stylesheet auch immer aktiv ist, statt eines festen Hausdesigns.
+Typora ist ein Desktop-Editor für macOS, Windows und Linux, der das Vorschaufenster, den Modus-Umschalter und die Syntaxmarker entfernt und das Dokument beim Tippen darstellt; seine Themes werden als „fully configurable by CSS“ beschrieben (beides geprüft auf typora.io, 9. September 2026). Seine Dokumentation sagt, Typora „supports exporting the current document into PDF, HTML, HTML (without styles) and the Image format“, und listet Word, OpenOffice, LaTeX, EPUB und den Rest als Exporte, die über ein installiertes Pandoc laufen (geprüft auf support.typora.io, 9. September 2026). Weil das Theme CSS ist, erbt der HTML-Export, welches Stylesheet auch immer aktiv ist, statt eines festen Hausdesigns.
 
 | Vorteile | Nachteile |
 | --- | --- |
@@ -148,7 +148,7 @@ Typora ist ein Desktop-Editor für macOS, Windows und Linux, der das Vorschaufen
 
 ### Obsidian — wenn Dokumente aufeinander verweisen
 
-Obsidian arbeitet über einen Ordner mit Markdown-Dateien auf Ihrer eigenen Platte, mit Links zwischen Notizen als Organisationsidee. Es ist kein Konverter und in erster Linie kein Editor für ein einzelnes Dokument; es ist eine Anwendung für eine Sammlung davon. Die eigene Website sagt, es „stores your notes locally as plain text Markdown files", bietet Builds für Windows, macOS, Linux, iOS und Android, und beschreibt „thousands of plugins" neben einer offenen API. Die Lizenzseite sagt, es könne kostenlos für jeden Zweck genutzt werden, einschließlich persönlicher, kommerzieller und gemeinnütziger Nutzung, mit optionalen kostenpflichtigen Lizenzen, die nicht erforderlich sind, und beschreibt die Anwendung nicht als Open Source (alles geprüft auf obsidian.md, 9. September 2026).
+Obsidian arbeitet über einen Ordner mit Markdown-Dateien auf Ihrer eigenen Platte, mit Links zwischen Notizen als Organisationsidee. Es ist kein Konverter und in erster Linie kein Editor für ein einzelnes Dokument; es ist eine Anwendung für eine Sammlung davon. Die eigene Website sagt, es „stores your notes locally as plain text Markdown files“, bietet Builds für Windows, macOS, Linux, iOS und Android, und beschreibt „thousands of plugins“ neben einer offenen API. Die Lizenzseite sagt, es könne kostenlos für jeden Zweck genutzt werden, einschließlich persönlicher, kommerzieller und gemeinnütziger Nutzung, mit optionalen kostenpflichtigen Lizenzen, die nicht erforderlich sind, und beschreibt die Anwendung nicht als Open Source (alles geprüft auf obsidian.md, 9. September 2026).
 
 | Vorteile | Nachteile |
 | --- | --- |
@@ -163,7 +163,7 @@ Obsidian arbeitet über einen Ordner mit Markdown-Dateien auf Ihrer eigenen Plat
 
 ### Zettlr — wenn das Dokument eine Bibliografie und ein Zielformat hat
 
-Zettlr ist eine Schreibanwendung für Windows, macOS und Linux, die Export als erstklassigen Schritt behandelt, angetrieben von Pandoc über ein Profilsystem: „you can export any paper with a template in just one click". Es integriert mit Literaturverwaltungen einschließlich Zotero und JabRef und arbeitet mit LaTeX- und Word-Vorlagen (alles geprüft auf zettlr.com, 9. September 2026). Es ist unter der GNU GPL v3 lizenziert (geprüft auf github.com/Zettlr/Zettlr, 9. September 2026).
+Zettlr ist eine Schreibanwendung für Windows, macOS und Linux, die Export als erstklassigen Schritt behandelt, angetrieben von Pandoc über ein Profilsystem: „you can export any paper with a template in just one click“. Es integriert mit Literaturverwaltungen einschließlich Zotero und JabRef und arbeitet mit LaTeX- und Word-Vorlagen (alles geprüft auf zettlr.com, 9. September 2026). Es ist unter der GNU GPL v3 lizenziert (geprüft auf github.com/Zettlr/Zettlr, 9. September 2026).
 
 | Vorteile | Nachteile |
 | --- | --- |
@@ -210,7 +210,7 @@ Die vierte Gruppe will kein Werkzeug mit einem Cursor darin mehr. Die Konvertier
 
 ### Pandoc — die allgemeine Antwort
 
-Pandoc ist ein Kommandozeilen-Dokumentkonverter, der eine große Zahl an Markup-Formaten liest und schreibt. Die eigene Website sagt: „Pandoc is free software, released under the GPL." (geprüft auf pandoc.org, 9. September 2026). Für diese Aufgabe sind die relevanten Flags im Handbuch dokumentiert: `--standalone` (`-s`) erzeugt „output with an appropriate header and footer (e.g. a standalone HTML, LaTeX, TEI, or RTF file, not a fragment)", und `--embed-resources` erzeugt „a standalone HTML file with no external dependencies, using `data:` URIs to incorporate the contents of linked scripts, stylesheets, images, and videos" (geprüft auf pandoc.org, 9. September 2026).
+Pandoc ist ein Kommandozeilen-Dokumentkonverter, der eine große Zahl an Markup-Formaten liest und schreibt. Die eigene Website sagt: „Pandoc is free software, released under the GPL.“ (geprüft auf pandoc.org, 9. September 2026). Für diese Aufgabe sind die relevanten Flags im Handbuch dokumentiert: `--standalone` (`-s`) erzeugt „output with an appropriate header and footer (e.g. a standalone HTML, LaTeX, TEI, or RTF file, not a fragment)“, und `--embed-resources` erzeugt „a standalone HTML file with no external dependencies, using `data:` URIs to incorporate the contents of linked scripts, stylesheets, images, and videos“ (geprüft auf pandoc.org, 9. September 2026).
 
 ```sh
 pandoc notes.md -s --embed-resources -o notes.html
@@ -248,11 +248,11 @@ Die andere Form dieser Antwort ist eine gehostete Konvertierung ohne Laufzeitumg
 
 ## Wo die naheliegende Antwort scheitert, und was der Wechsel kostet
 
-Hier ist der Teil, um den die Alternativlisten — und diese hier, bis eben — herumgetanzt sind. **Ein Editor und ein Konverter sind unterschiedliche Werkzeuge, und die meisten, die nach „Dillinger-Alternative" suchen, wollen das zweite.** Jemandem, der eine einzelne Datei in der Hand hält, einen weiteren Editor zu empfehlen, ist die selbstsicher gegebene falsche Antwort, und es ist die häufigste Antwort im Internet.
+Hier ist der Teil, um den die Alternativlisten — und diese hier, bis eben — herumgetanzt sind. **Ein Editor und ein Konverter sind unterschiedliche Werkzeuge, und die meisten, die nach „Dillinger-Alternative“ suchen, wollen das zweite.** Jemandem, der eine einzelne Datei in der Hand hält, einen weiteren Editor zu empfehlen, ist die selbstsicher gegebene falsche Antwort, und es ist die häufigste Antwort im Internet.
 
 Der Verräter ist, was Sie taten, als Sie sich geärgert haben. Haben Sie getippt, wollten Sie einen Editor, und Dillinger war nah dran: die Lösung ist StackEdit, oder eine Anwendung, oder gar nichts. Haben Sie eingefügt, wollten Sie einen Konverter, und jeder Editor auf jeder Liste ist ein Umweg mit einem Cursor darin. Ein fertiges Dokument in einen Editor einzufügen, um sein Export-Menü zu erreichen, ist ein Workaround dafür, nicht das richtige Werkzeug zu haben, und es ist als Workaround unsichtbar, weil es nur eine Minute dauert.
 
-Die Kosten des Wechsels sind es auch wert, genannt zu werden, denn „wechseln" ist nicht umsonst.
+Die Kosten des Wechsels sind es auch wert, genannt zu werden, denn „wechseln“ ist nicht umsonst.
 
 **Editoren zu wechseln ist eine Migration, kein Klick.** Dokumente in Dillingers Browser-Speicher sind in Dillingers Browser-Speicher. Sie sind nicht in einem Ordner, sie sind nicht in einem Repository, und kein anderes Werkzeug wird sie finden. Bevor Sie umziehen, öffnen Sie jedes einzeln und laden das Markdown herunter, denn sobald Sie sich irgendwo anders anmelden, ist ein geleerter Cache von den alten Entwürfen entfernt. Das ist keine Kritik an Dillinger — jedes Browser-Speicher-Werkzeug hat dieselbe Eigenschaft —, aber es ist der Schritt, den Leute überspringen.
 

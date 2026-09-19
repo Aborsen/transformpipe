@@ -16,7 +16,7 @@ Niemand nimmt sich vor, nicht vertrauenswürdiges Markdown darzustellen. Es komm
 
 Für eine Datei aus Ihrem eigenen Repository ist das korrektes Verhalten. Für einen Kommentar, ein Ticket oder die Ausgabe eines Sprachmodells ist es ein Loch: etwas muss zwischen den Parser und die Seite treten.
 
-Das Wort „bereinigen" verbirgt, wie viel Entscheidung darin steckt. Ein Bereiniger ist kein Filter, den man einschaltet. Er ist eine schriftlich festgehaltene Erklärung darüber, welche Tags und Attribute Ihr Produkt erlaubt, angewandt an genau einer Stelle der Pipeline, in einer Umgebung, deren HTML-Parser dem entspricht, den der Leser verwenden wird. Ist die Erklärung falsch, ist sie Dekoration; ist die Stelle falsch, ist sie schlimmer als Dekoration, denn dann sieht alles nach ihr sicher aus.
+Das Wort „bereinigen“ verbirgt, wie viel Entscheidung darin steckt. Ein Bereiniger ist kein Filter, den man einschaltet. Er ist eine schriftlich festgehaltene Erklärung darüber, welche Tags und Attribute Ihr Produkt erlaubt, angewandt an genau einer Stelle der Pipeline, in einer Umgebung, deren HTML-Parser dem entspricht, den der Leser verwenden wird. Ist die Erklärung falsch, ist sie Dekoration; ist die Stelle falsch, ist sie schlimmer als Dekoration, denn dann sieht alles nach ihr sicher aus.
 
 ## Rohes HTML in Markdown ist ein Merkmal, kein Versehen
 
@@ -64,7 +64,7 @@ Die Liste unten ist keine Liste exotischer Tricks. Sie ist die gewöhnliche Ober
 
 **Formular-Actions brauchen kein Skript, um zu stehlen.** Ein eingeschleustes `<form action="https://elsewhere.invalid">`, das um einen Teil Ihrer Seite gewickelt ist, macht den nächsten Klick des Lesers zu einer Übermittlung an einen anderen Ort, und ein `<input type="image" formaction="...">` überschreibt die Action eines Formulars, das Sie geschrieben haben. Nichts wird ausgeführt; der Browser tut genau, was das Markup sagt. Deshalb verdienen `form` und `input` Aufmerksamkeit, auch wenn Sie `<input type="checkbox" disabled>` für GFM-Aufgabenlisten erlauben — erlauben Sie die eine Attributkombination, die Sie brauchen, und nichts weiter.
 
-**CSS ist eine Fähigkeit, keine Verzierung.** Die `expression()`-Syntax, die `style` einst direkt ausführbar machte, ist längst aus aktuellen Browsern verschwunden, und sie ist immer noch der Grund für den Ruf, den CSS hier hat. Die lebenden Probleme sind leiser. `position: fixed` mit einem hohen `z-index` legt das Element eines Angreifers über Ihre Oberfläche, ein Klick auf „Abbrechen" landet also auf etwas anderem. `opacity: 0` versteckt Text, der weiterhin markierbar ist. Ein `url()` in einem Hintergrund erreicht einen Dritten in dem Moment, in dem das Element dargestellt wird, was ein Signalgeber ist, der jemandem mitteilt, wann Ihr Dokument gelesen wurde. Nichts davon führt ein Skript aus und alles davon ist ein Problem, weshalb die Standardantwort für `<style>` und `style` nein lautet.
+**CSS ist eine Fähigkeit, keine Verzierung.** Die `expression()`-Syntax, die `style` einst direkt ausführbar machte, ist längst aus aktuellen Browsern verschwunden, und sie ist immer noch der Grund für den Ruf, den CSS hier hat. Die lebenden Probleme sind leiser. `position: fixed` mit einem hohen `z-index` legt das Element eines Angreifers über Ihre Oberfläche, ein Klick auf „Abbrechen“ landet also auf etwas anderem. `opacity: 0` versteckt Text, der weiterhin markierbar ist. Ein `url()` in einem Hintergrund erreicht einen Dritten in dem Moment, in dem das Element dargestellt wird, was ein Signalgeber ist, der jemandem mitteilt, wann Ihr Dokument gelesen wurde. Nichts davon führt ein Skript aus und alles davon ist ein Problem, weshalb die Standardantwort für `<style>` und `style` nein lautet.
 
 ## DOM-Clobbering: eine ID, die eine Eigenschaft überdeckt
 
@@ -72,7 +72,7 @@ Jedes Element mit einer `id` wird unter diesem Namen zu einer Eigenschaft von `w
 
 Bereiniger decken davon weniger ab, als ihr Ruf vermuten lässt. DOMPurifys standardmäßige Prüfung auf DOM-Clobbering verwirft eine `id` oder `name` nur dann, wenn der Wert bereits eine Eigenschaft eines `Document` oder eines `HTMLFormElement` ist: `id="title"`, `id="body"`, `id="cookie"` und `id="action"` gehen, `id="config"` bleibt. `config` ist ein Name, den Ihr eigener Code erfunden hat, und kein Bereiniger sieht sich Ihre Globals an. Vollständigere Abdeckung bietet `SANITIZE_NAMED_PROPS`, standardmäßig aus, das jeder `id` und jedem `name`, die es behält, das Präfix `user-content-` voranstellt.
 
-Dieses Präfix ist die eigentliche Verteidigung — eine ID, die nicht kollidieren kann, kann nichts überdecken — und es muss sowohl die IDs abdecken, die im Dokument ankommen, als auch die, die Ihr Renderer aus Überschriften erzeugt, denn eine Überschrift namens „Config" erzeugt `id="config"` ohne jeden beteiligten Angreifer. Diese Website bereinigt mit DOMPurify im Browser und mit dem `xss`-Paket auf dem Server gegen eine gemeinsame Positivliste und stellt jeder Überschriften-ID das Präfix `doc-` voran: dieselbe Verteidigung, von Hand angewandt. Wenn Sie Anker für ein Inhaltsverzeichnis erzeugen, ist das der Schritt, den Sie heute hinzufügen sollten, vor allem anderen auf dieser Seite.
+Dieses Präfix ist die eigentliche Verteidigung — eine ID, die nicht kollidieren kann, kann nichts überdecken — und es muss sowohl die IDs abdecken, die im Dokument ankommen, als auch die, die Ihr Renderer aus Überschriften erzeugt, denn eine Überschrift namens „Config“ erzeugt `id="config"` ohne jeden beteiligten Angreifer. Diese Website bereinigt mit DOMPurify im Browser und mit dem `xss`-Paket auf dem Server gegen eine gemeinsame Positivliste und stellt jeder Überschriften-ID das Präfix `doc-` voran: dieselbe Verteidigung, von Hand angewandt. Wenn Sie Anker für ein Inhaltsverzeichnis erzeugen, ist das der Schritt, den Sie heute hinzufügen sollten, vor allem anderen auf dieser Seite.
 
 ## Positivlisten schlagen Sperrlisten
 
@@ -101,7 +101,7 @@ const clean = DOMPurify.sanitize(marked.parse(userMarkdown), {
 });
 ```
 
-„Und dann aufhören, es anzufassen" ist die Hälfte, die Leute überspringen. Ein Syntax-Highlighter, der Tokens in Spans wickelt, eine Vorlage, die die Zeichenkette in einen Rahmen interpoliert, ein regulärer Ausdruck, der Anker umschreibt, um `target="_blank"` hinzuzufügen, ein Schritt, der Überschriften-Anker für ein Inhaltsverzeichnis einfügt: jedes davon läuft nach dem Bereiniger und sitzt außerhalb seiner Garantie. Wenn eine Transformation stattfinden muss, führen Sie sie entweder vor dem Bereiniger aus, damit ihre Ausgabe mitgeprüft wird, oder führen Sie sie nach dem Einfügen am DOM aus, mit `textContent` und `setAttribute` statt durch Bearbeiten einer Zeichenkette.
+„Und dann aufhören, es anzufassen“ ist die Hälfte, die Leute überspringen. Ein Syntax-Highlighter, der Tokens in Spans wickelt, eine Vorlage, die die Zeichenkette in einen Rahmen interpoliert, ein regulärer Ausdruck, der Anker umschreibt, um `target="_blank"` hinzuzufügen, ein Schritt, der Überschriften-Anker für ein Inhaltsverzeichnis einfügt: jedes davon läuft nach dem Bereiniger und sitzt außerhalb seiner Garantie. Wenn eine Transformation stattfinden muss, führen Sie sie entweder vor dem Bereiniger aus, damit ihre Ausgabe mitgeprüft wird, oder führen Sie sie nach dem Einfügen am DOM aus, mit `textContent` und `setAttribute` statt durch Bearbeiten einer Zeichenkette.
 
 Noch eine Regel zur Stelle: speichern Sie das *originale* Markdown, nicht das bereinigte HTML. Auf dem Weg herein zu bereinigen und dem Speicher danach zu vertrauen friert Ihre Positivliste auf das Datum des Schreibvorgangs ein, an dem Tag, an dem Sie sie verschärfen, bleibt also jedes alte Dokument, wie es war.
 
@@ -198,7 +198,7 @@ DOMPurify läuft auch in Node gegen ein jsdom-Window. Der Grund, das zu tun, ist
 - Die Positivliste aus einem gemeinsamen Modul importieren, damit sie nicht nur auf einer Seite bearbeitet werden kann
 - In Tests zusichern, dass in der ausgelieferten Konfiguration ein `<script>`-Tag entfernt wird
 
-**Wer sollte es verwenden?** Node-Dienste, die Markdown bereits clientseitig darstellen und eine Definition von „sicher" wollen statt zwei.
+**Wer sollte es verwenden?** Node-Dienste, die Markdown bereits clientseitig darstellen und eine Definition von „sicher“ wollen statt zwei.
 
 ### sanitize-html — ein Node-Bereiniger mit eigenem Parser
 
@@ -286,7 +286,7 @@ Bleach war jahrelang der Standard-HTML-Bereiniger für Python, und viel bestehen
 
 **Preis:** kostenlos, Apache 2.0-lizenziert.
 
-**Wer sollte es verwenden?** Niemand, für neue Arbeit. Wenn es in Ihrer requirements-Datei steht, ist das ein Migrationsticket und keine Fußnote — das ist eine Fehlerklasse, in der „aktuell halten" der größte Teil der Verteidigung ist.
+**Wer sollte es verwenden?** Niemand, für neue Arbeit. Wenn es in Ihrer requirements-Datei steht, ist das ein Migrationsticket und keine Fußnote — das ist eine Fehlerklasse, in der „aktuell halten“ der größte Teil der Verteidigung ist.
 
 ### bluemonday — die Go-Antwort
 
@@ -411,7 +411,7 @@ TransformPipe konvertiert Markdown in Ihrem Browser in ein vollständiges, eigen
 
 ## Wo die naheliegende Wahl scheitert
 
-DOMPurify ist die richtige Voreinstellung, und der ehrliche Abschnitt handelt von seinen Grenzen, denn „wir verwenden DOMPurify" ist die Stelle, an der viele Sicherheitsprüfungen aufhören.
+DOMPurify ist die richtige Voreinstellung, und der ehrliche Abschnitt handelt von seinen Grenzen, denn „wir verwenden DOMPurify“ ist die Stelle, an der viele Sicherheitsprüfungen aufhören.
 
 **Es braucht ein DOM, und ein gefälschtes scheitert offen.** Auf einem Server liefern Sie entweder jsdom aus oder verwenden eine andere Bibliothek. Bekommt DOMPurify eine Umgebung, in der es nicht arbeiten kann, gibt es seine Eingabe unverändert zurück, statt einen Fehler zu werfen, was der schlechteste verfügbare Fehlerfall ist: eine defekte und eine funktionierende Konfiguration erzeugen für jedes Dokument ohne HTML identische Ausgabe. Der Preis dafür, das nicht zu testen, ist ein Dienst, der nie etwas bereinigt hat und keine Möglichkeit hat, es zu erfahren.
 
@@ -421,7 +421,7 @@ DOMPurify ist die richtige Voreinstellung, und der ehrliche Abschnitt handelt vo
 
 **Sauber ist nicht dasselbe wie harmlos.** Eine Positivliste, die `<a href="https://...">` und `<img src="https://...">` erlaubt, erlaubt eine Seite, die genau wie Ihr Login-Bildschirm aussieht, und ein Bild, dessen Laden einem Dritten mitteilt, wann ein Dokument geöffnet wurde. Keines von beiden führt ein Skript aus und keines von beiden ist ein XSS-Fehler. Wenn Ihr Bedrohungsmodell Phishing oder Lesebestätigungen enthält, ist der Bereiniger nicht die Kontrolle, die Sie brauchen — `img-src` in einer CSP kommt näher, und eine Zwischenseite bei ausgehenden Links noch näher.
 
-**Alles danach erbt das Risiko und nichts von der Garantie.** Der Highlighter, der Anker-Injektor, die umhüllende Vorlage, der reguläre Ausdruck „einfach `target=_blank` hinzufügen": jedes davon ist eine Stelle, an der bereinigtes HTML zu unbereinigtem HTML wird, ohne sichtbare Änderung an dem Code, der den Bereiniger aufruft. Das ist der häufigste Weg, auf dem ein korrekter Bereiniger in einem Vorfallbericht landet.
+**Alles danach erbt das Risiko und nichts von der Garantie.** Der Highlighter, der Anker-Injektor, die umhüllende Vorlage, der reguläre Ausdruck „einfach `target=_blank` hinzufügen“: jedes davon ist eine Stelle, an der bereinigtes HTML zu unbereinigtem HTML wird, ohne sichtbare Änderung an dem Code, der den Bereiniger aufruft. Das ist der häufigste Weg, auf dem ein korrekter Bereiniger in einem Vorfallbericht landet.
 
 **Der Server kann keinen Header auf eine Datei setzen.** Eine CSP ist eine Eigenschaft einer Antwort, und eine heruntergeladene `.html`-Datei ist keine Antwort. Von der Festplatte geöffnet hat sie keine Header, die einzige Policy, die sie tragen kann, ist also ein `<meta http-equiv>`-Tag — das für `script-src` und `img-src` funktioniert und für `frame-ancestors` und `sandbox` ignoriert wird. Daher das Argument für einen Export, in dem überhaupt keine Skripte stehen: ein Dokument ohne Ausführbares ist selbst auf `file://` sicher, wo ein Header es nicht erreichen kann.
 
@@ -431,7 +431,7 @@ Das meiste Geschriebene über Markdown-XSS setzt eine Webanwendung voraus: Ihre 
 
 Wenn Sie nicht vertrauenswürdiges Markdown in Ihrer Anwendung darstellen, schützen Sie Ihre Nutzer vor einem Dokument. Wenn Sie eine Markdown-Datei konvertieren und das HTML an einen Kollegen schicken, schützen Sie *ihn* vor einem Dokument — einem, das mit Ihrem Namen darauf ankommt, von einer Adresse, der er vertraut, vorbei an dem, was seine Organisation auch mit Anhängen von Fremden macht. Ein `<script>`, das Ihre Konvertierung überlebt, ist gewaschen worden.
 
-Daraus folgen drei Dinge. Bereinigen Sie bei der Konvertierung, auch wenn die Datei „nur ein Dokument" ist, denn der Browser des Empfängers wird das, was Sie schicken, genauso bereitwillig ausführen wie Ihrer. Bevorzugen Sie einen Export ohne jegliche Skripte gegenüber einem mit sicheren Skripten, denn weder der Empfänger noch sein Mail-Gateway kann den Unterschied prüfen. Und halten Sie die Datei eigenständig, was genauso eine Sicherheitseigenschaft ist wie eine Bequemlichkeit: ein Dokument, das nichts aus dem Netz anfordert, kann nicht zurückmelden, wann es gelesen wurde, und kann sich nicht ändern, nachdem Sie es geschickt haben.
+Daraus folgen drei Dinge. Bereinigen Sie bei der Konvertierung, auch wenn die Datei „nur ein Dokument“ ist, denn der Browser des Empfängers wird das, was Sie schicken, genauso bereitwillig ausführen wie Ihrer. Bevorzugen Sie einen Export ohne jegliche Skripte gegenüber einem mit sicheren Skripten, denn weder der Empfänger noch sein Mail-Gateway kann den Unterschied prüfen. Und halten Sie die Datei eigenständig, was genauso eine Sicherheitseigenschaft ist wie eine Bequemlichkeit: ein Dokument, das nichts aus dem Netz anfordert, kann nicht zurückmelden, wann es gelesen wurde, und kann sich nicht ändern, nachdem Sie es geschickt haben.
 
 Testen Sie dann Ihre eigene Pipeline mit drei Eingaben: einem `onerror`-Attribut, einem `javascript:`-Link und einer `id`, die zu einem Global passt, das Ihr Code liest. Wenn eines der ersten beiden die Seite erreicht, haben Sie einen Bereiniger hinzuzufügen und wahrscheinlich einen Header zu setzen. Das dritte wird sie erreichen, und das ist der Punkt — prüfen Sie, dass es unter einem Präfix ankommt und nicht unter dem Namen, den Ihr Code liest. Wenn Sie einen Konverter auswählen, statt einen zu bauen, ist [was jedes Werkzeug in der Bereinigungsstufe tut](/blog/best-markdown-to-html-converters) die Spalte, die zählt, und mehrere gut beleumundete Werkzeuge lassen rohes HTML absichtlich durch.
 

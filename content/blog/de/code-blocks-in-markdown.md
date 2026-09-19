@@ -29,12 +29,12 @@ Eingerückte Blöcke funktionieren weiterhin, aber sie haben keinen Platz für e
 
 Vier Regeln bestimmen den Zaun selbst, alle vier aus der Spezifikation (geprüft auf spec.commonmark.org, 9. September 2026), und jede einzelne davon ein Fehlschlag, den irgendwer als Konverter-Fehler gemeldet hat:
 
-- **Der schließende Zaun muss mindestens so lang sein wie der öffnende.** Die Spezifikation ist deutlich: „Der schließende Code-Zaun muss mindestens so lang sein wie der öffnende Zaun." Öffnen Sie mit vier Backticks und schließen mit drei, dann endet der Block nie.
-- **Der schließende Zaun darf keinen Info-String tragen.** „Schließende Code-Zäune können keine Info-Strings haben." Ein Wort nach den schließenden Backticks macht diese Zeile zu Inhalt statt zu einem Zaun.
-- **Der öffnende Zaun darf bis zu drei Leerzeichen eingerückt sein, und diese Einrückung wird entfernt.** „Ist der öffnende Zaun eingerückt, wird bei den Inhaltszeilen die entsprechende Einrückung am Anfang entfernt, sofern vorhanden." Vier Leerzeichen sind kein eingerückter Zaun: Sie sind ein eingerückter Codeblock, der zufällig Backticks enthält.
+- **Der schließende Zaun muss mindestens so lang sein wie der öffnende.** Die Spezifikation ist deutlich: „Der schließende Code-Zaun muss mindestens so lang sein wie der öffnende Zaun.“ Öffnen Sie mit vier Backticks und schließen mit drei, dann endet der Block nie.
+- **Der schließende Zaun darf keinen Info-String tragen.** „Schließende Code-Zäune können keine Info-Strings haben.“ Ein Wort nach den schließenden Backticks macht diese Zeile zu Inhalt statt zu einem Zaun.
+- **Der öffnende Zaun darf bis zu drei Leerzeichen eingerückt sein, und diese Einrückung wird entfernt.** „Ist der öffnende Zaun eingerückt, wird bei den Inhaltszeilen die entsprechende Einrückung am Anfang entfernt, sofern vorhanden.“ Vier Leerzeichen sind kein eingerückter Zaun: Sie sind ein eingerückter Codeblock, der zufällig Backticks enthält.
 - **Ein nicht geschlossener Zaun läuft bis zum Ende seines Behälters.** Vergessen Sie den schließenden Zaun, und der Rest des Dokuments ist Code. Das ist der Fall, der eine ganze Seite unterhalb der Mitte grau werden lässt.
 
-Backtick-Zäune und Tilden-Zäune unterscheiden sich in einer nützlichen Hinsicht. „Info-Strings für Backtick-Codeblöcke können keine Backticks enthalten", während „Info-Strings für Tilden-Codeblöcke Backticks und Tilden enthalten können" (geprüft auf spec.commonmark.org, 9. September 2026). Deshalb ist jedes Beispiel in diesem Artikel, das selbst einen Zaun enthält, in Tilden eingepackt.
+Backtick-Zäune und Tilden-Zäune unterscheiden sich in einer nützlichen Hinsicht. „Info-Strings für Backtick-Codeblöcke können keine Backticks enthalten“, während „Info-Strings für Tilden-Codeblöcke Backticks und Tilden enthalten können“ (geprüft auf spec.commonmark.org, 9. September 2026). Deshalb ist jedes Beispiel in diesem Artikel, das selbst einen Zaun enthält, in Tilden eingepackt.
 
 ### Inline-Code, und wie man einen Backtick druckt
 
@@ -119,7 +119,7 @@ Das Wort nach dem öffnenden Zaun ist der Info-String. Ein Konverter tut damit g
 </code></pre>
 ```
 
-Das ist das ganze Merkmal, und es ist eine Konvention, keine Vorschrift: „Das erste Wort des Info-Strings wird typischerweise verwendet, um die Sprache des Codeblocks anzugeben. In HTML-Ausgabe wird die Sprache normalerweise dadurch angezeigt, dass dem `code`-Element eine Klasse hinzugefügt wird, die aus `language-` gefolgt vom Sprachnamen besteht" (geprüft auf spec.commonmark.org, 9. September 2026). Nichts parst Ihr JavaScript, und nichts prüft, ob das Wort eine echte Sprache ist — schreiben Sie `jvascript`, und Sie bekommen `class="language-jvascript"`, was kein Highlighter erkennt, der Block wird also ohne Farbe dargestellt.
+Das ist das ganze Merkmal, und es ist eine Konvention, keine Vorschrift: „Das erste Wort des Info-Strings wird typischerweise verwendet, um die Sprache des Codeblocks anzugeben. In HTML-Ausgabe wird die Sprache normalerweise dadurch angezeigt, dass dem `code`-Element eine Klasse hinzugefügt wird, die aus `language-` gefolgt vom Sprachnamen besteht“ (geprüft auf spec.commonmark.org, 9. September 2026). Nichts parst Ihr JavaScript, und nichts prüft, ob das Wort eine echte Sprache ist — schreiben Sie `jvascript`, und Sie bekommen `class="language-jvascript"`, was kein Highlighter erkennt, der Block wird also ohne Farbe dargestellt.
 
 | Was Sie schreiben | Was der Konverter ausgibt |
 | --- | --- |
@@ -160,14 +160,14 @@ Die praktische Regel ist, den vollen Namen statt des kurzen zu schreiben — `ja
 | --- | --- |
 | highlight.js | Lässt den Block ohne Hervorhebung. `plaintext` gestaltet ihn ohne Hervorhebung, `nohighlight` überspringt ihn ganz (geprüft auf github.com/highlightjs/highlight.js, 9. September 2026) |
 | Prism | Keine Grammatik heißt keine Token, der Block kommt also ohne Farbe heraus |
-| Shiki | Wirft einen Fehler. Seit v1.0 „erfordert es, dass alle Themes und Sprachen ausdrücklich geladen werden" (geprüft auf shiki.style, 9. September 2026) |
+| Shiki | Wirft einen Fehler. Seit v1.0 „erfordert es, dass alle Themes und Sprachen ausdrücklich geladen werden“ (geprüft auf shiki.style, 9. September 2026) |
 | Pygments, Chroma, Rouge | Hängt davon ab, wie der Generator sie aufruft: ein Build-Fehler oder ein stiller Rückfall auf einfachen Text |
 
 Dieser Unterschied wiegt schwerer, als er klingt. Ein Browser-Highlighter scheitert stillschweigend, ein Tippfehler in einem Zaun von zweihundert ist also unsichtbar, bis ein Leser ihn erwähnt. Ein Highlighter zur Build-Zeit, der einen Fehler wirft, sagt es Ihnen in dem Moment, in dem Sie den Tippfehler einführen, und das ist das Verhalten, das Sie auf einer Dokumentationsseite mit hunderten Blöcken wollen.
 
 ### Maskierung, und warum in der Ausgabe `&lt;` steht
 
-Der Inhalt eines Zauns wird „als wörtlicher Text behandelt, nicht als Inline-Elemente geparst" (geprüft auf spec.commonmark.org, 9. September 2026). Um das in HTML einzuhalten, muss ein Konverter mindestens `<` als `&lt;` und `&` als `&amp;` maskieren, bevor der Code die Seite erreicht; die meisten maskieren auch `>` als `&gt;` und `"` als `&quot;`, was in Textinhalt unnötig und harmlos ist. Ohne diesen Schritt würde ein Block, der ein `<script>`-Tag zeigt, aufhören, ein Skript zu zeigen, und anfangen, eines zu sein.
+Der Inhalt eines Zauns wird „als wörtlicher Text behandelt, nicht als Inline-Elemente geparst“ (geprüft auf spec.commonmark.org, 9. September 2026). Um das in HTML einzuhalten, muss ein Konverter mindestens `<` als `&lt;` und `&` als `&amp;` maskieren, bevor der Code die Seite erreicht; die meisten maskieren auch `>` als `&gt;` und `"` als `&quot;`, was in Textinhalt unnötig und harmlos ist. Ohne diesen Schritt würde ein Block, der ein `<script>`-Tag zeigt, aufhören, ein Skript zu zeigen, und anfangen, eines zu sein.
 
 Der Zaun ist also mit Absicht eine Grenze, und nur deshalb, weil der Konverter diese Arbeit tut. Rohes HTML *außerhalb* eines Zauns ist eine völlig andere Angelegenheit, und [ob Ihr Konverter es bereinigt](/blog/sanitising-markdown-safely) ist eine Frage, die Sie klären sollten, bevor Sie eine Datei konvertieren, die Sie nicht selbst geschrieben haben.
 
@@ -199,7 +199,7 @@ Jede Lizenz und jede Größe in dieser Tabelle wurde am 9. September 2026 gegen 
 
 ### Shiki — Farben eingebacken, kein Skript ausgeliefert
 
-Shiki ist „ein schöner und zugleich mächtiger Syntax-Highlighter", der „von TextMate-Grammatiken angetrieben wird, derselben Engine wie Ihr VS Code", und seine Kerneigenschaft ist „Zero Runtime": Es „läuft im Voraus, liefert null JavaScript aus und bekommt dabei die perfekte Syntaxhervorhebung" (geprüft auf shiki.style, 9. September 2026). Weil es dieselben Grammatiken verwendet wie ein Editor, sieht ein von Shiki eingefärbter Block aus wie dieselbe Datei offen in VS Code, was in Dokumentation über Code ein echter Vorteil ist.
+Shiki ist „ein schöner und zugleich mächtiger Syntax-Highlighter“, der „von TextMate-Grammatiken angetrieben wird, derselben Engine wie Ihr VS Code“, und seine Kerneigenschaft ist „Zero Runtime“: Es „läuft im Voraus, liefert null JavaScript aus und bekommt dabei die perfekte Syntaxhervorhebung“ (geprüft auf shiki.style, 9. September 2026). Weil es dieselben Grammatiken verwendet wie ein Editor, sieht ein von Shiki eingefärbter Block aus wie dieselbe Datei offen in VS Code, was in Dokumentation über Code ein echter Vorteil ist.
 
 - Die Ausgabe trägt Farbe in Inline-`style`-Attributen statt in Klassennamen, es wird also gar kein Stylesheet gebraucht.
 - Doppelte Themes funktionieren über CSS-Variablen: Ein Token kommt als
@@ -213,10 +213,10 @@ Shiki ist „ein schöner und zugleich mächtiger Syntax-Highlighter", der „vo
 
 ### Pygments — das, von dem alles andere abgeschrieben hat
 
-Pygments ist „ein allgemeiner Syntax-Highlighter, geeignet für den Einsatz in Code-Hosting, Foren, Wikis oder anderen Anwendungen, die Quellcode verschönern müssen", unterstützt „eine große Bandbreite von 602 Sprachen und anderen Textformaten" und schreibt „HTML, RTF, LaTeX und ANSI-Sequenzen" (geprüft auf pygments.org, 9. September 2026). Es ist Python-Bibliothek und Kommandozeilenwerkzeug in einem, und es liegt unter einer Menge Dokumentationswerkzeug — Material for MkDocs hebt damit zur Build-Zeit hervor, sofern Sie das nicht zugunsten eines Browser-Highlighters abschalten (geprüft auf squidfunk.github.io, 9. September 2026).
+Pygments ist „ein allgemeiner Syntax-Highlighter, geeignet für den Einsatz in Code-Hosting, Foren, Wikis oder anderen Anwendungen, die Quellcode verschönern müssen“, unterstützt „eine große Bandbreite von 602 Sprachen und anderen Textformaten“ und schreibt „HTML, RTF, LaTeX und ANSI-Sequenzen“ (geprüft auf pygments.org, 9. September 2026). Es ist Python-Bibliothek und Kommandozeilenwerkzeug in einem, und es liegt unter einer Menge Dokumentationswerkzeug — Material for MkDocs hebt damit zur Build-Zeit hervor, sofern Sie das nicht zugunsten eines Browser-Highlighters abschalten (geprüft auf squidfunk.github.io, 9. September 2026).
 
 - Der HTML-Formatter gibt standardmäßig CSS-Klassen aus, und `get_style_defs()` liefert das passende Stylesheet.
-- `noclasses` bettet die Stile stattdessen ein, was die Dokumentation als „nicht empfohlen für größere Codestücke, da es die Ausgabegröße merklich vergrößert" bezeichnet (geprüft auf pygments.org, 9. September 2026).
+- `noclasses` bettet die Stile stattdessen ein, was die Dokumentation als „nicht empfohlen für größere Codestücke, da es die Ausgabegröße merklich vergrößert“ bezeichnet (geprüft auf pygments.org, 9. September 2026).
 - `linenos` stellt Zeilennummern dar, entweder innerhalb des `<pre>` oder als zweizellige Tabelle.
 - `hl_lines` nimmt eine Liste von Zeilen, die betont werden sollen, gezählt ab dem Anfang der Eingabe.
 
@@ -226,10 +226,10 @@ Pygments ist „ein allgemeiner Syntax-Highlighter, geeignet für den Einsatz in
 
 ### Chroma — Pygments, in Go, in Hugo
 
-Chroma ist „ein Allzweck-Syntax-Highlighter in reinem Go", der „Quellcode und anderen strukturierten Text in syntaxhervorgehobenes HTML, ANSI-gefärbten Text usw. umwandelt". Zur eigenen Abstammung ist es deutlich: „Chroma beruht stark auf Pygments und enthält Übersetzer für Pygments-Lexer und -Stile" (geprüft auf github.com/alecthomas/chroma, 9. September 2026), was heißt, dass Pygments-Stylesheets meist unverändert funktionieren.
+Chroma ist „ein Allzweck-Syntax-Highlighter in reinem Go“, der „Quellcode und anderen strukturierten Text in syntaxhervorgehobenes HTML, ANSI-gefärbten Text usw. umwandelt“. Zur eigenen Abstammung ist es deutlich: „Chroma beruht stark auf Pygments und enthält Übersetzer für Pygments-Lexer und -Stile“ (geprüft auf github.com/alecthomas/chroma, 9. September 2026), was heißt, dass Pygments-Stylesheets meist unverändert funktionieren.
 
 - Der HTML-Formatter kann über `WithClasses()` Klassen ausgeben oder stattdessen Inline-Style-Attribute.
-- Terminal-Ausgabe kommt „in 8 Farben, 256 Farben und True Color" (geprüft auf github.com/alecthomas/chroma, 9. September 2026).
+- Terminal-Ausgabe kommt „in 8 Farben, 256 Farben und True Color“ (geprüft auf github.com/alecthomas/chroma, 9. September 2026).
 - Eine Kommandozeilenschnittstelle wird mitgeliefert, und `chroma --list` gibt die maßgebliche Lexer-Liste aus.
 - Hugo hebt eingezäunte Blöcke damit zur Build-Zeit hervor, in seiner Standardkonfiguration (geprüft auf gohugo.io, 9. September 2026).
 
@@ -239,7 +239,7 @@ Chroma ist „ein Allzweck-Syntax-Highlighter in reinem Go", der „Quellcode un
 
 ### Rouge — die Voreinstellung von Jekyll
 
-Rouge ist „ein Syntax-Highlighter in reinem Ruby", der „über 200 verschiedene Sprachen hervorheben und HTML oder ANSI-256-Farb-Text ausgeben kann". Zwei Tatsachen darüber zählen. „Seine HTML-Ausgabe ist mit Stylesheets kompatibel, die für Pygments entworfen wurden", Themes sind also zwischen beiden portabel, und „Rouge ist Jekylls voreingestellter Syntax-Highlighter" (geprüft auf github.com/rouge-ruby/rouge, 9. September 2026).
+Rouge ist „ein Syntax-Highlighter in reinem Ruby“, der „über 200 verschiedene Sprachen hervorheben und HTML oder ANSI-256-Farb-Text ausgeben kann“. Zwei Tatsachen darüber zählen. „Seine HTML-Ausgabe ist mit Stylesheets kompatibel, die für Pygments entworfen wurden“, Themes sind also zwischen beiden portabel, und „Rouge ist Jekylls voreingestellter Syntax-Highlighter“ (geprüft auf github.com/rouge-ruby/rouge, 9. September 2026).
 
 **Preis:** kostenlos, MIT-lizenziert.
 
@@ -247,12 +247,12 @@ Rouge ist „ein Syntax-Highlighter in reinem Ruby", der „über 200 verschiede
 
 ### highlight.js — die Browser-Voreinstellung, mit Erkennung
 
-highlight.js beschreibt sich als „des Internets liebster JavaScript-Syntax-Highlighter mit Unterstützung für Node.js und das Web" und beansprucht „193 Sprachen und 516 Themes" sowie „null Abhängigkeiten" (geprüft auf highlightjs.org, 9. September 2026). Sein unterscheidendes Merkmal ist die automatische Spracherkennung: Es wird „Code innerhalb von `<pre><code>`-Tags finden und hervorheben; es versucht, die Sprache automatisch zu erkennen" (geprüft auf highlightjs.org, 9. September 2026).
+highlight.js beschreibt sich als „des Internets liebster JavaScript-Syntax-Highlighter mit Unterstützung für Node.js und das Web“ und beansprucht „193 Sprachen und 516 Themes“ sowie „null Abhängigkeiten“ (geprüft auf highlightjs.org, 9. September 2026). Sein unterscheidendes Merkmal ist die automatische Spracherkennung: Es wird „Code innerhalb von `<pre><code>`-Tags finden und hervorheben; es versucht, die Sprache automatisch zu erkennen“ (geprüft auf highlightjs.org, 9. September 2026).
 
 - Läuft im Browser des Lesers oder in Node; der Browser-Build wird normalerweise von einem CDN geladen.
 - Liest `class="language-html"`, wenn Sie die Erkennung übersteuern wollen.
 - `plaintext` gestaltet einen Block, ohne ihn hervorzuheben, und `nohighlight` überspringt ihn (geprüft auf github.com/highlightjs/highlight.js, 9. September 2026).
-- Seine eigene Dokumentation vermerkt, dass „das Importieren aller unserer Sprachen die Größe Ihres Bundles vergrößert" (geprüft auf highlightjs.org, 9. September 2026), eine echte Auslieferung lädt also eine Teilmenge.
+- Seine eigene Dokumentation vermerkt, dass „das Importieren aller unserer Sprachen die Größe Ihres Bundles vergrößert“ (geprüft auf highlightjs.org, 9. September 2026), eine echte Auslieferung lädt also eine Teilmenge.
 
 **Preis:** kostenlos, BSD-lizenziert mit drei Klauseln.
 
@@ -260,12 +260,12 @@ highlight.js beschreibt sich als „des Internets liebster JavaScript-Syntax-Hig
 
 ### Prism — ein kleiner Kern, alles andere ein Plugin
 
-Prism ist „ein leichtgewichtiger, erweiterbarer Syntax-Highlighter, gebaut mit modernen Web-Standards im Sinn". Seine Größenangabe ist ungewöhnlich genau: „Der Kern ist 2 KB minifiziert und gzip-komprimiert. Sprachen fügen je 0,3–0,5 KB hinzu, Themes liegen bei rund 1 KB" (geprüft auf prismjs.com, 9. September 2026). Es liest `language-xxxx` und „unterstützt außerdem eine kürzere Fassung: `lang-xxxx`".
+Prism ist „ein leichtgewichtiger, erweiterbarer Syntax-Highlighter, gebaut mit modernen Web-Standards im Sinn“. Seine Größenangabe ist ungewöhnlich genau: „Der Kern ist 2 KB minifiziert und gzip-komprimiert. Sprachen fügen je 0,3–0,5 KB hinzu, Themes liegen bei rund 1 KB“ (geprüft auf prismjs.com, 9. September 2026). Es liest `language-xxxx` und „unterstützt außerdem eine kürzere Fassung: `lang-xxxx`“.
 
 - Keine automatische Erkennung: Ein unbeschrifteter Block bleibt ohne Farbe.
 - Plugins decken Zeilennummern, Zeilenhervorhebung, das Anzeigen der Sprache und Kopieren in die Zwischenablage ab, jedes mit eigenem Skript und Stylesheet.
 - Das Line-Highlight-Plugin wird aus dem HTML statt aus dem Zaun konfiguriert: `data-line` am `<pre>`, das einzelne Nummern, Bereiche mit Bindestrich und kommagetrennte Kombinationen annimmt (geprüft auf prismjs.com, 9. September 2026).
-- Läuft im Browser und „kann ebenso mit Node.js verwendet werden", falls Sie lieber vorab darstellen (geprüft auf prismjs.com, 9. September 2026).
+- Läuft im Browser und „kann ebenso mit Node.js verwendet werden“, falls Sie lieber vorab darstellen (geprüft auf prismjs.com, 9. September 2026).
 
 **Preis:** kostenlos, MIT-lizenziert.
 
@@ -279,7 +279,7 @@ Das ist der Tausch, den eine portable Datei macht. TransformPipe konvertiert ein
 
 ## Der Rest des Info-Strings gehört dem Werkzeug
 
-Markdown legt das erste Wort des Info-Strings fest und sagt über den Rest überhaupt nichts. Jede Konvention, die Sie gesehen haben — `{1,3-4}`, `title="app.js"`, `showLineNumbers`, `linenums="1"` —, wurde von einem einzigen Werkzeug erfunden, und kein anderes Werkzeug ist verpflichtet, sie zu verstehen. Das ist die mit Abstand größte Quelle von Meldungen der Art „auf GitHub wird es anders dargestellt".
+Markdown legt das erste Wort des Info-Strings fest und sagt über den Rest überhaupt nichts. Jede Konvention, die Sie gesehen haben — `{1,3-4}`, `title="app.js"`, `showLineNumbers`, `linenums="1"` —, wurde von einem einzigen Werkzeug erfunden, und kein anderes Werkzeug ist verpflichtet, sie zu verstehen. Das ist die mit Abstand größte Quelle von Meldungen der Art „auf GitHub wird es anders dargestellt“.
 
 | Werkzeug | Was es nach der Sprache liest | Beispiel-Info-String |
 | --- | --- | --- |
@@ -299,7 +299,7 @@ Manche Werkzeuge haben die Anmerkung in den Code selbst verlegt, als Kommentare,
 
 Zwei Info-Strings verhalten sich anders als alle übrigen, und beide sind es wert, gekannt zu werden.
 
-`diff` ist für einen Highlighter eine echte Sprache. Er färbt Zeilen, die mit `+` und `-` beginnen, grün und rot, weshalb ein in einen mit `diff` markierten Zaun eingefügter Patch wie ein Code-Review aussieht. Aber die Zeichen `+` und `-` sind Teil des Codes, wer den Block also kopiert, kopiert sie mit. Das ist das richtige Verhalten für einen Patch, den jemand anwenden soll, und das falsche Verhalten für „hier ist die Zeile, die zu ändern ist", wo ein hervorgehobener Zeilenbereich das ist, was Sie eigentlich wollten.
+`diff` ist für einen Highlighter eine echte Sprache. Er färbt Zeilen, die mit `+` und `-` beginnen, grün und rot, weshalb ein in einen mit `diff` markierten Zaun eingefügter Patch wie ein Code-Review aussieht. Aber die Zeichen `+` und `-` sind Teil des Codes, wer den Block also kopiert, kopiert sie mit. Das ist das richtige Verhalten für einen Patch, den jemand anwenden soll, und das falsche Verhalten für „hier ist die Zeile, die zu ändern ist“, wo ein hervorgehobener Zeilenbereich das ist, was Sie eigentlich wollten.
 
 ~~~markdown
 ```diff
@@ -308,7 +308,7 @@ Zwei Info-Strings verhalten sich anders als alle übrigen, und beide sind es wer
 ```
 ~~~
 
-`mermaid` ist überhaupt keine Hervorhebung. Es ist ein Signal, den Block durch ein Bild zu ersetzen. GitHub tut das für vier Zaunsprachen: „Sie können Diagramme in Markdown mit vier verschiedenen Syntaxen erstellen: mermaid, geoJSON, topoJSON und ASCII STL" (geprüft auf docs.github.com, 9. September 2026).
+`mermaid` ist überhaupt keine Hervorhebung. Es ist ein Signal, den Block durch ein Bild zu ersetzen. GitHub tut das für vier Zaunsprachen: „Sie können Diagramme in Markdown mit vier verschiedenen Syntaxen erstellen: mermaid, geoJSON, topoJSON und ASCII STL“ (geprüft auf docs.github.com, 9. September 2026).
 
 ~~~markdown
 ```mermaid
@@ -340,7 +340,7 @@ pre {
 
 **Kopierknöpfe sind von all dem kein Teil.** Kein Konverter gibt einen aus, denn ein Kopierknopf ist ein Skript: Er braucht einen Klick-Handler und die Clipboard-API. Prism hat ein Plugin dafür, die meisten Dokumentations-Themes bauen ihren eigenen, und eine eigenständige HTML-Datei ohne Skripte darin kann überhaupt keinen haben. Wenn ein Kopierknopf zählt, ist er eine Anforderung an die Seite, nicht an die Konvertierung.
 
-**Zeilennummern sind eine Kopiergefahr.** Als echter Text im Block dargestellt, werden sie mit dem Code ausgewählt und mitkopiert, und der Leser fügt `1 npm install` in ein Terminal ein. Die zwei Auswege sind CSS-Zähler, die kein Text sind, und eine zweispaltige Tabelle — was genau das ist, was der Tabellenmodus von Pygments erzeugt, „eine Tabelle mit zwei Zellen, von denen eine die Zeilennummern enthält und die andere den ganzen Code" (geprüft auf pygments.org, 9. September 2026).
+**Zeilennummern sind eine Kopiergefahr.** Als echter Text im Block dargestellt, werden sie mit dem Code ausgewählt und mitkopiert, und der Leser fügt `1 npm install` in ein Terminal ein. Die zwei Auswege sind CSS-Zähler, die kein Text sind, und eine zweispaltige Tabelle — was genau das ist, was der Tabellenmodus von Pygments erzeugt, „eine Tabelle mit zwei Zellen, von denen eine die Zeilennummern enthält und die andere den ganzen Code“ (geprüft auf pygments.org, 9. September 2026).
 
 **Code in einer Tabellenzelle ist auf Spannen beschränkt.** Eine GFM-Tabellenzelle ist ein Inline-Zusammenhang: Eine Code-Spanne funktioniert, ein eingezäunter Block nicht. Schlimmer noch, eine Pipe innerhalb der Zelle beendet die Zelle, eine Pipe in einer Code-Spanne muss also mit einem Backslash maskiert werden, obwohl Backslash-Maskierungen innerhalb einer Spanne sonst abgeschaltet sind. Braucht ein Beispiel mehr als eine Wendung, setzen Sie es unter die Tabelle statt hinein — [das weitere Problem, Tabellen durch eine Konvertierung zu bringen](/blog/markdown-tables-that-survive-conversion) hat mehr davon.
 
@@ -352,7 +352,7 @@ Der ehrliche Abschnitt, denn nichts davon steht auf der Startseite eines Highlig
 
 **Ein Browser-Highlighter zeichnet vor den Augen des Lesers neu.** Er läuft, nachdem das HTML geparst ist, der Block kommt also ohne Farbe an und wird einen Moment später farbig. Bei einer schnellen Verbindung ist das unsichtbar. Bei einer langsamen, oder mit blockierten Skripten, ist der einfache Block das, was der Leser bekommt — was ein faires Argument dafür ist, den einfachen Block absichtlich statt unfertig aussehen zu lassen.
 
-**Themes mit geringem Kontrast erfüllen eine Barrierefreiheitsanforderung nicht.** WCAG-Erfolgskriterium 1.4.3 ist eine Anforderung der Stufe AA für „ein Kontrastverhältnis von mindestens 4,5:1" bei normalem Text und 3:1 bei großem Text (geprüft auf w3.org, 9. September 2026). Sehr viele beliebte Editor-Themes wurden für einen dunklen Editor in einer bequemen Schriftgröße entworfen, nicht für eine Webseite: Kommentare in Mittelgrau auf dunklem Hintergrund und Zeichenketten in schwach gesättigtem Pastell sind die zwei, die am häufigsten durchfallen. Nichts warnt Sie. Der Block sieht für die Person gut aus, die das Theme gewählt hat, und ist für einen Leser mit Sehbeeinträchtigung oder einem Laptop-Bildschirm im Tageslicht unlesbar.
+**Themes mit geringem Kontrast erfüllen eine Barrierefreiheitsanforderung nicht.** WCAG-Erfolgskriterium 1.4.3 ist eine Anforderung der Stufe AA für „ein Kontrastverhältnis von mindestens 4,5:1“ bei normalem Text und 3:1 bei großem Text (geprüft auf w3.org, 9. September 2026). Sehr viele beliebte Editor-Themes wurden für einen dunklen Editor in einer bequemen Schriftgröße entworfen, nicht für eine Webseite: Kommentare in Mittelgrau auf dunklem Hintergrund und Zeichenketten in schwach gesättigtem Pastell sind die zwei, die am häufigsten durchfallen. Nichts warnt Sie. Der Block sieht für die Person gut aus, die das Theme gewählt hat, und ist für einen Leser mit Sehbeeinträchtigung oder einem Laptop-Bildschirm im Tageslicht unlesbar.
 
 **Farbe trägt keine Information, die der Text nicht trägt.** Das ist der rettende Umstand und gleichzeitig das Argument für Zurückhaltung: Nichts in einem hervorgehobenen Block wird allein durch Farbe vermittelt, ein Leser, der die Farben nicht unterscheiden kann, verliert also Bequemlichkeit und nichts weiter. Es heißt auch, dass der Ertrag all dieser Bytes Bequemlichkeit ist — auf einer Dokumentationsseite, die jemand täglich liest, ist sie das Geld wert, bei einem Dokument, das Sie einmal mailen, schwer zu rechtfertigen.
 

@@ -14,7 +14,7 @@ Eine Dokumentkonvertierungs-API ist brauchbar, wenn vier Dinge stimmen: Der Requ
 
 Die Reibung liegt selten in der Konvertierung selbst. Markdown zu parsen und HTML auszugeben ist ein gelöstes Problem mit einem halben Dutzend guter Bibliotheken dahinter. Was bricht, ist alles rund um das Parsen: ein Build-Schritt, der eine Datei postet und einen 200 mit leerem Body zurückbekommt, ein nächtlicher Job, der still bei welcher Größe auch immer die Plattform gerade ablehnt abschneidet, ein Retry, der aus einem Dokument drei macht, weil der erste Versuch nach dem Timeout bereits erfolgreich gewesen war.
 
-Die Fehler haben eine Form. Ein Client kann einen 500 nicht von einem 413 unterscheiden, wenn die Plattform antwortet, bevor Ihr Handler läuft. Ein Client kann „Ihre Datei ist kein gültiges JSON" nicht von „unser Speicher ist down" unterscheiden, wenn beides als derselbe flache Fehlerstring ankommt. Und ein Client kann sich gegenüber Limits nicht vernünftig verhalten, die er aus einer Reihe von Ablehnungen erschließen muss, was in der Praxis „für Details kontaktieren Sie uns" bedeutet.
+Die Fehler haben eine Form. Ein Client kann einen 500 nicht von einem 413 unterscheiden, wenn die Plattform antwortet, bevor Ihr Handler läuft. Ein Client kann „Ihre Datei ist kein gültiges JSON“ nicht von „unser Speicher ist down“ unterscheiden, wenn beides als derselbe flache Fehlerstring ankommt. Und ein Client kann sich gegenüber Limits nicht vernünftig verhalten, die er aus einer Reihe von Ablehnungen erschließen muss, was in der Praxis „für Details kontaktieren Sie uns“ bedeutet.
 
 Dieser Beitrag handelt also vom Vertrag, nicht vom Parser. Wo ein durchgerechnetes Beispiel hilft, nutzt er unsere eigene `/api/v1`, weil es die einzige ist, deren Quellcode und Ablehnungsmeldungen ich exakt zitieren kann, statt sie zu erraten.
 
@@ -106,7 +106,7 @@ Der Aufrufer sendet eine Adresse; der Server lädt das Dokument herunter und kon
 | Umgeht die Request-Body-Obergrenze vollständig | Server-seitige Request-Fälschung, sofern der Abruf nicht hart eingeschränkt ist |
 | Praktisch für öffentliche READMEs und veröffentlichte Seiten | Fehler vervielfachen sich: DNS, TLS, Weiterleitungen, 404er, Timeouts, und die Konvertierung selbst |
 
-**Für wen das ist.** Dienste, die es genug brauchen, um die Arbeit zu machen: eine Allowlist oder Blocklist, die private Adressbereiche abdeckt, eine Obergrenze für Weiterleitungen, eine Byte-Obergrenze, ein Timeout, und Fehler, die „konnte nicht abrufen" von „konnte nicht konvertieren" unterscheiden. Alles weniger ist ein Loch in Ihrem Netzwerk mit einer JSON-Schnittstelle.
+**Für wen das ist.** Dienste, die es genug brauchen, um die Arbeit zu machen: eine Allowlist oder Blocklist, die private Adressbereiche abdeckt, eine Obergrenze für Weiterleitungen, eine Byte-Obergrenze, ein Timeout, und Fehler, die „konnte nicht abrufen“ von „konnte nicht konvertieren“ unterscheiden. Alles weniger ist ein Loch in Ihrem Netzwerk mit einer JSON-Schnittstelle.
 
 ### Direkter Upload, dann eine Referenz
 
@@ -118,7 +118,7 @@ Der Client fragt nach einer kurzlebigen Upload-URL, legt die Datei direkt in den
 | Große Dateien hören auf, ein Sonderfall zu sein | Uploads ohne Folge-Request müssen aufgeräumt werden |
 | Lesezugriffe können auf eine signierte URL umleiten, sodass Antworten klein bleiben | Mehr bewegliche Teile, die schiefgehen können, und mehr zu erklären |
 
-**Für wen das ist.** Jeder Dienst, dessen Dokumente routinemäßig das Body-Limit der Plattform überschreiten. Es ist die ehrliche Antwort auf „das Limit anheben" — und es ist eine Änderung daran, wie Dokumente sich bewegen, keine größere Zahl, weshalb unsere eigene Obergrenze dort bleibt, wo die Plattform sie gesetzt hat, bis diese Arbeit erledigt ist.
+**Für wen das ist.** Jeder Dienst, dessen Dokumente routinemäßig das Body-Limit der Plattform überschreiten. Es ist die ehrliche Antwort auf „das Limit anheben“ — und es ist eine Änderung daran, wie Dokumente sich bewegen, keine größere Zahl, weshalb unsere eigene Obergrenze dort bleibt, wo die Plattform sie gesetzt hat, bis diese Arbeit erledigt ist.
 
 ### Ein Batch-Array
 
@@ -153,7 +153,7 @@ Hier ist der vollständige Satz von unseren eigenen Endpoints, der absichtlich k
 | 429 | Mehr als 60 Requests in einer Minute | Das Limit, die Sekunden bis zum nächsten Versuch, und ein `Retry-After`-Header |
 | 502 | Der Dokumentspeicher war nicht erreichbar | Dass es unserer ist, und der zugrunde liegende Grund |
 
-Drei dieser Zeilen existieren wegen eines konkreten Fehlschlags, der es wert ist, kopiert zu werden. Eine fehlgeformte ID erreichte früher Postgres, das sie ablehnte, was als 500 auftauchte — deshalb werden IDs jetzt auf ihre Form geprüft, und eine schlechte ist schlicht nicht gefunden. Eine fehlende gespeicherte Datei und ein unerreichbarer Speicher kamen früher als derselbe nackte 500 an; sie in 410 und 502 aufzuteilen sagt dem Aufrufer, ob er dieses Dokument aufgeben oder den Request wiederholen sollte. Und für beides — „kein solches Dokument" und „nicht Ihres" — `Not found` zurückzugeben ist keine Faulheit: Die Alternative bestätigt die Existenz fremder Dokumente gegenüber jedem mit einem UUID-Generator.
+Drei dieser Zeilen existieren wegen eines konkreten Fehlschlags, der es wert ist, kopiert zu werden. Eine fehlgeformte ID erreichte früher Postgres, das sie ablehnte, was als 500 auftauchte — deshalb werden IDs jetzt auf ihre Form geprüft, und eine schlechte ist schlicht nicht gefunden. Eine fehlende gespeicherte Datei und ein unerreichbarer Speicher kamen früher als derselbe nackte 500 an; sie in 410 und 502 aufzuteilen sagt dem Aufrufer, ob er dieses Dokument aufgeben oder den Request wiederholen sollte. Und für beides — „kein solches Dokument“ und „nicht Ihres“ — `Not found` zurückzugeben ist keine Faulheit: Die Alternative bestätigt die Existenz fremder Dokumente gegenüber jedem mit einem UUID-Generator.
 
 Die Limits sind die zweite Hälfte des Vertrags:
 
@@ -180,7 +180,7 @@ Der Bearer-Schlüssel ist die Grundlage, und es gibt fünf Eigenschaften, die ma
 
 **Enger als der Account.** Ein Schlüssel von uns erreicht Dokumente und Freigaben, nie den Account, die Anmeldung oder die Schlüssel selbst. Das ist die Eigenschaft, die ein Leck überlebbar macht: Ein gestohlener Schlüssel kann nicht seinen eigenen Ersatz ausstellen oder den Besitzer aussperren.
 
-**Am Credential durchgesetzt, nicht an einer Tür.** Das ist die, die uns gebissen hat. Eine schreibgeschützte Berechtigung eines verbundenen Assistenten — die Art Token, [die ein Connector eines Assistenten beim Anmelden sammelt](/blog/converting-documents-from-an-assistant), statt eines eingefügten Schlüssels — wurde im Werkzeug-Dispatcher geprüft statt am Credential, sodass das Versprechen auf der Zustimmungsseite — dass sie nicht speichern, teilen oder löschen kann — für die Werkzeuge wahr war und für die API, die diese Werkzeuge aufrufen, falsch. Die Prüfung sitzt jetzt vor jeder Route, als Allowlist sicherer Methoden statt einer Liste unsicherer, sodass eine im nächsten Jahr hinzugefügte Route standardmäßig abgedeckt ist. Eine Ablehnung kommt als 403 mit `WWW-Authenticate: Bearer error="insufficient_scope"` zurück, die Standardart zu sagen: „authentifiziert, aber nicht dafür".
+**Am Credential durchgesetzt, nicht an einer Tür.** Das ist die, die uns gebissen hat. Eine schreibgeschützte Berechtigung eines verbundenen Assistenten — die Art Token, [die ein Connector eines Assistenten beim Anmelden sammelt](/blog/converting-documents-from-an-assistant), statt eines eingefügten Schlüssels — wurde im Werkzeug-Dispatcher geprüft statt am Credential, sodass das Versprechen auf der Zustimmungsseite — dass sie nicht speichern, teilen oder löschen kann — für die Werkzeuge wahr war und für die API, die diese Werkzeuge aufrufen, falsch. Die Prüfung sitzt jetzt vor jeder Route, als Allowlist sicherer Methoden statt einer Liste unsicherer, sodass eine im nächsten Jahr hinzugefügte Route standardmäßig abgedeckt ist. Eine Ablehnung kommt als 403 mit `WWW-Authenticate: Bearer error="insufficient_scope"` zurück, die Standardart zu sagen: „authentifiziert, aber nicht dafür“.
 
 Zwei kleinere Entscheidungen sparen echte Debugging-Zeit. Ein Session-Cookie ebenso wie einen Schlüssel zu akzeptieren bedeutet, dass dieselben Endpoints aus einem angemeldeten Browser ausprobiert werden können, sodass die Dokumentation testbar ist, ohne ein Credential auszustellen. Und einen nicht authentifizierten Request unterschiedlich zu beantworten, je nachdem, ob überhaupt ein `Authorization`-Header ankam, macht aus den zwei häufigsten Einrichtungsfehlern — kein Header, und ein Header, den der Proxy entfernt hat — zwei verschiedene Nachrichten statt eines Schulterzuckens.
 
@@ -244,17 +244,17 @@ Drei Darstellungen desselben Dokuments decken fast jeden Anwendungsfall ab:
 | `GET /api/v1/documents/:id.html` | Die eigenständige HTML-Datei, `?theme=dark` optional | Ein Build, der eine Datei auf die Festplatte schreibt |
 | `GET /api/v1/documents` | Die neuesten 500, als Liste | Abgleich, Aufräumen, Dashboards |
 
-Das eigenständige HTML verdient eine Anmerkung, denn „HTML" ist nicht eine Sache. Was zurückkommt, ist ein vollständiges Dokument — Doctype, Head, Styles inline — statt ein Fragment, und es ist dieselbe Datei, die die App selbst herunterlädt, sodass ein Skript und eine Person identische Ausgabe aus identischem Code bekommen. Eine Konvertierungs-API, die ein Fragment zurückgibt, hat Ihnen einen Job übergeben, kein Dokument: in einem Browser geöffnet ist es unformatierter Text in voller Fensterbreite.
+Das eigenständige HTML verdient eine Anmerkung, denn „HTML“ ist nicht eine Sache. Was zurückkommt, ist ein vollständiges Dokument — Doctype, Head, Styles inline — statt ein Fragment, und es ist dieselbe Datei, die die App selbst herunterlädt, sodass ein Skript und eine Person identische Ausgabe aus identischem Code bekommen. Eine Konvertierungs-API, die ein Fragment zurückgibt, hat Ihnen einen Job übergeben, kein Dokument: in einem Browser geöffnet ist es unformatierter Text in voller Fensterbreite.
 
 Veröffentlichen ist die andere Hälfte. `?share=link` beim Erstellen veröffentlicht das Dokument und gibt seine URL in derselben Antwort zurück, was der ganze Sinn einer API für ein solches Werkzeug ist — ein Dokument zu veröffentlichen sollte ein Request sein, nicht drei. Widerruf muss echt sein, und das ist der Teil, den Leute falsch machen: Ein Dokument auf privat zurückzusetzen entfernt sein Token, sodass ein bereits verschickter Link aufhört zu funktionieren. Eine Freigabe, die man nicht zurücknehmen kann, ist keine Freigabe, sondern eine Veröffentlichung.
 
 Und ein Dokument im öffentlichen Web trägt fremden Inhalt auf Ihrer Domain, was eine Sicherheitsfrage ist, keine API-Frage. Geteilte Seiten werden hier mit `script-src 'none'` und `frame-ancestors 'none'` ausgeliefert, sodass eine Injektion, die [den Sanitizer](/blog/sanitising-markdown-safely) irgendwie überlebt hat, trotzdem nicht laufen kann, und die Seite nicht als fremde eingebettet werden kann. Wenn eine Konvertierungs-API die Ausgabe für Sie hosten wird, fragen Sie, was sie in den Headern sendet, bevor Sie sie auf Dokumente ansetzen, die Sie nicht selbst geschrieben haben.
 
-Schließlich klingt ein Nutzungs-Endpoint wie ein Nachgedanke und ist keiner. `GET /api/v1/usage` beantwortet „wie nah bin ich dran?" in einem Request, was den Unterschied ausmacht zwischen einem Client, der zurückrudert, bevor er abgelehnt wird, und einem, der jede Obergrenze entdeckt, indem er dagegen läuft.
+Schließlich klingt ein Nutzungs-Endpoint wie ein Nachgedanke und ist keiner. `GET /api/v1/usage` beantwortet „wie nah bin ich dran?“ in einem Request, was den Unterschied ausmacht zwischen einem Client, der zurückrudert, bevor er abgelehnt wird, und einem, der jede Obergrenze entdeckt, indem er dagegen läuft.
 
 ## Wo eine API die falsche Antwort ist, und was es kostet
 
-Die naheliegende Antwort auf „das nach Zeitplan konvertieren" ist ein API-Aufruf, und es gibt vier Fälle, in denen das die falsche ist.
+Die naheliegende Antwort auf „das nach Zeitplan konvertieren“ ist ein API-Aufruf, und es gibt vier Fälle, in denen das die falsche ist.
 
 **Eine Datei, einmal.** Ein Schlüssel zum Ausstellen, ein Secret zum Speichern und ein Client zum Schreiben, für einen Job, den eine Seite in zehn Sekunden erledigt. Die API verdient sich ihren Wert beim zweiten Vorkommen, nicht beim ersten.
 
@@ -281,7 +281,7 @@ Nichts davon spricht gegen eine Konvertierungs-API. Es spricht dafür, eine zu w
 3. **Prüfen Sie, ob ein Retry duplizieren kann.** Ohne Idempotenzschlüssel oder eine vom Aufrufer vorgegebene ID lässt Sie jeder Timeout von Hand abgleichen — entscheiden Sie also jetzt, ob Ihr Client dedupliziert, oder akzeptieren Sie die Duplikate bewusst als Veröffentlichungsentscheidung.
 4. **Prüfen Sie, was das Credential erreichen kann.** Ein Schlüssel, der Schlüssel erstellen, die Abrechnung ändern oder den Account löschen kann, macht aus einer geleakten Umgebungsvariable einen Vorfall statt einer Rotation.
 5. **Fragen Sie, was der Response-Body tatsächlich ist.** Ein Fragment bedeutet, Sie müssen noch die Hülle schreiben; eine vollständige, eigenständige Datei bedeutet, Sie können die Ausgabe direkt an eine Person weiterreichen.
-6. **Versuchen Sie, eine Freigabe abzubrechen.** Wenn ein Link nach dem Widerruf weiter funktioniert, unterscheidet sich die Vorstellung des Dienstes von „privat" von Ihrer, und Sie werden es auf die schlimmste Art herausfinden.
+6. **Versuchen Sie, eine Freigabe abzubrechen.** Wenn ein Link nach dem Widerruf weiter funktioniert, unterscheidet sich die Vorstellung des Dienstes von „privat“ von Ihrer, und Sie werden es auf die schlimmste Art herausfinden.
 7. **Konvertieren Sie ein echtes Dokument, dann holen Sie es zurück.** Nicht das Beispiel aus der Dokumentation — Ihre Datei, mit ihren Tabellen, ihrem Front Matter und ihren seltsamen Zeichen, abgerufen über einen zweiten Request. Diese eine Schleife übt Request-Form, Limits, Fehlerpfade und Speicherung in einem Zug aus, und sie dauert etwa fünf Minuten.
 
 ## Fazit
@@ -312,7 +312,7 @@ Ja, aus zwei Gründen: Ein Schlüssel pro Umgebung kann widerrufen werden, ohne 
 
 ### Was sollte eine Konvertierungs-API zurückgeben, wenn die Datei defekt ist?
 
-Einen 400 mit der eigenen Nachricht des Parsers, einschließlich wo in der Datei er gestoppt hat — das ist die einzige Information, nach der ein Aufrufer handeln kann, und ein flaches „konnte nicht konvertieren" schickt jemanden dazu, ein Megabyte mit den Augen zu durchsuchen. Reservieren Sie 5xx für Fehlschläge, die die eigenen des Dienstes sind, und geben Sie den zwei Fällen verschiedene Codes, damit ein Client weiß, ob ein Retry überhaupt helfen könnte.
+Einen 400 mit der eigenen Nachricht des Parsers, einschließlich wo in der Datei er gestoppt hat — das ist die einzige Information, nach der ein Aufrufer handeln kann, und ein flaches „konnte nicht konvertieren“ schickt jemanden dazu, ein Megabyte mit den Augen zu durchsuchen. Reservieren Sie 5xx für Fehlschläge, die die eigenen des Dienstes sind, und geben Sie den zwei Fällen verschiedene Codes, damit ein Client weiß, ob ein Retry überhaupt helfen könnte.
 
 ### Kann ich ein Word-Dokument über eine API konvertieren?
 

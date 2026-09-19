@@ -6,9 +6,9 @@ tag: Code
 keywords: docx nach html javascript, mammoth js, mammoth docx nach html, docx in node lesen, docx parser javascript, docx4js, docxtemplater, docx nach html browser, python-docx
 ---
 
-Sie haben eine `.docx` und Code, der HTML braucht. Auf npm gibt es vielleicht ein Dutzend Pakete, deren Name „docx" enthält, und drei der beliebtesten machen eine völlig andere Aufgabe als die, die Sie wollen. Eines erzeugt Word-Dateien von Grund auf. Eines füllt Platzhalter in einer Vorlage. Eines stellt ein Dokument so dar, dass es wie eine gedruckte Seite aussieht. Nur manche lesen eine bestehende Datei und geben Ihnen Markup.
+Sie haben eine `.docx` und Code, der HTML braucht. Auf npm gibt es vielleicht ein Dutzend Pakete, deren Name „docx“ enthält, und drei der beliebtesten machen eine völlig andere Aufgabe als die, die Sie wollen. Eines erzeugt Word-Dateien von Grund auf. Eines füllt Platzhalter in einer Vorlage. Eines stellt ein Dokument so dar, dass es wie eine gedruckte Seite aussieht. Nur manche lesen eine bestehende Datei und geben Ihnen Markup.
 
-Der Suchbegriff ist „docx to html javascript", und die ehrliche Antwort ist kurz: In JavaScript gehört diese Aufgabe mammoth. Länger zu erklären ist, warum mammoths Ausgabe so viel sauberer ist, als Sie erwarten, warum es lautlos Dinge weglässt, von denen Sie sicher waren, dass sie im Dokument standen, und warum das zwei Seiten derselben Tatsache sind.
+Der Suchbegriff ist „docx to html javascript“, und die ehrliche Antwort ist kurz: In JavaScript gehört diese Aufgabe mammoth. Länger zu erklären ist, warum mammoths Ausgabe so viel sauberer ist, als Sie erwarten, warum es lautlos Dinge weglässt, von denen Sie sicher waren, dass sie im Dokument standen, und warum das zwei Seiten derselben Tatsache sind.
 
 Die Reibung ist nicht, eine Bibliothek zu installieren. Sie ist, dass eine `.docx` Bedeutung über Verweise verteilt auf ein Dutzend XML-Dateien speichert, und jeder Parser muss entscheiden, welchen dieser Verweise er folgt und welchen er ignoriert. Ein Parser, der allen folgt, erzeugt HTML voller Inline-Spans, das die Seite reproduziert und Ihnen nichts sagt. Ein Parser, der wenigen folgt, erzeugt sauberes semantisches HTML und verwirft still den Rest. Es gibt keine dritte Option, und zu wissen, welche Sie gewählt haben, ist der größte Teil der Arbeit.
 
@@ -20,11 +20,11 @@ Um eine `.docx` zu lesen und in JavaScript HTML zu bekommen, nehmen Sie **mammot
 
 Eine `.docx` ist ein Zip-Archiv aus XML-Teilen im Office-Open-XML-Format. [Wie man in eine hineinkommt und was jeder Teil enthält](/blog/convert-docx-to-markdown) lohnt sich zu lesen, wenn Sie noch nie eine entzippt haben, und der Rest dieses Artikels setzt das voraus. Was hier zählt, ist die Form der Daten, sobald man am Zip vorbei ist, denn diese Form ist es, worauf jede Bibliothek auf dieser Seite reagiert.
 
-Der Dokumentkörper ist eine Abfolge von `w:p`-Absatzelementen. Jeder Absatz enthält `w:r`-Run-Elemente. Jeder Run enthält ein `w:t`-Textelement. Der Satz „the quarterly report is late" ist also nicht als String gespeichert. Er ist als eine gewisse Anzahl Runs gespeichert, und wie viele, hängt von Fakten über das Dokument ab, die Sie nicht vorhersagen können.
+Der Dokumentkörper ist eine Abfolge von `w:p`-Absatzelementen. Jeder Absatz enthält `w:r`-Run-Elemente. Jeder Run enthält ein `w:t`-Textelement. Der Satz „the quarterly report is late“ ist also nicht als String gespeichert. Er ist als eine gewisse Anzahl Runs gespeichert, und wie viele, hängt von Fakten über das Dokument ab, die Sie nicht vorhersagen können.
 
-Das ist das Erste, das Leute überrascht, die versuchen, das XML selbst zu parsen. Word teilt Runs bei jeder Formatierungsänderung, was vernünftig ist, und auch an Revisionsgrenzen, Rechtschreibprüfungszuständen und diversem internem Buchhaltungskram, was es nicht ist. Ein einzelnes Wort kann drei Runs sein. Das Wort „quarterly" kann `qua` + `rter` + `ly` sein, weil jemand 2019 in der Mitte davon editiert hat. Jeder Ansatz, der `document.xml` nach einer Formulierung durchsucht, scheitert an echten Dokumenten, und er scheitert unregelmäßig, was schlimmer ist.
+Das ist das Erste, das Leute überrascht, die versuchen, das XML selbst zu parsen. Word teilt Runs bei jeder Formatierungsänderung, was vernünftig ist, und auch an Revisionsgrenzen, Rechtschreibprüfungszuständen und diversem internem Buchhaltungskram, was es nicht ist. Ein einzelnes Wort kann drei Runs sein. Das Wort „quarterly“ kann `qua` + `rter` + `ly` sein, weil jemand 2019 in der Mitte davon editiert hat. Jeder Ansatz, der `document.xml` nach einer Formulierung durchsucht, scheitert an echten Dokumenten, und er scheitert unregelmäßig, was schlimmer ist.
 
-Die zweite Überraschung ist, dass Whitespace bedingt ist. Ein `w:t`-Element lässt führenden und abschließenden Whitespace fallen, es sei denn, es trägt `xml:space="preserve"`. Fügen Sie Runs naiv zusammen, bekommen Sie „thequarterlyreport". Fügen Sie sie mit Leerzeichen zusammen, bekommen Sie „qua rter ly".
+Die zweite Überraschung ist, dass Whitespace bedingt ist. Ein `w:t`-Element lässt führenden und abschließenden Whitespace fallen, es sei denn, es trägt `xml:space="preserve"`. Fügen Sie Runs naiv zusammen, bekommen Sie „thequarterlyreport“. Fügen Sie sie mit Leerzeichen zusammen, bekommen Sie „qua rter ly“.
 
 Die dritte Überraschung, und die, die alles Folgende entscheidet, ist Indirektion. Fast nichts in `document.xml` sagt, was es ist:
 
@@ -190,7 +190,7 @@ Zwei Details beißen Leute. Das erste ist, dass `image.contentType` keine Dateie
 
 ### Das messages-Array: der einzige Nachweis dessen, was verloren ging
 
-Die zweite Eigenschaft am Ergebnis ist `messages`, ein Array von Objekten mit `type` — „warning" oder „error" —, einem `message`-String und einem optionalen `error`, das die geworfene Ausnahme hält, wenn es eine gab.
+Die zweite Eigenschaft am Ergebnis ist `messages`, ein Array von Objekten mit `type` — „warning“ oder „error“ —, einem `message`-String und einem optionalen `error`, das die geworfene Ausnahme hält, wenn es eine gab.
 
 Das ist die am wenigsten genutzte API in der ganzen Kategorie. Kein anderer verbreiteter Konverter sagt Ihnen, was er nicht behandeln konnte. Pandoc zählt nicht auf, was es still normalisiert hat. Eine Kopieren-und-Einfügen-Konvertierung sagt Ihnen per Definition nichts. mammoth gibt Ihnen eine Liste.
 
@@ -233,14 +233,14 @@ Jedes Glied der Kette ist eine Stelle, an der sie brechen kann:
 
 | Fehler | Ursache | Was Sie sehen |
 | --- | --- | --- |
-| `numbering.xml` fehlt | Das Dokument enthielt nie eine echte Liste | Absätze, die mit getippten „1."-Zeichen beginnen |
+| `numbering.xml` fehlt | Das Dokument enthielt nie eine echte Liste | Absätze, die mit getippten „1.“-Zeichen beginnen |
 | `numId` löst zu nichts auf | Der Teil wurde entfernt, oder das Dokument ist fehlerhaft | Absätze, kein Listen-Markup |
-| Der Autor hat die Nummern getippt | Manuelles „1.", „2.", „3." ganz ohne `w:numPr` | Absätze, deren Text mit Ziffern beginnt |
-| Die Liste ist ein Style, keine Nummerierung | Ein Style „List Paragraph" mit Einrückung, aber ohne `numPr` | Eingerückte Absätze |
+| Der Autor hat die Nummern getippt | Manuelles „1.“, „2.“, „3.“ ganz ohne `w:numPr` | Absätze, deren Text mit Ziffern beginnt |
+| Die Liste ist ein Style, keine Nummerierung | Ein Style „List Paragraph“ mit Einrückung, aber ohne `numPr` | Eingerückte Absätze |
 | Ebenen-Neustarts und `lvlOverride` | Word kann die Nummerierung mitten im Dokument neu starten | Korrektes Listen-Markup, falsche sichtbare Nummern |
-| Benutzerdefinierter `lvlText` | Formate wie „Article 1.2 —" | Ein `ol`, das im Browser ab 1 neu nummeriert |
+| Benutzerdefinierter `lvlText` | Formate wie „Article 1.2 —“ | Ein `ol`, das im Browser ab 1 neu nummeriert |
 
-Die letzten beiden sind die ehrliche Grenze statt eines Fehlers. HTMLs `ol` hat ein `start`-Attribut und sonst nichts. Es kann nicht ausdrücken „bei jeder Ebene-zwei-Gruppe bei 1 neu starten, aber die Ebene-eins-Folge fortsetzen", und es hat kein Äquivalent zu einem benutzerdefinierten Ebenenformat-String. Ein Konverter, der die Struktur richtig hinbekommt, verliert trotzdem die sichtbaren Nummern, wenn das Dokument Words Nummerierung als Gesetzeszitationssystem benutzt hat. Tut Ihr Dokument das, sind die Nummern Inhalt, und Sie sollten erwägen, sie in den Text zu setzen.
+Die letzten beiden sind die ehrliche Grenze statt eines Fehlers. HTMLs `ol` hat ein `start`-Attribut und sonst nichts. Es kann nicht ausdrücken „bei jeder Ebene-zwei-Gruppe bei 1 neu starten, aber die Ebene-eins-Folge fortsetzen“, und es hat kein Äquivalent zu einem benutzerdefinierten Ebenenformat-String. Ein Konverter, der die Struktur richtig hinbekommt, verliert trotzdem die sichtbaren Nummern, wenn das Dokument Words Nummerierung als Gesetzeszitationssystem benutzt hat. Tut Ihr Dokument das, sind die Nummern Inhalt, und Sie sollten erwägen, sie in den Text zu setzen.
 
 Beachten Sie auch, was die Style-Map erreicht und was nicht. mammoths dokumentierte Matcher decken Absätze und ihre Styles, Runs und ihre Eigenschaften, Tabellen und Kommentarreferenzen ab. Listenbehandlung ist in den Konverter eingebaut statt etwas, das Sie mit einer Regel konfigurieren, die Abhilfe für eine kaputte Liste ist also eine Reparatur am Dokument — einen echten Listenstil anwenden — nicht eine Zeile in Ihrer Map. Diese Unterscheidung spart einen Nachmittag.
 
@@ -318,7 +318,7 @@ Ist Ihre Pipeline Python, ist python-docx der entsprechende Ausgangspunkt, und e
 | Natürlich in einem Python-Build oder einer Datenpipeline | Nur Python |
 | MIT lizenziert | Mehr Code als ein Konverter für eine Konvertierungsaufgabe |
 
-**Für wen es ist.** Extraktion und Transformation statt Konvertierung — jede Tabelle aus einer Reihe von Berichten in einen Dataframe ziehen, eine Klausel in zweihundert Verträgen umschreiben, prüfen, welche Dokumente einen veralteten Style benutzen. Ist die Anforderung „docx nach HTML" und die Sprache Python, ist zu Pandoc auszushellen meist weniger Code, als einen Serialisierer darauf zu bauen.
+**Für wen es ist.** Extraktion und Transformation statt Konvertierung — jede Tabelle aus einer Reihe von Berichten in einen Dataframe ziehen, eine Klausel in zweihundert Verträgen umschreiben, prüfen, welche Dokumente einen veralteten Style benutzen. Ist die Anforderung „docx nach HTML“ und die Sprache Python, ist zu Pandoc auszushellen meist weniger Code, als einen Serialisierer darauf zu bauen.
 
 ### Pandoc als Subprozess — der pragmatische Trick
 
@@ -359,13 +359,13 @@ Die Empfehlung am Anfang dieses Artikels hat echte Grenzen, und es lohnt sich, s
 
 **Direkte Formatierung ist weg, und das ist Absicht.** Ein Dokument, in dem der Autor nie Styles benutzt hat — alles ist Normal, mit von Hand angewendetem Fett und 18pt — konvertiert zu einer Wand aus `p`-Elementen. mammoth verhält sich korrekt: Es gibt keine semantische Information in dieser Datei zu nutzen. Die Kosten sind, dass die Reparatur nicht in Ihrem Code liegt. Jemand muss echte Styles auf das Dokument anwenden, oder Sie müssen Style-Map-Regeln gegen Run-Eigenschaften schreiben und das Rätselraten akzeptieren. Planen Sie das Gespräch ein.
 
-**Layout existiert nicht in der Ausgabe.** Keine Seitengröße, keine Ränder, keine Spalten, keine Kopfzeilen, keine Fußzeilen, keine Seitenumbrüche. Enthält die Anforderung das Wort „drucken", ist mammoth nicht das Werkzeug; docx-preview oder ein PDF-Weg ist es.
+**Layout existiert nicht in der Ausgabe.** Keine Seitengröße, keine Ränder, keine Spalten, keine Kopfzeilen, keine Fußzeilen, keine Seitenumbrüche. Enthält die Anforderung das Wort „drucken“, ist mammoth nicht das Werkzeug; docx-preview oder ein PDF-Weg ist es.
 
 **Textfelder, Formen und SmartArt landen ungleichmäßig.** Inhalt in einem schwebenden Textfeld ist nicht im Fluss des Dokuments, und jeder HTML-Konverter muss entscheiden, wohin damit. Prüfen Sie ein Dokument, das solche benutzt, bevor Sie irgendetwas versprechen.
 
 **Felder sind Werte, keine Formeln.** Ein Seitenzahlfeld, eine Querverweis, ein Inhaltsverzeichnisfeld, ein berechnetes Feld — all das sind Anweisungen in der Datei, plus ein gecachtes letztes Ergebnis. HTML kennt keine Felder. Was Sie bekommen, ist bestenfalls der gecachte Text, und ein Inhaltsverzeichnis konvertiert nur dann zu einer Linkliste, wenn das Dokument gut genug gebaut wurde, dass die Anker existieren.
 
-**Der Markdown-Writer ist veraltet.** mammoth hat ein `convertToMarkdown`, und seine Dokumentation sagt unverblümt, „Markdown-Unterstützung ist veraltet", und empfiehlt stattdessen HTML plus eine separate HTML-zu-Markdown-Bibliothek als voraussichtlich bessere Ergebnisse. Nehmen Sie den Rat an. Konvertieren Sie nach HTML, und lassen Sie dann einen eigenen Konverter laufen — die Wahl unter [den HTML-zu-Markdown-Bibliotheken](/blog/best-html-to-markdown-converters) zählt mehr, als es klingt, denn dort entscheiden Sie, was mit Markup passiert, das Markdown nicht ausdrücken kann.
+**Der Markdown-Writer ist veraltet.** mammoth hat ein `convertToMarkdown`, und seine Dokumentation sagt unverblümt, „Markdown-Unterstützung ist veraltet“, und empfiehlt stattdessen HTML plus eine separate HTML-zu-Markdown-Bibliothek als voraussichtlich bessere Ergebnisse. Nehmen Sie den Rat an. Konvertieren Sie nach HTML, und lassen Sie dann einen eigenen Konverter laufen — die Wahl unter [den HTML-zu-Markdown-Bibliotheken](/blog/best-html-to-markdown-converters) zählt mehr, als es klingt, denn dort entscheiden Sie, was mit Markup passiert, das Markdown nicht ausdrücken kann.
 
 **Sehr große Dateien sind eine Speicherfrage, besonders im Browser.** Das ganze Archiv wird gelesen, Bilder eingeschlossen. Ein 30-MB-Dokument mit hochauflösenden Screenshots bläht sich in der Ausgabe als Base64 weiter auf, und ein Tab hat weniger Spielraum als ein Server. Deshalb begrenzen gehostete Konverter die Upload-Größe; TransformPipe begrenzt eine Konvertierung auf 10 MB und ein gespeichertes Dokument auf 4 MB, Letzteres, weil eine Vercel-Function eine Anfrage oder Antwort über 4,5 MB ablehnt. Was auch immer Sie bauen, wird ebenfalls eine Grenze brauchen, und sie bewusst zu wählen ist besser, als sie zu entdecken.
 
@@ -396,7 +396,7 @@ Weil das Absicht ist. mammoth bildet semantische Information — benannte Styles
 
 ### Warum haben sich meine nummerierten Listen zu reinen Absätzen konvertiert?
 
-Fast immer, weil die Liste nie eine echte Liste war. Word speichert Listenzugehörigkeit als `w:numId`, das über `numbering.xml` aufgelöst wird, fehlt dieser Teil also, löst die ID nicht auf, oder hat der Autor „1." und „2." von Hand getippt, sieht der Konverter gewöhnliche Absätze. Wenden Sie in Word einen echten Listenstil an und konvertieren Sie erneut.
+Fast immer, weil die Liste nie eine echte Liste war. Word speichert Listenzugehörigkeit als `w:numId`, das über `numbering.xml` aufgelöst wird, fehlt dieser Teil also, löst die ID nicht auf, oder hat der Autor „1.“ und „2.“ von Hand getippt, sieht der Konverter gewöhnliche Absätze. Wenden Sie in Word einen echten Listenstil an und konvertieren Sie erneut.
 
 ### Kann ich eine .docx im Browser lesen, ohne sie hochzuladen?
 

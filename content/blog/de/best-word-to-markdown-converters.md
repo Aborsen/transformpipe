@@ -40,7 +40,7 @@ Der vierte Schritt entscheidet über die Variante, und es gelten dieselben Regel
 | Add-on Docs to Markdown | Einen Teil eines Google-Dokuments konvertieren | Seitenleiste in Docs; konvertiert eine Auswahl, nicht nur die Datei | Kostenlos, Apache 2.0 |
 | Writage | Autoren, die Word nicht verlassen werden | Markdown öffnen und speichern aus Words eigenem Menüband | 29 $ zzgl. MwSt. für Privatpersonen, einmalig |
 | Kopieren und Einfügen | Ein paar Absätze, sofort | Die HTML-Zwischenablage trägt Struktur; ein einfügebewusster Editor konvertiert sie | Kostenlos |
-| Words „Als Webseite speichern" | HTML aus Word holen, ohne Konverter | Word schreibt das HTML, Sie konvertieren dieses | Bei Word enthalten |
+| Words „Als Webseite speichern“ | HTML aus Word holen, ohne Konverter | Word schreibt das HTML, Sie konvertieren dieses | Bei Word enthalten |
 | LibreOffice, headless | Alte `.doc`-Dateien und seltsame Formate | `soffice --convert-to docx` als erster Schritt | Kostenlos, MPL 2.0 |
 | python-docx | Das XML selbst lesen | `.docx` aus Python erstellen, lesen und aktualisieren | Kostenlos, MIT |
 
@@ -96,9 +96,9 @@ Pandoc ist ein Dokumentkonverter für die Kommandozeile, in Haskell geschrieben,
 
 ### mammoth — am besten für die Konvertierung innerhalb Ihres eigenen Codes
 
-mammoth ist eine Bibliothek, die `.docx` in HTML umwandelt, mit Builds für Node und für den Browser. Es ist das, was eine überraschende Anzahl von „Word zu Markdown"-Werkzeugen ist, sobald man hinsieht.
+mammoth ist eine Bibliothek, die `.docx` in HTML umwandelt, mit Builds für Node und für den Browser. Es ist das, was eine überraschende Anzahl von „Word zu Markdown“-Werkzeugen ist, sobald man hinsieht.
 
-Ihre kennzeichnende Idee ist die Style Map. Statt zu raten, ordnet mammoth Words benannte Formatvorlagen HTML-Elementen zu: `p[style-name='Heading 1'] => h1`, und Sie können die Zuordnung um die Hausvorlagen erweitern, die Ihre Organisation verwendet. Das ist der Mechanismus, der ein Dokument mit einer eigenen Vorlage „Chapter Title" korrekt konvertieren lässt, und das Fehlen dieses Mechanismus ist der Grund, warum andere Werkzeuge es nicht tun.
+Ihre kennzeichnende Idee ist die Style Map. Statt zu raten, ordnet mammoth Words benannte Formatvorlagen HTML-Elementen zu: `p[style-name='Heading 1'] => h1`, und Sie können die Zuordnung um die Hausvorlagen erweitern, die Ihre Organisation verwendet. Das ist der Mechanismus, der ein Dokument mit einer eigenen Vorlage „Chapter Title“ korrekt konvertieren lässt, und das Fehlen dieses Mechanismus ist der Grund, warum andere Werkzeuge es nicht tun.
 
 | Vorteile | Nachteile |
 | --- | --- |
@@ -140,7 +140,7 @@ Es ist ungewöhnlich ehrlich über seinen Zweck. Die README sagt, es existiert, 
 - Zu den in der README aufgeführten Formaten gehören PDF, PowerPoint, Word, Excel, Bilder mit OCR, Audio mit Transkription, HTML, CSV, JSON, XML, ZIP, YouTube-URLs und EPUB
 - Verfügbar als Python-Bibliothek für die Verwendung in einem Skript statt aus einer Shell
 
-**Wer sollte es verwenden?** Jeden, der einen Korpus zusammenstellt. Wenn das Markdown in einen Suchindex oder einen Prompt geht, spielt Treue unterhalb von „die Wörter stehen in der richtigen Reihenfolge" keine Rolle, und das ist der schnellste Weg dorthin. Wenn ein Mensch die Ausgabe lesen wird, nehmen Sie etwas anderes.
+**Wer sollte es verwenden?** Jeden, der einen Korpus zusammenstellt. Wenn das Markdown in einen Suchindex oder einen Prompt geht, spielt Treue unterhalb von „die Wörter stehen in der richtigen Reihenfolge“ keine Rolle, und das ist der schnellste Weg dorthin. Wenn ein Mensch die Ausgabe lesen wird, nehmen Sie etwas anderes.
 
 ### Google Docs — am besten, wenn das Dokument schon in Drive liegt
 
@@ -222,7 +222,7 @@ Wenn Sie aus Word kopieren, trägt die Zwischenablage mehrere Darstellungen ders
 
 **Wer sollte es verwenden?** Jeden, der ein paar hundert Wörter verschiebt. Es ist der schnellste Weg für einen Abschnitt eines Dokuments und der schlechteste Weg für ein ganzes, und der Fehlerfall ist leise: der Text kommt an, die Bilder nicht, und niemand merkt es, bis die Seite veröffentlicht ist.
 
-### Words „Als Webseite speichern", dann HTML zu Markdown
+### Words „Als Webseite speichern“, dann HTML zu Markdown
 
 Word kann HTML selbst schreiben. Speichern unter, und wählen Sie Webseite, gefiltert — die gefilterte Option ist die, die den größten Teil von Words eigenem XML weglässt. Dann konvertieren Sie dieses HTML mit dem Werkzeug Ihrer Wahl zu Markdown.
 
@@ -270,11 +270,11 @@ python-docx erstellt, liest und aktualisiert `.docx`-Dateien aus Python. Es hat 
 
 Dies ist der Abschnitt, den eine Herstellerseite nicht schreiben wird, weil es keine Art gibt, ihn zu schreiben, die gut klingt. Markdown hat etwa ein Dutzend Konstrukte. Eine `.docx` hat hunderte. Die Konvertierung ist per Definition verlustbehaftet, und die einzige nützliche Frage ist, welchen Verlusten Sie zustimmen. [Die vollständige Aufstellung, mit einem Urteil zu jedem Punkt](/blog/what-not-to-keep-from-a-docx), geht weiter als die Zusammenfassung unten.
 
-**Schriften, Größen und Farben.** Markdown hat keine Syntax für Schriftart, Punktgröße oder Farbe. Nicht „schwache Unterstützung" — keine. Jeder Konverter hier verwirft sie, und die, bei denen es nicht so scheint, geben rohes HTML mit einem `style`-Attribut aus, und das ist ein anderes Dokument in einer Markdown-förmigen Hülle. Wenn die Bedeutung des Dokuments von seiner Typografie abhängt, zerstört die Umwandlung in Markdown die Bedeutung und behält die Wörter.
+**Schriften, Größen und Farben.** Markdown hat keine Syntax für Schriftart, Punktgröße oder Farbe. Nicht „schwache Unterstützung“ — keine. Jeder Konverter hier verwirft sie, und die, bei denen es nicht so scheint, geben rohes HTML mit einem `style`-Attribut aus, und das ist ein anderes Dokument in einer Markdown-förmigen Hülle. Wenn die Bedeutung des Dokuments von seiner Typografie abhängt, zerstört die Umwandlung in Markdown die Bedeutung und behält die Wörter.
 
 **Ränder, Seitengröße und Seitenumbrüche.** Markdown hat keine Seiten. Ein Dokument, das für A4 mit gespiegelten Rändern und einem Seitenumbruch vor jedem Kapitel gesetzt ist, wird ein durchgehender Strom. Pandoc kann einen Seitenvorschub oder einen Rohblock für einen Seitenumbruch ausgeben, und das ist eine Markierung, die ein späterer Schritt deuten soll, kein Seitenumbruch. Es gibt nichts umzubrechen.
 
-**Kopfzeilen, Fußzeilen und Seitenzahlen.** Diese wohnen in ihren eigenen Teilen des Archivs und verweisen auf ein Konzept — die Seite —, das auf der anderen Seite nicht existiert. Sie werden von allem stillschweigend verworfen. Niemand vermisst sie, bis ein Dokument mit „Vertraulich — Seite 3 von 12" in der Fußzeile ohne diesen Text neu veröffentlicht wird.
+**Kopfzeilen, Fußzeilen und Seitenzahlen.** Diese wohnen in ihren eigenen Teilen des Archivs und verweisen auf ein Konzept — die Seite —, das auf der anderen Seite nicht existiert. Sie werden von allem stillschweigend verworfen. Niemand vermisst sie, bis ein Dokument mit „Vertraulich — Seite 3 von 12“ in der Fußzeile ohne diesen Text neu veröffentlicht wird.
 
 **Verfolgte Änderungen.** Das ist die, die Geld kostet. Ein überprüftes Dokument enthält sowohl das Original als auch die Überarbeitung, ausgezeichnet als Einfügungen und Löschungen. Ein Konverter ohne Meinung dazu wird Ihnen typischerweise den angenommenen Text übergeben, was bedeutet, dass die Löschungen von jemandem verschwunden sind und seine Begründung mit ihnen. Pandocs `--track-changes` ist die einzige dokumentierte Steuerung auf dieser Seite: `accept`, `reject` oder `all`, um alles in Spans gewickelt zu behalten. Wenn ein Dokument durch eine juristische Prüfung gegangen ist, konvertieren Sie es mit `all` und lesen Sie das Ergebnis, bevor Sie die `.docx` wegwerfen.
 

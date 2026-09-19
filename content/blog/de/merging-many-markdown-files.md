@@ -12,7 +12,7 @@ Ein Handbuch lebt selten in einer Datei. Es ist ein Ordner — eine Einleitung, 
 
 `cat *.md > handbuch.md` bringt die Reihenfolge durcheinander, gibt Ihnen ein `<h1>` pro Kapitel, macht aus dem Frontmatter jeder Datei eine verirrte Überschrift und lässt jeden Link, der auf eine Nachbardatei zeigte, ins Leere zeigen. Beheben Sie das in dieser Reihenfolge: entscheiden Sie, wo die Reihenfolge lebt (ein Manifest schlägt numerische Präfixe), stufen Sie jede Überschrift um eine Ebene herab, während Sie Codezäune im Blick behalten, entfernen Sie das Frontmatter beim Einlesen jedes Teils, und schreiben Sie `03-deploy.md#tls` zu `#tls` um, bevor irgendetwas konvertiert wird. Pandoc erledigt die ersten drei mit `--shift-heading-level-by=1`, `--file-scope` und `--toc`. Ab ein paar Dutzend Teilen hören Sie auf zusammenzuführen und nehmen ein Buch-Werkzeug.
 
-Die Fehler haben alle dieselbe Form: Etwas in jeder Datei wurde relativ zu dieser Datei geschrieben, und nach dem Zusammenführen gibt es kein „diese Datei" mehr. Eine Überschriftenebene war relativ zu einem Dokument, das bei `#` begann. Ein Link war relativ zu einem Verzeichnis. Ein Bildpfad war relativ zu einem Ordner zwei Ebenen tiefer. Eine Anker-ID war innerhalb eines Kapitels eindeutig und nicht über zehn hinweg.
+Die Fehler haben alle dieselbe Form: Etwas in jeder Datei wurde relativ zu dieser Datei geschrieben, und nach dem Zusammenführen gibt es kein „diese Datei“ mehr. Eine Überschriftenebene war relativ zu einem Dokument, das bei `#` begann. Ein Link war relativ zu einem Verzeichnis. Ein Bildpfad war relativ zu einem Ordner zwei Ebenen tiefer. Eine Anker-ID war innerhalb eines Kapitels eindeutig und nicht über zehn hinweg.
 
 Nichts davon kündigt sich an. Ein zusammengeführtes Dokument stellt sich dar. Es stellt sich nur falsch dar — das Inhaltsverzeichnis springt zum falschen Kapitel, ein Bild ist ein kaputtes Symbol, und ein Link öffnet einen Download-Dialog für eine Datei, die es nicht gibt. Jeden dieser Fehler entdeckt ein Leser, nicht der Build.
 
@@ -32,7 +32,7 @@ Arbeiten Sie sie in dieser Abfolge durch. Die Reihenfolge zuerst, weil jede spä
 | Dateiübergreifende Links | Ein Link auf eine Datei, die es nicht mehr gibt | `03-deploy.md#tls` nannte eine Nachbardatei | Zu `#tls` umschreiben |
 | Links auf ganze Dateien | Ein Link ohne Fragment, auf das er zielen könnte | `[Bereitstellen](03-deploy.md)` hat keinen Anker | Jeden Dateinamen auf die ID seines Titels abbilden |
 | Bildpfade | Ein kaputtes Bildsymbol | Relative Pfade lösen jetzt von der zusammengeführten Datei aus auf | Die Pfade jedes Teils neu verankern, oder sie einbetten |
-| Ankerkollisionen | Zwei Überschriften „Überblick", eine ID | IDs kommen aus dem Überschriftentext | Nach Quelldatei voranstellen, oder umbenennen |
+| Ankerkollisionen | Zwei Überschriften „Überblick“, eine ID | IDs kommen aus dem Überschriftentext | Nach Quelldatei voranstellen, oder umbenennen |
 | Fußnoten-IDs | Eine Fußnote landet bei der falschen Notiz | Jeder Teil beginnt seine Nummerierung bei `[^1]` | Pro Datei parsen, oder den Labels ein Präfix geben |
 | Inhaltsverzeichnis | Einträge, die nirgendwohin springen | Die Slug-Regel hat anders geraten als der Renderer | Aus der Ausgabe erzeugen, nicht aus der Eingabe |
 | Seitenumbrüche | Kapitel laufen im PDF mitten auf der Seite weiter | Markdown hat keine Seitenumbruch-Syntax | Eine CSS-Fragmentierungsregel an jeder Naht |
@@ -60,7 +60,7 @@ Schritte von zehn lassen Platz, später einen Teil einzufügen. Zwei Stellen geb
 
 Die Polsterung muss einheitlich sein. `9-intro.md` mit `10-setup.md` zu mischen reproduziert den ursprünglichen Fehler in kleinerem Maßstab, denn `1` sortiert immer noch vor `9`. Und später neu zu polstern ist eine Umbenennung jeder Datei, was jeden eingehenden Link, jedes Lesezeichen und die Dateihistorie ungültig macht, der `git log --follow` gefolgt ist. Wählen Sie am ersten Tag eine Breite und behalten Sie sie.
 
-Zwei weitere Kosten sind es wert, genannt zu werden. Präfixe sickern durch: Wird derselbe Ordner auch von einem Generator veröffentlicht, taucht `10-installation` in der URL auf, und es dort zu entfernen ist eine weitere Regel in einer weiteren Konfigurationsdatei. Und Zeichenkettensortierung ist gebietsschemaabhängig — derselbe Glob kann akzentuierte oder gemischt großgeschriebene Dateinamen auf zwei Maschinen unterschiedlich ordnen, ein Unterschied, den niemand bemerkt, bis CI ein Dokument erzeugt, das der Autor nicht reproduzieren kann. GNU coreutils' `sort -V` ist eine „natürliche Sortierung von (Versions-)Zahlen innerhalb von Text" (geprüft auf man7.org, 9. September 2026), was der Polsterungsfrage vollständig ausweicht — aber es ist nicht auf jedem System, auf dem Ihr Skript laufen wird, prüfen Sie also `sort --version`, bevor ein Build sich darauf verlässt.
+Zwei weitere Kosten sind es wert, genannt zu werden. Präfixe sickern durch: Wird derselbe Ordner auch von einem Generator veröffentlicht, taucht `10-installation` in der URL auf, und es dort zu entfernen ist eine weitere Regel in einer weiteren Konfigurationsdatei. Und Zeichenkettensortierung ist gebietsschemaabhängig — derselbe Glob kann akzentuierte oder gemischt großgeschriebene Dateinamen auf zwei Maschinen unterschiedlich ordnen, ein Unterschied, den niemand bemerkt, bis CI ein Dokument erzeugt, das der Autor nicht reproduzieren kann. GNU coreutils' `sort -V` ist eine „natürliche Sortierung von (Versions-)Zahlen innerhalb von Text“ (geprüft auf man7.org, 9. September 2026), was der Polsterungsfrage vollständig ausweicht — aber es ist nicht auf jedem System, auf dem Ihr Skript laufen wird, prüfen Sie also `sort --version`, bevor ein Build sich darauf verlässt.
 
 ### Eine Manifestdatei
 
@@ -74,8 +74,8 @@ Ein Pfad pro Zeile; Leerzeilen und `#`-Kommentare fallen heraus. Das ist der gan
 
 Sehr oft hat das Repository schon eines, und ein zweites hinzuzufügen ist, wie die beiden auseinanderdriften:
 
-- **mdBook** benutzt `SUMMARY.md`. „Die Summary-Datei wird von mdBook genutzt, um zu wissen, welche Kapitel einzuschließen sind, in welcher Reihenfolge sie erscheinen sollen, welche Hierarchie sie haben und wo die Quelldateien liegen. Ohne diese Datei gibt es kein Buch." (geprüft auf rust-lang.github.io, 9. September 2026)
-- **MkDocs** benutzt den `nav`-Schlüssel in `mkdocs.yml`, der „genutzt wird, um Format und Layout der globalen Navigation der Seite zu bestimmen". Lässt man ihn weg, „enthält `nav` eine alphanumerisch sortierte, verschachtelte Liste aller Markdown-Dateien im `docs_dir`" — also wieder das Glob-Problem, mit einer Konfigurationsdatei davor. (geprüft auf mkdocs.org, 9. September 2026)
+- **mdBook** benutzt `SUMMARY.md`. „Die Summary-Datei wird von mdBook genutzt, um zu wissen, welche Kapitel einzuschließen sind, in welcher Reihenfolge sie erscheinen sollen, welche Hierarchie sie haben und wo die Quelldateien liegen. Ohne diese Datei gibt es kein Buch.“ (geprüft auf rust-lang.github.io, 9. September 2026)
+- **MkDocs** benutzt den `nav`-Schlüssel in `mkdocs.yml`, der „genutzt wird, um Format und Layout der globalen Navigation der Seite zu bestimmen“. Lässt man ihn weg, „enthält `nav` eine alphanumerisch sortierte, verschachtelte Liste aller Markdown-Dateien im `docs_dir`“ — also wieder das Glob-Problem, mit einer Konfigurationsdatei davor. (geprüft auf mkdocs.org, 9. September 2026)
 - **Quarto** listet die Teile eines Buchs unter `book: chapters:` in `_quarto.yml` auf. (geprüft auf quarto.org, 9. September 2026)
 
 Jedes davon ist schon die Quelle der Wahrheit. Lesen Sie sie, statt sie zu duplizieren. `SUMMARY.md` ist eine verschachtelte Liste von Markdown-Links, die Pfade kommen also mit einem Ausdruck heraus:
@@ -109,7 +109,7 @@ Sie brauchen jetzt einen YAML-Parser zum Sortieren, denn ein `grep` nach `order:
 | Eine Manifestdatei | Eine Zeile pro neuem Teil hinzufügen | Jemand fügt eine Datei hinzu und vergisst die Zeile | Alles, was in einem Pull Request begutachtet wird |
 | Ein Schlüssel im Frontmatter jeder Datei | Ein YAML-Parser im Merge-Skript | Zwei Teile beanspruchen dieselbe Zahl | Dateien, die zwischen Ordnern wandern |
 
-Bevorzugen Sie das Manifest, und bevorzugen Sie das, das das Repository schon hat. Es ist die einzige Option, bei der die Lesereihenfolge ein überprüfbares Artefakt ist statt einer emergenten Eigenschaft, und die einzige, bei der „dieses Kapitel fehlt im Build" als fehlende Zeile in einem Diff auftaucht statt als Datei, an die niemand gedacht hat. Der Fehlermodus zählt mehr als die Bequemlichkeit: eine vergessene Manifestzeile lässt ein Kapitel still ausfallen, aber das tut auch ein Tippfehler in einem Präfix, und nur einer der beiden ist in einem Code-Review sichtbar.
+Bevorzugen Sie das Manifest, und bevorzugen Sie das, das das Repository schon hat. Es ist die einzige Option, bei der die Lesereihenfolge ein überprüfbares Artefakt ist statt einer emergenten Eigenschaft, und die einzige, bei der „dieses Kapitel fehlt im Build“ als fehlende Zeile in einem Diff auftaucht statt als Datei, an die niemand gedacht hat. Der Fehlermodus zählt mehr als die Bequemlichkeit: eine vergessene Manifestzeile lässt ein Kapitel still ausfallen, aber das tut auch ein Tippfehler in einem Präfix, und nur einer der beiden ist in einem Code-Review sichtbar.
 
 Benutzen Sie ruhig auch Präfixe — sie machen den Ordner in einer Dateiliste lesbar —, aber lassen Sie das Manifest entscheiden. Reihenfolge aus dem Frontmatter lohnt sich nur, wenn Teile wirklich zwischen Verzeichnissen wandern, was seltener ist, als es klingt.
 
@@ -123,7 +123,7 @@ Jeder Teil wurde geschrieben, um für sich zu stehen, jeder beginnt also mit ein
 
 Es gibt zwei Antworten. Behandeln Sie jedes `#` als Kapiteltitel und setzen Sie nichts darüber, was funktioniert, solange die Datei immer nur ein Stapel von Kapiteln ist. Oder stufen Sie jede Überschrift um eine Ebene herab und fügen einen einzigen `#`-Titel hinzu. `sed 's/^#/##/'` verdirbt dabei Ihren Code: ein Kommentar `# den Agenten installieren` in einem eingezäunten Block wird auch herabgestuft. Verfolgen Sie die Zäune.
 
-Es gibt auch eine Obergrenze. CommonMark setzt die öffnende Folge einer ATX-Überschrift auf „1–6 unmaskierte `#`-Zeichen", und „mehr als sechs `#`-Zeichen ist keine Überschrift" (geprüft auf spec.commonmark.org, 9. September 2026) — ein siebtes Doppelkreuz gibt Ihnen einen Absatz, der mit Doppelkreuzen beginnt. Ein Teil, der schon `######` für etwas benutzt, hat also nirgendwohin zu gehen, und der Herabstufungsdurchgang muss die in Ruhe lassen, statt sie still in Text zu verwandeln. In der Praxis sagt Ihnen ein Dokument mit sechs Überschriftenebenen, dass es zwei Dokumente hätte sein sollen.
+Es gibt auch eine Obergrenze. CommonMark setzt die öffnende Folge einer ATX-Überschrift auf „1–6 unmaskierte `#`-Zeichen“, und „mehr als sechs `#`-Zeichen ist keine Überschrift“ (geprüft auf spec.commonmark.org, 9. September 2026) — ein siebtes Doppelkreuz gibt Ihnen einen Absatz, der mit Doppelkreuzen beginnt. Ein Teil, der schon `######` für etwas benutzt, hat also nirgendwohin zu gehen, und der Herabstufungsdurchgang muss die in Ruhe lassen, statt sie still in Text zu verwandeln. In der Praxis sagt Ihnen ein Dokument mit sechs Überschriftenebenen, dass es zwei Dokumente hätte sein sollen.
 
 ### Die Teile trennen
 
@@ -301,22 +301,22 @@ Die Pfade richtigzustellen macht das zusammengeführte Markdown korrekt. Es mach
 
 ## Ankerkollisionen, und was jeder Renderer damit macht
 
-Überschriften-IDs kommen aus dem Überschriftentext, ein `## Überblick` im Installationskapitel und ein `## Überblick` im Jobs-Kapitel wollen also beide die ID `ueberblick`. In zehn von vier Personen geschriebenen Kapiteln werden „Überblick", „Konfiguration", „Fehlerbehebung" und „Beispiele" alle mehr als einmal auftauchen. Jedes davon ist eine Kollision.
+Überschriften-IDs kommen aus dem Überschriftentext, ein `## Überblick` im Installationskapitel und ein `## Überblick` im Jobs-Kapitel wollen also beide die ID `ueberblick`. In zehn von vier Personen geschriebenen Kapiteln werden „Überblick“, „Konfiguration“, „Fehlerbehebung“ und „Beispiele“ alle mehr als einmal auftauchen. Jedes davon ist eine Kollision.
 
 Was als Nächstes passiert, hängt vollständig davon ab, was die Datei konvertiert.
 
-| Was sie darstellt | Was das zweite „Überblick" bekommt | Quelle |
+| Was sie darstellt | Was das zweite „Überblick“ bekommt | Quelle |
 | --- | --- | --- |
 | github-slugger, die Regel, der GitHubs eigene Anker folgen | `overview-1`, dann `overview-2` | `slugger.slug('foo')` gibt `foo` zurück, dann `foo-1`; ISC-Lizenz (geprüft auf github.com, 9. September 2026) |
-| markdown-it-anchor | `overview-1` | Automatisch erzeugte IDs „hängen bei Kollision immer noch ein Suffix an"; `uniqueSlugStartIndex` ist standardmäßig 1; Unlicense (geprüft auf github.com, 9. September 2026) |
-| Pandoc mit `--file-scope` | Eine ID mit Präfix aus dem Dateinamen | „Präfixe basierend auf den Dateinamen werden zu Bezeichnern hinzugefügt, um sie zu unterscheiden, und interne Links werden entsprechend angepasst" (geprüft auf pandoc.org, 9. September 2026) |
+| markdown-it-anchor | `overview-1` | Automatisch erzeugte IDs „hängen bei Kollision immer noch ein Suffix an“; `uniqueSlugStartIndex` ist standardmäßig 1; Unlicense (geprüft auf github.com, 9. September 2026) |
+| Pandoc mit `--file-scope` | Eine ID mit Präfix aus dem Dateinamen | „Präfixe basierend auf den Dateinamen werden zu Bezeichnern hinzugefügt, um sie zu unterscheiden, und interne Links werden entsprechend angepasst“ (geprüft auf pandoc.org, 9. September 2026) |
 | Ein Konverter ohne Deduplizierung | Dieselbe ID, zweimal, in einem Dokument | Der Browser springt zu der, die zuerst kommt |
 
 Jedes dieser Verhaltensweisen ist vertretbar, und keine zwei davon stimmen überein. Ein Link geschrieben als `[siehe](#overview)` ist also über Werkzeuge hinweg unvorhersehbar: auf dem einen erreicht er den Abschnitt des ersten Kapitels, auf dem anderen erreicht er ein Element, das nur existiert, weil das Werkzeug gezählt hat, und auf einem dritten erreicht er eine doppelte ID, über die die Spezifikation nie etwas versprochen hat. Schlimmer noch, das Suffix hängt von der Dokumentreihenfolge ab, ein eingefügtes Kapitel nummeriert also jede Kollision danach neu durch und lenkt still Links um, die früher funktioniert haben.
 
 Drei Abhilfen, die beste zuerst.
 
-**Machen Sie die Überschriften eindeutig.** `## Den Agenten konfigurieren` und `## Einen Job konfigurieren` sind unabhängig vom Zusammenführen die bessere Dokumentation, und sie beseitigen das Problem, statt es zu verwalten. Ein Leser, der ein Inhaltsverzeichnis mit zehn identischen „Überblick"-Einträgen überfliegt, ist mit keiner Menge an Suffixen geholfen.
+**Machen Sie die Überschriften eindeutig.** `## Den Agenten konfigurieren` und `## Einen Job konfigurieren` sind unabhängig vom Zusammenführen die bessere Dokumentation, und sie beseitigen das Problem, statt es zu verwalten. Ein Leser, der ein Inhaltsverzeichnis mit zehn identischen „Überblick“-Einträgen überfliegt, ist mit keiner Menge an Suffixen geholfen.
 
 **Präfix nach Quelldatei zur Merge-Zeit.** Wenn Umbenennen nicht infrage kommt, schreiben Sie jede Überschrift beim Einlesen so um, dass ihre ID den Teil trägt, aus dem sie kam — `deploy-ueberblick`, `installation-ueberblick`. Wo die Syntax verfügbar ist, ist eine explizite ID auf der Überschrift exakt:
 
@@ -357,7 +357,7 @@ awk '/^```/ { fence = !fence; next }
 
 Diese Slug-Regel — Kleinschreibung, Satzzeichen weg, Leerzeichen zu Bindestrichen — hält für deutsche Überschriften nicht ohne Weiteres, weil Umlaute nicht als ASCII-Kleinbuchstaben durchgehen, und sie weicht bei Duplikaten ab. Sie nimmt auch an, dass die ID der bloße Slug ist: Ein Konverter, der IDs mit Präfix versieht, will dieses Präfix im Link. Erzeugte Einträge und Überschriften kommen aus demselben Text, ein umbenanntes Kapitel benennt also seinen Eintrag um.
 
-**doctoc** „erzeugt Inhaltsverzeichnisse für Markdown-Dateien innerhalb eines lokalen Git-Repositorys. Links sind kompatibel mit Ankern, die von GitHub oder anderen Seiten erzeugt werden". Installieren Sie es mit `npm install -g doctoc`, markieren Sie die Stelle mit `<!-- START doctoc -->` und `<!-- END doctoc -->`, und führen Sie `doctoc handbuch.md` aus; `--github`, `--maxlevel` und `--title` steuern den Anker-Stil, die Tiefe und die Überschrift, die es über die Liste schreibt. MIT-lizenziert (geprüft auf github.com, 9. September 2026).
+**doctoc** „erzeugt Inhaltsverzeichnisse für Markdown-Dateien innerhalb eines lokalen Git-Repositorys. Links sind kompatibel mit Ankern, die von GitHub oder anderen Seiten erzeugt werden“. Installieren Sie es mit `npm install -g doctoc`, markieren Sie die Stelle mit `<!-- START doctoc -->` und `<!-- END doctoc -->`, und führen Sie `doctoc handbuch.md` aus; `--github`, `--maxlevel` und `--title` steuern den Anker-Stil, die Tiefe und die Überschrift, die es über die Liste schreibt. MIT-lizenziert (geprüft auf github.com, 9. September 2026).
 
 **markdown-toc** erledigt dieselbe Arbeit mit einem kürzeren Marker: Setzen Sie `<!-- toc -->`, wo Sie die Liste wollen, und führen Sie `markdown-toc -i handbuch.md` aus, um sie an Ort und Stelle zu schreiben, zwischen `<!-- toc -->` und `<!-- tocstop -->`. Installieren Sie mit `npm install -g markdown-toc`. MIT-lizenziert (geprüft auf github.com, 9. September 2026).
 
@@ -377,15 +377,15 @@ Welchen Weg auch immer, gehen Sie die zusammengeführte Datei einmal durch, bevo
 
 Pandoc behandelt mehrere dieser Probleme mit Flags, was ein guter Grund ist, danach zu greifen, bevor man ein Skript schreibt — und ein guter Grund, genau zu wissen, welche Probleme es Ihnen überlässt.
 
-Bei mehreren Eingaben wird „pandoc sie alle verketten (mit Leerzeilen dazwischen), bevor geparst wird", die Reihenfolge ist also immer noch Ihre Aufgabe: Listen Sie die Dateien in der gewünschten Reihenfolge auf, oder expandieren Sie ein Manifest in die Kommandozeile. Die nützlichen Flags:
+Bei mehreren Eingaben wird „pandoc sie alle verketten (mit Leerzeilen dazwischen), bevor geparst wird“, die Reihenfolge ist also immer noch Ihre Aufgabe: Listen Sie die Dateien in der gewünschten Reihenfolge auf, oder expandieren Sie ein Manifest in die Kommandozeile. Die nützlichen Flags:
 
 | Flag | Was das Handbuch sagt |
 | --- | --- |
-| `--shift-heading-level-by` | „Überschriftenebenen um eine positive oder negative Ganzzahl verschieben. Mit `--shift-heading-level-by=-1` werden zum Beispiel Überschriften der Ebene 2 zu Überschriften der Ebene 1, und Überschriften der Ebene 3 zu Ebene 2." |
-| `--file-scope` | „Jede Datei einzeln parsen, bevor sie für mehrteilige Dokumente kombiniert werden. Das erlaubt Fußnoten in verschiedenen Dateien mit denselben Bezeichnern, sich wie erwartet zu verhalten." |
-| `--toc` | „Ein automatisch erzeugtes Inhaltsverzeichnis … in das Ausgabedokument einschließen." |
-| `--toc-depth` | „Die Anzahl der Abschnittsebenen im Inhaltsverzeichnis angeben. Der Standard ist 3." |
-| `--number-sections` | „Abschnittsüberschriften in LaTeX-, ConTeXt-, HTML-, Docx-, ms- oder EPUB-Ausgabe nummerieren. Standardmäßig werden Abschnitte nicht nummeriert." |
+| `--shift-heading-level-by` | „Überschriftenebenen um eine positive oder negative Ganzzahl verschieben. Mit `--shift-heading-level-by=-1` werden zum Beispiel Überschriften der Ebene 2 zu Überschriften der Ebene 1, und Überschriften der Ebene 3 zu Ebene 2.“ |
+| `--file-scope` | „Jede Datei einzeln parsen, bevor sie für mehrteilige Dokumente kombiniert werden. Das erlaubt Fußnoten in verschiedenen Dateien mit denselben Bezeichnern, sich wie erwartet zu verhalten.“ |
+| `--toc` | „Ein automatisch erzeugtes Inhaltsverzeichnis … in das Ausgabedokument einschließen.“ |
+| `--toc-depth` | „Die Anzahl der Abschnittsebenen im Inhaltsverzeichnis angeben. Der Standard ist 3.“ |
+| `--number-sections` | „Abschnittsüberschriften in LaTeX-, ConTeXt-, HTML-, Docx-, ms- oder EPUB-Ausgabe nummerieren. Standardmäßig werden Abschnitte nicht nummeriert.“ |
 
 (Alle geprüft auf pandoc.org, 9. September 2026.)
 
@@ -445,7 +445,7 @@ Ein Buch-Werkzeug löst Reihenfolge, Anker und Navigation für Sie und berechnet
 
 (Lizenzen und Ausgaben geprüft auf rust-lang.github.io, mkdocs.org, quarto.org, pandoc.org und github.com, 9. September 2026. Honkit ist ein Fork von GitBook Legacy.)
 
-Was das kostet, ist es wert, klar gesagt zu werden, denn „nimm einfach mdBook" ist ein Rat, der die Hälfte des Problems ignoriert. Sie erwerben eine Toolchain: eine Laufzeitumgebung, die auf jeder Maschine installiert werden muss, die die Dokumentation baut, eine Konfigurationsdatei, die gültig gehalten werden muss, ein Theme, das aktuell gehalten werden muss, und einen CI-Job, der jetzt aus Gründen scheitern kann, die nichts mit irgendetwas zu tun haben, das jemand geschrieben hat. Sie erwerben ein Deployment-Ziel, denn die Ausgabe ist ein Verzeichnis von Dateien, das irgendwo gehostet werden muss. Und Sie verlieren das Artefakt, das Sie ursprünglich wollten — ein Buch-Werkzeug gibt Ihnen eine Website, keine Datei, die Sie an eine E-Mail anhängen können, und wenn jemand nach dem ganzen Handbuch als einer Seite fragt, sind Sie wieder beim Zusammenführen, oder bei welcher Druckansicht das Werkzeug zufällig anbietet.
+Was das kostet, ist es wert, klar gesagt zu werden, denn „nimm einfach mdBook“ ist ein Rat, der die Hälfte des Problems ignoriert. Sie erwerben eine Toolchain: eine Laufzeitumgebung, die auf jeder Maschine installiert werden muss, die die Dokumentation baut, eine Konfigurationsdatei, die gültig gehalten werden muss, ein Theme, das aktuell gehalten werden muss, und einen CI-Job, der jetzt aus Gründen scheitern kann, die nichts mit irgendetwas zu tun haben, das jemand geschrieben hat. Sie erwerben ein Deployment-Ziel, denn die Ausgabe ist ein Verzeichnis von Dateien, das irgendwo gehostet werden muss. Und Sie verlieren das Artefakt, das Sie ursprünglich wollten — ein Buch-Werkzeug gibt Ihnen eine Website, keine Datei, die Sie an eine E-Mail anhängen können, und wenn jemand nach dem ganzen Handbuch als einer Seite fragt, sind Sie wieder beim Zusammenführen, oder bei welcher Druckansicht das Werkzeug zufällig anbietet.
 
 Die Trennlinie ist nicht die Anzahl der Dateien. Es ist, ob das Dokument einmal gelesen oder darin gelebt wird. Ein jahrelang gepflegtes Handbuch ist besser als Website; eines, das einmal hinausgeht — an einen Kunden, eine Aufsichtsbehörde, einen neuen Kollegen — ist besser zusammengeführt. Wo die Quelle lebt, ist eine getrennte Frage von beidem, und die Antwort darauf ist fast immer das Repository.
 

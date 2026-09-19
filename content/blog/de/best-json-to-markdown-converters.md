@@ -12,13 +12,13 @@ JSON hat keine Überschriften. Es hat auch keine Absätze, kein Fettes, keine Ta
 
 Wählen Sie nach der Form Ihrer Datei, nicht nach der Funktionsliste des Werkzeugs. Ein **Array flacher Objekte** — die Form, die die meisten API-Antworten und Exporte haben — ist die einzige Form, über die eine Markdown-Tabelle ehrlich ist, und fast alles hier tabelliert sie. **Verschachtelte Objekte** sind, wo die Werkzeuge auseinandergehen: manche flachen Schlüssel zu punktierten Spaltennamen ab, manche machen aus jeder Ebene eine Überschrift, bis ihnen die Überschriftenebenen ausgehen, manche geben auf und drucken JSON. **JSON Lines** — ein Datensatz pro Zeile, und das ist, was ein Log-Export meist ist — ist kein gültiges JSON, die Hälfte dieser Werkzeuge lehnt die Datei also von vornherein ab. Ein Konverter im Browser trifft die Formentscheidungen für Sie und sagt Ihnen, welche es sind; jq, Miller und jtbl lassen Sie sie selbst auf der Kommandozeile treffen; pandas ist die Antwort in einem Python-Skript.
 
-## Warum „es konvertiert JSON" fast nichts aussagt
+## Warum „es konvertiert JSON“ fast nichts aussagt
 
 Markdown in HTML zu verwandeln ist eine Übersetzung zwischen zwei Dokumentformaten, die sich weitgehend darüber einig sind, was ein Dokument ist. JSON in Markdown zu verwandeln ist überhaupt keine Übersetzung. Es ist eine Deutung, und das Werkzeug rät die Absicht. `{"name": "Ada", "roles": ["admin", "billing"]}` könnte vernünftigerweise eine Überschrift namens Name mit einem Absatz darunter sein, ein fettes Label mit einem Wert, eine zweizeilige Tabelle, eine Punktliste oder eine Definitionsliste. Ein vernünftiger Mensch würde unterschiedlich wählen, je nachdem, ob dieses Objekt ein Datensatz unter Tausenden oder die ganze Datei ist.
 
 Das Erste, was man über jedes Werkzeug hier feststellen muss, ist also, welche Formen es erkennt und was es mit jeder macht. Es gibt nur vier Fragen, die zählen. Was passiert mit einem Array von Objekten? Was passiert mit einem Array einfacher Werte? Was passiert mit Verschachtelung, und wie tief folgt das Werkzeug ihr, bevor es aufhört? Und was passiert mit einer Datei, die überhaupt nicht ein JSON-Wert ist?
 
-Die Antworten stehen selten auf der Startseite des Werkzeugs, und sie sind das ganze Produkt. Ein Konverter, der jedes Objekt in eine zweispaltige Schlüssel-Wert-Tabelle verwandelt, stellt einen Export mit 900 Datensätzen als 900 winzige Tabellen dar. Ein Konverter, der nur das äußerste Array tabelliert, macht lautlos eine Zeichenkette aus einem verschachtelten Objekt, sodass eine Spalte Ihrer sonst lesbaren Tabelle `{"city":"Leeds","postcode":"LS1 1AA"}` in einer nicht festbreiten Proportionalschrift enthält. Beide Werkzeuge „konvertieren JSON zu Markdown". Keines der Ergebnisse ist, wonach Sie gefragt haben.
+Die Antworten stehen selten auf der Startseite des Werkzeugs, und sie sind das ganze Produkt. Ein Konverter, der jedes Objekt in eine zweispaltige Schlüssel-Wert-Tabelle verwandelt, stellt einen Export mit 900 Datensätzen als 900 winzige Tabellen dar. Ein Konverter, der nur das äußerste Array tabelliert, macht lautlos eine Zeichenkette aus einem verschachtelten Objekt, sodass eine Spalte Ihrer sonst lesbaren Tabelle `{"city":"Leeds","postcode":"LS1 1AA"}` in einer nicht festbreiten Proportionalschrift enthält. Beide Werkzeuge „konvertieren JSON zu Markdown“. Keines der Ergebnisse ist, wonach Sie gefragt haben.
 
 Das Zweite, was festzustellen ist, ist, wohin die Datei geht. JSON-Exporte enthalten überproportional häufig Dinge, die Sie nicht in das Textfeld eines Fremden einfügen würden: Nutzerdatensätze, Bestellverläufe, API-Antworten mit Tokens darin, ein Datenbankauszug, den jemand Ihnen zum Ansehen geschickt hat. Ein Konverter, der in Ihrem Browser oder auf Ihrem eigenen Rechner läuft, lässt diese Frage nicht aufkommen. Ein gehosteter tut es, und die ehrliche Fassung dieses Tauschgeschäfts ist, dass es ganz an der Datei hängt.
 
@@ -60,10 +60,10 @@ Es wandelt eine `.json`-Datei in Ihrem Browser in Markdown und wählt eine Darst
 - Ein Objekt setzt seine skalaren Schlüssel zuerst als fette Labels, dann gibt es jedem verschachtelten Schlüssel eine eigene Überschrift, sodass die flachen Fakten lesbar sind, bevor die tiefen beginnen
 - Jenseits von drei Ebenen wird ein Wert als eingezäunter `json`-Block gedruckt statt als Überschrift, denn eine Überschrift auf Tiefe sieben ist keine Überschrift
 - `null` wird als kursives `null` geschrieben statt übersprungen, und ein leeres Array sagt es, denn abwesend und leer sind Fakten über die Daten
-- Schlüssel werden für die Anzeige umbenannt: `created_at` und `createdAt` kommen beide als „Created at" heraus
+- Schlüssel werden für die Anzeige umbenannt: `created_at` und `createdAt` kommen beide als „Created at“ heraus
 - Dieselbe Konvertierung gibt es über eine REST-API, ein CLI ohne Abhängigkeiten, eine GitHub Action und einen MCP-Server
 
-**Wer sollte es verwenden?** Jeden, dessen nächster Schritt „das lesen" oder „das jemandem schicken" ist. Eine API-Antwort, ein Export aus einem Admin-Bereich, eine Log-Datei, die jemand an ein Ticket gehängt hat — die Fälle, in denen Sie die Daten in einer Minute lesbar haben wollen und kein Skript schreiben und über die Form gar nicht nachdenken wollen.
+**Wer sollte es verwenden?** Jeden, dessen nächster Schritt „das lesen“ oder „das jemandem schicken“ ist. Eine API-Antwort, ein Export aus einem Admin-Bereich, eine Log-Datei, die jemand an ein Ticket gehängt hat — die Fälle, in denen Sie die Daten in einer Minute lesbar haben wollen und kein Skript schreiben und über die Form gar nicht nachdenken wollen.
 
 ### jq — am besten, um die Form selbst zu entscheiden
 
@@ -86,7 +86,7 @@ jq ist ein JSON-Prozessor für die Kommandozeile in portablem C ohne Laufzeitabh
 - `--slurp` sammelt einen Strom von Werten in ein Array, und so lässt man eine JSON-Lines-Datei wie eine JSON-Datei wirken
 - `-r` druckt rohe Zeichenketten statt quotierten JSONs, und das ist das Flag, das Leute vergessen und sich dann wundern, warum jede Zelle Anführungszeichen hat
 
-**Wer sollte es verwenden?** Jeden, der jq schon kennt, und jeden, dessen Datei gefiltert werden muss, bevor sie formatiert wird. Wenn die Antwort „nur die fehlgeschlagenen Anfragen, nach Tag gruppiert" enthält, brauchen Sie jq oder etwas Ähnliches, bevor irgendein Konverter relevant ist. Es passt an dieselbe Stelle einer Pipeline wie [ein Markdown-zu-HTML-Schritt auf der Kommandozeile](/blog/markdown-to-html-from-the-command-line): eine Stufe, die eine Sache mit Text macht.
+**Wer sollte es verwenden?** Jeden, der jq schon kennt, und jeden, dessen Datei gefiltert werden muss, bevor sie formatiert wird. Wenn die Antwort „nur die fehlgeschlagenen Anfragen, nach Tag gruppiert“ enthält, brauchen Sie jq oder etwas Ähnliches, bevor irgendein Konverter relevant ist. Es passt an dieselbe Stelle einer Pipeline wie [ein Markdown-zu-HTML-Schritt auf der Kommandozeile](/blog/markdown-to-html-from-the-command-line): eine Stufe, die eine Sache mit Text macht.
 
 ### jtbl — am besten für eine Tabelle im Terminal, JSON Lines eingeschlossen
 
@@ -210,7 +210,7 @@ TableConvert ist ein Online-Tabellenkonverter mit einer Seite für JSON zu Markd
 - Zu den Ausgabeformaten gehört Markdown neben den anderen Tabellenformaten, die die Seite verkraftet
 - Das dazwischenliegende Gitter erlaubt, eine Spalte umzubenennen oder eine Zeile zu löschen, bevor Sie das Markdown nehmen
 
-**Wer sollte es verwenden?** Jeden mit einem flachen Array in der Zwischenablage und einem tabellenförmigen Loch zu füllen. Für eine ganze Datei, oder eine Datei mit Struktur, erspart Ihnen ein Konverter, der andere Formen als „Array von Objekten" liest, das Umformen.
+**Wer sollte es verwenden?** Jeden mit einem flachen Array in der Zwischenablage und einem tabellenförmigen Loch zu füllen. Für eine ganze Datei, oder eine Datei mit Struktur, erspart Ihnen ein Konverter, der andere Formen als „Array von Objekten“ liest, das Umformen.
 
 ### Ein selbst geschriebenes Skript — am besten, wenn die Form Ihnen gehört und sich nicht ändern wird
 
@@ -248,7 +248,7 @@ JSON in einen Assistenten einzufügen und um eine Markdown-Tabelle zu bitten fun
 **Technische Details und Funktionen**
 
 - Am besten für Daten, die Sie überblicken können: wenn Sie die Zeilen in der Ausgabe nicht zählen können, können Sie sie nicht prüfen
-- Ein deterministischer Konverter und ein Assistent widersprechen sich auf nützliche Weise — lassen Sie beide über dieselbe Datei laufen, und der Diff zeigt Ihnen, welche Zellen „hilfsbereit" verändert wurden
+- Ein deterministischer Konverter und ein Assistent widersprechen sich auf nützliche Weise — lassen Sie beide über dieselbe Datei laufen, und der Diff zeigt Ihnen, welche Zellen „hilfsbereit“ verändert wurden
 - Ein MCP-Server setzt eine deterministische Konvertierung in den Assistenten, und das ist die Fassung, die es wert ist: das Modell entscheidet, was zu konvertieren ist, der Konverter entscheidet, was die Ausgabe ist
 - Die Ausgabe ist Markdown, und das muss noch etwas werden, das ein Mensch öffnen kann — [die Ausgabe eines Assistenten auf eine teilbare Seite zu bringen](/blog/ai-output-to-a-shareable-page) ist ein eigener Schritt
 
@@ -256,7 +256,7 @@ JSON in einen Assistenten einzufügen und um eine Markdown-Tabelle zu bitten fun
 
 ### Pandoc — das Werkzeug, das das nicht tut
 
-Pandoc wandelt zwischen rund vierzig Dokumentformaten, und dieses ist keines davon. Sein `json`-Eingabeformat ist „JSON-Fassung des nativen AST" — Pandocs eigener Dokumentbaum als JSON serialisiert, nicht Ihre Daten. Ihm eine API-Antwort zu geben erzeugt einen Fehler, kein Dokument.
+Pandoc wandelt zwischen rund vierzig Dokumentformaten, und dieses ist keines davon. Sein `json`-Eingabeformat ist „JSON-Fassung des nativen AST“ — Pandocs eigener Dokumentbaum als JSON serialisiert, nicht Ihre Daten. Ihm eine API-Antwort zu geben erzeugt einen Fehler, kein Dokument.
 
 **Wer sollte es verwenden?** Niemand, für diese Konvertierung. Pandoc ist die richtige Antwort für [Markdown zu HTML und die Formate darum](/blog/best-markdown-to-html-converters) und der falsche Ort, um nach JSON zu suchen.
 
@@ -270,7 +270,7 @@ Jedes Werkzeug oben erzeugt Markdown aus JSON. Was darüber entscheidet, ob das 
 
 **Verschachtelung muss irgendwo aufhören, Überschriften zu werden, und das Werkzeug wählt wo.** Markdown hat sechs Überschriftenebenen. JSON hat so viele, wie es mag. Ein Konverter, der Tiefe auf Überschriftenebene abbildet, geht bei sechs aus und klemmt danach entweder alles Tiefere auf `######`, was echte Struktur zu scheinbaren Geschwistern abflacht, oder erzeugt weiter tieferes Markup, das kein Renderer anders darstellt. Die Alternative ist, früher aufzuhören und den restlichen Teilbaum als eingezäunten Codeblock zu drucken, was die Niederlage ehrlich zugibt: die Struktur ist sichtbar, eingerückt und klar ein Datenauszug statt Prosa. Der Konverter im Browser oben hört aus genau diesem Grund bei drei Ebenen auf. Was auch immer Ihr Werkzeug tut, finden Sie es heraus, denn ein Dokument, dessen Überschriften bei Tiefe sechs auslaufen, hat ein Inhaltsverzeichnis, das nichts bedeutet.
 
-**Null, leer, fehlend und false sind vier verschiedene Fakten und eine leere Zelle.** Ein Konverter, der `null` überspringt, erzeugt eine Zelle, die von einem fehlenden Schlüssel nicht zu unterscheiden ist, der von einer leeren Zeichenkette nicht zu unterscheiden ist. In einem Bestellexport sind „kein Rabatt angewendet" und „Rabattfeld in diesem Datensatz nicht vorhanden" verschiedene Dinge, und ein Leser, der zwei leere Zellen ansieht, kann nicht wiederherstellen, welche welche ist. Das ist der Fehlfall, der eine konvertierte Tabelle subtil falsch macht statt offensichtlich kaputt, und es ist es wert, ihn an einer Datei zu prüfen, die Sie kennen, bevor Sie einer vertrauen, die Sie nicht kennen.
+**Null, leer, fehlend und false sind vier verschiedene Fakten und eine leere Zelle.** Ein Konverter, der `null` überspringt, erzeugt eine Zelle, die von einem fehlenden Schlüssel nicht zu unterscheiden ist, der von einer leeren Zeichenkette nicht zu unterscheiden ist. In einem Bestellexport sind „kein Rabatt angewendet“ und „Rabattfeld in diesem Datensatz nicht vorhanden“ verschiedene Dinge, und ein Leser, der zwei leere Zellen ansieht, kann nicht wiederherstellen, welche welche ist. Das ist der Fehlfall, der eine konvertierte Tabelle subtil falsch macht statt offensichtlich kaputt, und es ist es wert, ihn an einer Datei zu prüfen, die Sie kennen, bevor Sie einer vertrauen, die Sie nicht kennen.
 
 **JSON Lines ist kein gültiges JSON, und es ist, was ein Log-Export meist ist.** Das Format JSON Lines ist ein JSON-Wert pro Zeile, UTF-8, mit Zeilenumbruch abgeschlossen. Jede Zeile parst; die Datei als Ganzes nicht, denn eine Folge von Werten ohne umschließendes Array ist kein JSON-Dokument. `JSON.parse` und `json.loads` scheitern also beide an einer völlig einwandfreien `.jsonl`-Datei, und jeder Konverter, der eines davon ohne Rückfall aufruft, lehnt die Datei mit einem Syntaxfehler ab, der auf Zeile 2 zeigt. Werkzeuge unterscheiden sich hier deutlich: Miller und jtbl lesen JSON Lines von Haus aus, pandas braucht `lines=True`, jq will `--slurp`, um daraus ein Array zu machen, und ein Konverter im Browser, der auf zeilenweises Parsen zurückfällt, liest die Datei, ohne gefragt zu werden. Wenn Ihre Daten aus einer Log-Pipeline, einer Nachrichtenwarteschlange oder `docker logs` kommen, ist das das Erste zum Testen und das, was Sie am ehesten aufhält.
 

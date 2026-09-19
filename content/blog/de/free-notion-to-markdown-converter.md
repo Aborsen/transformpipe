@@ -10,11 +10,11 @@ Suchen Sie nach einem Konverter von Notion nach Markdown, und fast alles, was zu
 
 Die Schwierigkeit ist, dass jede dieser kostenlosen Optionen auf ihre eigene Art kostenlos ist und jede später eine andere Rechnung schickt. Eine erzeugt Dateinamen mit einer 32-stelligen hexadezimalen ID, die hinten angeschweißt ist. Eine braucht ein Integrationstoken, einen Berechtigungsschritt innerhalb von Notion und ein sauber behandeltes Ratenlimit im Code. Eine schickt Ihren Arbeitsbereich an einen Server, von dem Sie nie gehört haben. Eine kostet einen Nachmittag Ihrer eigenen Zeit, und das ist das einzige wirklich Teure auf dieser Liste.
 
-Dies ist also ein Vergleich, geschrieben auf der Achse, die sie trennt: nicht der Preis, sondern das, was kostenlos kostet. Jedes Werkzeug unten ist wirklich kostenlos — nicht kostenlos im Sinne einer Testphase, nicht kostenlos im Sinne einer Gratisstufe mit einer Wand dahinter — und neben jedem steht die ehrliche Antwort auf „und was dann". Für die Mechanik eines bestimmten Weges statt für die Wahl zwischen ihnen gilt: [die vollständige Anleitung geht jeden Weg Schritt für Schritt durch](/blog/convert-notion-export-to-markdown).
+Dies ist also ein Vergleich, geschrieben auf der Achse, die sie trennt: nicht der Preis, sondern das, was kostenlos kostet. Jedes Werkzeug unten ist wirklich kostenlos — nicht kostenlos im Sinne einer Testphase, nicht kostenlos im Sinne einer Gratisstufe mit einer Wand dahinter — und neben jedem steht die ehrliche Antwort auf „und was dann“. Für die Mechanik eines bestimmten Weges statt für die Wahl zwischen ihnen gilt: [die vollständige Anleitung geht jeden Weg Schritt für Schritt durch](/blog/convert-notion-export-to-markdown).
 
 ### Kurzfassung
 
-Alle ernstzunehmenden Optionen sind kostenlos, wählen Sie also nach der Form. **Notions eigenes „Export as Markdown & CSV"** ist das, womit alles andere anfängt: echtes Markdown, aber jeder Dateiname und jeder seitenübergreifende Link trägt die 32-stellige Hex-ID der Seite. **Ein Browser-Konverter, der den Export zusammenführt** — [die Notion-→-Markdown-Konvertierung hier](/notion-to-markdown) ist einer — nimmt dasselbe Zip und gibt Ihnen ein Dokument mit Inhaltsverzeichnis, ohne IDs und ohne Skript, und lädt nichts hoch, solange Sie abgemeldet sind; der Tausch ist, dass Seiten zu Abschnitten werden statt zu Dateien. **`notion-to-md`** liest Seiten über Notions API aus Node heraus und lässt Sie die Ausgabe selbst benennen: richtig für einen Build-Schritt, falsch für einen Einzelfall, denn ein Token und eine Berechtigungsfreigabe kommen vor der ersten Codezeile. **Obsidian Importer** ist kostenlos und MIT-lizenziert und der Weg, wenn das Ziel ein Vault ist. **Pandoc** konvertiert den reichhaltigeren HTML-Export lokal. **Kopieren und Einfügen** hört ungefähr bei Seite fünf auf zu funktionieren.
+Alle ernstzunehmenden Optionen sind kostenlos, wählen Sie also nach der Form. **Notions eigenes „Export as Markdown & CSV“** ist das, womit alles andere anfängt: echtes Markdown, aber jeder Dateiname und jeder seitenübergreifende Link trägt die 32-stellige Hex-ID der Seite. **Ein Browser-Konverter, der den Export zusammenführt** — [die Notion-→-Markdown-Konvertierung hier](/notion-to-markdown) ist einer — nimmt dasselbe Zip und gibt Ihnen ein Dokument mit Inhaltsverzeichnis, ohne IDs und ohne Skript, und lädt nichts hoch, solange Sie abgemeldet sind; der Tausch ist, dass Seiten zu Abschnitten werden statt zu Dateien. **`notion-to-md`** liest Seiten über Notions API aus Node heraus und lässt Sie die Ausgabe selbst benennen: richtig für einen Build-Schritt, falsch für einen Einzelfall, denn ein Token und eine Berechtigungsfreigabe kommen vor der ersten Codezeile. **Obsidian Importer** ist kostenlos und MIT-lizenziert und der Weg, wenn das Ziel ein Vault ist. **Pandoc** konvertiert den reichhaltigeren HTML-Export lokal. **Kopieren und Einfügen** hört ungefähr bei Seite fünf auf zu funktionieren.
 
 Der Haken ist in jedem Fall Zeit, Einrichtung, Form oder Privatsphäre — nie Geld.
 
@@ -32,7 +32,7 @@ Und eine dritte, und hier wird die Kostenlos-Frage interessant. Ein Notion-Arbei
 
 | Werkzeug | Am besten für | Kernfähigkeit | Preis |
 | --- | --- | --- | --- |
-| Notions „Export as Markdown & CSV" | Die Inhalte überhaupt herauszubekommen | Echtes Markdown für jede Seite, CSV für jede Datenbank | Kostenlos, eingebaut |
+| Notions „Export as Markdown & CSV“ | Die Inhalte überhaupt herauszubekommen | Echtes Markdown für jede Seite, CSV für jede Datenbank | Kostenlos, eingebaut |
 | Ein Browser-Konverter (`/notion-to-markdown` auf dieser Seite) | Ein Dokument zum Lesen, Archivieren oder Übergeben | Führt das Export-Zip im Browser zu einem Dokument mit Inhaltsverzeichnis zusammen | Kostenlos |
 | Der Export plus Ihr eigenes Umschreibeskript | Ein Ordner mit Dateien, die Dateien bleiben müssen | Benennt Dateien um und schreibt Links aus einer ID-Zuordnung um | Kostenlos, kostet Ihre Zeit |
 | `notion-to-md` | Einen Build-Schritt oder eine geplante Synchronisation | Liest Seiten über die Notion-API und schreibt Dateien, die Sie benennen | Kostenlos, quelloffen |
@@ -53,9 +53,9 @@ Jeder andere Weg hier beginnt entweder mit diesem Export oder ersetzt ihn durch 
 | Datenbanken kommen als CSV heraus, das immerhin maschinenlesbar ist | Eine Formularansicht lässt sich überhaupt nicht exportieren |
 | Ressourcen sind enthalten, statt als ablaufende URLs zurückzubleiben | Ein großer Export kommt als per E-Mail geschickter Link, und der Link läuft ab |
 
-**Preis:** kostenlos. Eine benachbarte Funktion ist es nicht: „Include subpages" für einen **PDF**-Export wird auf Notions eigener Hilfeseite als Funktion der Pläne Business oder Enterprise beschrieben (geprüft auf notion.com, 14. September 2026). Der Weg über Markdown & CSV ist nicht so eingeschränkt, was zu wissen sich lohnt, falls jemand in Ihrem Team zu dem Schluss gekommen ist, dass der Export eines Arbeitsbereichs ein Upgrade verlangt.
+**Preis:** kostenlos. Eine benachbarte Funktion ist es nicht: „Include subpages“ für einen **PDF**-Export wird auf Notions eigener Hilfeseite als Funktion der Pläne Business oder Enterprise beschrieben (geprüft auf notion.com, 14. September 2026). Der Weg über Markdown & CSV ist nicht so eingeschränkt, was zu wissen sich lohnt, falls jemand in Ihrem Team zu dem Schluss gekommen ist, dass der Export eines Arbeitsbereichs ein Upgrade verlangt.
 
-**Technische Details.** Das ID-Suffix besteht aus 32 hexadezimalen Kleinbuchstaben, vom Titel durch ein Leerzeichen oder einen Unterstrich getrennt, je nach Client-Version, die den Export erzeugt hat. „Create folders for subpages" lässt sich abschalten, um Pfade zu kürzen, was unter Windows zählt, wo ein tief verschachtelter Arbeitsbereich Pfade erzeugt, die länger sind als das Betriebssystem akzeptiert. Sehr große Exporte werden nicht sofort heruntergeladen: Notion schickt stattdessen einen Link per E-Mail, er läuft nach sieben Tagen ab, und die Verarbeitung ist mit bis zu dreißig Stunden dokumentiert — ein Export, der am Nachmittag einer Migration gestartet wird, kommt also womöglich nicht rechtzeitig an.
+**Technische Details.** Das ID-Suffix besteht aus 32 hexadezimalen Kleinbuchstaben, vom Titel durch ein Leerzeichen oder einen Unterstrich getrennt, je nach Client-Version, die den Export erzeugt hat. „Create folders for subpages“ lässt sich abschalten, um Pfade zu kürzen, was unter Windows zählt, wo ein tief verschachtelter Arbeitsbereich Pfade erzeugt, die länger sind als das Betriebssystem akzeptiert. Sehr große Exporte werden nicht sofort heruntergeladen: Notion schickt stattdessen einen Link per E-Mail, er läuft nach sieben Tagen ab, und die Verarbeitung ist mit bis zu dreißig Stunden dokumentiert — ein Export, der am Nachmittag einer Migration gestartet wird, kommt also womöglich nicht rechtzeitig an.
 
 **Für wen ist das?** Für alle, zuerst. Welchen Weg Sie danach auch wählen: Das ist der offizielle Weg, eine Kopie Ihrer Inhalte aus einem gehosteten Produkt zu bekommen, und es einmal zu tun, bevor Sie es brauchen, ist eine billige Versicherung.
 
@@ -108,7 +108,7 @@ Den Arbeitsbereich über Notions offizielle API zu lesen statt über den Export-
 
 **Technische Details.** Notions API ist auf durchschnittlich drei Anfragen pro Sekunde und Integration begrenzt, mit einem separaten arbeitsbereichsweiten Limit obendrauf (geprüft auf developers.notion.com, 14. September 2026). Über dem Limit gibt eine Anfrage statt Daten ein `429` mit einem `Retry-After`-Header zurück, eine Warte-und-erneut-versuchen-Schleife gehört also in die erste Fassung des Skripts statt in die, die nach dem ersten Fehlschlag geschrieben wird — bei einem großen Arbeitsbereich ist das der Unterschied zwischen einem Auftrag, der fertig wird, und einem, den Sie abbrechen, weil Sie einen Absturz vermuten.
 
-**Für wen ist das?** Für alle, für die das kein Einzelfall ist: eine Seite, die ihre Inhalte aus Notion baut, ein nächtlicher Spiegel eines Handbuchs in ein Repository, eine Kette, in der „jemand exportiert es jeden Monat von Hand" der Schritt ist, der irgendwann übersprungen wird.
+**Für wen ist das?** Für alle, für die das kein Einzelfall ist: eine Seite, die ihre Inhalte aus Notion baut, ein nächtlicher Spiegel eines Handbuchs in ein Repository, eine Kette, in der „jemand exportiert es jeden Monat von Hand“ der Schritt ist, der irgendwann übersprungen wird.
 
 ### Obsidian Importer — am besten, wenn das Ziel ein Vault ist
 
@@ -160,15 +160,15 @@ Seite in Notion auswählen, kopieren, in einen Markdown-Editor einfügen, repari
 
 ## Wo kostenlos einen Haken hat
 
-Nichts oben kostet Geld. Jedes kostet etwas, und die Kosten unterscheiden sich so sehr, dass „die sind alle kostenlos" das Unnützeste ist, was Sie über sie wissen können.
+Nichts oben kostet Geld. Jedes kostet etwas, und die Kosten unterscheiden sich so sehr, dass „die sind alle kostenlos“ das Unnützeste ist, was Sie über sie wissen können.
 
 **Der Haken ist ein Kontingent.** Die API-Wege — `notion-to-md` und der API-Modus von Obsidian Importer — sind von Notions eigenem Ratenlimit begrenzt statt von irgendjemandes Preisseite. Drei Anfragen pro Sekunde und Integration klingt großzügig, bis Sie merken, dass eine Seite mit verschachtelten Blöcken mehrere Anfragen sind. Der kostenlose Teil ist echt; der unbegrenzte Teil wurde nie behauptet.
 
 **Der Haken ist die Einrichtung.** Ein Integrationstoken ist kostenlos; es zu erstellen, es auf die richtigen Seiten freizugeben, es dort abzulegen, wo ein Build es lesen kann, und daran zu denken, es zu rotieren, ist nicht nichts. Für eine Konvertierung, die Sie genau einmal machen, ist das ein schlechter Tausch gegen einen Klick auf Export, und deshalb kippt die Rangfolge mit der Häufigkeit.
 
-**Der Haken ist ein Plan.** Notions Hilfeseite sagt, dass „Include subpages" für einen PDF-Export einen Business- oder Enterprise-Plan verlangt (geprüft auf notion.com, 14. September 2026). Das ist nicht der Markdown-Weg, aber es erinnert daran, dass „der Export ist kostenlos" pro Format gilt und nicht im Allgemeinen.
+**Der Haken ist ein Plan.** Notions Hilfeseite sagt, dass „Include subpages“ für einen PDF-Export einen Business- oder Enterprise-Plan verlangt (geprüft auf notion.com, 14. September 2026). Das ist nicht der Markdown-Weg, aber es erinnert daran, dass „der Export ist kostenlos“ pro Format gilt und nicht im Allgemeinen.
 
-**Der Haken sind Ihre Inhalte.** Ein kostenloser gehosteter Konverter läuft auf einem Server, den jemand bezahlt. Das ist für sich genommen nicht finster, aber es heißt, dass „wohin geht mein Export" eine echte Antwort hat, die nicht immer auf der Seite steht. Konvertierung im Browser beantwortet sie schon durch ihre Bauweise: Netzwerk-Tab öffnen, Konvertierung ausführen, zusehen, wie nichts das Gerät verlässt. Ob [ein Online-Konverter sicher ist](/blog/is-an-online-converter-safe), ist für eine bestimmte Datei ebenso sehr eine Frage nach der Datei wie nach dem Werkzeug.
+**Der Haken sind Ihre Inhalte.** Ein kostenloser gehosteter Konverter läuft auf einem Server, den jemand bezahlt. Das ist für sich genommen nicht finster, aber es heißt, dass „wohin geht mein Export“ eine echte Antwort hat, die nicht immer auf der Seite steht. Konvertierung im Browser beantwortet sie schon durch ihre Bauweise: Netzwerk-Tab öffnen, Konvertierung ausführen, zusehen, wie nichts das Gerät verlässt. Ob [ein Online-Konverter sicher ist](/blog/is-an-online-converter-safe), ist für eine bestimmte Datei ebenso sehr eine Frage nach der Datei wie nach dem Werkzeug.
 
 **Der Haken ist Ihr Nachmittag.** Der Skriptweg hat keinen Anbieter, kein Kontingent und keine Datenschutzfrage und ist trotzdem die teuerste Option hier. Freie Software ist keine freie Arbeitskraft, und ein Konverter, den Sie schreiben, ist einer, den Sie pflegen, wenn Notions Export das nächste Mal seine Form ändert.
 
@@ -216,7 +216,7 @@ Ja. Ein Konverter, der im Browser läuft, liest das Zip mit der eigenen Datei-AP
 
 ### Verlangt die Konvertierung von Notion nach Markdown einen kostenpflichtigen Notion-Plan?
 
-Nicht für den Export nach Markdown & CSV. Notions Hilfeseite sagt allerdings, dass „Include subpages" für einen **PDF**-Export einen Business- oder Enterprise-Plan verlangt (geprüft auf notion.com, 14. September 2026), prüfen Sie also das Format, das Sie brauchen, statt anzunehmen, dass sich das ganze Exportmenü gleich verhält.
+Nicht für den Export nach Markdown & CSV. Notions Hilfeseite sagt allerdings, dass „Include subpages“ für einen **PDF**-Export einen Business- oder Enterprise-Plan verlangt (geprüft auf notion.com, 14. September 2026), prüfen Sie also das Format, das Sie brauchen, statt anzunehmen, dass sich das ganze Exportmenü gleich verhält.
 
 ### Soll ich als Markdown oder als HTML exportieren?
 

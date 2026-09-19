@@ -38,7 +38,7 @@ Preise geprüft auf typora.io und obsidian.md, 8. September 2026. Der Hinweis zu
 
 ## Zu HTML konvertieren, dann aus dem Browser drucken
 
-Das ist der Weg, den die meisten Menschen für ein einzelnes Dokument nehmen sollten, und der, dem sie misstrauen, weil er sich zu einfach anfühlt. Konvertieren Sie das Markdown zu einer vollständigen HTML-Datei - kein Fragment, ein Dokument mit einem Doctype, einem Head und seinen Styles inline -, öffnen Sie es, und drücken Sie das Drucken-Tastenkürzel. Wählen Sie „Als PDF speichern" als Ziel.
+Das ist der Weg, den die meisten Menschen für ein einzelnes Dokument nehmen sollten, und der, dem sie misstrauen, weil er sich zu einfach anfühlt. Konvertieren Sie das Markdown zu einer vollständigen HTML-Datei - kein Fragment, ein Dokument mit einem Doctype, einem Head und seinen Styles inline -, öffnen Sie es, und drücken Sie das Drucken-Tastenkürzel. Wählen Sie „Als PDF speichern“ als Ziel.
 
 Die Typografie ist der Grund, es so zu tun. Die Druckausgabe eines Browsers kommt aus derselben Layout-Engine, die jede Seite rendert, die Sie sich ansehen: echtes Kerning, Ligaturen, korrekter Zeilenumbruch, Vektortext bei jedem Zoom, und Schriftsubsets, eingebettet in das entstehende PDF. Nichts Kostenloses macht es besser, und manches Kostenpflichtige macht es schlechter. Wenn das Dokument `lang` am Wurzelelement setzt und `hyphens: auto` in seinem Stylesheet, bekommen Sie auch Silbentrennung, was der Unterschied zwischen einem Blocksatzabsatz ist, der sich gut liest, und einem voller Flussstellen.
 
@@ -46,10 +46,10 @@ Der Tausch ist, dass Ihre gesamte Kontrolle in einer Dialogbox lebt, und die Dia
 
 | Regler | Was er tatsächlich tut | Warum es zählt |
 | --- | --- | --- |
-| Ziel | Wählt einen physischen Drucker oder „Als PDF speichern" | Nur „Als PDF speichern" erzeugt eine Datei; das PDF eines Druckertreibers kann Text rastern |
+| Ziel | Wählt einen physischen Drucker oder „Als PDF speichern“ | Nur „Als PDF speichern“ erzeugt eine Datei; das PDF eines Druckertreibers kann Text rastern |
 | Papierformat | A4, Letter, Legal und der Rest | A4 ist 210 mal 297mm, Letter ist 8,5 mal 11 Zoll; ein auf eines abgestimmtes Layout fließt auf dem anderen anders |
-| Ränder | Standard, Keine, Minimum, Benutzerdefiniert | „Keine" lässt Inhalt bis an den Papierrand laufen, was die meisten physischen Drucker nicht reproduzieren können |
-| Skalierung | „An druckbaren Bereich anpassen", oder ein Prozentsatz | Anpassen schrumpft alles, eine zu breite Tabelle macht den Fließtext also kleiner als eingestellt |
+| Ränder | Standard, Keine, Minimum, Benutzerdefiniert | „Keine“ lässt Inhalt bis an den Papierrand laufen, was die meisten physischen Drucker nicht reproduzieren können |
+| Skalierung | „An druckbaren Bereich anpassen“, oder ein Prozentsatz | Anpassen schrumpft alles, eine zu breite Tabelle macht den Fließtext also kleiner als eingestellt |
 | Hintergrundgrafiken | Standardmäßig aus | Das ist der Regler, der Ihre Codeblock-Schattierung und Tabellenstreifung entfernt |
 | Kopf- und Fußzeilen | Aus oder an | An druckt den Seitentitel, den Speicherort der Datei, das Datum und eine Seitenzahl, in der eigenen Schrift des Browsers |
 
@@ -99,7 +99,7 @@ Die Installation ist der echte Preis, und man sollte offen darüber sein. Eine v
 | `--highlight-style=tango` | Wählt das Syntaxhervorhebungsthema |
 | `--include-in-header=head.tex` | Fügt rohes LaTeX ein, wie Sie zu echten laufenden Kopfzeilen kommen |
 
-`--toc` und `--number-sections` zusammen sind der ehrliche Grund, den Browser hinter sich zu lassen. Ein Inhaltsverzeichnis, das „Migrationsschritte ... 14" auflistet, kann ein Browser überhaupt nicht erzeugen, weil ein Browser nicht weiß, auf welcher Seite irgendetwas landet, bevor er es schon gedruckt hat.
+`--toc` und `--number-sections` zusammen sind der ehrliche Grund, den Browser hinter sich zu lassen. Ein Inhaltsverzeichnis, das „Migrationsschritte ... 14“ auflistet, kann ein Browser überhaupt nicht erzeugen, weil ein Browser nicht weiß, auf welcher Seite irgendetwas landet, bevor er es schon gedruckt hat.
 
 ### Was bricht
 
@@ -128,9 +128,9 @@ Diese sitzen zwischen den zwei Wegen oben. Sie konvertieren noch zu HTML, aber e
 
 ### wkhtmltopdf
 
-wkhtmltopdf ist ein Kommandozeilenwerkzeug, das HTML mit der Qt-WebKit-Rendering-Engine rendert und unter LGPLv3 veröffentlicht wird (geprüft auf wkhtmltopdf.org, 8. September 2026). Sein GitHub-Repository trägt den Hinweis „This repository was archived by the owner on Jan 2, 2023. It is now read-only" (geprüft auf github.com, 8. September 2026).
+wkhtmltopdf ist ein Kommandozeilenwerkzeug, das HTML mit der Qt-WebKit-Rendering-Engine rendert und unter LGPLv3 veröffentlicht wird (geprüft auf wkhtmltopdf.org, 8. September 2026). Sein GitHub-Repository trägt den Hinweis „This repository was archived by the owner on Jan 2, 2023. It is now read-only“ (geprüft auf github.com, 8. September 2026).
 
-Seine Kommandozeilenoberfläche ist wirklich gut, und besser als die eines Browsers für diesen Job: `--margin-top` und seine Geschwister setzen Ränder in echten Einheiten, `--header-html` und `--footer-html` nehmen HTML-Dateien, `--footer-center "[page]/[topage]"` gibt Ihnen „3/12" unten auf jeder Seite, `--print-media-type` lässt es Ihre `@media print`-Regeln beachten, und `--enable-local-file-access` ist nötig, bevor es Bilder und Stylesheets von der Platte liest. Wenn Sie ein Skript haben, das mit diesen Flags schon akzeptable PDFs erzeugt, gibt es keine Dringlichkeit, es zu ersetzen.
+Seine Kommandozeilenoberfläche ist wirklich gut, und besser als die eines Browsers für diesen Job: `--margin-top` und seine Geschwister setzen Ränder in echten Einheiten, `--header-html` und `--footer-html` nehmen HTML-Dateien, `--footer-center "[page]/[topage]"` gibt Ihnen „3/12“ unten auf jeder Seite, `--print-media-type` lässt es Ihre `@media print`-Regeln beachten, und `--enable-local-file-access` ist nötig, bevor es Bilder und Stylesheets von der Platte liest. Wenn Sie ein Skript haben, das mit diesen Flags schon akzeptable PDFs erzeugt, gibt es keine Dringlichkeit, es zu ersetzen.
 
 Das Problem ist die Engine darunter. Es ist ein Fork eines WebKit, das seit Jahren stillsteht, ein in diesem Jahrzehnt geschriebenes Stylesheet - Custom Properties, Grid, modernes Flexbox-Verhalten - kann also als etwas rendern, das Sie nicht entworfen haben, ohne Fehler. Beginnen Sie hier keine neue Arbeit.
 
@@ -144,11 +144,11 @@ Puppeteer nimmt das Raten weg. Sein `page.pdf()`-Aufruf nimmt `format`, `margin`
 
 ### WeasyPrint
 
-WeasyPrint ist eine Python-Bibliothek und ein Kommandozeilenwerkzeug, BSD-lizenziert, und es ist kein Browser. Seine Dokumentation sagt, es sei „basierend auf verschiedenen Bibliotheken, aber nicht auf einer vollständigen Rendering-Engine wie WebKit oder Gecko", mit einer in Python geschriebenen CSS-Layout-Engine, entworfen für Paginierung (geprüft auf doc.courtbouillon.org, 8. September 2026).
+WeasyPrint ist eine Python-Bibliothek und ein Kommandozeilenwerkzeug, BSD-lizenziert, und es ist kein Browser. Seine Dokumentation sagt, es sei „basierend auf verschiedenen Bibliotheken, aber nicht auf einer vollständigen Rendering-Engine wie WebKit oder Gecko“, mit einer in Python geschriebenen CSS-Layout-Engine, entworfen für Paginierung (geprüft auf doc.courtbouillon.org, 8. September 2026).
 
 Diese Design-Entscheidung ist der Punkt. Es unterstützt die `@page`-Regel mit den Selektoren `:left`, `:right`, `:first` und `:blank`, Seiten-Margin-Boxen, seitenbasierte Zähler, und die Eigenschaften `bookmark-level`, `bookmark-label` und `bookmark-state`, die das Inhaltsverzeichnis des PDF bauen - Überschriften werden standardmäßig zu Lesezeichen. Interne Anker und externe URLs kommen beide als klickbare Links heraus (alles geprüft auf doc.courtbouillon.org, 8. September 2026). Browser implementieren keine der Margin-Box-Mechanismen, das ist also der einzige Weg auf dieser Seite, der Ihnen eine echte laufende Kopfzeile in CSS gibt statt in LaTeX.
 
-Der Preis ist die andere Hälfte derselben Entscheidung. Die eigene Dokumentation beschreibt Flexbox als funktionierend „für einfache Anwendungsfälle, aber nicht tiefgehend getestet" und Grid als funktionierend „für einfache Fälle, aber mit einigen Einschränkungen" (geprüft auf doc.courtbouillon.org, 8. September 2026). Geben Sie ihm ein Dokument, kein Anwendungslayout, und es ist ausgezeichnet.
+Der Preis ist die andere Hälfte derselben Entscheidung. Die eigene Dokumentation beschreibt Flexbox als funktionierend „für einfache Anwendungsfälle, aber nicht tiefgehend getestet“ und Grid als funktionierend „für einfache Fälle, aber mit einigen Einschränkungen“ (geprüft auf doc.courtbouillon.org, 8. September 2026). Geben Sie ihm ein Dokument, kein Anwendungslayout, und es ist ausgezeichnet.
 
 **Wer sollte diese nutzen?** Jeder, dessen PDF von einer Maschine nach Zeitplan produziert werden muss: ein nächtlicher Bericht, eine erzeugte Rechnung, ein PDF, das jeder Veröffentlichung angehängt wird. Wählen Sie Chrome oder Puppeteer, wenn das Dokument schon eine Webseite ist, die Ihnen gefällt; wählen Sie WeasyPrint, wenn Sie laufende Kopfzeilen, Seitenzähler und Lesezeichen brauchen und lieber CSS als LaTeX schreiben würden.
 
@@ -158,7 +158,7 @@ Der kürzeste Weg von allen, wenn die Datei schon vor Ihnen offen ist. Jeder die
 
 | Editor | Wie er exportiert | Preis und Lizenz |
 | --- | --- | --- |
-| Typora | „Export to PDF with bookmarks", plus docx, LaTeX, EPUB und andere | 14,99 $ ohne Steuer, eine Lizenz für bis zu 3 Geräte, 15-tägige kostenlose Testphase (geprüft auf typora.io, 8. September 2026) |
+| Typora | „Export to PDF with bookmarks“, plus docx, LaTeX, EPUB und andere | 14,99 $ ohne Steuer, eine Lizenz für bis zu 3 Geräte, 15-tägige kostenlose Testphase (geprüft auf typora.io, 8. September 2026) |
 | Obsidian | Eingebauter Export nach PDF aus der Notiz | Kostenlos für jeden Zweck, kommerzielle Nutzung eingeschlossen; eine kommerzielle Lizenz ist optional für 50 $ pro Nutzer und Jahr (geprüft auf obsidian.md/pricing, 8. September 2026) |
 | VS Code | Eine Erweiterung; die meisten bündeln oder laden ein Chromium und drucken damit | Kostenlos, aber die Qualität der Erweiterung ist die der Erweiterung |
 | Word oder LibreOffice | Markdown mit Pandoc zu `.docx` konvertieren, dann aus der Suite exportieren | Kostenlos mit LibreOffice |
@@ -174,7 +174,7 @@ Preise und Bedingungen geprüft auf typora.io und obsidian.md, 8. September 2026
 
 Der `.docx`-Umweg verdient eine eigene Anmerkung, denn er löst ein Problem, das kein anderer Weg löst. Wenn die Person, die das Dokument bekommt, es ändern will, ist ein PDF eine Sackgasse und eine Word-Datei nicht. `pandoc report.md -o report.docx --reference-doc=house-style.docx` wendet Ihre eigenen Stile an, und LibreOffice konvertiert das Ergebnis auf einem Server mit `soffice --headless --convert-to pdf report.docx`. Zwei Konvertierungen sind eine mehr als ideal, und es ist der Preis, jemandem etwas zu geben, das er bearbeiten kann — und wenn die `.docx` das Endprodukt ist statt eines Zwischenstopps, [Markdown in eine Word-Datei zu bringen, die jemand bearbeiten kann](/blog/markdown-to-word) ist, wo das Referenzdokument, die Stile, nach denen Pandoc sucht, und der Preis der Rückreise sauber durchgearbeitet werden. [Welche Editoren gut mit Markdown umgehen](/blog/best-markdown-editors) ist ein längeres Gespräch als das Exportmenü.
 
-**Wer sollte das nutzen?** Autoren, für Entwürfe und für alles, wo „sieht vernünftig aus" die Messlatte ist. Nicht Builds, und nicht Dokumente mit einem Corporate Design, das eingehalten werden muss.
+**Wer sollte das nutzen?** Autoren, für Entwürfe und für alles, wo „sieht vernünftig aus“ die Messlatte ist. Nicht Builds, und nicht Dokumente mit einem Corporate Design, das eingehalten werden muss.
 
 ## Die Teile, die Leute falsch machen
 
@@ -182,10 +182,10 @@ Fünf Dinge brechen in aus Markdown gemachten PDFs, und sie brechen gleich, egal
 
 | Symptom | Ursache | Abhilfe |
 | --- | --- | --- |
-| Codeblöcke und Tabellen haben ihre Schattierung verloren | „Hintergrundgrafiken" ist standardmäßig aus im Druckdialog | Einschalten, oder `printBackground: true` in Puppeteer übergeben |
+| Codeblöcke und Tabellen haben ihre Schattierung verloren | „Hintergrundgrafiken“ ist standardmäßig aus im Druckdialog | Einschalten, oder `printBackground: true` in Puppeteer übergeben |
 | Eine Überschrift sitzt allein am Ende einer Seite | Nichts hat der Engine gesagt, sie bei ihrem Text zu halten | `break-after: avoid` auf Überschriften, `break-inside: avoid` auf Tabellen und Abbildungen |
-| Der Fließtext kam kleiner heraus als erwartet | „An druckbaren Bereich anpassen" hat das ganze Dokument geschrumpft, um ein breites Element einzupassen | Das zu breite Element finden und beheben, dann bei 100% drucken |
-| Die erste Seite hat einen Dateipfad quer oben | „Kopf- und Fußzeilen" ist an | Ausschalten, oder eine Engine nutzen, bei der Sie die Fußzeile kontrollieren |
+| Der Fließtext kam kleiner heraus als erwartet | „An druckbaren Bereich anpassen“ hat das ganze Dokument geschrumpft, um ein breites Element einzupassen | Das zu breite Element finden und beheben, dann bei 100% drucken |
+| Die erste Seite hat einen Dateipfad quer oben | „Kopf- und Fußzeilen“ ist an | Ausschalten, oder eine Engine nutzen, bei der Sie die Fußzeile kontrollieren |
 | Lange Code-Zeilen sind am Rand abgeschnitten | LaTeX bricht wörtlichen Text nicht um | Zeilen in der Quelle brechen, oder einen Weg mit weichem Umbruch nutzen |
 | Bilder fehlen komplett | Relative Pfade, die dort nicht mehr auflösen, wo das HTML sitzt | Bilder einbetten, oder mit der Datei an Ort und Stelle konvertieren |
 | Ein Zeichen kam als Kästchen heraus, oder gar nicht | Die eingebettete Schrift hat kein Glyph dafür | Die Schrift wechseln, oder die Engine, und beim Drucken keine Emojis nutzen |
@@ -207,7 +207,7 @@ Text auf der nächsten Seite.
 
 ### Ränder
 
-Drei Parteien setzen Ihre Ränder, und nur eine davon gewinnt: der Druckdialog, die `@page`-Regel des Dokuments, und der nicht bedruckbare Rand des physischen Druckers. Entscheiden Sie, welche maßgeblich ist, und lassen Sie die anderen in Ruhe. Für ein PDF, das am Bildschirm gelesen wird, setzen Sie den Rand ins CSS und den Dialog auf Standard. Für ein PDF, das auf einem bestimmten Gerät gedruckt wird, lassen Sie mindestens 10mm und testen Sie auf diesem Gerät, denn „Ränder: Keine" erzeugt eine Datei, deren Ränder ein Laserdrucker beschneiden wird.
+Drei Parteien setzen Ihre Ränder, und nur eine davon gewinnt: der Druckdialog, die `@page`-Regel des Dokuments, und der nicht bedruckbare Rand des physischen Druckers. Entscheiden Sie, welche maßgeblich ist, und lassen Sie die anderen in Ruhe. Für ein PDF, das am Bildschirm gelesen wird, setzen Sie den Rand ins CSS und den Dialog auf Standard. Für ein PDF, das auf einem bestimmten Gerät gedruckt wird, lassen Sie mindestens 10mm und testen Sie auf diesem Gerät, denn „Ränder: Keine“ erzeugt eine Datei, deren Ränder ein Laserdrucker beschneiden wird.
 
 ### Kopf- und Fußzeilen
 
@@ -231,7 +231,7 @@ Das druckt die URL in Klammern hinter dem Linktext, was am Bildschirm hässlich 
 
 Ein PDF trägt eine Teilmenge jeder Schrift, die es tatsächlich nutzt, was es überall gleich aussehen lässt - und es kann nur eine Schrift tragen, die verfügbar war, als die Datei entstand. Zwei Fehlermodi folgen daraus. Ein Dokument, das eine Webschrift über das Netzwerk anfordert, konvertiert ohne verfügbares Netzwerk, fällt still auf etwas anderes zurück und bettet das stattdessen ein; das PDF ist nicht kaputt, es ist nur nicht Ihr Design. Ein Dokument, das einen Font-Stack aus Systemschriften nennt, bettet ein, was auch immer diese bestimmte Maschine hatte, Sie und eine Kollegin erzeugen also optisch unterschiedliche PDFs aus demselben Markdown und demselben Befehl.
 
-Die Abhilfe ist, ausdrücklich zu sein. Nennen Sie eine Schrift, liefern Sie sie mit dem Dokument aus oder installieren Sie sie auf der Build-Maschine, und lassen Sie den Stack auf eine generische Serife zurückfallen, die vorhersehbar ersetzt wird. Prüfen Sie das Ergebnis: jeder PDF-Reader listet die eingebetteten Schriften in seinen Dokumenteigenschaften, und eine als „Type 3" oder als nicht eingebettet gelistete Schrift ist eine Schrift, die Ihre Leserin nicht sehen wird.
+Die Abhilfe ist, ausdrücklich zu sein. Nennen Sie eine Schrift, liefern Sie sie mit dem Dokument aus oder installieren Sie sie auf der Build-Maschine, und lassen Sie den Stack auf eine generische Serife zurückfallen, die vorhersehbar ersetzt wird. Prüfen Sie das Ergebnis: jeder PDF-Reader listet die eingebetteten Schriften in seinen Dokumenteigenschaften, und eine als „Type 3“ oder als nicht eingebettet gelistete Schrift ist eine Schrift, die Ihre Leserin nicht sehen wird.
 
 ## Wo der Browser-Weg scheitert, und was es kostet, ihn zu verlassen
 
@@ -241,14 +241,14 @@ Aus dem Browser zu drucken ist der richtige Standard, und er hat eine harte Ober
 | --- | --- | --- |
 | Eine laufende Kopf- oder Fußzeile eigenen Designs | Browser implementieren keine CSS-Margin-Boxen | WeasyPrint, oder LaTeX über Pandoc |
 | Ein Inhaltsverzeichnis mit Seitenzahlen | Die Seite, auf der eine Überschrift landet, ist erst nach dem Layout bekannt | Pandocs `--toc`, oder eine Engine mit Seitenzählern |
-| Ein Querverweis wie „siehe Seite 14" | Derselbe Grund | LaTeX, oder WeasyPrints Zähler |
+| Ein Querverweis wie „siehe Seite 14“ | Derselbe Grund | LaTeX, oder WeasyPrints Zähler |
 | Die Datei unbeaufsichtigt erzeugen | Ein Dialog braucht eine Person | Headless Chrome, Puppeteer, oder WeasyPrint |
 | Ein PDF aus zwölf Kapiteldateien | Der Browser druckt ein Dokument | Erst das Markdown zusammenführen, oder danach die PDFs |
 | Garantieren, dass keine Überschrift verwaist | Kontrolle über Umbrüche ist über Engines hinweg approximativ | Manuelle Umbrüche, und eine Leserin, die prüft |
 
 Jede Abhilfe hat einen Preis, und die Preise sind nicht gleichwertig. LaTeX kauft Ihnen die beste Seite auf dieser Liste für den Preis der größten Installation und einer Template-Sprache zum Lernen; das Template ist eine Einmalarbeit, aber eine echte, und jemand muss sie besitzen. WeasyPrint kauft Ihnen Seitenregeln in CSS für den Preis einer Python-Abhängigkeit und einer Layout-Engine, die kein Browser ist, ein um Grid herum gebautes Stylesheet muss also umgeschrieben werden. Headless Chrome kauft Ihnen Wiederholbarkeit für den Preis eines Browsers in Ihrem Build-Image, was nicht klein ist und aus denselben Sicherheitsgründen aktualisiert werden muss wie der Ihres Laptops. wkhtmltopdf kauft Ihnen bequeme Flags und übergibt Ihnen eine archivierte Abhängigkeit, was eine Schuld mit Fälligkeitsdatum ist.
 
-Der Mehrdatei-Fall ist der, den Leute am schnellsten treffen und am wenigsten erwarten. Ein zwölfkapitliges Handbuch sind zwölf `.md`-Dateien, und ein PDF ist ein Dokument, etwas muss sie also verbinden - in der richtigen Reihenfolge, mit verschobenen Überschriftenebenen, damit das `#` von Kapitel zwei nicht mit dem Dokumenttitel konkurriert. [Viele Markdown-Dateien in ein Dokument zu verwandeln](/blog/merging-many-markdown-files) ist eine eigene Aufgabe, getrennt von der Konvertierung, und es in der falschen Reihenfolge zu tun ist, wie ein Inhaltsverzeichnis mit drei „Einleitung"-Einträgen endet.
+Der Mehrdatei-Fall ist der, den Leute am schnellsten treffen und am wenigsten erwarten. Ein zwölfkapitliges Handbuch sind zwölf `.md`-Dateien, und ein PDF ist ein Dokument, etwas muss sie also verbinden - in der richtigen Reihenfolge, mit verschobenen Überschriftenebenen, damit das `#` von Kapitel zwei nicht mit dem Dokumenttitel konkurriert. [Viele Markdown-Dateien in ein Dokument zu verwandeln](/blog/merging-many-markdown-files) ist eine eigene Aufgabe, getrennt von der Konvertierung, und es in der falschen Reihenfolge zu tun ist, wie ein Inhaltsverzeichnis mit drei „Einleitung“-Einträgen endet.
 
 ## Wie man wählt
 
@@ -271,7 +271,7 @@ Konvertieren Sie das Markdown in einem browserbasierten Konverter zu einer volls
 
 ### Warum verliert mein PDF die Codeblock-Hintergründe?
 
-Weil „Hintergrundgrafiken" standardmäßig im Druckdialog aus ist, um Tinte bei physischen Druckern zu sparen. Es entfernt auch Tabellenstreifung und farbige Hinweiskästen, ein technisches Dokument sieht also flach und blass aus. Schalten Sie es im Dialog ein, oder übergeben Sie `printBackground: true`, wenn Sie über Puppeteer drucken.
+Weil „Hintergrundgrafiken“ standardmäßig im Druckdialog aus ist, um Tinte bei physischen Druckern zu sparen. Es entfernt auch Tabellenstreifung und farbige Hinweiskästen, ein technisches Dokument sieht also flach und blass aus. Schalten Sie es im Dialog ein, oder übergeben Sie `printBackground: true`, wenn Sie über Puppeteer drucken.
 
 ### Wie erzwinge ich einen Seitenumbruch in Markdown?
 

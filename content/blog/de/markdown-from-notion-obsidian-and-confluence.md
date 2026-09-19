@@ -17,7 +17,7 @@ Notion exportiert ein Zip aus Markdown und CSV, in dem jeder Dateiname und jeder
 
 | Quelle | Exportweg | Was Sie bekommen | Was verstümmelt wird |
 | --- | --- | --- | --- |
-| Notion | Export, Format „Markdown & CSV" | Zip: eine `.md` pro Seite, Ordner, eine `.csv` pro Datenbank | IDs in jedem Dateinamen und jedem Link, Callouts, Toggles, Spalten, Kommentare |
+| Notion | Export, Format „Markdown & CSV“ | Zip: eine `.md` pro Seite, Ordner, eine `.csv` pro Datenbank | IDs in jedem Dateinamen und jedem Link, Callouts, Toggles, Spalten, Kommentare |
 | Obsidian | keiner nötig — Dateien auf der Platte | ein Ordner mit `.md` und Anhängen | Wikilinks, Embeds, Blockreferenzen, Callouts, Dataview-Blöcke |
 | Confluence Cloud | Space-Export nach HTML (Space-Admin) | Zip aus dargestelltem HTML plus Anhängen | Makros, Seitenhierarchie, Kommentare, Überschriftenanker |
 | Confluence, eine Seite | Export to Word oder PDF | eine Datei pro Seite | alles Strukturelle; PDF ist eine Sackgasse |
@@ -31,9 +31,9 @@ Notion exportiert ein Zip aus Markdown und CSV, in dem jeder Dateiname und jeder
 
 ## Notion: ein Zip, in dem jeder Dateiname eine ID bekommt
 
-Wählen Sie „Markdown & CSV", und Notion baut ein Zip: eine `.md` pro Seite, einen Ordner pro Seite, die Unterseiten oder Bilder hatte, eine `.csv` pro Datenbank. Jeder Name trägt eine lange hexadezimale ID: Notion identifiziert Seiten über IDs, und der Titel ist nur ein Etikett.
+Wählen Sie „Markdown & CSV“, und Notion baut ein Zip: eine `.md` pro Seite, einen Ordner pro Seite, die Unterseiten oder Bilder hatte, eine `.csv` pro Datenbank. Jeder Name trägt eine lange hexadezimale ID: Notion identifiziert Seiten über IDs, und der Titel ist nur ein Etikett.
 
-Der Export-Dialog ist es wert, gelesen statt weggeklickt zu werden. Er bietet eine Formatwahl — PDF, HTML oder Markdown & CSV —, ein Dropdown „Include content", das Dateien und Bilder ausschließen kann, einen Schalter „Include subpages" und einen Schalter „Create folders for subpages" (angehakt; geprüft auf notion.com, 9. September 2026). Zwei weitere Grenzen von derselben Seite zählen, bevor Sie eine Migration darauf aufbauen: Exportiert wird nur die aktuelle oder die Standardansicht einer Datenbank, alle Ansichten auf einmal wird nicht unterstützt, und eine Formularansicht lässt sich überhaupt nicht exportieren — Sie exportieren stattdessen die Tabellenansicht. Bei einem großen Export schickt Notion womöglich einen Download-Link per E-Mail, anstatt den Download zu starten, der Link verfällt nach sieben Tagen, und die Verarbeitung kann bis zu dreißig Stunden dauern (geprüft auf notion.com, 9. September 2026). Das ist eine Planungstatsache, keine Fußnote: Wenn der Plan „Freitagnachmittag exportieren und Freitagabend konvertieren" war, ist es womöglich nicht der Plan.
+Der Export-Dialog ist es wert, gelesen statt weggeklickt zu werden. Er bietet eine Formatwahl — PDF, HTML oder Markdown & CSV —, ein Dropdown „Include content“, das Dateien und Bilder ausschließen kann, einen Schalter „Include subpages“ und einen Schalter „Create folders for subpages“ (angehakt; geprüft auf notion.com, 9. September 2026). Zwei weitere Grenzen von derselben Seite zählen, bevor Sie eine Migration darauf aufbauen: Exportiert wird nur die aktuelle oder die Standardansicht einer Datenbank, alle Ansichten auf einmal wird nicht unterstützt, und eine Formularansicht lässt sich überhaupt nicht exportieren — Sie exportieren stattdessen die Tabellenansicht. Bei einem großen Export schickt Notion womöglich einen Download-Link per E-Mail, anstatt den Download zu starten, der Link verfällt nach sieben Tagen, und die Verarbeitung kann bis zu dreißig Stunden dauern (geprüft auf notion.com, 9. September 2026). Das ist eine Planungstatsache, keine Fußnote: Wenn der Plan „Freitagnachmittag exportieren und Freitagabend konvertieren“ war, ist es womöglich nicht der Plan.
 
 Drei Dinge, mit denen zu rechnen ist:
 
@@ -62,7 +62,7 @@ Die Kommentarzeile ist die, die Teams kalt erwischt. Diskussionsfäden sind nich
 
 ### Das ID-Suffix, und warum es nicht bloß hässlich ist
 
-Eine Seite namens „Meeting notes" kommt als `Meeting notes 21f4c8a1b2c34d5e8f90123456789abc.md` heraus, und ein Link darauf von einer anderen Seite ist gegen genau diesen Dateinamen geschrieben, prozentkodiert für die Leerzeichen. Die ID ist dieselbe, die in der URL der Seite in der Anwendung erscheint, und das ist der nützliche Teil: Sie gibt Ihnen einen Schlüssel, um alte Links auf neue abzubilden.
+Eine Seite namens „Meeting notes“ kommt als `Meeting notes 21f4c8a1b2c34d5e8f90123456789abc.md` heraus, und ein Link darauf von einer anderen Seite ist gegen genau diesen Dateinamen geschrieben, prozentkodiert für die Leerzeichen. Die ID ist dieselbe, die in der URL der Seite in der Anwendung erscheint, und das ist der nützliche Teil: Sie gibt Ihnen einen Schlüssel, um alte Links auf neue abzubilden.
 
 ```text
 Meeting notes 21f4c8a1b2c34d5e8f90123456789abc.md    die Datei
@@ -86,7 +86,7 @@ Ein Obsidian-Vault ist ein Ordner mit `.md`-Dateien, es gibt also nichts zu extr
 
 Ein Standardkonverter gibt den Wikilink und den Embed als wörtlichen Text aus, Klammern inbegriffen, und stellt den Callout als Blockquote mit `[!warning]` in der ersten Zeile dar. Stellen Sie entweder die Vault-Einstellung so um, dass neue Links gewöhnliche Markdown-Links sind, oder suchen und ersetzen Sie vor der Konvertierung.
 
-Die Einstellung ist der Schalter „Use [[Wikilinks]]" unter Files and links; ihn auszuschalten lässt Obsidian stattdessen Standard-Markdown-Links erzeugen (geprüft auf obsidian.md, 9. September 2026). Sie gilt nur für neue Links. Alles bereits Geschriebene bleibt, wie es war, ein Vault, der seit zwei Jahren läuft, braucht das Umschreiben also trotzdem — die Einstellung hält das Problem davon ab zu wachsen, sie behebt es nicht.
+Die Einstellung ist der Schalter „Use [[Wikilinks]]“ unter Files and links; ihn auszuschalten lässt Obsidian stattdessen Standard-Markdown-Links erzeugen (geprüft auf obsidian.md, 9. September 2026). Sie gilt nur für neue Links. Alles bereits Geschriebene bleibt, wie es war, ein Vault, der seit zwei Jahren läuft, braucht das Umschreiben also trotzdem — die Einstellung hält das Problem davon ab zu wachsen, sie behebt es nicht.
 
 ### Der Dialekt, Punkt für Punkt
 
@@ -205,7 +205,7 @@ Alles oben beschreibt ein Dokument. Eine Migration ist ein anderes Problem, und 
 
 Die Schwelle liegt nicht niedriger, weil das Skript kein Konverter ist. Die Konvertierung ist der leichte Teil — ein Bibliotheksaufruf pro Datei. Das Skript ist ein Umschreibeproblem, und es enthält vier getrennte Umschreibungen, von denen jede fertig und korrekt sein kann, während die anderen drei kaputt sind.
 
-**Dateinamen.** Streichen Sie das ID-Suffix, slugifizieren Sie, was übrig ist, und lösen Sie die Kollisionen: Zwei Seiten namens „Meeting notes" unter verschiedenen Eltern sind nach der Slugifizierung ein Dateiname. Bauen Sie eine Abbildung vom alten Pfad auf den neuen und schreiben Sie sie auf die Platte, denn Sie werden sie noch dreimal brauchen, und noch einmal in sechs Monaten, wenn jemand fragt, wo eine Seite hin ist.
+**Dateinamen.** Streichen Sie das ID-Suffix, slugifizieren Sie, was übrig ist, und lösen Sie die Kollisionen: Zwei Seiten namens „Meeting notes“ unter verschiedenen Eltern sind nach der Slugifizierung ein Dateiname. Bauen Sie eine Abbildung vom alten Pfad auf den neuen und schreiben Sie sie auf die Platte, denn Sie werden sie noch dreimal brauchen, und noch einmal in sechs Monaten, wenn jemand fragt, wo eine Seite hin ist.
 
 **Links.** Jeder interne Link im Export ist gegen den alten Dateinamen geschrieben, prozentkodiert. Schreiben Sie jeden durch die Abbildung um. Links, die stattdessen auf die lebende Anwendung zeigten — eine absolute URL in den Workspace oder das Wiki —, sind ein zweiter Satz, über ID oder Seitenschlüssel gefunden statt über den Dateinamen, und sie sind die, die an dem Tag, an dem Sie das alte System abschalten, noch still funktionieren und am Tag danach still kaputt sind.
 

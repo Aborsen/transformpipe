@@ -44,12 +44,12 @@ Vor jedem Werkzeug die Liste der Entscheidungen. Jede davon hat eine vertretbare
 | Element | Was das Markup trug | Was reiner Text dagegen tun kann |
 | --- | --- | --- |
 | Überschrift | Rang, und ein optischer Umbruch | Eine eigene Zeile mit Leerzeilen drumherum, Großbuchstaben, oder eine gestrichelte Unterstreichung |
-| Listenelement | „Das ist eines von mehreren" | Ein `- `-Zeichen behalten, oder die Grenze zwischen Elementen verlieren |
+| Listenelement | „Das ist eines von mehreren“ | Ein `- `-Zeichen behalten, oder die Grenze zwischen Elementen verlieren |
 | Geordnetes Element | Eine Zahl, die Inhalt ist | Die Zahl behalten; sie wird anderswo referenziert |
 | Link | Text plus ein Ziel | Nur Text, Text mit der URL inline, oder eine nummerierte Referenzliste |
 | Bild | Alt-Text und eine Datei | Der Alt-Text, oder nichts |
 | Tabelle | Zeilen- und Spaltenzuordnung | Aufgefüllte Spalten, eine Zeile pro Reihe, oder ein Feld-pro-Zeile-Block |
-| Codeblock | „Fassen Sie nichts davon an" | Wörtlich, nie umgebrochen, nie entfernt |
+| Codeblock | „Fassen Sie nichts davon an“ | Wörtlich, nie umgebrochen, nie entfernt |
 | Blockzitat | Jemand anders hat das gesagt | `> ` oder eine Einrückung behalten; weglassen, und es wird Ihr eigener Satz |
 | Betonung | Nachdruck, oder ein definierter Begriff | Nichts, oder Großbuchstaben, oder wieder Unterstriche |
 | Fußnote | Eine Markierung und eine Notiz anderswo | Eine `[1]`-Markierung und eine Liste am Ende |
@@ -62,9 +62,9 @@ Position allein ist die sicherste Wahl und die schwächste. Ein Dokument mit sec
 
 ### Listen
 
-Behalten Sie das Aufzählungszeichen. Das überrascht Leute, die „überhaupt kein Markup" wollen, aber `- ` und `* ` waren Konventionen für Listen in reinem Text in E-Mails, lange bevor Markdown existierte, und sie lesen sich für einen Menschen und für die meisten Tokenisierer als Listen. Entfernen Sie sie, und aufeinanderfolgende Elemente verschmelzen: Drei Elemente, die „Festplatte prüfen", „Dienst neu starten", „Ticket anlegen" lauten, werden zu einer Zeile, die sich wie eine einzige Anweisung liest.
+Behalten Sie das Aufzählungszeichen. Das überrascht Leute, die „überhaupt kein Markup“ wollen, aber `- ` und `* ` waren Konventionen für Listen in reinem Text in E-Mails, lange bevor Markdown existierte, und sie lesen sich für einen Menschen und für die meisten Tokenisierer als Listen. Entfernen Sie sie, und aufeinanderfolgende Elemente verschmelzen: Drei Elemente, die „Festplatte prüfen“, „Dienst neu starten“, „Ticket anlegen“ lauten, werden zu einer Zeile, die sich wie eine einzige Anweisung liest.
 
-Geordnete Listen sind strenger. Die Zahl ist Inhalt, nicht Dekoration, denn etwas anderes im Dokument sagt „falls Schritt 3 fehlschlägt". Ein Konverter, der neu nummeriert oder Zahlen zugunsten von Aufzählungszeichen fallen lässt, hat das Dokument verändert. Verschachtelung braucht ebenfalls ihre Einrückung erhalten, was Sie Spalten am rechten Rand kostet — und wenn Sie zusätzlich bei 72 Zeichen umbrechen, muss die Einrückung aus diesem Budget kommen. Die [Unterscheidung zwischen lockeren und engen Listen](/blog/markdown-line-breaks-and-lists) entscheidet, ob Elemente Leerzeilen zwischen sich bekommen, und es lohnt sich, das bewusst festzulegen, statt es zu übernehmen.
+Geordnete Listen sind strenger. Die Zahl ist Inhalt, nicht Dekoration, denn etwas anderes im Dokument sagt „falls Schritt 3 fehlschlägt“. Ein Konverter, der neu nummeriert oder Zahlen zugunsten von Aufzählungszeichen fallen lässt, hat das Dokument verändert. Verschachtelung braucht ebenfalls ihre Einrückung erhalten, was Sie Spalten am rechten Rand kostet — und wenn Sie zusätzlich bei 72 Zeichen umbrechen, muss die Einrückung aus diesem Budget kommen. Die [Unterscheidung zwischen lockeren und engen Listen](/blog/markdown-line-breaks-and-lists) entscheidet, ob Elemente Leerzeilen zwischen sich bekommen, und es lohnt sich, das bewusst festzulegen, statt es zu übernehmen.
 
 ### Links
 
@@ -112,7 +112,7 @@ HTML-Entities sind dasselbe Problem mit einem anderen Hut auf. Ein Parser dekodi
 
 ### Tabellen
 
-Eine Zeile aus Pipes ist nur dann eine Tabelle, wenn die Trennzeile da ist. Ohne `| --- | --- |` unter der Kopfzeile ist es ein Absatz. Mit ihr sind die Pipes Struktur. Ein Muster, das `|`-Zeichen auf Sicht löscht, zerstört beides: Der Absatz verliert seine Interpunktion, und die Tabelle wird zu einer Wortfolge ohne Grenzen. „EMEA 40 3 Wochen" waren einmal vier Zellen mit Kopfzeilen, und es gibt keine Möglichkeit wiederherzustellen, welche Zahl welche war.
+Eine Zeile aus Pipes ist nur dann eine Tabelle, wenn die Trennzeile da ist. Ohne `| --- | --- |` unter der Kopfzeile ist es ein Absatz. Mit ihr sind die Pipes Struktur. Ein Muster, das `|`-Zeichen auf Sicht löscht, zerstört beides: Der Absatz verliert seine Interpunktion, und die Tabelle wird zu einer Wortfolge ohne Grenzen. „EMEA 40 3 Wochen“ waren einmal vier Zellen mit Kopfzeilen, und es gibt keine Möglichkeit wiederherzustellen, welche Zahl welche war.
 
 Zellen machen es noch komplizierter. Eine Pipe innerhalb einer Zelle wird als `\|` maskiert. Eine Pipe innerhalb von Inline-Code ist überhaupt kein Trennzeichen. Ausrichtungs-Doppelpunkte — `:---`, `---:`, `:---:` — sind Struktur, die keine Wörter trägt und verschwinden muss. Und Zellen enthalten eigenes Inline-Markup, was auch immer Sie also über Links und Betonung entschieden haben, gilt auch innerhalb jeder Zelle.
 
@@ -199,7 +199,7 @@ Die unified-Pipeline parst Markdown zu einem mdast-Baum, und `strip-markdown` is
 - Die eigene Beschreibung besagt, dass es alles außer Absätzen und Text entfernt
 - Standardmäßig entfernt es Codeblöcke, HTML, thematische Trennlinien, Tabellen und YAML- oder TOML-Frontmatter, und es erhält den Alt-Text von Bildern (geprüft auf github.com, 8. September 2026)
 - `keep` nimmt eine Liste von Knotentypen entgegen, die unverändert bleiben sollen; `remove` nimmt Knotentypen entgegen, die entfernt oder durch einen Handler ersetzt werden
-- Weil es vor `remark-stringify` läuft, bedeutet eine Tabelle zu „behalten", dass der Stringifier sie wieder als Markdown-Tabelle herausschreibt — die Daten zu behalten und das Markup zu entfernen sind zwei verschiedene Anliegen, und der Mittelweg braucht einen selbst geschriebenen Handler
+- Weil es vor `remark-stringify` läuft, bedeutet eine Tabelle zu „behalten“, dass der Stringifier sie wieder als Markdown-Tabelle herausschreibt — die Daten zu behalten und das Markup zu entfernen sind zwei verschiedene Anliegen, und der Mittelweg braucht einen selbst geschriebenen Handler
 
 **Für wen ist das?** Für JavaScript-Projekte, die schon mit remark parsen, und für jeden, der die Element-für-Element-Entscheidungen in der Konfiguration festgehalten haben will, statt sie aus der Ausgabe abzuleiten.
 
@@ -215,7 +215,7 @@ Manchmal wollen Sie eine einzelne Zeichenkette für ein Suchindexfeld oder einen
 
 **Preis:** kostenlos, MIT-lizenziert.
 
-Das leere Trennzeichen ist das, was man wissen muss. Weil der Verbindungsaufruf `''` verwendet, läuft eine Überschrift direkt in den folgenden Absatz: „Preise" plus „Wir berechnen pro Platz" wird zu `PreiseWir berechnen pro Platz`. Für ein Indexfeld ist das meist harmlos, da der Tokenisierer ohnehin an der Grenze aufteilt — aber für ein Snippet, das ein Nutzer sieht, oder eine Wortzählung erzeugt es Unsinn. Die Lösung ist, den Baum selbst zu durchlaufen und Knoten auf Blockebene mit einer Leerzeile zu verbinden.
+Das leere Trennzeichen ist das, was man wissen muss. Weil der Verbindungsaufruf `''` verwendet, läuft eine Überschrift direkt in den folgenden Absatz: „Preise“ plus „Wir berechnen pro Platz“ wird zu `PreiseWir berechnen pro Platz`. Für ein Indexfeld ist das meist harmlos, da der Tokenisierer ohnehin an der Grenze aufteilt — aber für ein Snippet, das ein Nutzer sieht, oder eine Wortzählung erzeugt es Unsinn. Die Lösung ist, den Baum selbst zu durchlaufen und Knoten auf Blockebene mit einer Leerzeile zu verbinden.
 
 **Für wen ist das?** Für jeden, der ein maschinell gelesenes Feld füllt und geprüft hat, dass die Verkettung keine Rolle spielt.
 

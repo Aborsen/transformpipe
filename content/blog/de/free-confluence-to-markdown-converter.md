@@ -20,7 +20,7 @@ In diesem Text geht es darum, welcher dieser Wege tatsächlich kostenlos ist, f�
 
 **Word- und PDF-Export sind kostenlos und sind kein Weg.** Es sind die beiden Exporte, die jeder ohne Berechtigung ausführen kann, und genau deshalb greifen Leute danach, und es sind die beiden, die die Struktur wegwerfen, die eine Markdown-Konvertierung braucht.
 
-## Warum „kostenlos" bei genau dieser Konvertierung der schwierige Teil ist
+## Warum „kostenlos“ bei genau dieser Konvertierung der schwierige Teil ist
 
 Bei den meisten Konvertierungen ist kostenlos eine langweilige Frage. Eine CSV ist eine Datei auf Ihrer Platte; ein Konverter liest sie; niemand genehmigt irgendetwas. Confluence ist in zwei Punkten anders, und beide werden zu Geld oder zu Berechtigung.
 
@@ -133,9 +133,9 @@ Turndown ist eine JavaScript-Bibliothek, die HTML nach Markdown konvertiert, MIT
 
 ### Apps im Atlassian Marketplace — lesen Sie das Wort über dem Knopf
 
-Mehrere Apps exportieren Confluence-Seiten aus Confluence heraus nach Markdown, ohne HTML-Zwischenexport. Hier braucht „kostenlos" die meiste Sorgfalt, denn der Marketplace zeigt zwei verschiedene Dinge an fast derselben Stelle: Ein Eintrag mit der Überschrift **Free app** ist kostenlos, und einer mit der Überschrift **Try it free** ist eine Testphase mit einem Preis im Preis-Tab.
+Mehrere Apps exportieren Confluence-Seiten aus Confluence heraus nach Markdown, ohne HTML-Zwischenexport. Hier braucht „kostenlos“ die meiste Sorgfalt, denn der Marketplace zeigt zwei verschiedene Dinge an fast derselben Stelle: Ein Eintrag mit der Überschrift **Free app** ist kostenlos, und einer mit der Überschrift **Try it free** ist eine Testphase mit einem Preis im Preis-Tab.
 
-Beides ist heute vertreten. Als kostenlose Apps gelistet: „Markdown Exporter for Confluence (API, Bulk & Attachments)" von Yamuno Software US und „Markdown | Source Editor | Markdown Exporter (FREE)" von Agilva Solutions. Als Try it free gelistet: „Easy Markdown Exporter for Confluence" von AppLiger, „Markdown Exporter for Confluence" von Narva Software, „Export to Markdown for Confluence Cloud" von Atly Apps und „Instant Markdown Exporter for Confluence" von Philip Lindner, die eine 30-tägige kostenlose Testphase angibt (alles geprüft auf marketplace.atlassian.com, 14. September 2026).
+Beides ist heute vertreten. Als kostenlose Apps gelistet: „Markdown Exporter for Confluence (API, Bulk & Attachments)“ von Yamuno Software US und „Markdown | Source Editor | Markdown Exporter (FREE)“ von Agilva Solutions. Als Try it free gelistet: „Easy Markdown Exporter for Confluence“ von AppLiger, „Markdown Exporter for Confluence“ von Narva Software, „Export to Markdown for Confluence Cloud“ von Atly Apps und „Instant Markdown Exporter for Confluence“ von Philip Lindner, die eine 30-tägige kostenlose Testphase angibt (alles geprüft auf marketplace.atlassian.com, 14. September 2026).
 
 | Dafür | Dagegen |
 | --- | --- |
@@ -171,7 +171,7 @@ Das sind die beiden Exporte, die jedem offenstehen, der eine Seite lesen kann, u
 
 Der Weg aus Export und anschließender Konvertierung ist die Empfehlung dieses Artikels, er verdient also einen Abschnitt darüber, wo er nicht trägt. Es gibt vier Stellen, und drei sind nicht die Schuld des Konverters.
 
-**Er erzeugt Dateien, und Dateien sind kein Wiki.** Ein Confluence-Space ist ein Baum mit Querverweisen. Der HTML-Export flacht diesen Baum in ein Verzeichnis erzeugter Dateinamen ab, und jeder Konverter weiter unten erbt diese Abflachung. Sie bekommen die Inhalte und verlieren die Navigation, es sei denn, Sie bauen sie selbst aus dem Index neu auf. Marketplace-Apps, die mit „erhält die Hierarchie" werben, werben mit dem einen, was der kostenlose Weg nicht tut.
+**Er erzeugt Dateien, und Dateien sind kein Wiki.** Ein Confluence-Space ist ein Baum mit Querverweisen. Der HTML-Export flacht diesen Baum in ein Verzeichnis erzeugter Dateinamen ab, und jeder Konverter weiter unten erbt diese Abflachung. Sie bekommen die Inhalte und verlieren die Navigation, es sei denn, Sie bauen sie selbst aus dem Index neu auf. Marketplace-Apps, die mit „erhält die Hierarchie“ werben, werben mit dem einen, was der kostenlose Weg nicht tut.
 
 **Seitenübergreifende Links überstehen den Umzug nicht.** Ein Link von einer Seite auf eine andere war eine Confluence-URL, und nach der Konvertierung ist er das immer noch — richtig, wenn Confluence bleibt, falsch, wenn dies eine Migration davon weg ist. Diese Links umzuschreiben braucht eine Zuordnung von Seite auf neuen Dateipfad, und diese Zuordnung existiert erst, wenn Sie das Dateilayout entschieden haben. Es ist das größte Einzelstück Handarbeit in einer echten Migration.
 
@@ -179,7 +179,7 @@ Der Weg aus Export und anschließender Konvertierung ist die Empfehlung dieses A
 
 **Was ein Makro war, ist jetzt eine Momentaufnahme.** Alles, was eine lebende Abfrage war — ein Jira-Vorgangs-Makro, eine eingebundene Seite, ein Seitenbaum —, wurde als das exportiert, was es an diesem Tag darstellte, und kein Konverter kann Verhalten wiederherstellen, das nie in der Datei war. [Der Anleitungsartikel](/blog/convert-confluence-page-to-markdown) hat die Tabelle Makro für Makro, falls Sie die brauchen, bevor Sie sich festlegen.
 
-Und eines zu „kostenlos" statt zur Struktur: **Ein kostenloser Konverter, der Ihr Wiki hochlädt, ist ein kostenloser Konverter, der jetzt Ihr Wiki hat.** Interne Dokumentation enthält Kundennamen, Architektur und Vorfallberichte — die Hälfte der Dinge, die eine Firma lieber nicht einem Dienst gibt, den niemand geprüft hat. Konvertierung im Browser und lokale Kommandozeilenwerkzeuge sind die beiden Formen, bei denen sich die Frage nicht stellt, und der Unterschied taucht in keiner Funktionstabelle auf; Sie prüfen ihn, indem Sie den Netzwerk-Tab beobachten. [Ob ein Online-Konverter sicher ist](/blog/is-an-online-converter-safe), sind zehn Minuten wert, bevor Sie einen Space-Export auf irgendetwas werfen.
+Und eines zu „kostenlos“ statt zur Struktur: **Ein kostenloser Konverter, der Ihr Wiki hochlädt, ist ein kostenloser Konverter, der jetzt Ihr Wiki hat.** Interne Dokumentation enthält Kundennamen, Architektur und Vorfallberichte — die Hälfte der Dinge, die eine Firma lieber nicht einem Dienst gibt, den niemand geprüft hat. Konvertierung im Browser und lokale Kommandozeilenwerkzeuge sind die beiden Formen, bei denen sich die Frage nicht stellt, und der Unterschied taucht in keiner Funktionstabelle auf; Sie prüfen ihn, indem Sie den Netzwerk-Tab beobachten. [Ob ein Online-Konverter sicher ist](/blog/is-an-online-converter-safe), sind zehn Minuten wert, bevor Sie einen Space-Export auf irgendetwas werfen.
 
 ## Wie Sie wählen
 

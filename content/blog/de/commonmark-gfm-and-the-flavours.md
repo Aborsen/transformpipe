@@ -6,7 +6,7 @@ tag: Syntax
 keywords: commonmark, commonmark gegen markdown, github flavored markdown, gfm, gfm gegen commonmark, markdown dialekte, markdown spezifikation, markdown erweiterungen, unterschied commonmark gfm
 ---
 
-Fügen Sie eine Datei in drei Werkzeuge ein, und Sie können drei Dokumente bekommen. Eines zeichnet eine Tabelle, ein anderes zeigt eine Reihe von Pipe-Zeichen. Eines verwandelt einen einzelnen Zeilenumbruch in einen harten Zeilenumbruch, ein anderes faltet die Zeilen zu einem Absatz. Nichts ist kaputt und nichts ist falsch eingestellt. Die Werkzeuge sprechen verschiedene Dialekte, „Markdown" benennt die Familie statt eines einzelnen Mitglieds, und zu wissen, welches Mitglied Sie schreiben, ist der größte Teil der Abhilfe.
+Fügen Sie eine Datei in drei Werkzeuge ein, und Sie können drei Dokumente bekommen. Eines zeichnet eine Tabelle, ein anderes zeigt eine Reihe von Pipe-Zeichen. Eines verwandelt einen einzelnen Zeilenumbruch in einen harten Zeilenumbruch, ein anderes faltet die Zeilen zu einem Absatz. Nichts ist kaputt und nichts ist falsch eingestellt. Die Werkzeuge sprechen verschiedene Dialekte, „Markdown“ benennt die Familie statt eines einzelnen Mitglieds, und zu wissen, welches Mitglied Sie schreiben, ist der größte Teil der Abhilfe.
 
 ### Kurzfassung
 
@@ -28,7 +28,7 @@ Es ist leicht, CommonMark wegen dessen, was es auslässt, als ein kürzeres Mark
 
 - **Listeneinrückung.** Wie weit eine Kindliste eingerückt sein muss, ist über die Inhaltsspalte des Elternteils definiert, nicht über eine feste Zahl von Leerzeichen. Deshalb verhalten sich die Marker `-` und `1.` unterschiedlich, wenn Sie darunter verschachteln: sie sind unterschiedlich breit.
 - **Locker gesetzte und dichte Listen.** Eine Leerzeile zwischen Elementen macht die ganze Liste locker gesetzt, was den Text jedes Elements in `<p>` einpackt. Eine einzige verirrte Leerzeile ändert die Abstände einer Liste, die Sie nicht angefasst haben — die häufigste Überraschung in der ganzen Spezifikation, und eine, die [ihre eigenen lesenswerten Fehlfälle hat](/blog/markdown-line-breaks-and-lists).
-- **Betonung.** Die Regeln für links- und rechtsflankierende Trennzeichenläufe ersetzen das alte „es kommt darauf an" für `snake_case_words`, `**bold**inside` und jede Mischung aus Sternchen und Unterstrichen.
+- **Betonung.** Die Regeln für links- und rechtsflankierende Trennzeichenläufe ersetzen das alte „es kommt darauf an“ für `snake_case_words`, `**bold**inside` und jede Mischung aus Sternchen und Unterstrichen.
 - **Eingezäunte Codeblöcke.** Backtick- und Tilde-Zäune, die Regeln für den schließenden Zaun und der Info-String. Das Wort nach dem Zaun ist eine Beschriftung und nichts weiter: [jeder Konverter macht daraus einen Klassennamen und hört dort auf](/blog/code-blocks-in-markdown).
 - **Harte Zeilenumbrüche.** Zwei Leerzeichen am Zeilenende oder ein Backslash am Zeilenende. Ein einzelner Zeilenumbruch ist ein Leerzeichen. Das ist eine Regel der Spezifikation, keine Vorliebe, und es ist die Regel, für deren Bruch die meisten Werkzeuge eine Option anbieten.
 - **HTML-Blöcke.** Sieben verschiedene Arten, jede mit eigenen Start- und Endbedingungen, weshalb ein `<div>` das Markdown danach manchmal verschluckt und manchmal nicht.
@@ -156,7 +156,7 @@ GFM ist CommonMark plus Tabellen, Aufgabenlisten, Durchgestrichenes, Autolinks u
 
 ### markdown-it — CommonMark zuerst, Erweiterungen auf Anfrage
 
-Ein JavaScript-Parser, der der CommonMark-Spezifikation folgt und ein wenig darauf aufsetzt. Seine eigene Zusammenfassung lautet, es „adds syntax extensions & sugar (URL autolinking, typographer)" (geprüft auf github.com/markdown-it/markdown-it, 8. September 2026).
+Ein JavaScript-Parser, der der CommonMark-Spezifikation folgt und ein wenig darauf aufsetzt. Seine eigene Zusammenfassung lautet, es „adds syntax extensions & sugar (URL autolinking, typographer)“ (geprüft auf github.com/markdown-it/markdown-it, 8. September 2026).
 
 | Vorteile | Nachteile |
 | --- | --- |
@@ -333,7 +333,7 @@ MDX setzt JSX-Komponenten in Markdown. Es wird zu einer Komponente kompiliert st
 
 ## Funktionen gegen Implementierungen
 
-Lesen Sie die Spalte eines Werkzeugs nach unten und die Zeile einer Funktion nach rechts. „Plugin" heißt verfügbar und nicht eingebaut; „Erweiterung" heißt mit dem Projekt ausgeliefert, aber aus, bis sie eingeschaltet wird; „Option" heißt ein Wahrheitswert irgendwo in der Konfiguration.
+Lesen Sie die Spalte eines Werkzeugs nach unten und die Zeile einer Funktion nach rechts. „Plugin“ heißt verfügbar und nicht eingebaut; „Erweiterung“ heißt mit dem Projekt ausgeliefert, aber aus, bis sie eingeschaltet wird; „Option“ heißt ein Wahrheitswert irgendwo in der Konfiguration.
 
 | Funktion | CommonMark | GFM | markdown-it | marked | remark | Pandoc | Python-Markdown | Goldmark | kramdown |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -381,7 +381,7 @@ Zeile zwei
 [^1]: Nur manche Werkzeuge stellen das dar.
 ```
 
-Neun Antworten aus einem Einfügen, in der Reihenfolge, die zählt. Eine gezeichnete Tabelle, Checkboxen, durchgestrichener Text und ein lebender Link decken die vier GFM-Syntaxerweiterungen ab — erscheinen alle vier, haben Sie mindestens GFM. Eine eingerückte Definition bedeutet, dass das Werkzeug über GFM hinaus in das Gebiet von PHP Markdown Extra geht. Eine dargestellte Fußnote bedeutet dasselbe. Sichtbare `{: .probe}`-Klammern bedeuten keine Attributlisten, und das sind die meisten Werkzeuge. Und wenn „Zeile zwei" auf einer eigenen Zeile sitzt, ist `breaks` eingeschaltet, was zu wissen sich lohnt, bevor Sie zehn Seiten gegen die falsche Annahme schreiben.
+Neun Antworten aus einem Einfügen, in der Reihenfolge, die zählt. Eine gezeichnete Tabelle, Checkboxen, durchgestrichener Text und ein lebender Link decken die vier GFM-Syntaxerweiterungen ab — erscheinen alle vier, haben Sie mindestens GFM. Eine eingerückte Definition bedeutet, dass das Werkzeug über GFM hinaus in das Gebiet von PHP Markdown Extra geht. Eine dargestellte Fußnote bedeutet dasselbe. Sichtbare `{: .probe}`-Klammern bedeuten keine Attributlisten, und das sind die meisten Werkzeuge. Und wenn „Zeile zwei“ auf einer eigenen Zeile sitzt, ist `breaks` eingeschaltet, was zu wissen sich lohnt, bevor Sie zehn Seiten gegen die falsche Annahme schreiben.
 
 Fügen Sie ein `$x^2$` und eine `> [!NOTE]`-Zeile hinzu, wenn Sie sich für Mathematik oder Hinweisblöcke interessieren. Der Sinn der Datei ist, dass sie zehn Sekunden dauert und einen Nachmittag des Ratens ersetzt.
 
@@ -397,7 +397,7 @@ GFM ist die richtige Voreinstellung, und es lohnt sich, ehrlich zu sein über di
 
 **Die breaks-Frage hat keine richtige Antwort.** GitHubs Kommentarfelder machen aus einem einzelnen Zeilenumbruch ein `<br>`; die Spezifikation sagt, ein einzelner Zeilenumbruch ist ein Leerzeichen; die README-Darstellung folgt der Spezifikation. Derselbe Text kann also auf derselben Website zweierlei dargestellt werden, und jedes Werkzeug weiter unten muss sich für eines entscheiden. TransformPipe konvertiert mit GFM an und `breaks` aus, was der Spezifikation und der README-Darstellung entspricht und nicht dem Kommentarfeld, denn ein Dokument ist einer README näher als einem Kommentar. Was ein Werkzeug auch wählt, irgendjemandes Absätze kommen falsch heraus, und es ist das am häufigsten gemeldete Dialektproblem überhaupt.
 
-Der Preis aller vier zusammen ist, dass „GFM" Ihnen sagt, was dargestellt wird, und nicht, was richtig aussehen wird. Es ist ein Boden, kein Abschluss.
+Der Preis aller vier zusammen ist, dass „GFM“ Ihnen sagt, was dargestellt wird, und nicht, was richtig aussehen wird. Es ist ein Boden, kein Abschluss.
 
 ## Wie Sie einen Dialekt wählen
 

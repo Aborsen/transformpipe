@@ -12,7 +12,7 @@ HTML in Markdown umzuwandeln ist keine Übersetzung. Es ist ein Abriss mit einer
 
 Wählen Sie danach, was Ihr HTML ist. Für ein **sauberes Fragment oder eine handgeschriebene Seite** funktioniert fast jeder Konverter, und die Unterschiede sind kosmetisch. Für eine **ganze gespeicherte Seite** ist die Konvertierung die leichtere Hälfte — die schwerere ist, den Artikel zwischen Navigation, Cookie-Banner und Fußbereich zu finden, und das ist, was ein Extraktor wie Readability tut, bevor überhaupt ein Konverter läuft. Für **eine Datei, die Sie auf der Platte haben, und eine einzige Konvertierung** ist ein Werkzeug im Browser der kürzeste Weg, und es wird nichts hochgeladen; die kostenlosen sind unten behandelt. Für **einen Build oder ein Skript** nehmen Sie die Bibliothek Ihrer Sprache: Turndown in JavaScript, markdownify oder html2text in Python, Pandoc, wenn die Ausgabe mehr als Markdown sein muss.
 
-## Warum „es konvertiert HTML" fast nichts aussagt
+## Warum „es konvertiert HTML“ fast nichts aussagt
 
 HTML zu Markdown hat zwei Stufen, und die meisten Werkzeuge geben nur eine zu. Die erste ist die Extraktion: zu entscheiden, welcher Teil des Dokuments das Dokument ist. Die zweite ist die Übersetzung: die behaltenen Elemente in Markdown-Syntax zu verwandeln. Eine Bibliothek, die die zweite perfekt macht und die erste auslässt, gibt Ihnen eine wunderbare Markdown-Fassung eines Navigationsmenüs, einer Newsletter-Anmeldung und einer Liste verwandter Artikel — mit dem Artikel irgendwo in der Mitte.
 
@@ -39,7 +39,7 @@ Zuletzt gibt es das, was mit allem passiert, für das Markdown keine Worte hat. 
 | MarkDownload | Die Seite clippen, die Sie ansehen | Readability, dann Turndown, aus der Browser-Leiste | Kostenlos, Apache 2.0 |
 | Obsidian Web Clipper | Direkt in einen Vault clippen | Extraktion und Konvertierung über defuddle, Vorlagen, Bereinigung | Kostenlos, MIT |
 | Notion Web Clipper | Seiten nach Notion speichern | Speichert in Notion-Blöcke; Markdown nur über einen späteren Export | Kostenloser Plan verfügbar |
-| „Seite speichern unter" im Browser | Überhaupt an das HTML kommen | Kein Konverter — die Quelle der meisten schlechten Eingaben | Kostenlos |
+| „Seite speichern unter“ im Browser | Überhaupt an das HTML kommen | Kein Konverter — die Quelle der meisten schlechten Eingaben | Kostenlos |
 
 ## Die besten HTML-zu-Markdown-Konverter 2026
 
@@ -299,14 +299,14 @@ Notions Clipper speichert eine Webseite in eine Notion-Seite. Das ist es wert, a
 
 **Wer sollte es verwenden?** Notion-Nutzer, die Lesematerial erfassen. Wenn das Ziel eine Markdown-Datei ist, clippen Sie mit etwas, das eine erzeugt, oder konvertieren Sie das gespeicherte HTML direkt — der Weg über Notion bedeutet zwei Konvertierungen und zwei Gelegenheiten, die Tabellen zu verlieren.
 
-### „Seite speichern unter" im Browser — die Quelle der meisten schlechten Eingaben
+### „Seite speichern unter“ im Browser — die Quelle der meisten schlechten Eingaben
 
-Eine Seite aus einem Browser zu speichern ist die Art, wie die meisten HTML-Dateien entstehen, die konvertiert werden müssen, und es ist es wert zu verstehen, was Sie bekommen. „Webseite, vollständig" gibt Ihnen das Markup plus einen Ordner mit Assets. „Webseite, nur HTML" gibt Ihnen das Markup, wie es ausgeliefert wurde, und das kann bei einer modernen Seite ein fast leeres Dokument plus ein Skript bedeuten, das die Seite gebaut hätte. Keines von beiden ist der Artikel.
+Eine Seite aus einem Browser zu speichern ist die Art, wie die meisten HTML-Dateien entstehen, die konvertiert werden müssen, und es ist es wert zu verstehen, was Sie bekommen. „Webseite, vollständig“ gibt Ihnen das Markup plus einen Ordner mit Assets. „Webseite, nur HTML“ gibt Ihnen das Markup, wie es ausgeliefert wurde, und das kann bei einer modernen Seite ein fast leeres Dokument plus ein Skript bedeuten, das die Seite gebaut hätte. Keines von beiden ist der Artikel.
 
 | Vorteile | Nachteile |
 | --- | --- |
 | Immer verfügbar, keine Installation, keine Erweiterung | Speichert die ganze Seite, Mobiliar und alles |
-| Erfasst die Seite, wie sie war, samt Zeitstempel | „Nur HTML" kann von JavaScript hinzugefügten Inhalt verpassen |
+| Erfasst die Seite, wie sie war, samt Zeitstempel | „Nur HTML“ kann von JavaScript hinzugefügten Inhalt verpassen |
 | Funktioniert für Seiten hinter einem Login, in dem Sie schon sind | Asset-Ordner lassen relative Links auf Ihre Platte zeigen |
 
 **Preis:** kostenlos.

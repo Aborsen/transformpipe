@@ -8,7 +8,7 @@ keywords: bester markdown editor, bester kostenloser markdown editor, markdown e
 
 Die meisten Vergleiche von Markdown-Editoren vergleichen das Tippen. Welcher hat die schönste Schrift, welcher dimmt den Absatz, an dem Sie nicht arbeiten, welcher versteckt die Sternchen. Das ist der Teil, den Sie am ersten Tag bemerken, und der Teil, der nach sechs Monaten am wenigsten zählt.
 
-Was später zählt, ist unspektakulärer. Wo bewahrt der Editor Ihren Text auf — in Dateien, die Sie in einem Dateimanager sehen können, oder in einem Dienst, bei dem Sie um eine Kopie bitten müssen? Welche Syntax fügt er hinzu, die kein anderes Werkzeug versteht? Und was kommt heraus, wenn jemand sagt „kannst du mir das als Webseite schicken", was die Anfrage ist, die jede Abkürzung offenlegt, die der Editor genommen hat, während Sie sich an der Schriftart erfreut haben.
+Was später zählt, ist unspektakulärer. Wo bewahrt der Editor Ihren Text auf — in Dateien, die Sie in einem Dateimanager sehen können, oder in einem Dienst, bei dem Sie um eine Kopie bitten müssen? Welche Syntax fügt er hinzu, die kein anderes Werkzeug versteht? Und was kommt heraus, wenn jemand sagt „kannst du mir das als Webseite schicken“, was die Anfrage ist, die jede Abkürzung offenlegt, die der Editor genommen hat, während Sie sich an der Schriftart erfreut haben.
 
 Elf Editoren werden im Folgenden unter diesen Bedingungen verglichen. Manche davon sind Texteditoren mit Markdown-Unterstützung, manche sind Schreibanwendungen, einer davon ist überhaupt kein Markdown-Editor und steht auf der Liste, weil die Hälfte der Leser ihn als einen benutzt.
 
@@ -124,7 +124,7 @@ iA Writer ist zuerst eine Schreibanwendung und zweitens ein Markdown-Editor. Es 
 | HTML- und PDF-Export, mit Vorlagen für den Rahmen | Keine gute Wahl für codelastige Dokumente |
 | 7-tägige Testphase ohne Kreditkarte | Absichtlich wenige Funktionen, was manche Autoren als fehlend lesen |
 
-**Preis:** Einmalkauf pro Plattform — „einmal pro Plattform zahlen, für immer besitzen" — mit 7-tägiger kostenloser Testphase und ohne Kreditkarte (geprüft auf ia.net/writer, 8. September 2026).
+**Preis:** Einmalkauf pro Plattform — „einmal pro Plattform zahlen, für immer besitzen“ — mit 7-tägiger kostenloser Testphase und ohne Kreditkarte (geprüft auf ia.net/writer, 8. September 2026).
 
 **Technische Details und Funktionen**
 
@@ -219,9 +219,9 @@ Notion akzeptiert Markdown-Kürzel. Tippen Sie `## `, bekommen Sie eine Übersch
 
 **Technische Details und Funktionen**
 
-- Vier Exportwege: PDF, HTML, „Markdown & CSV", und Drucken über den Browser
+- Vier Exportwege: PDF, HTML, „Markdown & CSV“, und Drucken über den Browser
 - Der Markdown-Export kommt als komprimiertes Archiv an: `.md`-Dateien für Nicht-Datenbank-Seiten und Unterseiten, eine `.csv`-Datei für jede vollseitige Datenbank, und separate Ordner für Bilder und andere Assets
-- Notions eigene Hilfedokumentation gibt an, dass Callout-Blöcke als HTML exportiert werden, „da es keine Markdown-Entsprechung gibt", und dass eine Formular-Ansicht einer Datenbank überhaupt nicht exportiert werden kann
+- Notions eigene Hilfedokumentation gibt an, dass Callout-Blöcke als HTML exportiert werden, „da es keine Markdown-Entsprechung gibt“, und dass eine Formular-Ansicht einer Datenbank überhaupt nicht exportiert werden kann
 - Eigene Emoji erscheinen nicht in PDF-Exporten
 - Unter Windows kann die Extraktion scheitern, wenn die verschachtelten Ordnerpfade im Archiv 260 Zeichen überschreiten; die dokumentierten Abhilfen sind, die Ordnererstellung für Unterseiten abzuschalten oder ein anderes Extraktionswerkzeug zu nutzen
 
@@ -301,7 +301,7 @@ Jede Liste von Markdown-Editoren rangiert sie auf einer Achse. Die Achse, die en
 
 **Editoren, die Dateien besitzen.** VS Code, Obsidian, Typora, iA Writer, Zettlr, Mark Text, Vim und Nota zeigen alle auf ein Verzeichnis auf einer Festplatte. Die Konsequenz ist, dass der Editor ersetzbar ist. Sie können denselben Ordner morgen in einem zweiten Editor öffnen, einen Konverter in einem Build darüber laufen lassen, ihn mit `grep` durchsuchen, in git committen, und mit demselben Werkzeug sichern, das alles andere sichert. Wenn eine dieser Anwendungen aufgegeben wird, verlieren Sie die Anwendung. Sie verlieren nicht das Geschriebene.
 
-**Anwendungen, die Dokumente besitzen.** Notion besitzt seine Dokumente in einer Datenbank. StackEdit besitzt sie, bis Sie einen Sync-Anbieter verbinden, im Speicher Ihres Browsers. Ein gehosteter Editor besitzt sie auf einem Server. Die Konsequenz ist, dass Ihren Text herauszubekommen eine Operation ist, die der Anbieter implementiert, in der Treue, die der Anbieter gewählt hat, in den Formaten, die der Anbieter anbietet. Diese Operation ist meist in Ordnung und gelegentlich der schlimmste Nachmittag des Quartals. Das Verräterische ist, dass sie „Export" heißt statt „Öffnen".
+**Anwendungen, die Dokumente besitzen.** Notion besitzt seine Dokumente in einer Datenbank. StackEdit besitzt sie, bis Sie einen Sync-Anbieter verbinden, im Speicher Ihres Browsers. Ein gehosteter Editor besitzt sie auf einem Server. Die Konsequenz ist, dass Ihren Text herauszubekommen eine Operation ist, die der Anbieter implementiert, in der Treue, die der Anbieter gewählt hat, in den Formaten, die der Anbieter anbietet. Diese Operation ist meist in Ordnung und gelegentlich der schlimmste Nachmittag des Quartals. Das Verräterische ist, dass sie „Export“ heißt statt „Öffnen“.
 
 **Proprietäre Syntax ist ein langsames Leck.** Wikilinks, Callouts, Hervorhebungsmarkierungen, eingebettete Abfragen, Transklusion — jedes ist bequem innerhalb der Anwendung und wirkungslos außerhalb. Sie bemerken es nicht, weil Sie diese Dateien nur in der Anwendung lesen, die sie geschrieben hat. Sie bemerken es an dem Tag, an dem die Dokumentation ins Repository zieht, oder eine Kollegin eine Notiz in einem anderen Editor öffnet, oder ein Konverter `[[Onboarding]]` als vier wörtliche Klammern und ein Wort rendert. Nichts ist beschädigt. Es ist einfach kein Markdown mehr, und das war es seit einem Jahr nicht mehr.
 

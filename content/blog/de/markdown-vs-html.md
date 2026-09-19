@@ -6,7 +6,7 @@ tag: Workflow
 keywords: markdown vs html, markdown oder html, unterschied zwischen markdown und html, wann markdown benutzen, rohes html in markdown, markdown einschränkungen, html vs markdown dokumentation
 ---
 
-Niemand fragt „Markdown oder HTML?" im Abstrakten. Die Frage kommt an einer Datei befestigt: ein Runbook, das jemand aktuell halten muss, eine Seite, die exakt wie die gedruckte Version aussehen muss, eine Vorlage, die Outlook überstehen muss. Die zwei Formate konkurrieren nicht um denselben Job, und der Streit klärt sich nur, indem man fragt, was mit dem Dokument passiert, nachdem Sie fertig geschrieben haben.
+Niemand fragt „Markdown oder HTML?“ im Abstrakten. Die Frage kommt an einer Datei befestigt: ein Runbook, das jemand aktuell halten muss, eine Seite, die exakt wie die gedruckte Version aussehen muss, eine Vorlage, die Outlook überstehen muss. Die zwei Formate konkurrieren nicht um denselben Job, und der Streit klärt sich nur, indem man fragt, was mit dem Dokument passiert, nachdem Sie fertig geschrieben haben.
 
 ### Kurzfassung
 
@@ -16,17 +16,17 @@ Der meiste Reibungsverlust, den Leute dem Format anlasten, ist eigentlich eine F
 
 Beide Richtungen kosten dasselbe: Das Format passte nicht mehr zur Zukunft des Dokuments. Markdown ist ein Schreibformat, das in ein Publikationsformat konvertiert. HTML ist das Publikationsformat. Zu wählen bedeutet zu entscheiden, welcher der beiden Jobs das Leben der Datei dominiert.
 
-Der Rest dieses Stücks ist die Entscheidung, Fall für Fall, plus die Teile, die Leute falsch machen — was Markdown wirklich nicht kann und warum das ein Feature statt einer Lücke ist, wo der Roh-HTML-Notausgang legitim ist, und was es kostet, wenn die übliche Antwort „Markdown schreiben und konvertieren" sich als falsch herausstellt.
+Der Rest dieses Stücks ist die Entscheidung, Fall für Fall, plus die Teile, die Leute falsch machen — was Markdown wirklich nicht kann und warum das ein Feature statt einer Lücke ist, wo der Roh-HTML-Notausgang legitim ist, und was es kostet, wenn die übliche Antwort „Markdown schreiben und konvertieren“ sich als falsch herausstellt.
 
 ## Was die Wahl tatsächlich entscheidet
 
 Der sichtbare Unterschied ist Syntax: `## Überschrift` gegen `<h2>Überschrift</h2>`. Das ist der uninteressanteste Unterschied, und es ist der einzige, den die meisten Vergleiche behandeln.
 
-Was Sie wirklich wählen, ist, wo die Darstellung lebt. In HTML sitzen Struktur und Darstellung in derselben Datei, oder zumindest im selben Repository, verdrahtet durch Klassen und ein Stylesheet. Ändern Sie die Überschrift, müssen Sie vielleicht die Hülle ändern, die Klasse, und die CSS-Regel, die sie anvisiert. In Markdown lebt die Darstellung vollständig außerhalb des Dokuments. Die Datei sagt „das ist eine Überschrift zweiter Ebene" und weigert sich, irgendetwas darüber zu sagen, wie eine Überschrift zweiter Ebene aussieht. Diese einzige Einschränkung ist es, die eine Markdown-Datei portabel, diffbar und sicher macht, jemandem zu geben, der keinen Code schreibt.
+Was Sie wirklich wählen, ist, wo die Darstellung lebt. In HTML sitzen Struktur und Darstellung in derselben Datei, oder zumindest im selben Repository, verdrahtet durch Klassen und ein Stylesheet. Ändern Sie die Überschrift, müssen Sie vielleicht die Hülle ändern, die Klasse, und die CSS-Regel, die sie anvisiert. In Markdown lebt die Darstellung vollständig außerhalb des Dokuments. Die Datei sagt „das ist eine Überschrift zweiter Ebene“ und weigert sich, irgendetwas darüber zu sagen, wie eine Überschrift zweiter Ebene aussieht. Diese einzige Einschränkung ist es, die eine Markdown-Datei portabel, diffbar und sicher macht, jemandem zu geben, der keinen Code schreibt.
 
 Sie wählen auch die Größe der editierbaren Oberfläche. Ein HTML-Dokument hat tausende legale Zustände, und die meisten davon sind auf subtile Weise kaputt — ein nicht geschlossenes `<li>`, ein `<div>` verschachtelt in einem `<p>`, ein verirrtes Attribut, das ein Browser still repariert und ein Validator meldet. Ein Markdown-Dokument hat eine kleine Anzahl von Konstrukten und fast keine Möglichkeit, das Parsen zu brechen. Das Schlimmste, was meist passiert, ist, dass eine Liste als Absatz dargestellt wird, was sofort sichtbar ist.
 
-Und Sie wählen, wer der zweite Autor ist. Das ist der Teil, der die meisten echten Fälle entscheidet. Ist die Antwort „ein Support-Ingenieur um 2 Uhr nachts", „eine Anwältin", „ein Produktmanager" oder „jemand in sechs Monaten, der dieses Repository nie gesehen hat", braucht das Format eine niedrige Einstiegshürde. Ist die Antwort „derselbe Frontend-Entwickler, der es geschrieben hat", zählt die Hürde nicht, und die Decke schon.
+Und Sie wählen, wer der zweite Autor ist. Das ist der Teil, der die meisten echten Fälle entscheidet. Ist die Antwort „ein Support-Ingenieur um 2 Uhr nachts“, „eine Anwältin“, „ein Produktmanager“ oder „jemand in sechs Monaten, der dieses Repository nie gesehen hat“, braucht das Format eine niedrige Einstiegshürde. Ist die Antwort „derselbe Frontend-Entwickler, der es geschrieben hat“, zählt die Hürde nicht, und die Decke schon.
 
 Drei Fragen klären fast jeden Fall:
 
@@ -135,9 +135,9 @@ Die Liste unten liest sich als Liste fehlender Funktionen. Sie ist näher an ein
 
 **Tabellen sind Raster und nichts weiter.** GitHub Flavored Markdown gibt Ihnen eine Kopfzeile, Ausrichtung pro Spalte, und Zellen mit Inline-Inhalt. Es gibt kein `colspan`, kein `rowspan`, keine verschachtelte Tabelle, keine Zelle mit einer Liste oder einem Absatzumbruch, keine Beschriftung. Braucht Ihre Tabelle etwas davon, brauchen Sie HTML für die Tabelle. Der Gewinn: Die Tabelle ist in der Quelldatei lesbar, was eine HTML-Tabelle nicht ist. Tabellen sind auch das Ding, das am häufigsten unterwegs bricht, und [sie über eine Konvertierung hinweg intakt zu halten](/blog/markdown-tables-that-survive-conversion), hat eigene Regeln.
 
-**Keine Fußnoten, Definitionslisten oder Mathematik in der Basisspezifikation.** CommonMark hat keines davon. GFM fügt Tabellen, Task-Listen, Durchgestrichenes und Autolinks hinzu und hört dort auf. Fußnoten, Definitionslisten, `$…$`-Mathematik und Hinweisblöcke sind alle Erweiterungen, unterstützt von manchen Parsern und von anderen still als wörtlicher Text dargestellt. Der Gewinn: eine kleine Spezifikation, die viele Implementierungen tatsächlich korrekt umsetzen. Es bedeutet auch, dass „Markdown unterstützt X" fast immer eine Behauptung über einen Parser ist statt über Markdown; [die Unterschiede zwischen den Dialekten](/blog/commonmark-gfm-and-the-flavours) sind, woher die meisten werkzeugübergreifenden Überraschungen kommen.
+**Keine Fußnoten, Definitionslisten oder Mathematik in der Basisspezifikation.** CommonMark hat keines davon. GFM fügt Tabellen, Task-Listen, Durchgestrichenes und Autolinks hinzu und hört dort auf. Fußnoten, Definitionslisten, `$…$`-Mathematik und Hinweisblöcke sind alle Erweiterungen, unterstützt von manchen Parsern und von anderen still als wörtlicher Text dargestellt. Der Gewinn: eine kleine Spezifikation, die viele Implementierungen tatsächlich korrekt umsetzen. Es bedeutet auch, dass „Markdown unterstützt X“ fast immer eine Behauptung über einen Parser ist statt über Markdown; [die Unterschiede zwischen den Dialekten](/blog/commonmark-gfm-and-the-flavours) sind, woher die meisten werkzeugübergreifenden Überraschungen kommen.
 
-**Kein bedingter Inhalt, keine Includes, keine Variablen.** Sie können nicht sagen „zeige diesen Absatz nur für die Enterprise-Edition" oder „füge hier den Lizenzblock ein". Statische Seitengeneratoren schrauben das mit Frontmatter und Vorlagensyntax an, was genau der Punkt ist, an dem Ihr Markdown aufhört, portables Markdown zu sein. Der Gewinn: Was Sie lesen, ist, was da ist.
+**Kein bedingter Inhalt, keine Includes, keine Variablen.** Sie können nicht sagen „zeige diesen Absatz nur für die Enterprise-Edition“ oder „füge hier den Lizenzblock ein“. Statische Seitengeneratoren schrauben das mit Frontmatter und Vorlagensyntax an, was genau der Punkt ist, an dem Ihr Markdown aufhört, portables Markdown zu sein. Der Gewinn: Was Sie lesen, ist, was da ist.
 
 **Keine Semantik über ein Dutzend Konstrukte hinaus.** Kein `<figure>` mit einem `<figcaption>`, kein `<abbr>`, kein `<time>`, kein `<aside>`, kein `<section>` mit beschrifteter Überschrift. Für Dokumente, die einen Barrierefreiheitsstandard erfüllen müssen, ist das eine echte Lücke, und sie wird entweder durch die Konvertierungsvorlage oder durch rohes HTML in der Datei gefüllt.
 
@@ -222,13 +222,13 @@ HTML ist ebenfalls dauerhaft — Browser rendern altes Markup weiterhin, und ein
 
 Die Langlebigkeitsreihenfolge ist also: Markdown-Quelle zuerst, eigenständiges HTML zweitens, HTML mit externen Abhängigkeiten weit dahinter, und alles, was ein Build-System braucht, um überhaupt zu rendern, zuletzt. Das ist ein weiteres Argument dafür, Markdown als Quelle der Wahrheit zu halten und HTML als Ausgabe zu behandeln — das Dauerhafte ist die Datei, die Sie noch lesen können, und das Verzichtbare ist die Datei, die Sie neu erzeugen können.
 
-## Wo „Markdown schreiben und konvertieren" scheitert, und was es kostet
+## Wo „Markdown schreiben und konvertieren“ scheitert, und was es kostet
 
 Der übliche Rat auf dieser Seite ist meistens der richtige Rat. Es lohnt sich, konkret zu sein, wann er es nicht ist, denn das Scheitern ist selten dramatisch — es ist eine langsame Anhäufung von Umgehungen, bis jemand bemerkt, dass die Pipeline mehr kostet, als die Dokumente wert sind.
 
 **Wenn die Ausgabe von Hand bearbeitet wird.** In dem Moment, in dem jemand das erzeugte HTML öffnet und etwas darin repariert, hört das Markdown auf, die Quelle der Wahrheit zu sein, und Sie haben zwei divergierende Dateien. Die nächste Konvertierung verwirft still seine Korrektur. Das ist die häufigste Art, wie ein Markdown-zu-HTML-Workflow verrottet, und die einzige Verteidigung ist eine Regel, dass erzeugte Dateien nie bearbeitet werden, durchgesetzt, indem man sie irgendwo offensichtlich Verzichtbares legt.
 
-**Wenn das Design Kontrolle pro Element braucht.** Enthält das Briefing „dieses Pull Quote ist 60 % breit, rechtsbündig, mit der Markenfarbe des Kunden dahinter", wird Markdown Sie bei jedem Element bekämpfen. Sie können es mit rohem HTML und Inline-Stilen ausdrücken, an welchem Punkt Sie eine HTML-Datei mit Extraschritten haben. Kosten: Stunden an Umgehungen, und eine Datei, die niemand pflegen kann.
+**Wenn das Design Kontrolle pro Element braucht.** Enthält das Briefing „dieses Pull Quote ist 60 % breit, rechtsbündig, mit der Markenfarbe des Kunden dahinter“, wird Markdown Sie bei jedem Element bekämpfen. Sie können es mit rohem HTML und Inline-Stilen ausdrücken, an welchem Punkt Sie eine HTML-Datei mit Extraschritten haben. Kosten: Stunden an Umgehungen, und eine Datei, die niemand pflegen kann.
 
 **Wenn Exaktheit vertraglich ist.** Alles mit spezifiziertem Layout — eine behördliche Einreichung, ein Rechnungsformat, das das System eines Kunden parst, ein Zertifikat mit einem Unterschriftsfeld, das an fester Position sitzen muss. Kosten: Der ganze Rendering-Pfad muss kontrolliert werden, und Markdown-Kontrolle eines Rendering-Pfads ist Kontrolle einer Vorlage, einen Schritt entfernt.
 

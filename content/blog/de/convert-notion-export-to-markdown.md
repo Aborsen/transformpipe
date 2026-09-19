@@ -6,7 +6,7 @@ tag: Konvertieren
 keywords: notion export nach markdown, notion zu markdown konvertieren, notion markdown exportieren, notion api markdown, notion seite als markdown, notion zip nach markdown, notion export ids entfernen
 ---
 
-Notions Export-Knopf sagt „Markdown & CSV" und gibt Ihnen ein Zip, das, technisch gesehen, die Wahrheit sagt. Öffnen Sie es, und jede Datei ist echtes Markdown: Überschriften, Listen, Links, alles in jedem Editor lesbar. Was er Ihnen nicht sagt: Jeder Dateiname und jeder Link zwischen Seiten trägt jetzt eine 32-stellige hexadezimale ID, eine Datenbank kam als separate CSV heraus, auf die Ihre Markdown-Dateien nicht verweisen, und der Export ist eine Momentaufnahme eines Augenblicks, keine lebende Kopie von irgendetwas.
+Notions Export-Knopf sagt „Markdown & CSV“ und gibt Ihnen ein Zip, das, technisch gesehen, die Wahrheit sagt. Öffnen Sie es, und jede Datei ist echtes Markdown: Überschriften, Listen, Links, alles in jedem Editor lesbar. Was er Ihnen nicht sagt: Jeder Dateiname und jeder Link zwischen Seiten trägt jetzt eine 32-stellige hexadezimale ID, eine Datenbank kam als separate CSV heraus, auf die Ihre Markdown-Dateien nicht verweisen, und der Export ist eine Momentaufnahme eines Augenblicks, keine lebende Kopie von irgendetwas.
 
 Nichts davon ist ein Fehler. Notion identifiziert eine Seite über ihre ID und behandelt den Titel als Etikett, das sich ändern kann, der Export muss die ID also irgendwo dauerhaft unterbringen — der Dateiname ist die Stelle, an der sie landet. Das Problem liegt vollständig weiter unten in der Kette: Ein Ordner voller Dateien, die alle per ID aufeinander zeigen, ist für Notion in Ordnung und als Migrationsziel unlesbar, bis etwas diese Zeiger umschreibt.
 
@@ -18,7 +18,7 @@ Bei welchem Weg auch immer: Drei Dinge überleben keinen davon: Kommentare, weil
 
 ## Warum die ID da ist, und warum sie nicht von selbst verschwindet
 
-Eine Seite in Notion wird in dem Moment, in dem sie erstellt wird, durch eine UUID identifiziert. Der Titel ist ein Metadatum, das an diese ID angehängt ist, jederzeit editierbar, und erscheint nirgends dort, wo der Export eine Seite darüber nachschlagen müsste. Wenn der Export also `Meeting notes.md` schreibt, hat er keine Garantie, dass dieser Name eindeutig ist — zwei Seiten namens „Meeting notes" existieren in den meisten Workspaces, die älter als ein Jahr sind —, und er löst das, indem er die ID in jeden Dateinamen schreibt, den er erzeugt.
+Eine Seite in Notion wird in dem Moment, in dem sie erstellt wird, durch eine UUID identifiziert. Der Titel ist ein Metadatum, das an diese ID angehängt ist, jederzeit editierbar, und erscheint nirgends dort, wo der Export eine Seite darüber nachschlagen müsste. Wenn der Export also `Meeting notes.md` schreibt, hat er keine Garantie, dass dieser Name eindeutig ist — zwei Seiten namens „Meeting notes“ existieren in den meisten Workspaces, die älter als ein Jahr sind —, und er löst das, indem er die ID in jeden Dateinamen schreibt, den er erzeugt.
 
 ```text
 Meeting notes 21f4c8a1b2c34d5e8f90123456789abc.md    the file on disk
@@ -30,13 +30,13 @@ Ein Link von einer Seite zu einer anderen ist gegen den exakten Dateinamen gesch
 
 ## Der Export-Dialog, und die Grenzen, die er nicht ankündigt
 
-Notions Export liegt unter dem Seiten- oder Workspace-Menü als „Export", mit einer Formatwahl zwischen PDF, HTML oder Markdown & CSV, einem Dropdown „Include content", das Dateien und Bilder ausschließen kann, einem Schalter „Include subpages" und einem Schalter „Create folders for subpages" (geprüft auf notion.com, 9. September 2026). Drei Grenzen von derselben Oberfläche zählen, bevor eine Migration darauf aufgebaut wird:
+Notions Export liegt unter dem Seiten- oder Workspace-Menü als „Export“, mit einer Formatwahl zwischen PDF, HTML oder Markdown & CSV, einem Dropdown „Include content“, das Dateien und Bilder ausschließen kann, einem Schalter „Include subpages“ und einem Schalter „Create folders for subpages“ (geprüft auf notion.com, 9. September 2026). Drei Grenzen von derselben Oberfläche zählen, bevor eine Migration darauf aufgebaut wird:
 
 - Exportiert wird nur die aktuelle oder die Standardansicht einer Datenbank. Alle Ansichten auf einmal wird nicht unterstützt, und eine Formularansicht lässt sich überhaupt nicht exportieren — stattdessen geht die Tabellenansicht raus.
 - Ein großer Export wird als Download-Link per E-Mail verschickt statt sofort gestartet, der Link verfällt nach sieben Tagen, und die Verarbeitung kann bis zu dreißig Stunden dauern.
 - Unterseiten werden bei eingeschaltetem Schalter als verschachtelte Ordner exportiert, weshalb es sich lohnt, die Verzeichnisstruktur des Zips zu behalten, statt sie abzuflachen.
 
-Diese Verarbeitungszeit ist eine Planungstatsache, keine Fußnote. „Den Workspace Freitagnachmittag exportieren, Freitagabend konvertieren" setzt einen Export voraus, der in Minuten fertig ist; bei einem großen Workspace ist das womöglich nicht der Fall.
+Diese Verarbeitungszeit ist eine Planungstatsache, keine Fußnote. „Den Workspace Freitagnachmittag exportieren, Freitagabend konvertieren“ setzt einen Export voraus, der in Minuten fertig ist; bei einem großen Workspace ist das womöglich nicht der Fall.
 
 ## Kurzvergleich: drei Wege und was jeder kostet
 
@@ -86,7 +86,7 @@ for file in list(export_folder, recursive=true):
 
 `LINK_PATTERN` ist ein regulärer Ausdruck über die eigene Link-Form des Exports — ein relativer href, der auf `.md` oder `.csv` endet, prozentkodiert, mit derselben abschließenden hexadezimalen ID wie der Dateiname. Das eine Detail, das Leuten zum Verhängnis wird: Die ID-Extraktion über den *dekodierten* href laufen lassen, nicht über den rohen prozentkodierten, denn `%20` wird nicht zu einem Muster passen, das für ein wörtliches Leerzeichen geschrieben wurde.
 
-**Datenbanken verdienen einen eigenen Durchgang.** Eine Vollseiten-Datenbank exportiert als `.csv` neben einem Ordner mit je einer `.md` pro Zeile, die einen Seitenkörper hatte, jede Zeilendatei trägt ihr eigenes ID-Suffix genau wie eine Seite. „Die Tabelle wiederherzustellen, mit einem Link zur ausführlicheren Seite für jede Zeile, die eine hatte" ist eine Verknüpfung zwischen den Zeilen der CSV und den Dateinamen des Ordners, abgeglichen über welche Spalte auch immer Notion als Seitentitel benutzt hat — etwas, das weder die CSV noch die Zeilendateien irgendwo explizit als Beziehung festhalten.
+**Datenbanken verdienen einen eigenen Durchgang.** Eine Vollseiten-Datenbank exportiert als `.csv` neben einem Ordner mit je einer `.md` pro Zeile, die einen Seitenkörper hatte, jede Zeilendatei trägt ihr eigenes ID-Suffix genau wie eine Seite. „Die Tabelle wiederherzustellen, mit einem Link zur ausführlicheren Seite für jede Zeile, die eine hatte“ ist eine Verknüpfung zwischen den Zeilen der CSV und den Dateinamen des Ordners, abgeglichen über welche Spalte auch immer Notion als Seitentitel benutzt hat — etwas, das weder die CSV noch die Zeilendateien irgendwo explizit als Beziehung festhalten.
 
 ## `notion-to-md`: das ID-Problem umgehen, indem man sie nie schreibt
 
@@ -104,7 +104,7 @@ Notion veröffentlicht außerdem eine offizielle API, und Seiten darüber statt 
 
 Die API selbst ist auf durchschnittlich drei Anfragen pro Sekunde pro Integration begrenzt, dazu kommt noch eine für den ganzen Workspace gemeinsam geltende Grenze (geprüft auf developers.notion.com, 14. September 2026); eine Anfrage über dem Limit bekommt einen 429 mit einem `Retry-After`-Header zurück statt der Daten, ein Skript, das mehr als ein paar Dutzend Seiten durchläuft, braucht die Warte-und-Wiederhol-Schleife also von Anfang an eingebaut, nicht erst nach dem ersten Fehlschlag nachgerüstet. Für eine einzelne Seite oder eine kleine Datenbank spielt das nie eine Rolle; für einen ganzen Workspace ist es der Unterschied zwischen einem Skript, das fertig wird, und einem, das scheinbar hängen bleibt.
 
-**Für wen ist das?** Für eine statische Website, die ihren Inhalt bei jedem Build aus Notion zieht, einen geplanten Job, der einen Workspace in ein Git-Repository spiegelt, oder alles, wo „von Hand regelmäßig exportieren" die falsche Form dafür ist, wie sich der Inhalt tatsächlich ändert.
+**Für wen ist das?** Für eine statische Website, die ihren Inhalt bei jedem Build aus Notion zieht, einen geplanten Job, der einen Workspace in ein Git-Repository spiegelt, oder alles, wo „von Hand regelmäßig exportieren“ die falsche Form dafür ist, wie sich der Inhalt tatsächlich ändert.
 
 ## Was mit Bildern, Dateien und Anhängen passiert
 
@@ -118,7 +118,7 @@ Ein Zusammenführen-und-Hochladen-Weg sieht, was auch immer das Zip schon enthä
 
 ## Das Export-Zip direkt hochladen, zusammengeführt zu einem Dokument
 
-Das ID-Problem des Exports verschwindet auf eine dritte Art, wenn das Ziel nie ein Ordner separater Dateien war: [TransformPipes Notion-→-Markdown-Konvertierung](/notion-to-markdown) nimmt das „Export as Markdown & CSV"-Zip unverändert, führt jede Seite in ihrer ursprünglichen Reihenfolge zu einem Dokument zusammen, mit einem erzeugten Inhaltsverzeichnis, und macht aus einem seitenübergreifenden Link die Worte, die er zeigte, statt einen Dateinamen, der nicht mehr auflöst, sobald die Seiten Abschnitte desselben Dokuments sind. Eine Datenbank kommt als Tabelle zurück, im selben Dokument.
+Das ID-Problem des Exports verschwindet auf eine dritte Art, wenn das Ziel nie ein Ordner separater Dateien war: [TransformPipes Notion-→-Markdown-Konvertierung](/notion-to-markdown) nimmt das „Export as Markdown & CSV“-Zip unverändert, führt jede Seite in ihrer ursprünglichen Reihenfolge zu einem Dokument zusammen, mit einem erzeugten Inhaltsverzeichnis, und macht aus einem seitenübergreifenden Link die Worte, die er zeigte, statt einen Dateinamen, der nicht mehr auflöst, sobald die Seiten Abschnitte desselben Dokuments sind. Eine Datenbank kommt als Tabelle zurück, im selben Dokument.
 
 | Vorteile | Nachteile |
 | --- | --- |
@@ -136,7 +136,7 @@ Das ID-Problem des Exports verschwindet auf eine dritte Art, wenn das Ziel nie e
 
 **Nicht-Standard-Datenbankansichten.** Notion exportiert die Ansicht, die Sie geöffnet haben, nicht jede Ansicht, die eine Datenbank hat. Eine Datenbank, auf drei verschiedene Arten für drei verschiedene Zielgruppen gefiltert, exportiert als eine dieser drei, und die anderen zwei sind aus dem Export überhaupt nicht wiederherstellbar — sie müssen aus den zugrunde liegenden Zeilen neu aufgebaut werden.
 
-**Synced Blocks.** Ein Synced Block zeigt innerhalb von Notion denselben Inhalt an mehreren Stellen gleichzeitig. Der Export kennt kein Konzept von „derselbe Block, zweimal gezeigt" — jede Stelle, an der er erschien, bekommt ihre eigene Kopie des Inhalts, das Bearbeiten der einen nach der Migration aktualisiert die andere also nicht mehr, und nichts in der Datei markiert, dass sie je verbunden waren.
+**Synced Blocks.** Ein Synced Block zeigt innerhalb von Notion denselben Inhalt an mehreren Stellen gleichzeitig. Der Export kennt kein Konzept von „derselbe Block, zweimal gezeigt“ — jede Stelle, an der er erschien, bekommt ihre eigene Kopie des Inhalts, das Bearbeiten der einen nach der Migration aktualisiert die andere also nicht mehr, und nichts in der Datei markiert, dass sie je verbunden waren.
 
 ## Wie Sie wählen
 
@@ -161,7 +161,7 @@ Weil Notion Seiten über IDs identifiziert, der Titel nur ein Etikett ist, und d
 
 ### Enthält der Export auch andere Datenbankansichten als die, die ich geöffnet hatte?
 
-Nein. Nur die aktuelle oder die Standardansicht wird exportiert, und Notions eigener Export-Dialog bietet „jede Ansicht" nicht als Option an. Eine Formularansicht lässt sich speziell überhaupt nicht exportieren — exportieren Sie stattdessen die Tabellenansicht derselben Datenbank.
+Nein. Nur die aktuelle oder die Standardansicht wird exportiert, und Notions eigener Export-Dialog bietet „jede Ansicht“ nicht als Option an. Eine Formularansicht lässt sich speziell überhaupt nicht exportieren — exportieren Sie stattdessen die Tabellenansicht derselben Datenbank.
 
 ### Sind Notion-Kommentare in einem Export enthalten?
 

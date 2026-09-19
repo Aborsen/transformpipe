@@ -20,7 +20,7 @@ Die zweite Sache, die man vorab wissen sollte: Wenn die Reviewerin das Dokument 
 
 ## Warum das überhaupt aufkommt: die Reviewerin arbeitet mit nachverfolgten Änderungen
 
-Die Bitte ist fast nie „bitte im Word-Format schicken". Es ist „ich muss das kommentieren", und in den meisten Organisationen heißt kommentieren Words Überprüfen-Menüband: Einfügungen in farbiger Unterstreichung, Löschungen durchgestrichen, ein Rand voller Kommentarblasen mit Namen darauf, und ein Annehmen/Ablehnen-Knopf für jede. Dieser Workflow ist Jahrzehnte alt, es ist das, worauf Rechts- und Compliance-Teams geschult sind, und er hat keine Entsprechung in einer Markdown-Datei.
+Die Bitte ist fast nie „bitte im Word-Format schicken“. Es ist „ich muss das kommentieren“, und in den meisten Organisationen heißt kommentieren Words Überprüfen-Menüband: Einfügungen in farbiger Unterstreichung, Löschungen durchgestrichen, ein Rand voller Kommentarblasen mit Namen darauf, und ein Annehmen/Ablehnen-Knopf für jede. Dieser Workflow ist Jahrzehnte alt, es ist das, worauf Rechts- und Compliance-Teams geschult sind, und er hat keine Entsprechung in einer Markdown-Datei.
 
 Git hat natürlich eine Entsprechung. Ein Pull Request mit Zeilenkommentaren macht denselben Job besser und behält die Historie. Aber man kann der Chefjustiziarin von jemandem keinen Pull Request schicken, und das Meeting, in dem Sie erklären, sie solle einen lernen, ist ein Meeting, das Sie verlieren. Also verlässt das Dokument das Repository als `.docx` und kommt als `.docx` mit den Änderungen einer anderen Person zurück, und die interessante technische Frage ist, was Sie in diesem Moment tun.
 
@@ -53,7 +53,7 @@ Diese Indirektion ist, warum Word-Dokumente auf eine Art bearbeitbar sind, wie e
 
 ### Wie --reference-doc funktioniert
 
-`--reference-doc=DATEI` ist dokumentiert als: „Nutzt die angegebene Datei als Stilreferenz beim Erzeugen einer docx- oder ODT-Datei." Was Pandoc aus dieser Datei nimmt, sind ihre Stylesheets und ihre Dokumenteigenschaften, einschließlich Ränder, Seitengröße, Kopf- und Fußzeile (geprüft auf pandoc.org, 8. September 2026). Ihr Inhalt wird in diese Hülle geschrieben.
+`--reference-doc=DATEI` ist dokumentiert als: „Nutzt die angegebene Datei als Stilreferenz beim Erzeugen einer docx- oder ODT-Datei.“ Was Pandoc aus dieser Datei nimmt, sind ihre Stylesheets und ihre Dokumenteigenschaften, einschließlich Ränder, Seitengröße, Kopf- und Fußzeile (geprüft auf pandoc.org, 8. September 2026). Ihr Inhalt wird in diese Hülle geschrieben.
 
 Der Mechanismus ist unverblümt, und das ist seine Stärke. Pandoc schreibt einen Absatz, markiert ihn mit `Heading 1`, und Word schaut `Heading 1` in dem Stylesheet nach, das aus Ihrer Referenzdatei kam. Es gibt keine Zuordnungsebene zum Konfigurieren und keine Template-Sprache zum Lernen. Existiert der Stil im Referenzdokument, nutzt Ihre Ausgabe ihn. Existiert er nicht, rendert Word eine Referenz auf einen nicht gefundenen Stil als schlichten `Normal`-Text — genau deshalb sehen Codeblöcke wie Fließtext aus, wenn jemand den Firmenbriefkopf als Referenzdokument nutzt, ohne einen `Source Code`-Stil hinzuzufügen.
 
@@ -127,7 +127,7 @@ Das macht Docs zu einem Zwei-Schritt-Weg zu Word: das Markdown importieren, dann
 | Die Reviewerin kann in Docs kommentieren und `.docx` ganz umgehen | Kein `Source Code`-Äquivalent, Codeblöcke kommen also als direkt formatierter Monospace an |
 | Der Vorschlagsmodus ist ein echter Review-Workflow mit echtem Prüfpfad | Vorschläge überleben den Markdown-Export nicht; Sie bekommen den aktuellen Text |
 
-Das wirklich Interessante an diesem Weg ist, dass er die Notwendigkeit von Word entfernen kann. Wenn der Einwand der Reviewerin ist „ich muss kommentieren und Änderungen vorschlagen", tut Docs' Vorschlagsmodus das, mit Namen und Daten und einer Annehmen/Ablehnen-Kontrolle, in einem Browser, ohne Datei, die hin- und hergeht. Es ist eine bessere Antwort als eine `.docx`-Rundreise, wann immer die Organisation es akzeptiert — und dasselbe Abgleichproblem wartet am Ende, weil der Markdown-Export Ihnen den aufgelösten Text gibt und nicht die Vorschläge.
+Das wirklich Interessante an diesem Weg ist, dass er die Notwendigkeit von Word entfernen kann. Wenn der Einwand der Reviewerin ist „ich muss kommentieren und Änderungen vorschlagen“, tut Docs' Vorschlagsmodus das, mit Namen und Daten und einer Annehmen/Ablehnen-Kontrolle, in einem Browser, ohne Datei, die hin- und hergeht. Es ist eine bessere Antwort als eine `.docx`-Rundreise, wann immer die Organisation es akzeptiert — und dasselbe Abgleichproblem wartet am Ende, weil der Markdown-Export Ihnen den aufgelösten Text gibt und nicht die Vorschläge.
 
 Der Preis ist, wohin das Dokument geht. Für eine öffentliche README spielt es keine Rolle. Für einen unveröffentlichten Plan, einen Vertrag oder alles unter einer Vertraulichkeitspflicht ist es hochzuladen, um es zu konvertieren, die ganze Frage, und dass die Konvertierung bequem ist, ändert die Antwort nicht.
 
@@ -183,7 +183,7 @@ Mit denselben Flags auf beiden Seiten zeigt der Diff das Review und sonst nichts
 
 **Alles, was Word ausdrücken kann und Markdown nicht, ist weg, egal welche Flags.** Eine Hervorhebung der Reviewerin, eine Farbe, die etwas bedeutete, ein Kommentarthread mit drei Antworten, eine umstrukturierte Tabelle, eine vorgeschlagene Abbildungsplatzierung, eine durch Umstylen statt Neutippen ausgedrückte umgeschriebene Überschriftenhierarchie — nichts davon hat irgendwo einen Platz zu landen. Das Abgleichproblem in der anderen Richtung, und was eine `.docx` trägt, das keine Markdown-Datei halten kann, wird ordentlich behandelt in [eine `.docx` zurück zu Markdown zu konvertieren](/blog/convert-docx-to-markdown).
 
-**Was es klar ausgedrückt kostet:** die Rundreise ist in der Praxis eine Einbahnstraße. Markdown raus, `.docx` zurück, Kommentare von einem Menschen gelesen, Änderungen von Hand ins Markdown nachgetragen, das die einzige Quelle bleibt. Jeder Prozess, der die zurückgegebene `.docx` als automatisch mergbare Eingabe behandelt, erzeugt entweder ein verlorenes Review oder einen Commit, den niemand lesen kann. Vereinbaren Sie das mit der Reviewerin, bevor Sie die Datei schicken — „schicken Sie mir Ihre Kommentare, und ich trage sie nach, und die Version im Repository ist die, die zählt" — und die Reibung wird zu einem Schritt in einem Prozess statt zu einem Streit darüber, welche Datei aktuell ist.
+**Was es klar ausgedrückt kostet:** die Rundreise ist in der Praxis eine Einbahnstraße. Markdown raus, `.docx` zurück, Kommentare von einem Menschen gelesen, Änderungen von Hand ins Markdown nachgetragen, das die einzige Quelle bleibt. Jeder Prozess, der die zurückgegebene `.docx` als automatisch mergbare Eingabe behandelt, erzeugt entweder ein verlorenes Review oder einen Commit, den niemand lesen kann. Vereinbaren Sie das mit der Reviewerin, bevor Sie die Datei schicken — „schicken Sie mir Ihre Kommentare, und ich trage sie nach, und die Version im Repository ist die, die zählt“ — und die Reibung wird zu einem Schritt in einem Prozess statt zu einem Streit darüber, welche Datei aktuell ist.
 
 ## Wie man wählt
 

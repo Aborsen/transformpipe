@@ -63,7 +63,7 @@ Pandoc ist ein Dokumentkonverter in Haskell, der rund vierzig Formate liest und 
 **Technische Details und Funktionen**
 
 - `-f gfm` wählt den Leser für GitHub Flavored Markdown, damit Tabellen, Aufgabenlisten, Durchgestrichenes und Autolinks geparst werden; `-f commonmark` wählt den strikten
-- `-s` (`--standalone`) erzeugt „Ausgabe mit passendem Kopf und Fuß … kein Fragment", in den Worten des Handbuchs
+- `-s` (`--standalone`) erzeugt „Ausgabe mit passendem Kopf und Fuß … kein Fragment“, in den Worten des Handbuchs
 - `--embed-resources` bettet verlinkte Stylesheets, Skripte und Bilder als `data:`-URIs ein; das ältere `--self-contained` ist inzwischen ein veraltetes Synonym für `--embed-resources --standalone`
 - `--template FILE` verwendet Ihre eigene Verpackung und impliziert `--standalone`
 - `-M key=value` setzt ein Metadatenfeld, `--metadata-file` liest eine ganze YAML- oder JSON-Datei davon, und ein auf der Kommandozeile übergebener Wert überschreibt einen im Dokument
@@ -72,7 +72,7 @@ Pandoc ist ein Dokumentkonverter in Haskell, der rund vierzig Formate liest und 
 - `--resource-path` sagt, wo nach Bildern gesucht wird, getrennt durch `:` unter Unix und `;` unter Windows
 - `--syntax-highlighting=STYLE` wählt das Thema für die Syntaxhervorhebung — es ersetzt das inzwischen veraltete `--highlight-style` — und `--list-highlight-styles` gibt aus, was Ihr Build unterstützt
 - `--file-scope` parst jede Datei einzeln, bevor sie zusammengefügt werden, was das Verhalten von Fußnoten und Links bei mehreren Eingabedateien verändert
-- `--sandbox` führt die Konvertierung so aus, dass „IO-Operationen in Lesern und Schreibern auf das Lesen der auf der Kommandozeile angegebenen Dateien beschränkt" werden
+- `--sandbox` führt die Konvertierung so aus, dass „IO-Operationen in Lesern und Schreibern auf das Lesen der auf der Kommandozeile angegebenen Dateien beschränkt“ werden
 - `--fail-if-warnings` verwandelt eine Warnung in einen Exit-Status ungleich Null, und das ist das Flag, das Pandoc innerhalb eines Skripts ehrlich macht
 
 Ein vollständiges Dokument, in einem Befehl:

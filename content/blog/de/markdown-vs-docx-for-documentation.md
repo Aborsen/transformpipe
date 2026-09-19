@@ -85,7 +85,7 @@ Die praktische Lesart: Nachverfolgte Änderungen sind besser darin, ein Dokument
 
 Das ist das Argument, das Skeptiker überzeugt, und es taucht nie in einem Feature-Vergleich auf, weil Word nichts hat, das es in diese Spalte eintragen könnte.
 
-Ein Dokumentationsbestand, der seit ein paar Jahren lebt, enthält Sätze, die niemand erklären kann. „Zugriffstoken laufen nach dreißig Tagen ab." Warum dreißig? War es eine Entscheidung, ein Kompromiss mit dem Sicherheitsteam, oder ein Tippfehler, um den herum jemand inzwischen eine Client-Bibliothek gebaut hat? In einem Repository fragen Sie die Datei: die Zeile per Blame prüfen, den Commit bekommen, die Commit-Nachricht lesen, ihr zum Pull Request folgen, die dort geführte Diskussion und das auslösende Issue lesen. Diese Kette dauert etwa neunzig Sekunden, und sie liefert entweder den Grund oder beweist, dass es nie einen gab, was für sich genommen nützlich ist.
+Ein Dokumentationsbestand, der seit ein paar Jahren lebt, enthält Sätze, die niemand erklären kann. „Zugriffstoken laufen nach dreißig Tagen ab.“ Warum dreißig? War es eine Entscheidung, ein Kompromiss mit dem Sicherheitsteam, oder ein Tippfehler, um den herum jemand inzwischen eine Client-Bibliothek gebaut hat? In einem Repository fragen Sie die Datei: die Zeile per Blame prüfen, den Commit bekommen, die Commit-Nachricht lesen, ihr zum Pull Request folgen, die dort geführte Diskussion und das auslösende Issue lesen. Diese Kette dauert etwa neunzig Sekunden, und sie liefert entweder den Grund oder beweist, dass es nie einen gab, was für sich genommen nützlich ist.
 
 In einem Word-Bestand ist dieselbe Frage in der Praxis unbeantwortbar. Die Versionshistorie der Speicherplattform liefert Schnappschüsse nach Autor und Zeitstempel — echte Historie, und besser als nichts —, aber die Einheit ist das Dokument, nicht der Satz. Sie können herausfinden, dass Priya an einem Dienstag im März eine neue Version gespeichert hat. Sie können nicht herausfinden, welche der vierzig Änderungen in dieser Speicherung die dreißig Tage waren oder worauf sie reagiert hat. Also bleibt der Satz, weil niemand rechtfertigen kann, etwas zu entfernen, das er nicht erklären kann, und die Dokumentation sammelt Behauptungen an, die nicht mehr zum System passen.
 
@@ -93,7 +93,7 @@ Die Konsequenz ist es wert, mit einem Preisschild versehen zu werden: In Word mu
 
 ### Wer bearbeiten darf, und der Satz, der das Gespräch beendet
 
-„Stellen Sie doch einfach einen Pull Request gegen die Docs." Wenn Sie das einer Kollegin im Vertrieb sagen, die bemerkt hat, dass die Preisseite einen Tarif beschreibt, der im Frühjahr eingestellt wurde, beendet dieser Satz das Gespräch. Sie wird keinen Pull Request stellen. Sie wird eine Nachricht schicken, oder sie wird nichts tun, und die Seite wird in sechs Monaten immer noch falsch sein.
+„Stellen Sie doch einfach einen Pull Request gegen die Docs.“ Wenn Sie das einer Kollegin im Vertrieb sagen, die bemerkt hat, dass die Preisseite einen Tarif beschreibt, der im Frühjahr eingestellt wurde, beendet dieser Satz das Gespräch. Sie wird keinen Pull Request stellen. Sie wird eine Nachricht schicken, oder sie wird nichts tun, und die Seite wird in sechs Monaten immer noch falsch sein.
 
 Das ist eine reale Einschränkung, kein Schulungsproblem, und sie als Schulungsproblem zu behandeln ist die häufigste Art, wie ein Docs-as-Code-Programm scheitert. Der Workflow rund um Markdown — ein Host, ein Fork oder Branch, eine Commit-Nachricht, ein Review, ein Merge, ein Deploy — sind fünf Konzepte, die nichts mit dem Schreiben eines Satzes zu tun haben. Die Einstiegshürde von Word ist tatsächlich niedriger: Datei öffnen, Wörter ändern, speichern. Jeder, der schon einen Computer benutzt hat, schafft das.
 
@@ -111,10 +111,10 @@ Markdown hat etwa ein Dutzend Konstrukte. Word hat ein Seitenmodell. Die Lücke 
 
 Die Dinge, die eine `.docx` mitführt und für die es überhaupt keine Markdown-Entsprechung gibt:
 
-- Eine Vorlage mit benannten Formaten, sodass „Überschrift 2" in jedem Dokument der Organisation eine bestimmte Schrift, Größe, einen bestimmten Abstand und eine bestimmte Farbe bedeutet.
+- Eine Vorlage mit benannten Formaten, sodass „Überschrift 2“ in jedem Dokument der Organisation eine bestimmte Schrift, Größe, einen bestimmten Abstand und eine bestimmte Farbe bedeutet.
 - Kopf- und Fußzeilen, Seitenzahlen, ein Deckblatt, Abschnittswechsel, mittendrin geänderte Ränder und Ausrichtung, Wasserzeichen.
 - Ein Inhaltsverzeichnisfeld, das sich selbst aktualisiert, Bildunterschriften, die sich selbst nummerieren, und Querverweise, die sich neu ausrichten, wenn Sie einen Abschnitt verschieben.
-- Seitenumbrüche und „Zusammenhalten mit nächstem", also Kontrolle darüber, was oben auf einer Seite landet.
+- Seitenumbrüche und „Zusammenhalten mit nächstem“, also Kontrolle darüber, was oben auf einer Seite landet.
 - Fußnoten, die am Fuß der Seite dargestellt werden, zu der sie gehören, statt am Ende des Dokuments gesammelt zu werden.
 - Textfelder, frei schwebende Formen, Tabellen mit verbundenen Zellen, und alles, was relativ zur Seite statt zum Textfluss positioniert ist.
 - Die Review-Schicht selbst: anstehende Einfügungen und Löschungen, und Kommentar-Threads, verankert an Zeichenbereichen.
@@ -132,7 +132,7 @@ Die umgekehrte Liste ist kürzer und wird in solchen Vergleichen völlig ausgela
 
 Alles bisher galt für ein einzelnes Dokument. Die folgenden Dimensionen tauchen erst auf, wenn es zweihundert davon gibt, und genau dann wird eine Formatentscheidung teuer, sie umzukehren.
 
-### Suche, und was „Suche" in jedem Fall bedeutet
+### Suche, und was „Suche“ in jedem Fall bedeutet
 
 Textsuche über ein Verzeichnis von Markdown-Dateien ist exakt, schnell und für alles verfügbar: ein regulärer Ausdruck, eine Groß-/Kleinschreibung beachtende Phrase, eine auf Überschriften beschränkte Suche, eine Suche, die Datei und Zeilennummer auflistet. Sie läuft auf einem Laptop ohne Index und ohne Dienst, und sie läuft in einem Build, was heißt, dass ein Dokumentationsbestand Fragen über sich selbst beantworten kann. Finden Sie jede Seite, die einen veralteten Endpunkt erwähnt, und Sie bekommen eine Liste von Zeilen, nach denen Sie handeln können.
 
@@ -205,7 +205,7 @@ Drei Praktiken halten das Arrangement ehrlich, und alle drei sind billig:
 
 1. **Jeden Export stempeln.** Eine generierte Datei sagt das auf ihrer ersten Seite: erzeugt aus dieser Quelle, an diesem Datum, aus diesem Commit. Wer den Export öffnet und ein Wort ändern will, weiß dann, wohin. Ohne den Stempel ist der Export von einem Original nicht zu unterscheiden und wird wie eines bearbeitet.
 2. **Neu generieren statt reparieren.** Wenn ein Export falsch ist, geht die Korrektur in die Quelle, und der Export wird neu gebaut. Wenn eine Korrektur je direkt in den Export geht, haben Sie jetzt zwei Quellen, und die Uhr läuft.
-3. **Einen Besitzer pro Dokumenttyp benennen, nicht pro Dokument.** „Alle Richtlinien sind Markdown, HR besitzt sie" ist eine Regel, der man folgen kann. „Diese hier ist Word, weil Priya es bevorzugt" ist der Weg zurück zu drei Antworten darauf, wo die Dokumentation lebt.
+3. **Einen Besitzer pro Dokumenttyp benennen, nicht pro Dokument.** „Alle Richtlinien sind Markdown, HR besitzt sie“ ist eine Regel, der man folgen kann. „Diese hier ist Word, weil Priya es bevorzugt“ ist der Weg zurück zu drei Antworten darauf, wo die Dokumentation lebt.
 
 ### Einen Word-Bestand nach Markdown migrieren
 

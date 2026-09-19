@@ -233,7 +233,7 @@ Die meisten Werkzeuge nehmen die erste Option still, weshalb eine konvertierte L
 
 ### Semikola, Tabulatoren und andere Trenner
 
-Eine `.csv`-Datei ist nicht zwingend kommagetrennt. In Gebieten, in denen das Komma der Dezimaltrenner ist, verwendet eine Tabellenkalkulation beim Exportieren als CSV den Listentrenner aus den regionalen Systemeinstellungen, und das ist häufig ein Semikolon — und die Datei trägt trotzdem die Endung `.csv`. Das ist die häufigste Ursache für „der Konverter hat eine einzige Spalte erzeugt".
+Eine `.csv`-Datei ist nicht zwingend kommagetrennt. In Gebieten, in denen das Komma der Dezimaltrenner ist, verwendet eine Tabellenkalkulation beim Exportieren als CSV den Listentrenner aus den regionalen Systemeinstellungen, und das ist häufig ein Semikolon — und die Datei trägt trotzdem die Endung `.csv`. Das ist die häufigste Ursache für „der Konverter hat eine einzige Spalte erzeugt“.
 
 ```csv
 id;name;price
@@ -258,7 +258,7 @@ Eine pipe-getrennte Quelle ist einen Moment Nachdenken wert, denn der Trenner un
 
 Zwei unsichtbare Dinge reisen mit Dateien mit, die unter Windows geschrieben oder aus Excel exportiert wurden.
 
-Ein **Byte Order Mark** — die Bytes `EF BB BF` — kann ganz am Anfang einer UTF-8-Datei sitzen. Excel schreibt eines, wenn Sie sein Speicherformat „CSV UTF-8" wählen, und es ist da zum Nutzen von Programmen, die sonst die Kodierung raten müssten. Ihr CSV-Reader entfernt es womöglich, oder auch nicht. Tut er es nicht, hängt sich das Zeichen an Ihre erste Spaltenüberschrift, wo es in jedem Editor unsichtbar ist und jeden Vergleich mit dieser Überschrift bricht. Sie bekommen eine Überschrift, die aussieht wie `id`, nicht gleich `id` ist, und sich nicht erklären lässt, indem man sie ansieht.
+Ein **Byte Order Mark** — die Bytes `EF BB BF` — kann ganz am Anfang einer UTF-8-Datei sitzen. Excel schreibt eines, wenn Sie sein Speicherformat „CSV UTF-8“ wählen, und es ist da zum Nutzen von Programmen, die sonst die Kodierung raten müssten. Ihr CSV-Reader entfernt es womöglich, oder auch nicht. Tut er es nicht, hängt sich das Zeichen an Ihre erste Spaltenüberschrift, wo es in jedem Editor unsichtbar ist und jeden Vergleich mit dieser Überschrift bricht. Sie bekommen eine Überschrift, die aussieht wie `id`, nicht gleich `id` ist, und sich nicht erklären lässt, indem man sie ansieht.
 
 ```python
 # Liest das BOM und verwirft es, falls vorhanden.
@@ -342,7 +342,7 @@ Fügen Sie vor dem Konvertieren eine hinzu. Eine Markdown-Tabelle kann ohne Kopf
 
 ### Warum steht ein seltsames Zeichen vor meiner ersten Spaltenüberschrift?
 
-Ein Byte Order Mark, geschrieben am Dateianfang von Excels „CSV UTF-8"-Export und von manch anderem Windows-Werkzeug. Es ist in Editoren unsichtbar und hängt sich an die erste Überschrift, Vergleiche mit dieser Überschrift schlagen also ohne sichtbaren Grund fehl. Lesen Sie die Datei mit einer Kodierung, die es entfernt, etwa Pythons `utf-8-sig`, oder streichen Sie die ersten drei Bytes.
+Ein Byte Order Mark, geschrieben am Dateianfang von Excels „CSV UTF-8“-Export und von manch anderem Windows-Werkzeug. Es ist in Editoren unsichtbar und hängt sich an die erste Überschrift, Vergleiche mit dieser Überschrift schlagen also ohne sichtbaren Grund fehl. Lesen Sie die Datei mit einer Kodierung, die es entfernt, etwa Pythons `utf-8-sig`, oder streichen Sie die ersten drei Bytes.
 
 ### Muss die Quelle einer Markdown-Tabelle die Pipes ausgerichtet haben?
 

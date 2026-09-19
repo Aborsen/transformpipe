@@ -27,7 +27,7 @@ Markdown-Tabellen kommen aus GitHub Flavored Markdown, nicht aus dem CommonMark-
 | --- | --- | --- |
 | Formeln | Nichts | Der Wert bleibt, die Formel verschwindet. Die Tabelle aktualisiert sich nicht mehr |
 | Zahlenformate | Nichts | Sie bekommen die angezeigte Zeichenkette oder die Rohzahl, je nach Weg |
-| Fett, Farbe, Füllungen | Nur Inline-Betonung, keine Farbe | Eine rote Zelle, die „überfällig" bedeutete, kommt als gewöhnliche Zahl an |
+| Fett, Farbe, Füllungen | Nur Inline-Betonung, keine Farbe | Eine rote Zelle, die „überfällig“ bedeutete, kommt als gewöhnliche Zahl an |
 | Bedingte Formatierung | Nichts | Die Regel und die Bedeutung verschwinden beide |
 | Verbundene Zellen | Nichts — kein Colspan, kein Rowspan | Wert in der ersten Zelle, Leerstellen im Rest |
 | Mehrere Blätter | Eine Tabelle pro Blatt | Ein CSV-Export speichert nur das aktive Blatt |
@@ -91,7 +91,7 @@ Nutzen Sie `Datei > Speichern unter`, wählen Sie `CSV UTF-8 (Comma delimited) (
 **Technische Details**
 
 - Excels Speichern-unter-Liste enthält mehrere Textformate: `CSV`, `UTF8 CSV`, `Macintosh CSV`, `Windows CSV`, `MSDOS CSV` und `Unicode Text`, den Makros als `xlCSV`, `xlCSVUTF8`, `xlCSVMac`, `xlCSVWindows`, `xlCSVMSDOS` und `xlUnicodeText` zugänglich (geprüft auf learn.microsoft.com, 8. September 2026).
-- Das Speichern als CSV zeigt einen Dialog, der „daran erinnert, dass nur das aktuelle Arbeitsblatt in die neue Datei gespeichert wird", und eine zweite Warnung, dass das Blatt Funktionen enthalten könnte, die das Textformat nicht unterstützt (geprüft auf support.microsoft.com, 8. September 2026).
+- Das Speichern als CSV zeigt einen Dialog, der „daran erinnert, dass nur das aktuelle Arbeitsblatt in die neue Datei gespeichert wird“, und eine zweite Warnung, dass das Blatt Funktionen enthalten könnte, die das Textformat nicht unterstützt (geprüft auf support.microsoft.com, 8. September 2026).
 - Das Feldtrennzeichen folgt dem Systemlistentrennzeichen, das in den Windows-Regionseinstellungen und in Excels eigenen Trennzeicheneinstellungen änderbar ist (geprüft auf support.microsoft.com, 8. September 2026).
 - Was für eine formatierte Zelle in der Datei landet, ist im Allgemeinen die von der Zelle angezeigte Zeichenkette, nicht der zugrunde liegende Wert. Das heißt, eine Zelle mit `2,3456`, angezeigt mit zwei Nachkommastellen, schreibt `2,35`, und ein Datum schreibt in der Reihenfolge, die das Format der Zelle nutzt. Öffnen Sie die CSV einmal in einem Texteditor, und Sie wissen genau, was Ihre Excel-Kopie tut.
 
@@ -193,7 +193,7 @@ Wenn das Arbeitsbuch nicht an Excel gebunden ist, machen zwei andere Tabellenkal
 
 Google Sheets exportiert das aktuelle Blatt mit `Datei > Herunterladen > Kommagetrennte Werte`, in UTF-8, ohne Dialog und ohne Codepage-Frage. Die Tabellenkalkulations-Einschränkungen sind identisch — ein Blatt, Werte statt Formeln, verbundene Zellen abgeflacht —, aber die Kodierungsfrage stellt sich nicht.
 
-LibreOffice Calc geht den anderen Weg und fragt Sie nach allem. Speichern als Text-CSV öffnet einen Dialog mit dem Zeichensatz, dem Feldtrennzeichen, dem Stringtrennzeichen, „Alle Textzellen unter Anführungszeichen" und „Zellinhalt wie angezeigt speichern" — dieses letzte Kästchen ist die ausdrückliche Kontrolle, die Excel nicht bietet, denn es zu deaktivieren schreibt die zugrunde liegenden Werte statt der angezeigten Zeichenketten. Wenn Sie je ein Datum als `2026-09-03` exportiert haben wollten, unabhängig vom Format der Zelle, ist das der Schalter.
+LibreOffice Calc geht den anderen Weg und fragt Sie nach allem. Speichern als Text-CSV öffnet einen Dialog mit dem Zeichensatz, dem Feldtrennzeichen, dem Stringtrennzeichen, „Alle Textzellen unter Anführungszeichen“ und „Zellinhalt wie angezeigt speichern“ — dieses letzte Kästchen ist die ausdrückliche Kontrolle, die Excel nicht bietet, denn es zu deaktivieren schreibt die zugrunde liegenden Werte statt der angezeigten Zeichenketten. Wenn Sie je ein Datum als `2026-09-03` exportiert haben wollten, unabhängig vom Format der Zelle, ist das der Schalter.
 
 | Vorteile | Nachteile |
 | --- | --- |
@@ -210,7 +210,7 @@ Das ist der Abschnitt, den man zweimal liest, denn das meiste davon ist nicht um
 | Der Wert | Was herauskommt | Warum |
 | --- | --- | --- |
 | `00417`, in eine Standardzelle getippt | `417` | Beim Eintippen zu einer Zahl gezwungen. Die Nullen waren nie in der Datei |
-| Eine 16-stellige Karten- oder Kontonummer | Ziffern nach der 15. werden zu Nullen | Excel hat „eine maximale Genauigkeit von 15 signifikanten Ziffern" und „alle Zahlen nach der 15. Ziffer werden auf null abgerundet" (geprüft auf support.microsoft.com, 8. September 2026) |
+| Eine 16-stellige Karten- oder Kontonummer | Ziffern nach der 15. werden zu Nullen | Excel hat „eine maximale Genauigkeit von 15 signifikanten Ziffern“ und „alle Zahlen nach der 15. Ziffer werden auf null abgerundet“ (geprüft auf support.microsoft.com, 8. September 2026) |
 | Eine sehr große Zahl | `1,23E+15` | Wissenschaftliche Notation in der Anzeige wird zu wissenschaftlicher Notation im Text |
 | `2,3456`, mit zwei Nachkommastellen angezeigt | `2,35` | Die angezeigte Zeichenkette, nicht der gespeicherte Wert |
 | Ein Datum | Das Anzeigeformat der Zelle, in der Reihenfolge der Locale | Weshalb `03/09/2026` außerhalb des Blatts mehrdeutig ist |
@@ -220,9 +220,9 @@ Das ist der Abschnitt, den man zweimal liest, denn das meiste davon ist nicht um
 | Eine Zelle mit Alt+Enter darin | Ein gequotetes Feld mit einem echten Zeilenumbruch | Was ein zeilenbasierter Leser falsch handhabt, sofern er nicht CSV richtig parst |
 | Text, der mit `=`, `+`, `-` oder `@` beginnt | Derselbe Text | Als Markdown harmlos; eine Tabellenkalkulation, die die CSV neu öffnet, könnte es als Formel behandeln |
 
-Die ersten zwei Zeilen sind die, die echtes Geld kosten. Führende Nullen und lange Kennungen werden bei der Eingabe zerstört, vor jedem Export, und die Abhilfe ist Vorbeugung: die Spalte vor der Eingabe der Daten als Text formatieren, oder jedem Wert ein Apostroph voranstellen. Microsofts eigene Anleitung ist ausdrücklich, dass diese Schritte „nur Zahlen betreffen, die eingegeben werden, nachdem die Formatierung angewendet wurde", und nicht wiederherstellen, was schon abgeschnitten wurde (geprüft auf support.microsoft.com, 8. September 2026). Wenn eine Teilenummer-Spalte schon `417` liest, weiß das Blatt nicht mehr, dass es `00417` war, und das Markdown wird es auch nicht wissen.
+Die ersten zwei Zeilen sind die, die echtes Geld kosten. Führende Nullen und lange Kennungen werden bei der Eingabe zerstört, vor jedem Export, und die Abhilfe ist Vorbeugung: die Spalte vor der Eingabe der Daten als Text formatieren, oder jedem Wert ein Apostroph voranstellen. Microsofts eigene Anleitung ist ausdrücklich, dass diese Schritte „nur Zahlen betreffen, die eingegeben werden, nachdem die Formatierung angewendet wurde“, und nicht wiederherstellen, was schon abgeschnitten wurde (geprüft auf support.microsoft.com, 8. September 2026). Wenn eine Teilenummer-Spalte schon `417` liest, weiß das Blatt nicht mehr, dass es `00417` war, und das Markdown wird es auch nicht wissen.
 
-Die Datumszeile ist die, die Streit verursacht statt Verluste. Eine CSV trägt die Zeichenkette, die die Zelle zeigte, ein britisches Blatt exportiert also `03/09/2026`, und ein amerikanischer Leser parst es als März. Wenn die Tabelle in die Nähe eines anderen Landes geht, erzwingen Sie ISO-Daten vor dem Export — eine Hilfsspalte mit `TEXT(A2, "JJJJ-MM-TT")`, oder Calcs „Zellinhalt wie angezeigt speichern" ausgeschaltet.
+Die Datumszeile ist die, die Streit verursacht statt Verluste. Eine CSV trägt die Zeichenkette, die die Zelle zeigte, ein britisches Blatt exportiert also `03/09/2026`, und ein amerikanischer Leser parst es als März. Wenn die Tabelle in die Nähe eines anderen Landes geht, erzwingen Sie ISO-Daten vor dem Export — eine Hilfsspalte mit `TEXT(A2, "JJJJ-MM-TT")`, oder Calcs „Zellinhalt wie angezeigt speichern“ ausgeschaltet.
 
 ## Verbundene Zellen haben kein Markdown-Äquivalent
 

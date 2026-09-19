@@ -18,7 +18,7 @@ Die Startseite jedes Konverters wirbt mit denselben drei Versprechen: schnell, k
 
 Es gibt drei ehrliche Positionen, die ein Konverter einnehmen kann. Er kann die Arbeit in Ihrem Browser erledigen, dann wird nichts hochgeladen und es gibt nichts aufzubewahren. Er kann die Datei auf einen Server laden, sie dort konvertieren und sie nach einem Zeitplan löschen — dann ist der Zeitplan das Produkt. Oder er kann auf Ihrer eigenen Maschine außerhalb des Browsers laufen, dann ist das Netz überhaupt nicht beteiligt und Sie tragen die Kosten einer Installation. Die meisten Werkzeuge gehören zur zweiten Gruppe. Die meisten Menschen nehmen an, sie gehörten zur ersten.
 
-Das Zweite, womit niemand wirbt, ist, was Sie zurückbekommen. „Konvertiert" ist kein einzelnes Ergebnis. Ein Konverter kann Ihnen eine vollständige Datei aushändigen, die sich von allein öffnet, ein Fragment, das eine Hülle braucht, die Sie selbst schreiben müssen, oder ein ZIP mit dem Dokument, einem Ordner voller Bilder und einem Stylesheet, das es daneben zu finden erwartet. Alle drei werden auf der Schaltfläche gleich beschrieben. Nur das erste übersteht es, per E-Mail verschickt zu werden.
+Das Zweite, womit niemand wirbt, ist, was Sie zurückbekommen. „Konvertiert“ ist kein einzelnes Ergebnis. Ein Konverter kann Ihnen eine vollständige Datei aushändigen, die sich von allein öffnet, ein Fragment, das eine Hülle braucht, die Sie selbst schreiben müssen, oder ein ZIP mit dem Dokument, einem Ordner voller Bilder und einem Stylesheet, das es daneben zu finden erwartet. Alle drei werden auf der Schaltfläche gleich beschrieben. Nur das erste übersteht es, per E-Mail verschickt zu werden.
 
 Und das Dritte ist feiner: Ein Konverter kann eine Ausgabe erzeugen, die auf der Seite, auf der Sie konvertiert haben, richtig aussieht und überall sonst falsch, weil das Ergebnis still von einer Schrift oder einem Stylesheet abhängt, das aus einem Netz geholt wird, das der Empfänger vielleicht nicht hat. Eine Datei, die das Netz braucht, um wie sie selbst auszusehen, ist nicht eigenständig, gleichgültig was die Schaltfläche zum Herunterladen angedeutet hat.
 
@@ -37,7 +37,7 @@ Und das Dritte ist feiner: Ein Konverter kann eine Ausgabe erzeugen, die auf der
 | Google Docs / Microsoft 365 | Eine Konvertierung, für die Sie schon zahlen | `.docx` importieren, HTML, PDF, reinen Text exportieren | Im Konto enthalten |
 | Gotenberg | Serverseitige Konvertierung, die Sie selbst betreiben | Zustandslose Docker-API um LibreOffice und Chromium | Kostenlos, MIT |
 | Bibliotheken im eigenen Code | Eine Konvertierung innerhalb einer Anwendung | marked, Turndown, mammoth, Papa Parse und ihre Entsprechungen | Kostenlos, quelloffen |
-| Browser „Speichern unter" / „Als PDF drucken" | Die Konvertierung, die Sie schon installiert haben | Speichert eine Seite als PDF oder als HTML plus Ressourcenordner | Kostenlos |
+| Browser „Speichern unter“ / „Als PDF drucken“ | Die Konvertierung, die Sie schon installiert haben | Speichert eine Seite als PDF oder als HTML plus Ressourcenordner | Kostenlos |
 
 ## Die besten Online-Dokumentkonverter 2026
 
@@ -285,14 +285,14 @@ Wenn die Konvertierung innerhalb von Software passiert, die Sie schreiben, ist d
 
 **Wer sollte es verwenden?** Entwickler, deren Produkt Dokumente als Teil seiner Aufgabe konvertiert. Lesen Sie unbedingt, [was rohes HTML durch eine Konvertierung tragen kann](/blog/sanitising-markdown-safely), bevor Sie das Ergebnis eines dieser Werkzeuge im Browser eines anderen darstellen.
 
-### „Speichern unter" und „Als PDF drucken" im Browser — der schon installierte Konverter
+### „Speichern unter“ und „Als PDF drucken“ im Browser — der schon installierte Konverter
 
-Jeder Browser konvertiert Dokumente. `Strg+P` in ein PDF oder „Seite speichern unter" verschafft Ihnen ein lesbares Artefakt von beinahe allem, was Sie öffnen können. Es kostet nichts, lädt nichts hoch und verlangt keine Entscheidung.
+Jeder Browser konvertiert Dokumente. `Strg+P` in ein PDF oder „Seite speichern unter“ verschafft Ihnen ein lesbares Artefakt von beinahe allem, was Sie öffnen können. Es kostet nichts, lädt nichts hoch und verlangt keine Entscheidung.
 
 | Vorteile | Nachteile |
 | --- | --- |
 | Kostenlos, installiert, offline und sofort | PDF verliert die Struktur — Überschriften werden visuell, nicht semantisch |
-| Nichts wird hochgeladen | „Seite speichern unter, vollständig" erzeugt eine Datei plus einen Ressourcenordner |
+| Nichts wird hochgeladen | „Seite speichern unter, vollständig“ erzeugt eine Datei plus einen Ressourcenordner |
 | Funktioniert für alles, was der Browser darstellen kann | Seitenumbrüche landen, wo sie eben landen |
 | Kein Konto, keine Grenzen | Nicht skriptfähig als Teil eines Builds |
 
@@ -304,7 +304,7 @@ Jeder Browser konvertiert Dokumente. `Strg+P` in ein PDF oder „Seite speichern
 
 Vergleichstabellen bestehen aus den Feldern, die Anbieter zu veröffentlichen bereit sind. Was darüber entscheidet, ob eine Konvertierung eine gute Idee war, ist meist nicht darunter.
 
-**Ob die Datei überhaupt hochgeladen wird.** Das ist die erste Frage, und sie steht fast nie in der Tabelle. „Online" ist zu „auf irgendjemandes Server" geworden, aber ein Browser ist eine Laufzeitumgebung, und ein Konverter, der für sie geschrieben ist, erledigt die Arbeit auf Ihrer Maschine. Der Unterschied ist kein Versprechen, das Sie glauben müssen: Öffnen Sie die Entwicklerwerkzeuge, sehen Sie den Netzwerk-Tab an, konvertieren Sie die Datei und schauen Sie, ob etwas hinausgeht. Ein Konverter auf der Browser-Seite zeigt Ihnen nichts als die Seite, die er ohnehin geladen hat. Ein serverseitiger zeigt Ihnen Ihr Dokument beim Verlassen, und dieselbe Gewohnheit, zu beobachten statt zu glauben, ist [die Art, zu klären, ob ein Online-Konverter für das Dokument vor Ihnen sicher ist](/blog/is-an-online-converter-safe), statt das Schlosssymbol als Antwort zu lesen.
+**Ob die Datei überhaupt hochgeladen wird.** Das ist die erste Frage, und sie steht fast nie in der Tabelle. „Online“ ist zu „auf irgendjemandes Server“ geworden, aber ein Browser ist eine Laufzeitumgebung, und ein Konverter, der für sie geschrieben ist, erledigt die Arbeit auf Ihrer Maschine. Der Unterschied ist kein Versprechen, das Sie glauben müssen: Öffnen Sie die Entwicklerwerkzeuge, sehen Sie den Netzwerk-Tab an, konvertieren Sie die Datei und schauen Sie, ob etwas hinausgeht. Ein Konverter auf der Browser-Seite zeigt Ihnen nichts als die Seite, die er ohnehin geladen hat. Ein serverseitiger zeigt Ihnen Ihr Dokument beim Verlassen, und dieselbe Gewohnheit, zu beobachten statt zu glauben, ist [die Art, zu klären, ob ein Online-Konverter für das Dokument vor Ihnen sicher ist](/blog/is-an-online-converter-safe), statt das Schlosssymbol als Antwort zu lesen.
 
 **Wie lange sie aufbewahrt wird, sobald sie hochgeladen ist.** Aufbewahrung ist eine Richtlinie, und das heißt: ein Satz, den jemand geschrieben hat und umschreiben kann. Die guten Dienste sagen ihn klar. CloudConvert sagt, Dateien würden nur zur Verarbeitung gehalten und danach sofort gelöscht. Convertio sagt, hochgeladene Dateien würden sofort gelöscht und konvertierte nach 24 Stunden. Zamzar speichert eine konvertierte Datei höchstens 24 Stunden und hält das Original bis zu sieben Tage, wenn eine Konvertierung scheitert, damit der Support hineinsehen kann. Jede dieser Regeln ist vernünftig, und keine davon ist null. Konvertierung im Browser hat keine Aufbewahrungsrichtlinie, weil es nichts aufzubewahren gibt, und das ist eine Antwort einer anderen Kategorie.
 
@@ -316,12 +316,12 @@ Vergleichstabellen bestehen aus den Feldern, die Anbieter zu veröffentlichen be
 
 **Was das Format nicht mit hinübertragen kann.** Jede Konvertierung ist in einer Richtung verlustbehaftet. Word-Kommentare, Änderungsverfolgung und Textfelder haben in Markdown keine Entsprechung. Die verbundenen Zellen und Formeln einer Tabelle überleben es nicht, eine Tabelle zu werden. PDF gibt seine Struktur vollständig auf und muss sie zurückerraten bekommen. Ein Konverter kann das nicht beheben, und die guten tun auch nicht so; sie treffen eine vertretbare Wahl und lassen Sie sie sehen. Bei Tabellen zeigt es sich zuerst und am sichtbarsten, und [was eine Tabellenkonvertierung übersteht](/blog/markdown-tables-that-survive-conversion), lohnt eine Prüfung an einer repräsentativen Datei, bevor Sie hundert übergeben.
 
-**Wer sonst noch in der Kette steht.** Ein gehosteter Konverter läuft auf Infrastruktur, die er mietet, in einer Region, die er wählt, mit Unterauftragsverarbeitern, die er irgendwo auflistet. Das ist normal, und es ist auch eine längere Liste von Beteiligten als „ich und eine Webseite". Für eine öffentliche README spielt es keine Rolle. Für einen nicht unterschriebenen Vertrag, eine Patientennotiz oder einen unangekündigten Produktplan ist es die ganze Entscheidung, und es ist keine Entscheidung, bei der eine Funktionstabelle helfen kann.
+**Wer sonst noch in der Kette steht.** Ein gehosteter Konverter läuft auf Infrastruktur, die er mietet, in einer Region, die er wählt, mit Unterauftragsverarbeitern, die er irgendwo auflistet. Das ist normal, und es ist auch eine längere Liste von Beteiligten als „ich und eine Webseite“. Für eine öffentliche README spielt es keine Rolle. Für einen nicht unterschriebenen Vertrag, eine Patientennotiz oder einen unangekündigten Produktplan ist es die ganze Entscheidung, und es ist keine Entscheidung, bei der eine Funktionstabelle helfen kann.
 
 ## Wie man wählt
 
 1. **Beginnen Sie damit, wie sich das Dokument in einem Leck lesen würde.** Wäre es peinlich, vertraglich oder reguliert, muss die Konvertierung auf Ihrer Maschine passieren — im Browser oder offline —, und die Formatliste ist irrelevant, bis das geklärt ist. Das zuerst zu sortieren schließt in einem Schritt den größten Teil des Marktes aus und erspart Ihnen, Tarife zu vergleichen, die Sie nicht nutzen werden.
-2. **Lesen Sie den Satz über die Aufbewahrung, nicht die Überschrift über den Datenschutz.** „Wir nehmen Ihre Privatsphäre ernst" ist keine Richtlinie; „konvertierte Dateien werden nach 24 Stunden gelöscht" ist eine. Wenn Sie keinen Satz mit einer Dauer darin finden, nehmen Sie an, die Dauer sei unbekannt, und behandeln Sie den Upload entsprechend.
+2. **Lesen Sie den Satz über die Aufbewahrung, nicht die Überschrift über den Datenschutz.** „Wir nehmen Ihre Privatsphäre ernst“ ist keine Richtlinie; „konvertierte Dateien werden nach 24 Stunden gelöscht“ ist eine. Wenn Sie keinen Satz mit einer Dauer darin finden, nehmen Sie an, die Dauer sei unbekannt, und behandeln Sie den Upload entsprechend.
 3. **Prüfen Sie, was die kostenlose Stufe zählt, bevor Sie sich auf sie verlassen.** Dateien, Konvertierungen, Minuten und Megabyte sind vier verschiedene Maße, und der Tarif, der auf einem großzügig aussieht, ist auf Ihrem einschränkend. Konvertieren Sie zuerst Ihre größte realistische Datei auf der kostenlosen Stufe; dort kommen die Zeitgrenzen je Datei und die Größenobergrenzen ans Licht.
 4. **Öffnen Sie die Ausgabe auf einer Maschine, die das Werkzeug nie gesehen hat.** Anderer Browser, anderer Rechner, Netz aus. Dieser eine Test fängt Fragmente, fehlende Bilder, aus einem CDN verlinkte Stylesheets und ZIP-förmige Exporte auf einmal ab, und er dauert eine Minute — während es eine Entschuldigung kostet, das erst zu entdecken, nachdem Sie die Datei einem Kunden geschickt haben.
 5. **Zählen Sie die Installationen und die Konten.** Eine einmalige Konvertierung sollte keinen Paketmanager brauchen; ein nächtlicher Lauf sollte keinen Browser-Tab mit einem Menschen davor brauchen. Wählen Sie nach der Häufigkeit, denn das Missverhältnis ist das, was Leute ein gutes Werkzeug nach vierzehn Tagen wieder aufgeben lässt.
@@ -329,7 +329,7 @@ Vergleichstabellen bestehen aus den Feldern, die Anbieter zu veröffentlichen be
 
 ## Fazit
 
-Der beste Online-Dokumentkonverter ist der, dessen Antwort auf „Wohin ist meine Datei gegangen?" „Nirgendwohin" lautet. Für Dokumente, die nicht schon öffentlich sind, heißt das Konvertierung im Browser. Genau das [tut TransformPipe](/): Markdown in eine eigenständige HTML-Datei, und HTML, Word, CSV, TSV und JSON zurück nach Markdown, auf Ihrer eigenen Maschine, kostenlos. Abgemeldet wird nichts hochgeladen, und der Netzwerk-Tab zeigt es. Wenn das Format jenseits dessen liegt, was ein Browser parsen kann, ist ein serverseitiger Dienst das richtige Werkzeug, und die Aufbewahrungsrichtlinie ist das, wozwischen Sie eigentlich wählen: CloudConvert, Convertio, Zamzar und FreeConvert nennen alle ihre, und die Unterschiede sind real. Und wenn sich die Konvertierung wiederholen muss, installieren Sie Pandoc oder betreiben Sie Gotenberg selbst und hören Sie auf, darüber nachzudenken.
+Der beste Online-Dokumentkonverter ist der, dessen Antwort auf „Wohin ist meine Datei gegangen?“ „Nirgendwohin“ lautet. Für Dokumente, die nicht schon öffentlich sind, heißt das Konvertierung im Browser. Genau das [tut TransformPipe](/): Markdown in eine eigenständige HTML-Datei, und HTML, Word, CSV, TSV und JSON zurück nach Markdown, auf Ihrer eigenen Maschine, kostenlos. Abgemeldet wird nichts hochgeladen, und der Netzwerk-Tab zeigt es. Wenn das Format jenseits dessen liegt, was ein Browser parsen kann, ist ein serverseitiger Dienst das richtige Werkzeug, und die Aufbewahrungsrichtlinie ist das, wozwischen Sie eigentlich wählen: CloudConvert, Convertio, Zamzar und FreeConvert nennen alle ihre, und die Unterschiede sind real. Und wenn sich die Konvertierung wiederholen muss, installieren Sie Pandoc oder betreiben Sie Gotenberg selbst und hören Sie auf, darüber nachzudenken.
 
 ## FAQ
 

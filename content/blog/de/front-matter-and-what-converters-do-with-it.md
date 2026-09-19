@@ -14,7 +14,7 @@ Front Matter ist ein Metadatenblock am Anfang einer `.md`-Datei, und er steht in
 
 Front Matter kam auf einem Umweg in Markdown hinein. Jekyll wollte Variablen pro Seite, wählte einen mit `---` eingezäunten YAML-Block, und jeder Generator seither hat die Konvention kopiert, ohne dass sie je jemand in eine Spezifikation geschrieben hätte. Das Ergebnis ist ein Konstrukt, das ein Dutzend weit verbreiteter Werkzeuge unterstützt, das keine zwei davon identisch unterstützen, und das ein Parser vollständig ignorieren darf.
 
-Das ist die Reibung. Sie können einer Datei nicht ansehen, was mit ihrem Kopf passieren wird, und Sie können es auch nicht der Feature-Liste eines Konverters ansehen, weil „unterstützt Markdown" nichts über einen Block aussagt, der kein Markdown ist. Der Fehlschlag ist in beide Richtungen leise: Ein Renderer druckt Ihre Metadaten ins Dokument, wo Leser sie sehen, und ein Metadaten-Leser löscht still eine `---`-Regel, die Sie als sichtbaren Trenner gemeint haben.
+Das ist die Reibung. Sie können einer Datei nicht ansehen, was mit ihrem Kopf passieren wird, und Sie können es auch nicht der Feature-Liste eines Konverters ansehen, weil „unterstützt Markdown“ nichts über einen Block aussagt, der kein Markdown ist. Der Fehlschlag ist in beide Richtungen leise: Ein Renderer druckt Ihre Metadaten ins Dokument, wo Leser sie sehen, und ein Metadaten-Leser löscht still eine `---`-Regel, die Sie als sichtbaren Trenner gemeint haben.
 
 Dieser Text handelt davon, welche Werkzeuge was tun, warum das Render-Verhalten vertretbar statt defekt ist, was mit TOML- und JSON-Köpfen passiert, und die eine echte Falle — dass `---` gleichzeitig ein Front-Matter-Trenner, eine horizontale Linie und eine Setext-Überschriften-Unterstreichung ist, und welches der drei es wird, hängt davon ab, wo es landet.
 
@@ -105,7 +105,7 @@ Jede allgemeine Markdown-Bibliothek ohne Front-Matter-Funktion landet hier, und 
 
 **Für wen das ist.** Niemand wählt das absichtlich, und es ist trotzdem der korrekte Standard für eine Bibliothek. Ein Parser, der raten würde, welche Absätze Metadaten sind, läge irgendwo falsch, und der Fehler wäre nicht wiederherstellbar, weil der Text weg wäre. Rendern behält die Information im Dokument und überlässt die Entscheidung dem Aufrufer, wo sie hingehört. `marked` hat keine Front-Matter-Option, und der übliche Rat ist, zuerst `gray-matter` über die Zeichenkette laufen zu lassen. `markdown-it` hat auch keine Front-Matter-Regel; Plugins dafür arbeiten, indem sie den Block finden und nichts rendern, und geben den rohen Text an einen Callback weiter, damit Sie tun können, was Sie wollen.
 
-Die praktische Konsequenz ist, dass „der Konverter hat meinen Kopf zerstört" und „der Konverter hat keine Meinung zu Köpfen" dasselbe Ereignis sind. Wenn Sie zwischen Werkzeugen wählen, ist das eines der Dinge, [die Ihnen ein Feature-Vergleich nicht sagt](/blog/best-markdown-to-html-converters), und es braucht eine Datei und zehn Sekunden, es herauszufinden.
+Die praktische Konsequenz ist, dass „der Konverter hat meinen Kopf zerstört“ und „der Konverter hat keine Meinung zu Köpfen“ dasselbe Ereignis sind. Wenn Sie zwischen Werkzeugen wählen, ist das eines der Dinge, [die Ihnen ein Feature-Vergleich nicht sagt](/blog/best-markdown-to-html-converters), und es braucht eine Datei und zehn Sekunden, es herauszufinden.
 
 ### In eine Tabelle verwandelt: gerendert, aber formatiert
 

@@ -6,7 +6,7 @@ tag: Workflow
 keywords: release notes markdown, changelog markdown, keep a changelog, changelog format, release notes vorlage, semantic versioning breaking change, conventional commits changelog, changelog generator
 ---
 
-Die meisten Changelogs sind ein Commit-Log mit entfernten Hashes. „Token-Handler überarbeitet." „Abhängigkeit angehoben." „Randfall im Parser behoben." Jede Zeile stimmt, und keine davon hilft der Person, die entscheidet, ob sie diese Woche aktualisiert. Release Notes sind ein anderes Dokument mit einer anderen Aufgabe: Sie sagen, was sich für den Leser geändert hat, was bricht, und was zu tun ist.
+Die meisten Changelogs sind ein Commit-Log mit entfernten Hashes. „Token-Handler überarbeitet.“ „Abhängigkeit angehoben.“ „Randfall im Parser behoben.“ Jede Zeile stimmt, und keine davon hilft der Person, die entscheidet, ob sie diese Woche aktualisiert. Release Notes sind ein anderes Dokument mit einer anderen Aufgabe: Sie sagen, was sich für den Leser geändert hat, was bricht, und was zu tun ist.
 
 ### Kurzfassung
 
@@ -47,11 +47,11 @@ Keep a Changelog 1.1.0 definiert sechs Typen, und der Grund, dort zu beginnen, s
 
 ### Added
 
-Neue Fähigkeit, beschrieben als etwas, das der Leser jetzt tun kann, statt als etwas, das Sie gebaut haben. „Exporte lassen sich nach Datumsbereich filtern" ist ein Eintrag; „Datumsbereichsfilter-Unterstützung zum Export-Service hinzugefügt" ist ein Statusbericht. Added ist der Abschnitt, den Leute zuletzt überfliegen und am leichtesten überfüllen, denn jedes geschlossene Ticket fühlt sich wie eine Ergänzung an. Kann niemand außerhalb des Teams es erreichen, ist es noch keine Ergänzung.
+Neue Fähigkeit, beschrieben als etwas, das der Leser jetzt tun kann, statt als etwas, das Sie gebaut haben. „Exporte lassen sich nach Datumsbereich filtern“ ist ein Eintrag; „Datumsbereichsfilter-Unterstützung zum Export-Service hinzugefügt“ ist ein Statusbericht. Added ist der Abschnitt, den Leute zuletzt überfliegen und am leichtesten überfüllen, denn jedes geschlossene Ticket fühlt sich wie eine Ergänzung an. Kann niemand außerhalb des Teams es erreichen, ist es noch keine Ergänzung.
 
 ### Changed
 
-Der am wenigsten genutzte und teuerste Abschnitt. Changed ist, wo sich Standardwerte verschieben, Grenzen enger werden, Timeouts schrumpfen, Fehlercodes spezifischer werden und sich die Sortierreihenfolge umdreht — nichts davon ist eine Fehlerbehebung, und alles davon kann jemanden brechen, der Code gegen das alte Verhalten geschrieben hat. Jede Changed-Zeile sollte den alten und den neuen Wert tragen, denn „Rate-Limiting verbessert" sagt dem Leser nichts, worauf er reagieren kann, und „die Burst-Erlaubnis liegt bei 60 Anfragen, runter von 120" sagt ihm genau, ob es ihn betrifft.
+Der am wenigsten genutzte und teuerste Abschnitt. Changed ist, wo sich Standardwerte verschieben, Grenzen enger werden, Timeouts schrumpfen, Fehlercodes spezifischer werden und sich die Sortierreihenfolge umdreht — nichts davon ist eine Fehlerbehebung, und alles davon kann jemanden brechen, der Code gegen das alte Verhalten geschrieben hat. Jede Changed-Zeile sollte den alten und den neuen Wert tragen, denn „Rate-Limiting verbessert“ sagt dem Leser nichts, worauf er reagieren kann, und „die Burst-Erlaubnis liegt bei 60 Anfragen, runter von 120“ sagt ihm genau, ob es ihn betrifft.
 
 ### Deprecated
 
@@ -63,7 +63,7 @@ Der Abschnitt, der entscheidet, ob ein Upgrade sicher ist, er steht also nahe am
 
 ### Fixed
 
-Fixed wird von Leuten gelesen, die herausfinden, ob ein Problem, das sie hatten, dieses Problem war. Das macht den betroffenen Zustand nützlicher als den Mechanismus: „Uploads über 2 GB scheiterten still bei Verbindungen langsamer als 1 Mbit/s" lässt einen Leser sein eigenes Symptom abgleichen, während „eine Race Condition im Chunked-Upload-Handler behoben" das nicht tut. Ändert eine Behebung Verhalten, auf das sich manche verlassen hatten, gehört sie auch nach Changed, oder stattdessen.
+Fixed wird von Leuten gelesen, die herausfinden, ob ein Problem, das sie hatten, dieses Problem war. Das macht den betroffenen Zustand nützlicher als den Mechanismus: „Uploads über 2 GB scheiterten still bei Verbindungen langsamer als 1 Mbit/s“ lässt einen Leser sein eigenes Symptom abgleichen, während „eine Race Condition im Chunked-Upload-Handler behoben“ das nicht tut. Ändert eine Behebung Verhalten, auf das sich manche verlassen hatten, gehört sie auch nach Changed, oder stattdessen.
 
 ### Security
 
@@ -124,7 +124,7 @@ Das Versprechen gilt nur, wenn das Projekt gesagt hat, was seine öffentliche Ob
 
 ### Was für dieses Projekt als Breaking Change zählt
 
-Das ist die einzige Versionsfrage, die ein Leser tatsächlich hat, und keine Spezifikation kann sie beantworten, denn „inkompatibel" hängt davon ab, was Sie versprochen haben. Schreiben Sie die Antwort einmal auf, im Contributing Guide, und das Release-Gespräch wird kurz. Eine vernünftige Startliste dessen, was zählt:
+Das ist die einzige Versionsfrage, die ein Leser tatsächlich hat, und keine Spezifikation kann sie beantworten, denn „inkompatibel“ hängt davon ab, was Sie versprochen haben. Schreiben Sie die Antwort einmal auf, im Contributing Guide, und das Release-Gespräch wird kurz. Eine vernünftige Startliste dessen, was zählt:
 
 - Etwas Aufrufbares entfernen oder umbenennen: einen Endpunkt, ein Flag, einen Config-Schlüssel, eine exportierte Funktion, einen Event-Namen.
 - Ein Feld aus einer Antwort entfernen, oder seinen Typ ändern. Eines hinzuzufügen ist meist sicher; ein optionales Feld verpflichtend zu machen nicht.
@@ -155,7 +155,7 @@ Vier Lücken, die alle in generierter Ausgabe auftauchen:
 
 - **Das Publikum des Satzes.** Eine Commit-Beschreibung ist für jemanden geschrieben, der den Diff liest. Nichts in der Konvention verlangt vom Autor, für einen Kunden zu schreiben, also tut es niemand.
 - **Eine Änderung, mehrere Commits.** Eine nutzersichtbare Änderung kommt oft als vier Commits über zwei Wochen an. Ein Generator gibt vier Zeilen aus; der Leser brauchte eine.
-- **Schweregrad und Dringlichkeit.** Es gibt keinen `security:`-Typ in der Spezifikation, und keine Möglichkeit, „kritisch, heute Nacht patchen" in einem Präfix zu sagen. Dieses Urteil fügt jemand hinterher hinzu, oder gar nicht.
+- **Schweregrad und Dringlichkeit.** Es gibt keinen `security:`-Typ in der Spezifikation, und keine Möglichkeit, „kritisch, heute Nacht patchen“ in einem Präfix zu sagen. Dieses Urteil fügt jemand hinterher hinzu, oder gar nicht.
 - **Squash-Merge-Titel.** In einem Repository, das squasht, wird der Pull-Request-Titel zur Commit-Nachricht und damit zur Changelog-Zeile. Das ist entweder ein Argument dafür, Pull-Request-Titel als veröffentlichten Text zu prüfen, oder ein Argument dagegen, die Notizen daraus zu generieren.
 
 ## Die Changelog-Generatoren im Vergleich
@@ -213,7 +213,7 @@ Generierung ist die naheliegende Antwort, und für die Liste der Änderungen ist
 
 **Der Grund, warum das Release existiert.** Zwölf Einträge sagen einem Leser nicht, dass dies das Release ist, das die Export-Timeouts behebt, über die sich alle beschwert haben. Zwei Sätze am Anfang des Eintrags tun das. Kein Werkzeug kann sie schreiben, denn der Grund lebt in Support-Tickets und Gesprächen statt in Commits.
 
-**Wer es überspringen sollte.** „Nutzen Sie die SAML-Integration nicht, ist hier nichts für Sie" spart mehr Leserzeit als jeder andere Satz in einem Changelog, und es ist der Satz, den ein Generator nie produzieren wird, denn ihn zu produzieren erfordert zu wissen, was ein Leser vielleicht nicht nutzt.
+**Wer es überspringen sollte.** „Nutzen Sie die SAML-Integration nicht, ist hier nichts für Sie“ spart mehr Leserzeit als jeder andere Satz in einem Changelog, und es ist der Satz, den ein Generator nie produzieren wird, denn ihn zu produzieren erfordert zu wissen, was ein Leser vielleicht nicht nutzt.
 
 **Schweregrad, in beide Richtungen.** Generierte Ausgabe flacht alles auf eine Zeile pro Commit ab. Ein Sicherheitspatch und eine Tooltip-Korrektur sehen identisch aus, und der Leser muss aus der Formulierung herausarbeiten, was was ist. Die zwei wichtigen Einträge zu markieren ist Menschenarbeit.
 
@@ -241,23 +241,23 @@ Jemand auf Version 1.2, der entscheidet, ob er einen Nachmittag in 1.4 investier
 
 ### Der Integrator
 
-Jemand, dessen Code Ihren aufruft. Es ist ihm egal, worum es im Release geht; ihm ist wichtig, ob einer der sechs oder sieben Namen, von denen er abhängt, in Removed oder Changed auftaucht. Dieser Leser ist der Grund, warum Einträge den exakten Bezeichner benutzen müssen — `api_key`, `POST /v2/exports`, `EXPORT_TIMEOUT_MS` —, denn er wird die Seite nach dem String durchsuchen, den sein eigener Code enthält. Prosa, die „die Export-Konfigurationseinstellung" sagt, ist unsuchbar und für ihn deshalb nutzlos.
+Jemand, dessen Code Ihren aufruft. Es ist ihm egal, worum es im Release geht; ihm ist wichtig, ob einer der sechs oder sieben Namen, von denen er abhängt, in Removed oder Changed auftaucht. Dieser Leser ist der Grund, warum Einträge den exakten Bezeichner benutzen müssen — `api_key`, `POST /v2/exports`, `EXPORT_TIMEOUT_MS` —, denn er wird die Seite nach dem String durchsuchen, den sein eigener Code enthält. Prosa, die „die Export-Konfigurationseinstellung“ sagt, ist unsuchbar und für ihn deshalb nutzlos.
 
 ### Der Operator
 
-Jemand, der es deployt. Seine Fragen betreffen kaum die Software: Braucht das eine Migration, braucht es einen Neustart, ändert es Speicher- oder Verbindungsnutzung, lässt es sich zurückrollen, nachdem die Migration gelaufen ist, und funktioniert die alte Version weiter, während beide live sind. Fast kein Changelog beantwortet das, und diese Auslassung macht aus einem Routine-Upgrade einen Vorfall. Ein kurzer Block „Dieses Release deployen" am Anfang jedes Eintrags, der einen braucht, reicht.
+Jemand, der es deployt. Seine Fragen betreffen kaum die Software: Braucht das eine Migration, braucht es einen Neustart, ändert es Speicher- oder Verbindungsnutzung, lässt es sich zurückrollen, nachdem die Migration gelaufen ist, und funktioniert die alte Version weiter, während beide live sind. Fast kein Changelog beantwortet das, und diese Auslassung macht aus einem Routine-Upgrade einen Vorfall. Ein kurzer Block „Dieses Release deployen“ am Anfang jedes Eintrags, der einen braucht, reicht.
 
 ## Schreiben Sie den Eintrag, nicht den Ticket-Titel
 
 Eine Release-Notes-Vorlage hilft nur, wenn die Zeilen darin für einen Leser geschrieben sind:
 
 - Führen Sie mit dem Substantiv, das er kennt — dem Endpunkt, der Einstellung, dem Menüpunkt —, nicht mit dem Modul, das es enthält.
-- Sagen Sie, was jetzt gilt. „Exporte laufen im Hintergrund" schlägt „Exporte geändert, damit sie im Hintergrund laufen".
-- Benennen Sie Dinge genau so, wie sie im Produkt erscheinen: `api_key`, nicht „die API-Schlüssel-Einstellung".
-- Geben Sie jeder Breaking-Zeile eine Handlung und eine Frist. „Vor 3.0 auf `/v2/exports` umsteigen" ist eine Notiz. „Endpunkt veraltet" ist ein Schulterzucken.
+- Sagen Sie, was jetzt gilt. „Exporte laufen im Hintergrund“ schlägt „Exporte geändert, damit sie im Hintergrund laufen“.
+- Benennen Sie Dinge genau so, wie sie im Produkt erscheinen: `api_key`, nicht „die API-Schlüssel-Einstellung“.
+- Geben Sie jeder Breaking-Zeile eine Handlung und eine Frist. „Vor 3.0 auf `/v2/exports` umsteigen“ ist eine Notiz. „Endpunkt veraltet“ ist ein Schulterzucken.
 - Eine Zeile pro Änderung. Braucht es drei Sätze, verlinken Sie auf eine Seite mit Platz dafür.
 
-Echte Zahlen gehören hierher — Größen, Timeouts, Retry-Zahlen, Daten. „Performance verbessert" ist Füllmaterial, denn der Leser kann es nicht prüfen und nicht darauf reagieren.
+Echte Zahlen gehören hierher — Größen, Timeouts, Retry-Zahlen, Daten. „Performance verbessert“ ist Füllmaterial, denn der Leser kann es nicht prüfen und nicht darauf reagieren.
 
 ### Migrationsanweisungen als Teil des Eintrags
 
@@ -279,13 +279,13 @@ Eine Removed- oder Changed-Zeile, die das Ziel beschreibt, aber nicht die Reise,
   2.0, not before 1 March 2027.
 ```
 
-Drei Dinge lassen das funktionieren. Es benennt den Fehlerfall, ein Leser kann ihn also in seinen eigenen Logs erkennen. Es gibt ein Datum statt nur einer Version, denn „vor 2.0" lässt sich nicht einplanen, wenn niemand weiß, wann 2.0 ist. Und es bietet zuerst den billigeren Weg an, was ein Leser mit einem Nachmittag tatsächlich will.
+Drei Dinge lassen das funktionieren. Es benennt den Fehlerfall, ein Leser kann ihn also in seinen eigenen Logs erkennen. Es gibt ein Datum statt nur einer Version, denn „vor 2.0“ lässt sich nicht einplanen, wenn niemand weiß, wann 2.0 ist. Und es bietet zuerst den billigeren Weg an, was ein Leser mit einem Nachmittag tatsächlich will.
 
 ### Deprecation-Hinweise, die es überleben, ignoriert zu werden
 
 Eine Deprecation ist eine Nachricht an jemanden, der beschäftigt ist, gehen Sie also davon aus, dass sie übersehen wird. Die Version, die funktioniert, kommt dreimal an: in den Release Notes, wenn sie beginnt, in der Software selbst als Warnung, die den Ersatz nennt, und in den Release Notes erneut, wenn die Entfernung landet. Wiederholen Sie den Eintrag in Deprecated in jedem dazwischenliegenden Release. Jemand, der in einem Sprung von 1.1 auf 1.9 aktualisiert, liest einen Eintrag, und er muss der sein, der noch steht.
 
-Zwei Fehlermodi lohnt es sich zu vermeiden. Eine Warnung ohne genannten Ersatz — „diese Einstellung ist veraltet" — schickt den Leser zum Suchen, und er wird einen Forumsbeitrag finden statt Ihrer Dokumentation. Und eine Entfernung, die früher landet als angekündigt, zerstört den Wert jeder künftigen Deprecation, die Sie schreiben, denn die Daten hören auf, Information zu sein.
+Zwei Fehlermodi lohnt es sich zu vermeiden. Eine Warnung ohne genannten Ersatz — „diese Einstellung ist veraltet“ — schickt den Leser zum Suchen, und er wird einen Forumsbeitrag finden statt Ihrer Dokumentation. Und eine Entfernung, die früher landet als angekündigt, zerstört den Wert jeder künftigen Deprecation, die Sie schreiben, denn die Daten hören auf, Information zu sein.
 
 ## Wie Sie einen Release-Notes-Prozess führen, der weiter funktioniert
 

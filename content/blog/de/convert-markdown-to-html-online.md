@@ -14,17 +14,17 @@ Sie haben eine Markdown-Datei und jemanden, der Markdown nicht lesen kann. Viell
 
 Der Rat, den Sie stattdessen finden, ist ein Build. Paketmanager installieren, Generator installieren, Konfigurationsdatei schreiben, Vorlagensprache lernen, ausrollen. All das ist richtiger Rat für eine Website und absurder Rat für ein Dokument mit einem Empfänger. Die Lücke zwischen diesen beiden Situationen ist der Ort, an dem die meiste verschwendete Zeit beim Konvertieren von Markdown wohnt.
 
-Es gibt einen kürzeren Weg, und an ihm hängt ein echtes Risiko. Ein Konverter, der in einem Browser-Tab läuft, braucht keine Installation und kann konvertieren, ohne Ihre Datei irgendwohin zu senden — aber „Online-Konverter" beschreibt auch einen Dienst, der Ihr Dokument auf einen Server hochlädt, von dem Sie nichts wissen, es dort konvertiert und behält, was seine Aufbewahrungsregel eben sagt. Von außen sehen die beiden gleich aus. Sie zu unterscheiden kostet ein Browser-Panel und etwa eine Minute, und dieser Artikel behandelt das so sorgfältig wie die Konvertierung selbst.
+Es gibt einen kürzeren Weg, und an ihm hängt ein echtes Risiko. Ein Konverter, der in einem Browser-Tab läuft, braucht keine Installation und kann konvertieren, ohne Ihre Datei irgendwohin zu senden — aber „Online-Konverter“ beschreibt auch einen Dienst, der Ihr Dokument auf einen Server hochlädt, von dem Sie nichts wissen, es dort konvertiert und behält, was seine Aufbewahrungsregel eben sagt. Von außen sehen die beiden gleich aus. Sie zu unterscheiden kostet ein Browser-Panel und etwa eine Minute, und dieser Artikel behandelt das so sorgfältig wie die Konvertierung selbst.
 
-## Was „online" bedeuten muss, bevor Sie ein Dokument hineingeben
+## Was „online“ bedeuten muss, bevor Sie ein Dokument hineingeben
 
-„Online-Konverter" beschreibt, wo die Seite ist, nicht wohin Ihre Datei geht. Beide Arten von Werkzeug sind eine URL, die Sie besuchen. Der Unterschied ist, ob die Konvertierung im JavaScript der Seite läuft, die Sie geladen haben, oder in einem Prozess auf dem Rechner von jemand anderem, den Ihre Datei erst erreichen muss.
+„Online-Konverter“ beschreibt, wo die Seite ist, nicht wohin Ihre Datei geht. Beide Arten von Werkzeug sind eine URL, die Sie besuchen. Der Unterschied ist, ob die Konvertierung im JavaScript der Seite läuft, die Sie geladen haben, oder in einem Prozess auf dem Rechner von jemand anderem, den Ihre Datei erst erreichen muss.
 
 Ein Konverter im Browser lädt seinen Code einmal herunter, liest die Datei dann über die `File`-API und konvertiert sie im Tab. Nichts verlässt den Rechner, weil es nichts zu senden gibt: der Parser ist schon lokal. Ein serverseitiger Konverter schickt Ihre Datei an einen Endpunkt, konvertiert sie dort und sendet HTML zurück. Beide können völlig sauber betrieben sein. Nur eines von beiden ist von Ihnen überprüfbar, im Moment, ohne einer Datenschutzseite zu glauben.
 
-Diese Unterscheidung ist ungleich wichtig. Für eine öffentliche README ist sie völlig belanglos — die Datei liegt schon im Internet. Für einen Kundenvertrag, eine Vorfallsanalyse mit Kundennamen, einen unveröffentlichten Preisplan, eine Patientennotiz oder irgendetwas, das unter eine Vereinbarung fällt, die Sie unterschrieben haben, ist sie die ganze Frage — und die Antwort „der Anbieter sagt, er löscht es" gehört nicht in dieselbe Klasse wie „die Anfrage hat nie stattgefunden".
+Diese Unterscheidung ist ungleich wichtig. Für eine öffentliche README ist sie völlig belanglos — die Datei liegt schon im Internet. Für einen Kundenvertrag, eine Vorfallsanalyse mit Kundennamen, einen unveröffentlichten Preisplan, eine Patientennotiz oder irgendetwas, das unter eine Vereinbarung fällt, die Sie unterschrieben haben, ist sie die ganze Frage — und die Antwort „der Anbieter sagt, er löscht es“ gehört nicht in dieselbe Klasse wie „die Anfrage hat nie stattgefunden“.
 
-Das zweite, was „online" verbirgt, ist, was Sie zurückbekommen. Manche Werkzeuge geben Ihnen ein Fragment — `<h1>Titel</h1><p>Text</p>` ohne Dokument darum — was gültiges HTML ist, als schwarzer Text in der Standardbreite des Browsers erscheint und für jeden, der es bekommt, kaputt aussieht. Andere geben Ihnen ein vollständiges Dokument, das sein Stylesheet von einem CDN holt, was auf Ihrem Rechner richtig aussieht und im Zug falsch. Eine dritte Gruppe gibt Ihnen eine eigenständige Datei: Doctype, Head, Zeichensatz, Stile eingebettet, keine externen Anfragen. Nur die dritte verhält sich gleich, wo immer sie landet.
+Das zweite, was „online“ verbirgt, ist, was Sie zurückbekommen. Manche Werkzeuge geben Ihnen ein Fragment — `<h1>Titel</h1><p>Text</p>` ohne Dokument darum — was gültiges HTML ist, als schwarzer Text in der Standardbreite des Browsers erscheint und für jeden, der es bekommt, kaputt aussieht. Andere geben Ihnen ein vollständiges Dokument, das sein Stylesheet von einem CDN holt, was auf Ihrem Rechner richtig aussieht und im Zug falsch. Eine dritte Gruppe gibt Ihnen eine eigenständige Datei: Doctype, Head, Zeichensatz, Stile eingebettet, keine externen Anfragen. Nur die dritte verhält sich gleich, wo immer sie landet.
 
 ## Die Wege im Überblick
 
@@ -55,7 +55,7 @@ Das ist der schnelle Weg, ausgeschrieben. Er setzt einen Konverter voraus, der s
 
 **4. Lesen Sie die Vorschau, nicht den Quelltext.** Die Vorschau ist der erste Ort, an dem ein Dialektproblem auftaucht. Sehen Sie sich ausdrücklich die Tabellen an, dann etwaige Aufgabenlisten, dann alles mit einem Backtick darin. Eine Tabelle, die als Absatz voller Pipe-Zeichen erscheint, heißt, dass der Parser als reines CommonMark läuft, wo Tabellen nicht Teil der Spezifikation sind.
 
-**5. Wählen Sie den Export, den Sie wirklich wollen.** Eine vollständige, eigenständige HTML-Datei ist die, die an eine Person geht. Ein Fragment ist das, was in eine Seite eingefügt wird, die schon existiert — ein CMS-Feld, eine E-Mail-Vorlage, ein Wiki, das HTML annimmt. Das Falsche zu wählen ist der mit Abstand häufigste Grund, warum eine konvertierte Datei am anderen Ende „unformatiert aussieht".
+**5. Wählen Sie den Export, den Sie wirklich wollen.** Eine vollständige, eigenständige HTML-Datei ist die, die an eine Person geht. Ein Fragment ist das, was in eine Seite eingefügt wird, die schon existiert — ein CMS-Feld, eine E-Mail-Vorlage, ein Wiki, das HTML annimmt. Das Falsche zu wählen ist der mit Abstand häufigste Grund, warum eine konvertierte Datei am anderen Ende „unformatiert aussieht“.
 
 **6. Laden Sie sie herunter, und öffnen Sie den Download.** Nicht die Vorschau — die Datei auf der Platte, doppelt angeklickt, damit sie über das `file://`-Protokoll öffnet, so wie Ihr Empfänger sie öffnen wird. Das kostet fünf Sekunden und ist der Schritt, den Leute überspringen.
 
@@ -114,7 +114,7 @@ Sie müssen das niemandem glauben. Der Browser sagt es Ihnen, und es gibt drei A
 
 **Das Netzwerk-Panel, live beobachtet.** Öffnen Sie die Entwicklerwerkzeuge, bevor Sie konvertieren — F12 unter Windows und Linux, oder Command-Option-I auf einem Mac, in Chrome, Edge und Firefox. In Safari muss das Entwickler-Menü erst in den Einstellungen aktiviert werden, bevor der Web-Inspektor überhaupt erscheint. Gehen Sie ins Netzwerk-Panel, setzen Sie die Option, die das Protokoll über Seitenladevorgänge hinweg behält, und laden Sie die Konverter-Seite einmal neu, damit Sie die Anfragen sehen, mit denen sie sich selbst lädt. Leeren Sie jetzt das Protokoll und konvertieren Sie Ihre Datei. Wenn die Konvertierung lokal ist, bleibt diese geleerte Liste leer. Jede Anfrage, die doch erscheint, ist anklickbar: das Panel zeigt Methode, Größe und, bei einem POST, die Nutzlast, die Sie gesendet haben.
 
-**Der Offline-Test.** Das ist die stärkere Fassung, weil sie die Möglichkeit einer übersehenen Anfrage ausschließt. Laden Sie die Konverter-Seite mit Verbindung, trennen Sie dann vollständig — WLAN aus, Kabel ziehen, oder das Drosselungs-Menü im Netzwerk-Panel auf „Offline" stellen. Und dann konvertieren. Wenn es weiterhin funktioniert, läuft der Parser auf Ihrem Rechner, denn es gibt keinen Weg irgendwohin. Wenn es scheitert oder hängt, war die Konvertierung nie lokal.
+**Der Offline-Test.** Das ist die stärkere Fassung, weil sie die Möglichkeit einer übersehenen Anfrage ausschließt. Laden Sie die Konverter-Seite mit Verbindung, trennen Sie dann vollständig — WLAN aus, Kabel ziehen, oder das Drosselungs-Menü im Netzwerk-Panel auf „Offline“ stellen. Und dann konvertieren. Wenn es weiterhin funktioniert, läuft der Parser auf Ihrem Rechner, denn es gibt keinen Weg irgendwohin. Wenn es scheitert oder hängt, war die Konvertierung nie lokal.
 
 **Ein zweiter Besuch mit nichts als dem Tab.** Manche Werkzeuge registrieren einen Service Worker, was heißt, dass die Seite selbst beim zweiten Besuch offline lädt. Tun Sie das, und konvertieren Sie dann mit weiterhin abgeschaltetem Netz. Jetzt ist gezeigt, dass sowohl die Seite als auch die Konvertierung nichts brauchen.
 
@@ -123,7 +123,7 @@ Zwei ehrliche Einschränkungen. Erstens beweist ein leeres Netzwerk-Panel, dass 
 | Methode | Was sie beweist | Aufwand | Schwäche |
 | --- | --- | --- | --- |
 | Netzwerk-Panel, Protokoll vor dem Konvertieren geleert | Diese Konvertierung ging von keiner Anfrage begleitet | Unter einer Minute | Sie müssen die Anfragen lesen, die Sie doch sehen |
-| Auf „Offline" drosseln, dann konvertieren | Die Konvertierung braucht überhaupt kein Netz | Sekunden | Die Seite muss schon geladen sein |
+| Auf „Offline“ drosseln, dann konvertieren | Die Konvertierung braucht überhaupt kein Netz | Sekunden | Die Seite muss schon geladen sein |
 | Den Rechner vollständig trennen | Dasselbe, ohne etwas falsch einstellen zu können | Sekunden | Unterbricht alles andere, was Sie gerade tun |
 | Zweiter Besuch, offline, Service Worker | Seite und Konvertierung beide lokal | Eine Minute | Funktioniert nur, wenn das Werkzeug sich selbst zwischenspeichert |
 
@@ -158,7 +158,7 @@ So oder so gehen dieselben vier Dinge schief, und sie gehen leise schief:
 
 **Die Überschriftenebenen.** Jede Datei beginnt wahrscheinlich bei `#`, denn jede Datei war ihr eigenes Dokument. Zusammengefügt bekommen Sie zehn `<h1>`-Elemente und keine Hierarchie, was das Inhaltsverzeichnis unbrauchbar und das Dokument flach macht. Setzen Sie die Überschriften jeder Datei um eine Ebene herab, bevor Sie zusammenfügen, damit die Dateititel zu `##` unter einem einzigen `#` werden.
 
-**Doppelte Anker-IDs.** Drei Kapitel mit einem Abschnitt „Überblick" erzeugen drei Überschriften, die dieselbe ID wollen. Konverter lösen das verschieden: manche hängen einen Zähler an, manche geben die Dublette aus und lassen den Browser die erste wählen. So oder so landet die Hälfte Ihrer Querverweise im falschen Kapitel.
+**Doppelte Anker-IDs.** Drei Kapitel mit einem Abschnitt „Überblick“ erzeugen drei Überschriften, die dieselbe ID wollen. Konverter lösen das verschieden: manche hängen einen Zähler an, manche geben die Dublette aus und lassen den Browser die erste wählen. So oder so landet die Hälfte Ihrer Querverweise im falschen Kapitel.
 
 **Verirrte `---`-Zeilen.** Drei Bindestriche sind in Markdown eine Trennlinie, am Dateianfang ein Frontmatter-Trenner, und direkt unter einer Textzeile eine Setext-Überschriften-Unterstreichung. Dateien zusammenzufügen setzt viele `---` in die Mitte eines Dokuments, und jedes davon wird danach ausgelegt, wo es landet, nicht danach, was Sie gemeint haben.
 
@@ -204,7 +204,7 @@ Nichts davon macht einen Konverter im Browser zu einem schlechten Werkzeug. Es m
 1. **Entscheiden Sie, wer die Datei als nächstes öffnet.** Ist es ein Mensch, brauchen Sie ein vollständiges, eigenständiges Dokument, und ein Fragment kostet eine Rückfrage, um sich zu erklären. Ist es eine Vorlage oder ein CMS-Feld, brauchen Sie das Fragment, und ein Dokument wird mit der umgebenden Seite streiten.
 2. **Entscheiden Sie, ob das noch einmal passiert.** Einmal ist ein Browser-Tab. Wöchentlich ist ein Befehl, den Sie in ein Skript schreiben können. Bei jedem Commit ist ein CI-Job. Für den dritten Fall den Browser zu wählen heißt, dass die Konvertierung nur so verlässlich ist wie das Gedächtnis von jemandem.
 3. **Prüfen Sie, wohin die Datei geht, bevor Sie etwas Vertrauliches konvertieren.** Öffnen Sie das Netzwerk-Panel, oder konvertieren Sie mit abgeschaltetem Netz. Sechzig Sekunden jetzt, gegen später zu erfahren, dass ein Dokument unter einer von Ihnen unterschriebenen Vereinbarung einen Ausflug zu einem Dritten gemacht hat.
-4. **Konvertieren Sie eine repräsentative Datei, keinen Testabsatz.** Nehmen Sie das Dokument mit der breitesten Tabelle, dem längsten Codeblock und dem unbequemen Bildpfad darin. Ein Konverter, der „Hallo **Welt**" verkraftet, sagt Ihnen nichts; die echte Datei sagt Ihnen alles auf einmal.
+4. **Konvertieren Sie eine repräsentative Datei, keinen Testabsatz.** Nehmen Sie das Dokument mit der breitesten Tabelle, dem längsten Codeblock und dem unbequemen Bildpfad darin. Ein Konverter, der „Hallo **Welt**“ verkraftet, sagt Ihnen nichts; die echte Datei sagt Ihnen alles auf einmal.
 5. **Öffnen Sie das Ergebnis irgendwo außerhalb des Werkzeugs.** Ein anderer Browser, ein anderer Rechner, das Netz aus. Dieser eine Test erwischt Fragmente, fehlende Stile und CDN-Abhängigkeiten zusammen, und er ist die Prüfung, die Sie davon abhält, eine Datei zu verschicken, die nur auf dem Rechner funktioniert, auf dem sie entstand.
 
 ## Fazit

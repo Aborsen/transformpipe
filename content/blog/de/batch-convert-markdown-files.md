@@ -20,7 +20,7 @@ Lassen Sie die Shell die Dateien finden und ein kleines Skript eine Datei konver
 
 Eine einzelne Konvertierung hat eine Eingabe, eine Ausgabe und ein Ergebnis. Eine Ordnerkonvertierung hat fünf Entscheidungen, die für eine Datei nicht existieren, und die Standardantwort auf jede ist oft genug falsch, um zu zählen.
 
-**Welche Dateien.** „Das ganze Markdown im Repository" klingt eindeutig, bis man es aufschreibt. Zählt `node_modules` dazu? Das `.github`-Verzeichnis? `CHANGELOG.md` im Root? Eine eingebettete Kopie der Dokumentation von jemand anderem? Das symlink-Verzeichnis, das auf ein Geschwister-Checkout zeigt? Jede davon ist eine echte Antwort auf eine echte Frage, und Ihr Glob wird sie für Sie beantworten, ohne es zu sagen.
+**Welche Dateien.** „Das ganze Markdown im Repository“ klingt eindeutig, bis man es aufschreibt. Zählt `node_modules` dazu? Das `.github`-Verzeichnis? `CHANGELOG.md` im Root? Eine eingebettete Kopie der Dokumentation von jemand anderem? Das symlink-Verzeichnis, das auf ein Geschwister-Checkout zeigt? Jede davon ist eine echte Antwort auf eine echte Frage, und Ihr Glob wird sie für Sie beantworten, ohne es zu sagen.
 
 **In welcher Reihenfolge.** Die Dateireihenfolge zählt nicht, wenn jede Datei ihre eigene Seite wird. Sie zählt vollständig, wenn die Dateien ein Dokument werden, und sie zählt für Reproduzierbarkeit so oder so: Ein Build, dessen Log bei jedem Lauf Dateien in anderer Reihenfolge listet, ist ein Build, den Sie nicht diffen können.
 
@@ -163,7 +163,7 @@ find docs -type f -name '*.md' -print0 \
 
 - `-k` (`--keep-order`) ist das Flag, das es von `xargs` unterscheidet: Jobs laufen immer noch nebenläufig, die Ausgabe bleibt lesbar
 - `--halt` nimmt eine Politik — jetzt stoppen oder wenn die laufenden Jobs enden, bei einer Anzahl oder einem Prozentsatz an Fehlern
-- `--joblog DATEI` ist die ehrliche Antwort auf „welche Datei ist gescheitert": eine Tabelle mit dem Exit-Status jedes Jobs, die Sie nach dem Lauf durchsuchen können, statt das Log zu lesen
+- `--joblog DATEI` ist die ehrliche Antwort auf „welche Datei ist gescheitert“: eine Tabelle mit dem Exit-Status jedes Jobs, die Sie nach dem Lauf durchsuchen können, statt das Log zu lesen
 - `{.}` entfernt die Endung aus der Ersetzungszeichenkette, `{//}` gibt das Verzeichnis — nützlich, und ein weiterer Dialekt, den man sich merken muss
 - Es druckt eine Bitte, es in akademischer Arbeit zu zitieren, was keine Lizenzbeschränkung ist, aber Leute überrascht, wenn es das erste Mal in einem Build-Log erscheint
 
@@ -289,7 +289,7 @@ find docs -type f -name '*.md' -print0 \
 
 **Für wen ist das?** Für abgeschottete Runner, und Pipelines, deren Ausgabe eine Menge Links statt eine Menge Dateien ist. Für einen Pull Request speziell macht [eine Action dasselbe ohne Installation auf dem Runner](/blog/publish-markdown-from-github-actions).
 
-### Ein statischer Seitengenerator — die Antwort, wenn „viele Dateien" „eine Website" bedeutet
+### Ein statischer Seitengenerator — die Antwort, wenn „viele Dateien“ „eine Website“ bedeutet
 
 Hugo, Eleventy, MkDocs, Docusaurus und Jekyll konvertieren alle Verzeichnisse von Markdown zu HTML, und keiner davon ist ein Stapelkonverter. Sie sind Build-Systeme, und der Unterschied zeigt sich in dem, was sie Ihnen zurückgeben.
 
@@ -361,7 +361,7 @@ Es gibt zwei Antworten, und sie sind nicht gleichwertig.
 | Die Änderung überprüfen | Erzeugtes HTML in jedem Diff | Nichts Erzeugtes im Diff |
 | Deployen | Das ganze Repository ausliefern, oder filtern | Den Host auf ein Verzeichnis zeigen lassen |
 
-Neben der Eingabe gewinnt bei Links und Bildern und verliert bei allem anderen. Die Waisen-Zeile ist die, die es für die meisten Leute entscheidet: Nichts in einem Neben-der-Eingabe-Schema bemerkt, dass `docs/old-api.md` gelöscht wurde, `docs/old-api.html` bleibt also auf der Platte, wird committet, deployt, und wird noch ein Jahr später an irgendwen ausgeliefert. Ein separater Baum, der gelöscht und neu gebaut wird, kann dieses Problem nicht haben, denn die Antwort auf „welche Ausgaben sind veraltet" ist „alle, jedes Mal".
+Neben der Eingabe gewinnt bei Links und Bildern und verliert bei allem anderen. Die Waisen-Zeile ist die, die es für die meisten Leute entscheidet: Nichts in einem Neben-der-Eingabe-Schema bemerkt, dass `docs/old-api.md` gelöscht wurde, `docs/old-api.html` bleibt also auf der Platte, wird committet, deployt, und wird noch ein Jahr später an irgendwen ausgeliefert. Ein separater Baum, der gelöscht und neu gebaut wird, kann dieses Problem nicht haben, denn die Antwort auf „welche Ausgaben sind veraltet“ ist „alle, jedes Mal“.
 
 Nutzen Sie einen separaten Baum, behalten Sie seine Form, und nutzen Sie Parameter-Expansion statt `basename`, um das zu tun. `basename` ist hier das falsche Werkzeug, und es scheitert auf die schlimmstmögliche Weise: `docs/api/index.md` und `docs/guide/index.md` werden beide zu `index.html`, das zweite überschreibt still das erste, der Build endet mit null, und welche Seite überlebt, hängt von der Reihenfolge ab, in der die Dateien ankamen — die, laut obigem Abschnitt, nicht fixiert ist.
 
@@ -420,9 +420,9 @@ git diff --name-only --diff-filter=ACMR origin/main...HEAD -- '*.md'
 
 Egal welchen Sie wählen, eine Regel gilt für alle drei: Der Cache-Schlüssel muss alles enthalten, wovon die Ausgabe abhängt, nicht nur das Markdown. Ändern Sie Ihre HTML-Hülle, Ihr Stylesheet oder die Version des Konverters, ist jede Ausgabe veraltet, während jede Eingabe unverändert ist. Hashen Sie die Vorlage in den Stempel, fügen Sie sie als Voraussetzung im Makefile hinzu, oder akzeptieren Sie, dass die erste Person, die das Stylesheet bearbeitet, einen Nachmittag damit verbringt, sich zu fragen, warum sich die Seite nicht geändert hat.
 
-### Exit-Codes, und was „es hat funktioniert" für zweihundert Dateien bedeutet
+### Exit-Codes, und was „es hat funktioniert“ für zweihundert Dateien bedeutet
 
-Für eine Datei ist Erfolg eindeutig. Für zweihundert hat „hat es funktioniert" drei mögliche Antworten, und Sie müssen sich für eine entscheiden, bevor das Skript geschrieben ist.
+Für eine Datei ist Erfolg eindeutig. Für zweihundert hat „hat es funktioniert“ drei mögliche Antworten, und Sie müssen sich für eine entscheiden, bevor das Skript geschrieben ist.
 
 **Beim ersten Fehler stoppen.** `set -euo pipefail` und eine schlichte Schleife. Der Ausgabebaum bleibt halb konvertiert, was in Ordnung ist, wenn es ein Build-Verzeichnis ist, das Sie ohnehin löschen, und das Log endet bei der Datei, die brach — was die schnellstmögliche Diagnose ist.
 
@@ -475,7 +475,7 @@ Zwei kleinere Dinge. Sharden Sie mit einer Matrix nur, wenn die Konvertierung wi
 
 ## Ein Dokument aus vielen, oder viele aus vielen
 
-Auf halbem Weg beim Bau eines Ordnerkonverters entdecken die meisten Leute, dass sie etwas anderes wollten. „Diese vierzig Dateien konvertieren" spaltet sich in zwei Anforderungen, die ähnlich aussehen und es nicht sind.
+Auf halbem Weg beim Bau eines Ordnerkonverters entdecken die meisten Leute, dass sie etwas anderes wollten. „Diese vierzig Dateien konvertieren“ spaltet sich in zwei Anforderungen, die ähnlich aussehen und es nicht sind.
 
 | | Vierzig Seiten | Ein Dokument |
 | --- | --- | --- |
@@ -500,7 +500,7 @@ Die Schleife ist das richtige Werkzeug für eine begrenzte Menge Dokumente, dere
 
 **Ein Leser, der ohne URL ankommt.** Ein Ordner voller Seiten hat keinen Index, keine Suche und keine Navigation. Muss jemand das richtige Dokument finden, statt es geschickt zu bekommen, bauen Sie eine Website, und das mit einem Shell-Skript zu tun heißt, einen Generator schlecht neu zu implementieren, eine Anforderung nach der anderen. Die Kosten, das früh zuzugeben, sind eine Konfigurationsdatei. Die Kosten, es spät zuzugeben, sind ein Build-Skript, das nur eine Person versteht und niemand anfasst, nachdem sie gegangen ist.
 
-**Dateien, deren Ausgabe nicht existieren sollte.** Entwürfe, Vorlagen, Partials, das `_includes`-Verzeichnis, der archivierte Abschnitt, den jemand „zur Referenz" behalten hat. Ein Glob hat keine Meinung zu irgendeinem davon, sie werden also alle Seiten, und manche dieser Seiten werden von einer Suchmaschine gefunden, bevor sie von Ihnen gefunden werden. Sie auszuschließen heißt eine Liste von Ausnahmen, im Skript, von Hand gepflegt, was genau die Konfigurationsdatei ist, die Sie vermeiden wollten.
+**Dateien, deren Ausgabe nicht existieren sollte.** Entwürfe, Vorlagen, Partials, das `_includes`-Verzeichnis, der archivierte Abschnitt, den jemand „zur Referenz“ behalten hat. Ein Glob hat keine Meinung zu irgendeinem davon, sie werden also alle Seiten, und manche dieser Seiten werden von einer Suchmaschine gefunden, bevor sie von Ihnen gefunden werden. Sie auszuschließen heißt eine Liste von Ausnahmen, im Skript, von Hand gepflegt, was genau die Konfigurationsdatei ist, die Sie vermeiden wollten.
 
 **Ein Baum, der seine Form ändert.** Die Schleife kodiert die Form des Baums in ihren Pfadausdrücken. Die Verzeichnisse umzuorganisieren ändert jede Ausgabe-URL, bricht jeden Link, den irgendwer gespeichert hat, und es gibt nichts, von dem umgeleitet werden könnte, denn nichts hat aufgezeichnet, was die alten Pfade waren. Ein Konverter kann das nicht beheben, und ein Generator hilft nur wenig; die eigentliche Antwort ist, die Ausgabepfade bewusst zu entscheiden und sie stabil zu halten, selbst wenn die Quelle sich bewegt.
 
@@ -511,7 +511,7 @@ Nichts davon spricht gegen die Schleife für den Fall, der zu ihr passt: eine Me
 1. **Zählen Sie die Dateien, dann zählen Sie sie in einem Jahr noch einmal.** Unter zwanzig ist eine `for`-Schleife mit `set -euo pipefail` die ganze Antwort, und alles Weitere ist ein Hobby. Über ein paar hundert brauchen Sie `find`, NUL-Trennung und `-P`, denn sowohl die Argumentgrenze als auch die Wanduhrzeit werden real statt theoretisch.
 2. **Entscheiden Sie neben-oder-getrennt, bevor Sie eine Zeile schreiben.** Ein separater Baum kostet Sie relative Links und Bildpfade und gibt Ihnen einen sauberen Build, eine löschbare Ausgabe und ein Diff ohne erzeugte Dateien darin. Es später zu wählen heißt, jede Ausgabe zu verschieben und jeden Link auf einmal zu reparieren, unter Zeitdruck.
 3. **Schreiben Sie die Ein-Datei-Konvertierung zuerst als eigenes Skript.** Ist `bin/one.sh input.md output.html` korrekt und endet mit ungleich null bei Fehlern, ist jeder Ansatz auf dieser Seite eine Ein-Zeilen-Änderung, und Sie können den schwierigen Teil ohne Ordner testen. Lebt die Konvertierungslogik in der Schleife, können Sie sie überhaupt nicht testen.
-4. **Wählen Sie Ihre Fehlerpolitik ausdrücklich, und lassen Sie den Job sie beweisen.** Beim ersten Fehler stoppen, oder alles konvertieren und am Ende mit ungleich null enden — beides ist in Ordnung, und die Vorgabe „weitermachen und Erfolg melden" ist es, was einen halb gebauten Docs-Baum in Produktion bringt. Fügen Sie dann die Ausgabenanzahl-Behauptung hinzu, denn kein Exit-Code wird Ihnen je vom Verzeichnis erzählen, das der Glob nie betreten hat.
+4. **Wählen Sie Ihre Fehlerpolitik ausdrücklich, und lassen Sie den Job sie beweisen.** Beim ersten Fehler stoppen, oder alles konvertieren und am Ende mit ungleich null enden — beides ist in Ordnung, und die Vorgabe „weitermachen und Erfolg melden“ ist es, was einen halb gebauten Docs-Baum in Produktion bringt. Fügen Sie dann die Ausgabenanzahl-Behauptung hinzu, denn kein Exit-Code wird Ihnen je vom Verzeichnis erzählen, das der Glob nie betreten hat.
 5. **Fügen Sie inkrementelle Konvertierung nur hinzu, wenn der vollständige Lauf wirklich zu langsam ist, und schlüsseln Sie ihn nach Inhalt.** mtime funktioniert auf einem Laptop und tut in CI still nichts, ein Hash-Stempel ist also die Version, die einen frischen Klon übersteht. Nehmen Sie die Vorlage und die Konverterversion in den Schlüssel auf, oder ein Upgrade lässt Sie Ausgaben der alten Version ausliefern.
 6. **Fragen Sie, ob die Antwort ein Dokument ist.** Soll der Empfänger den ganzen Satz lesen, sind vierzig Links ein schlechteres Ergebnis als eine Seite, und die Arbeit verlagert sich von der Schleife zur Zusammenführung. Das ist ein anderes Problem mit anderen Fehlermodi, und das erst hinterher herauszufinden heißt, das Skript zweimal zu schreiben.
 

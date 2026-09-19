@@ -54,18 +54,18 @@ Das Tastenkürzel zum Speichern zu drücken ist nicht eine einzige Handlung. Das
 
 | Format | Wo Sie es finden | Was auf der Platte landet | Konvertiert gut? |
 | --- | --- | --- | --- |
-| „Webseite, vollständig" | Chrome, Edge, Firefox (dort etwas anders geschrieben) | Eine `.html`-Datei plus ein `_files`-Ordner mit Bildern, CSS und Skripten | Ja, und die Bilder sind schon lokal |
-| „Webseite, nur HTML" | Chrome, Edge, Firefox (dort ebenfalls etwas anders geschrieben) | Eine `.html`-Datei, die Assets bleiben entfernt | Ja, aber die Bilder bleiben entfernte URLs |
-| „Webseite, einzelne Datei" | Chrome, Edge | Eine `.mhtml`-Datei: ein MIME-Multipart-Archiv der Seite und ihrer Teile | Selten — die meisten Markdown-Konverter lesen kein MHTML |
+| „Webseite, vollständig“ | Chrome, Edge, Firefox (dort etwas anders geschrieben) | Eine `.html`-Datei plus ein `_files`-Ordner mit Bildern, CSS und Skripten | Ja, und die Bilder sind schon lokal |
+| „Webseite, nur HTML“ | Chrome, Edge, Firefox (dort ebenfalls etwas anders geschrieben) | Eine `.html`-Datei, die Assets bleiben entfernt | Ja, aber die Bilder bleiben entfernte URLs |
+| „Webseite, einzelne Datei“ | Chrome, Edge | Eine `.mhtml`-Datei: ein MIME-Multipart-Archiv der Seite und ihrer Teile | Selten — die meisten Markdown-Konverter lesen kein MHTML |
 | Web Archive | Safari | Eine `.webarchive`-Datei, eine binäre Property List | Nein: es ist Apples Format, nicht HTML |
 | Page Source | Safari | Das HTML, das der Server geschickt hat | Ja, aber siehe die Anmerkung zu JavaScript unten |
 | Text Files | Firefox | Die Seite als reiner Text | Keine Struktur überlebt, es gibt also nichts zu konvertieren |
 
-MHTML verdient eine eigene Warnung, denn „einzelne Datei" klingt genau nach dem, was Sie wollten. Es ist ein MIME-Container — dieselbe Umschlagform wie eine E-Mail mit Anhängen, standardisiert in RFC 2557 — mit dem HTML und jedem Asset als base64-kodierten Teilen. Browser öffnen ihn. Markdown-Konverter im Allgemeinen nicht, und die Datei gibt keinen Hinweis darauf, dass sie das Problem ist: Sie bekommen einen Fehler, oder eine gewaltige Zeile Base64.
+MHTML verdient eine eigene Warnung, denn „einzelne Datei“ klingt genau nach dem, was Sie wollten. Es ist ein MIME-Container — dieselbe Umschlagform wie eine E-Mail mit Anhängen, standardisiert in RFC 2557 — mit dem HTML und jedem Asset als base64-kodierten Teilen. Browser öffnen ihn. Markdown-Konverter im Allgemeinen nicht, und die Datei gibt keinen Hinweis darauf, dass sie das Problem ist: Sie bekommen einen Fehler, oder eine gewaltige Zeile Base64.
 
 ### Wenn die Seite von JavaScript gebaut wird, speichern Sie das dargestellte DOM
 
-Sehr viele Seiten senden ein nahezu leeres Dokument und füllen es per Skript. Speichern Sie den Quelltext einer solchen Seite, und Sie haben einen Ladekreis gespeichert. Die verlässliche Antwort ist, das DOM zu nehmen, das der Browser wirklich gebaut hat: Öffnen Sie die Entwicklerwerkzeuge, suchen Sie oben im Panel „Elemente" das `<html>`-Element, klicken Sie es mit der rechten Maustaste an und wählen Sie „Kopieren" und darin „outerHTML kopieren". Fügen Sie das in eine Datei mit der Endung `.html` ein und konvertieren Sie diese stattdessen. Es ist die dargestellte Seite, Tabellen und alles, in dem Zustand, in dem Sie sie angesehen haben.
+Sehr viele Seiten senden ein nahezu leeres Dokument und füllen es per Skript. Speichern Sie den Quelltext einer solchen Seite, und Sie haben einen Ladekreis gespeichert. Die verlässliche Antwort ist, das DOM zu nehmen, das der Browser wirklich gebaut hat: Öffnen Sie die Entwicklerwerkzeuge, suchen Sie oben im Panel „Elemente“ das `<html>`-Element, klicken Sie es mit der rechten Maustaste an und wählen Sie „Kopieren“ und darin „outerHTML kopieren“. Fügen Sie das in eine Datei mit der Endung `.html` ein und konvertieren Sie diese stattdessen. Es ist die dargestellte Seite, Tabellen und alles, in dem Zustand, in dem Sie sie angesehen haben.
 
 Derselbe Trick verengt die Aufgabe. Kopieren Sie statt des `<html>`-Elements das outerHTML des `<article>`-Elements oder des Containers mit dem Hauptinhalt. Sie haben die Extraktion dann von Hand gemacht, ganz genau, in etwa vier Sekunden, und dem Konverter bleibt nichts mehr zu raten.
 
@@ -85,7 +85,7 @@ Schalten Sie sie ein, dann speichern oder kopieren Sie aus der bereinigten Ansic
 
 | Vorteile | Nachteile |
 | --- | --- |
-| Die Extraktion ist erledigt, kostenlos, von Software, die Millionen Seiten gesehen hat | Sie entscheidet, was eine „Abbildung" ist, und liegt manchmal falsch |
+| Die Extraktion ist erledigt, kostenlos, von Software, die Millionen Seiten gesehen hat | Sie entscheidet, was eine „Abbildung“ ist, und liegt manchmal falsch |
 | Funktioniert auf der Seite, die Sie schon lesen, ohne Installation | Scheitert an Seiten, die keine Artikel sind: Dashboards, Doku mit Seitenleisten, Foren |
 | Entfernt als Nebeneffekt Tracking-Pixel, Werbeplätze und Newsletter-Kästen | Hervorgehobene Zitate, Bildunterschriften und Anmerkungen im Text fallen oft weg |
 | Gibt Ihnen Titel und Autorenzeile als getrennte, saubere Felder | Keine Kontrolle über die Regeln, außer Sie führen die Bibliothek selbst aus |
@@ -103,7 +103,7 @@ Ein Clipper ist Extraktion und Konvertierung, hinter einem Knopf in der Werkzeug
 | MarkDownload | Eine `.md`-Datei, optional mit YAML-Front-Matter, die URL und Titel trägt | Ihr Downloads-Ordner, oder die Zwischenablage | Was auch immer der Extraktor verworfen hat; Bilder bleiben entfernte Links, sofern Sie nichts anderes verlangen |
 | Obsidian Web Clipper | Markdown plus Seiteneigenschaften, geformt von einer Vorlage, die Sie schreiben | Direkt in einen Vault-Ordner | Hervorhebungen und Callouts sind Obsidians eigene Konventionen und reisen daher schlecht zu anderen Werkzeugen |
 | Notion Web Clipper | Notion-Blöcke, kein Markdown | Eine Notion-Datenbank oder -Seite | Alles, für das Notion keinen Block hat; um Markdown zurückzubekommen, braucht es einen zweiten Export |
-| Eine allgemeine Erweiterung zum „Als Markdown speichern" | Schwankt wild | Downloads | Unbekannt, und das ist das Problem: Sie können nicht prüfen, was Sie nicht lesen können |
+| Eine allgemeine Erweiterung zum „Als Markdown speichern“ | Schwankt wild | Downloads | Unbekannt, und das ist das Problem: Sie können nicht prüfen, was Sie nicht lesen können |
 
 MarkDownload ist das ehrliche Arbeitspferd: Es lässt Readability über die Seite laufen und dann Turndown über das Ergebnis, was dieselbe zweistufige Kette ist, die oben beschrieben wurde, für Sie zusammengesteckt. Es ist kostenlos und Open Source unter der Apache-2.0-Lizenz, was bedeutet, dass die Kette einsehbar ist — Sie können genau nachlesen, welche Regeln die Datei erzeugt haben, die Sie bekommen haben.
 
@@ -115,7 +115,7 @@ Notions Clipper ist der Ausreißer und der, bei dem Leute hereinfallen. Er speic
 
 ### Die Option im Browser, wenn Sie lieber nichts installieren
 
-Zwischen „in eine Website einfügen" und „eine Erweiterung installieren" gibt es eine dritte Position: ein Konverter, der im Browser-Tab läuft, aber nicht Teil des Browsers ist. Ziehen Sie die gespeicherte `.html`-Datei auf die Seite, oder fügen Sie das HTML ein, das Sie aus den Entwicklerwerkzeugen kopiert haben, und die Konvertierung passiert auf Ihrem eigenen Rechner. Abgemeldet lädt die [HTML-zu-Markdown-Konvertierung von TransformPipe](/html-to-markdown) überhaupt nichts hoch — die Datei wird lokal gelesen, geparst und konvertiert, was Sie bestätigen können, indem Sie den Netzwerk-Tab öffnen und dabei zusehen, wie nichts passiert. Die Konvertierung ist bei 10 MB gedeckelt, und ein Dokument, das Sie in einem Konto behalten möchten, bei 4 MB, weil die Funktion, die es speichert, einen größeren Anfragerumpf ablehnt.
+Zwischen „in eine Website einfügen“ und „eine Erweiterung installieren“ gibt es eine dritte Position: ein Konverter, der im Browser-Tab läuft, aber nicht Teil des Browsers ist. Ziehen Sie die gespeicherte `.html`-Datei auf die Seite, oder fügen Sie das HTML ein, das Sie aus den Entwicklerwerkzeugen kopiert haben, und die Konvertierung passiert auf Ihrem eigenen Rechner. Abgemeldet lädt die [HTML-zu-Markdown-Konvertierung von TransformPipe](/html-to-markdown) überhaupt nichts hoch — die Datei wird lokal gelesen, geparst und konvertiert, was Sie bestätigen können, indem Sie den Netzwerk-Tab öffnen und dabei zusehen, wie nichts passiert. Die Konvertierung ist bei 10 MB gedeckelt, und ein Dokument, das Sie in einem Konto behalten möchten, bei 4 MB, weil die Funktion, die es speichert, einen größeren Anfragerumpf ablehnt.
 
 | Vorteile | Nachteile |
 | --- | --- |
@@ -206,11 +206,11 @@ Schalten Sie die Leseansicht des Browsers ein, kopieren Sie den bereinigten Arti
 
 ### Welches Speicherformat des Browsers soll ich wählen?
 
-„Webseite, vollständig", wenn Sie die Bilder auf der Platte wollen, oder „Webseite, nur HTML", wenn Sie nur der Text interessiert. Meiden Sie „Webseite, einzelne Datei" (`.mhtml`) und Safaris Web Archive, wenn Markdown das Ziel ist, denn die meisten Konverter können keines der beiden Formate lesen.
+„Webseite, vollständig“, wenn Sie die Bilder auf der Platte wollen, oder „Webseite, nur HTML“, wenn Sie nur der Text interessiert. Meiden Sie „Webseite, einzelne Datei“ (`.mhtml`) und Safaris Web Archive, wenn Markdown das Ziel ist, denn die meisten Konverter können keines der beiden Formate lesen.
 
 ### Warum konvertiert meine gespeicherte Seite zu fast nichts?
 
-Die Seite stellt ihren Inhalt höchstwahrscheinlich mit JavaScript dar, der gespeicherte Quelltext ist also eine leere Hülle. Öffnen Sie die Entwicklerwerkzeuge, klicken Sie das `<html>`-Element mit der rechten Maustaste an, wählen Sie „Kopieren" und darin „outerHTML kopieren", speichern Sie das als `.html`-Datei und konvertieren Sie diese stattdessen — das ist die Seite, wie der Browser sie gebaut hat.
+Die Seite stellt ihren Inhalt höchstwahrscheinlich mit JavaScript dar, der gespeicherte Quelltext ist also eine leere Hülle. Öffnen Sie die Entwicklerwerkzeuge, klicken Sie das `<html>`-Element mit der rechten Maustaste an, wählen Sie „Kopieren“ und darin „outerHTML kopieren“, speichern Sie das als `.html`-Datei und konvertieren Sie diese stattdessen — das ist die Seite, wie der Browser sie gebaut hat.
 
 ### Kommen die Bilder mit dem Markdown mit?
 
