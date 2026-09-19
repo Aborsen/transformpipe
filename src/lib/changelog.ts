@@ -92,6 +92,15 @@ export const DETAIL_LIMIT = 3000;
 
 const ENTRIES: ChangelogEntry[] = [
   {
+    date: '2026-09-19',
+    title: 'The blog reads in all five languages',
+    body:
+      'All sixty-three articles now exist in English, German, French, Spanish and Italian — 315 in '
+      + 'all. They are written rather than machine-translated: the prose is rebuilt, the search '
+      + 'terms are the ones a reader of that language actually types, and each language keeps its '
+      + 'own conventions, down to which quotation marks it uses.',
+  },
+  {
     date: '2026-09-18',
     title: 'The whole blog reads in French',
     slug: 'blog-in-french',

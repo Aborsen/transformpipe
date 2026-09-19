@@ -54,7 +54,7 @@ Quello è front matter YAML: metadati per lo strumento che ha costruito la pagin
 
 ## Perché il doppio clic fa qualcosa di strano
 
-Ogni sistema operativo desktop scegli il programma per aprire un file dalla sua estensione, e ognuno fallisce diversamente quando niente ha reclamato correttamente quell'estensione.
+Ogni sistema operativo desktop sceglie il programma per aprire un file dalla sua estensione, e ognuno fallisce diversamente quando niente ha reclamato correttamente quell'estensione.
 
 **Windows non viene con niente che registri `.md`.** Quindi vince qualunque cosa si sia installata per ultima e abbia alzato la mano. Su un portatile di lavoro di solito è un editor di codice, un client Git, o qualche strumento arrivato con la toolchain dello sviluppatore — e se niente l'ha reclamato, ottieni la finestra “Come vuoi aprire questo file?” con un elenco di applicazioni e nessuna indicazione su quale sia giusta. Nessuno dei due esiti dice niente sul tuo file.
 
