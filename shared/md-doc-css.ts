@@ -40,6 +40,17 @@ const LIGHT: ThemeVars = {
   '--md-table-header': '#eaeff5',
 };
 
+/**
+ * The same values, for something that cannot read a custom property.
+ *
+ * Mermaid is handed a palette as literal colours at render time, not a stylesheet — so it needs
+ * the numbers rather than the variable names, and it needs them from here rather than from a
+ * second copy that drifts.
+ */
+export function mdDocVars(theme: 'dark' | 'light'): Readonly<ThemeVars> {
+  return theme === 'dark' ? DARK : LIGHT;
+}
+
 const declare = (vars: ThemeVars) =>
   Object.entries(vars)
     .map(([name, value]) => `  ${name}: ${value};`)

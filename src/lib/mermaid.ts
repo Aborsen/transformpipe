@@ -1,3 +1,4 @@
+import { mdDocVars } from '@shared/md-doc-css';
 import DOMPurify from 'dompurify';
 
 /*
@@ -32,11 +33,31 @@ async function mermaidFor(theme: Theme) {
    * that later gets emailed around; `suppressErrorRendering` is what keeps a typo in a fence from
    * replacing the diagram with mermaid's own error graphic — the source stays instead.
    */
+  const md = mdDocVars(theme);
+
   mermaid.initialize({
     startOnLoad: false,
     securityLevel: 'strict',
     suppressErrorRendering: true,
-    theme: theme === 'dark' ? 'dark' : 'default',
+    /*
+     * `base` plus the document's own palette, rather than one of mermaid's themes.
+     *
+     * Its light default paints every box lavender, which is nobody's brand and certainly not one
+     * that appears anywhere else on this page. Base derives the rest — actors, clusters, notes —
+     * from these few, so a diagram ends up the colour of the document it is sitting in.
+     */
+    theme: 'base',
+    themeVariables: {
+      background: md['--md-page'],
+      primaryColor: md['--md-card-2'],
+      primaryBorderColor: md['--md-brand-3'],
+      primaryTextColor: md['--md-ink'],
+      secondaryColor: md['--md-page'],
+      tertiaryColor: md['--md-card'],
+      lineColor: md['--md-secondary'],
+      textColor: md['--md-body'],
+      fontSize: '15px',
+    },
     fontFamily: '"DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif',
     /*
      * Labels as <text>, not as HTML in a <foreignObject>.
