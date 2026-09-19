@@ -24,15 +24,22 @@ export function extract(): Extracted {
   /**
    * Puts back the spaces that CSS was providing.
    *
-   * `<span>39</span><span>words</span>` inside a flex or grid container reads as "39 words" on the
-   * screen and serialises as `39words`: the gap between them is a layout property and there is no
-   * whitespace in the markup at all. Every converter downstream of this — ours included — sees the
-   * string, not the page, so the words arrive glued together. It is not a rare shape either; it is
-   * what a row of stats, a tag list or a breadcrumb trail looks like in any current framework.
+   * `<span>39</span><span>words</span>` laid out side by side reads as "39 words" on the screen and
+   * serialises as `39words`: the gap between them is a layout property and there is no whitespace
+   * in the markup at all. Every converter downstream of this — ours included — sees the string, not
+   * the page, so the words arrive glued together. It is not a rare shape either; it is what a row
+   * of stats, a tag list, a breadcrumb trail or a table built out of divs looks like in any current
+   * framework.
+   *
+   * The test is the element's own display, and everything that is not `inline` gets a space after
+   * it. The first version asked whether the *parent* was flex or grid, which covered the common
+   * case and missed the one that matters most: a header row of a div-table, where the cells are
+   * blocks inside something laid out another way, arrived as `TimeMethodStatusHostRequestMessage`.
+   * Anything that generates a box of its own is separated from its neighbour on screen, so a space
+   * after it is what the page already means.
    *
    * The one place that can tell is here, inside the page, where `getComputedStyle` still exists. So
-   * the document is cloned first and the clone is walked beside the living one: where the real
-   * element lays its children out as flex or grid items, the copy gets a space after each of them.
+   * the document is cloned first and the clone is walked beside the living one.
    *
    * The walkers stay in step because only text nodes are inserted and the walkers see elements, so
    * the sequence one is reading does not change under it.
@@ -48,16 +55,13 @@ export function extract(): Extracted {
     const twin = document.createTreeWalker(copy, NodeFilter.SHOW_ELEMENT);
 
     while (living.nextNode() && twin.nextNode()) {
-      const element = living.currentNode as Element;
-      const display = getComputedStyle(element).display;
+      const display = getComputedStyle(living.currentNode as Element).display;
 
-      if (!display.includes('flex') && !display.includes('grid')) {
+      if (display === 'inline' || display === 'none' || display === 'contents') {
         continue;
       }
 
-      for (const child of [...(twin.currentNode as Element).children]) {
-        child.after(document.createTextNode(' '));
-      }
+      (twin.currentNode as Element).after(document.createTextNode(' '));
     }
 
     return copy;

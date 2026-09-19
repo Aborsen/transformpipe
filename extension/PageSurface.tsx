@@ -67,12 +67,35 @@ import { useAccount } from './lib/useAccount';
  * you already trust the conversion. Anything worth actually reading goes to the viewer, which has
  * a page's worth of room; this is a glance, so it fades out rather than scrolls.
  */
+/**
+ * `vercel.com/…/transformpipe/deployments` — enough of an address to recognise the page.
+ *
+ * The host alone was being collected and never shown, which left the panel with no answer to the
+ * one question somebody asks when the title looks wrong: is this the page I am on? An application
+ * that names every one of its screens after the first one makes that question unanswerable, and
+ * the address is the thing that cannot be wrong.
+ */
+function shortAddress(url: string): string {
+  try {
+    const { hostname, pathname } = new URL(url);
+    const host = hostname.replace(/^www\./, '');
+    const parts = pathname.split('/').filter(Boolean);
+
+    if (parts.length === 0) return host;
+
+    return [host, ...(parts.length > 2 ? ['\u2026', ...parts.slice(-2)] : parts)].join('/');
+  } catch {
+    return url;
+  }
+}
+
 export function PageSurface({ live = false }: { live?: boolean }) {
   const t = useT();
   const { locale } = useI18n();
   const { theme } = useTheme();
   const [document_, setDocument] = useState<PageDocument | null>(null);
   const [failed, setFailed] = useState<'none' | 'error' | 'restricted'>('none');
+  /* Where the document came from, shown under its title. */
   const [host, setHost] = useState('');
   const [tabId, setTabId] = useState<number | undefined>(undefined);
   /*
@@ -152,7 +175,7 @@ export function PageSurface({ live = false }: { live?: boolean }) {
           setTabId(tab.id);
           setFailed('none');
           setFromSelection(page.selection);
-          setHost(new URL(page.url).hostname.replace(/^www\./, ''));
+          setHost(shortAddress(page.url));
           setDocument(converted);
         }
       } catch {
@@ -447,6 +470,7 @@ export function PageSurface({ live = false }: { live?: boolean }) {
                     textColor="secondary"
                     className="text-xs"
                   >
+                    {host ? `${host} · ` : ''}
                     {fromSelection ? `${t('ext.selection')} · ` : ''}
                     {/*
                       * Said only when it is true and worth saying: a dashboard or a board of
