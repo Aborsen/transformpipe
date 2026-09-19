@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { cn } from '../../lib/utils';
 import { Typography } from '../Typography';
 
@@ -14,6 +15,13 @@ export interface TocItem {
 
 interface TableOfContentsProps {
   items: TocItem[];
+  /**
+   * What sits under the list, in the same sticky column — the share buttons, on an article.
+   *
+   * Under rather than beside: it is the second thing anybody looks for in that column, and it stays
+   * put while the list scrolls, which is why the scrolling moved from the column to the list.
+   */
+  footer?: ReactNode;
   /** The id the reader is currently on — see `useActiveHeading`. */
   activeId?: string;
   label?: string;
@@ -35,20 +43,31 @@ interface TableOfContentsProps {
  */
 export function TableOfContents({
   items,
+  footer,
   activeId,
   label = 'On this page',
   width = 'w-44',
   className,
 }: TableOfContentsProps) {
   if (items.length === 0) {
-    return null;
+    return footer ? (
+      <div
+        className={cn(
+          'sticky top-20 hidden h-fit shrink-0 lg:block',
+          width,
+          className
+        )}
+      >
+        {footer}
+      </div>
+    ) : null;
   }
 
   return (
     <nav
       aria-label={label}
       className={cn(
-        'sticky top-20 hidden h-fit max-h-[calc(100dvh-7rem)] shrink-0 overflow-y-auto lg:block',
+        'sticky top-20 hidden h-fit max-h-[calc(100dvh-7rem)] shrink-0 flex-col lg:flex',
         width,
         className
       )}
@@ -61,7 +80,8 @@ export function TableOfContents({
         {label}
       </Typography>
 
-      <ul className="space-y-0.5 pr-1">
+      {/* The list scrolls, not the column: whatever is under it has to stay where it was put. */}
+      <ul className="min-h-0 flex-1 space-y-0.5 overflow-y-auto pr-1">
         {items.map(({ id, title, level = 2, icon: Icon }) => {
           const isActive = activeId === id;
 
@@ -90,6 +110,10 @@ export function TableOfContents({
           );
         })}
       </ul>
+
+      {footer && (
+        <div className="mt-6 border-stroke border-t pt-4">{footer}</div>
+      )}
     </nav>
   );
 }

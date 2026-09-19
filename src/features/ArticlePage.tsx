@@ -224,6 +224,14 @@ export function ArticlePage({
         activeId={activeHeading}
         label={t('article.toc')}
         width="w-60"
+        footer={
+          <ShareLinks
+            url={`${window.location.origin}${articlePath(article.slug, locale)}`}
+            title={article.title}
+            label={t('article.share')}
+            variant="icons"
+          />
+        }
       />
 
       <div className="flex min-w-0 max-w-[55rem] flex-1 flex-col gap-6">
@@ -292,12 +300,15 @@ export function ArticlePage({
       </div>
 
       {/*
-        * Below the prose, not above it: somebody shares an article they have read.
+        * Below the prose, and only where the contents column is not: from `lg` the same three links
+        * live under the contents as marks, which is where somebody looks for them, and two copies
+        * of one control on one screen is one copy too many.
         *
         * The origin comes from the browser rather than a constant, so a link shared from a preview
         * deployment points at the page the reader is actually looking at.
         */}
       <ShareLinks
+        className="lg:hidden"
         url={`${window.location.origin}${articlePath(article.slug, locale)}`}
         title={article.title}
         label={t('article.share')}
