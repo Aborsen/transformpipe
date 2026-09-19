@@ -97,13 +97,26 @@ export function extract(): Extracted {
         element instanceof HTMLOptionElement ||
         element instanceof HTMLOptGroupElement;
 
+      /*
+       * Three tests, and not a fourth.
+       *
+       * `getClientRects().length === 0` was the fourth, and it was wrong about containers: an
+       * element can be perfectly visible and generate no box of its own — `content-visibility`
+       * skips one, a scroll container can suppress one — and dropping it takes everything under
+       * it. A settings page came back as seven words because of it.
+       *
+       * What is left is safe for a subtree rather than merely true of the element: `display: none`
+       * is not rendered at all and no descendant can undo it, and `opacity: 0` multiplies through
+       * a stacking context so a fully opaque child of it is still invisible. `visibility` a
+       * descendant can undo, which is the one imperfection here, and it is rare enough to be worth
+       * the words it would take to check.
+       */
       if (
         !formChoice &&
         (style.display === 'none' ||
-        style.visibility === 'hidden' ||
-        style.visibility === 'collapse' ||
-        style.opacity === '0' ||
-        element.getClientRects().length === 0)
+          style.visibility === 'hidden' ||
+          style.visibility === 'collapse' ||
+          style.opacity === '0')
       ) {
         /*
          * Collected rather than removed here: the two walkers are stepping through matching trees
@@ -206,11 +219,57 @@ export function extract(): Extracted {
       else swap.mirror.replaceWith(...swap.with);
     }
 
+    /*
+     * The removals, unless they would empty the document.
+     *
+     * Deciding what is on the screen is a judgement, and a judgement that takes a page down to
+     * nothing is wrong whatever its reasoning — a page mid-animation, a framework that fades a
+     * route in, a shape nobody here anticipated. Measuring before and after costs one pass over
+     * the text and makes the whole filter fail towards showing too much, which is recoverable,
+     * rather than towards showing nothing, which is not.
+     */
+    const whole = readable(copy);
+    /* Kept with every other repair in it, so falling back is not also falling back to glued text. */
+    const unfiltered = copy.cloneNode(true) as HTMLElement;
+
     for (const node of hidden) {
       node.remove();
     }
 
+    if (whole > 400 && readable(copy) < whole / 10) {
+      return unfiltered;
+    }
+
     return copy;
+  }
+
+  /**
+   * How much of this is words, for the measurement the fail-safe makes.
+   *
+   * `textContent` would do it in one property read and count the wrong thing: the source of every
+   * script and the body of every stylesheet, which on a modern page outweighs the prose and would
+   * let a page of nothing but embedded JSON look full while its visible half was thrown away.
+   */
+  function readable(node: Node): number {
+    const walk = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+    let total = 0;
+
+    while (walk.nextNode()) {
+      const parent = walk.currentNode.parentElement?.localName ?? '';
+
+      if (
+        parent === 'script' ||
+        parent === 'style' ||
+        parent === 'noscript' ||
+        parent === 'template'
+      ) {
+        continue;
+      }
+
+      total += (walk.currentNode.textContent ?? '').trim().length;
+    }
+
+    return total;
   }
 
   /**
